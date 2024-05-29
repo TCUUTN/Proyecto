@@ -1,13 +1,14 @@
 const pool = require('../config/db');
+const Usuario = require('../models/Usuario');
 
 const getAllUsuarios = async (req, res) => {
-    try {
-      const rows = await pool.query('SELECT * FROM usuarios');
-      res.json(rows);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+  try {
+    const usuarios = await Usuario.findAll();
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
   module.exports = {
     getAllUsuarios
