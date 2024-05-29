@@ -1,0 +1,62 @@
+.home-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px;
+   
+  }
+  
+  .home-content,
+  .login-form {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .login-form {
+    background-color: #fff; /* Background color from the palette */
+    border-radius: 5px;
+  }
+  
+  h1.home-title {
+    font-family: 'Brush-TipTerrence', sans-serif; /* Title font from the palette */
+    color: #002b69; /* Title color from the palette */
+    margin-bottom: 10px;
+  }
+  
+  h2.login-title {
+    font-family: 'Brush-TipTerrence', sans-serif; /* Title font from the palette */
+    color: #002b69; /* Title color from the palette */
+    margin-bottom: 10px;
+  }
+  
+  label {
+    font-family: 'Century Gothic', sans-serif; /* Default font from the palette */
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  select,
+  textarea {
+    font-family: 'Century Gothic', sans-serif; /* Default font from the palette */
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    font-family: 'Century Gothic', sans-serif; /* Default font from the palette */
+    padding: 10px 20px;
+    background-color: #F66226; /* Background color from the palette */
+    color: #fff; /* Title color from the palette */
+    border: none;
+    cursor: pointer;
+  }
+  
+  a {
+    font-family: 'Century Gothic', sans-serif; /* Default font from the palette */
+    text-decoration: none;
+    color: #F66226; /* Background color from the palette */
+  }
+  
