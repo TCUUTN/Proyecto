@@ -15,12 +15,11 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+    
       <div className="navbar-logo">
         <img src="./assets/images/Banderautn.jpg" alt="UTN Logo" />
       </div>
-      <div className="navbar-toggle" onClick={toggleMenu}>
-        <FaBars />
-      </div>
+      
       <ul className={`navbar-links ${isOpen ? 'active' : ''}`}>
         <li>
           {location.pathname === '/' ? (
@@ -33,6 +32,9 @@ function Navbar() {
       </ul>
       <div className="navbar-user">
         <FaUser className="user-icon" />
+      </div>
+        <div className="navbar-toggle" onClick={toggleMenu}>
+        <FaBars />
       </div>
     </nav>
   );

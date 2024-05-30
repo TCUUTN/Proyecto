@@ -1,11 +1,16 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
-  color: #fff;
+  justify-content: left;
   align-items: center;
-  padding: 10px 20px;
-  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad); /* Agregar degradado */
+
+  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad); /* Add gradient */
   border-bottom: 4.5px solid #6fbadf;
+  color: #fff;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-logo img {
@@ -18,24 +23,19 @@
   margin: 0;
 }
 
-.navbar-links li {
-  margin: 0 15px;
-}
 
-.navbar-links li:hover a{
+
+.navbar-links li:hover a {
   color: #6fbadf;
 }
+
 .navbar-links a {
   color: white;
   text-decoration: none;
   font-size: 18px;
 }
 
-.navbar-links .contact-link {
-  margin-left: auto;
-  align-items: end;
-  justify-content: end;
-}
+
 
 .navbar-user {
   color: white;
@@ -44,20 +44,15 @@
   align-items: center;
 }
 
-
-
-/* Estilo para el icono de usuario */
+/* Style for the user icon */
 .user-icon {
   color: #f66226;
-  font-size: 24px; /* Ajusta el tamaño del icono según sea necesario */
- 
+  font-size: 24px; /* Adjust the icon size as needed */
 }
 
-/* 
-      Responsivo
-*/
+/* Responsive */
 .navbar-toggle {
-  display: none; /* Inicialmente oculto en pantallas grandes */
+  display: none; /* Initially hidden on large screens */
 }
 
 @media (max-width: 768px) {
@@ -69,18 +64,17 @@
     left: 0;
     width: 100%;
     background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
-    z-index: 10; /* Asegúrate de que el menú aparezca encima de otros elementos */
+    z-index: 10; /* Ensure the menu appears above other elements */
   }
+
   .navbar-links.active {
     display: flex;
   }
 
-  .navbar-links li {
-    margin: 10px;
-  }
+
 
   .navbar-toggle {
-    display: block; /* Muestra el icono de menú (hamburguesa) */
+    display: block; /* Show the menu icon (hamburger) */
     cursor: pointer;
     color: white;
   }
