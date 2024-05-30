@@ -33,10 +33,11 @@ function Home() {
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1 className="home-title">Monitorea, controla y da seguimiento a las</h1>
-        <h1 className="home-title">actividades, tareas y productos de los</h1>
-        <h1 className="home-title">estudiantes en sus proyectos de TCU de</h1>
-        <h1 className="home-title">manera detallada y eficiente.</h1>
+      <h1 className="home-title">Trabajo Comunal Universitario</h1>
+      <hr style={{ borderColor: '#F66226' }} />
+      <br></br>
+        <p className='home-texto'> Monitorea, controla y da seguimiento a las actividades, 
+          tareas y productos de los estudiantes en sus proyectos de  TCU de manera detallada y eficiente.</p>
       </div>
 
       <div className="login-form">

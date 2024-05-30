@@ -1,43 +1,50 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaBars } from 'react-icons/fa';
+import { FaUser, FaBars} from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
-  const location = useLocation();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  return (
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <Link to="/"><img src="./assets/images/Banderautn.jpg" alt="UTN Logo" /></Link>
+      </div>
 
-  return (
-    <nav className="navbar">
-    
-      <div className="navbar-logo">
-        <img src="./assets/images/Banderautn.jpg" alt="UTN Logo" />
-      </div>
-      
-      <ul className={`navbar-links ${isOpen ? 'active' : ''}`}>
-        <li>
-          {location.pathname === '/' ? (
-            <Link to="/contact">Contacto</Link>
-          ) : (
-            <Link to="/">Inicio</Link>
-          )}
-        </li>
-        {/* Agrega más elementos del menú aquí si es necesario */}
-      </ul>
-      <div className="navbar-user">
-        <FaUser className="user-icon" />
-      </div>
-        <div className="navbar-toggle" onClick={toggleMenu}>
-        <FaBars />
-      </div>
-    </nav>
-  );
+      <div className="navbar-right">
+        <ul className={`navbar-links ${isOpen? 'active' : ''}`}>
+          {location.pathname!== '/contact' && (
+            <li>
+             
+            </li>
+          )}
+          {location.pathname!== '/home_login' && (
+            <li>
+              {location.pathname === '/contact'? (
+                <Link to="/"> Inicio</Link>
+              ) : (
+                <Link to="/contact"> Contacto</Link>
+              )}
+            </li>
+          )}
+        </ul>
+
+        <div className="navbar-user">
+          <FaUser className="user-icon" />
+        </div>
+      </div>
+
+      <div className="navbar-toggle" onClick={toggleMenu}>
+        <FaBars />
+      </div>
+    </nav>
+  );
 }
-
 export default Navbar;

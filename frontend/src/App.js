@@ -16,14 +16,13 @@ import InicioAdmin  from './pages/Inicio/Home_Admin';
       <Router>
         <div className="App">
           <Navbar />
-          <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/footer" element={<FooterPage />} />
             <Route path="/Home_Admin" element={<InicioAdmin/>} />
           </Routes>
-        </div>
+
       </div>
       </Router>
     );

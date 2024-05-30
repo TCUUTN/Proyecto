@@ -1,6 +1,11 @@
+* { 
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
-  
   margin: 0 auto;
 }
 
@@ -9,9 +14,7 @@
   pointer-events: none;
 }
 
-.content {
-  padding: 20px;
-}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -20,7 +23,6 @@
 }
 
 .App-header {
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,6 +49,6 @@
 @media (max-width: 768px) {
   /* Modifica los estilos para pantallas más pequeñas */
   .App {
-   
+    padding: 0 10px; /* Reduzca el relleno en pantallas más pequeñas */
   }
 }
