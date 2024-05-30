@@ -20,7 +20,7 @@ function Home() {
 
       if (response.ok) {
         // Si las credenciales son correctas, redirige a la página Contact.js
-        window.location.href = '/contact';
+        window.location.href = '/pages/Inicio/home_Admin';
       } else {
         // Si las credenciales son incorrectas, muestra una notificación
         setError('Usuario o contraseña incorrectos');

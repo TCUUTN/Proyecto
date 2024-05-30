@@ -1,31 +1,87 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  color: #fff;
   align-items: center;
   padding: 10px 20px;
-  background-color: #002B5C;
+  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad); /* Agregar degradado */
+  border-bottom: 4.5px solid #6fbadf;
 }
 
 .navbar-logo img {
-  height: 40px;
+  height: 55px;
 }
 
 .navbar-links {
   list-style: none;
   display: flex;
+  margin: 0;
 }
 
 .navbar-links li {
   margin: 0 15px;
 }
 
+.navbar-links li:hover a{
+  color: #6fbadf;
+}
 .navbar-links a {
   color: white;
   text-decoration: none;
   font-size: 18px;
 }
 
+.navbar-links .contact-link {
+  margin-left: auto;
+  align-items: end;
+  justify-content: end;
+}
+
 .navbar-user {
   color: white;
   font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+/* Estilo para el icono de usuario */
+.user-icon {
+  color: #f66226;
+  font-size: 24px; /* Ajusta el tamaño del icono según sea necesario */
+ 
+}
+
+/* 
+      Responsivo
+*/
+.navbar-toggle {
+  display: none; /* Inicialmente oculto en pantallas grandes */
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
+    z-index: 10; /* Asegúrate de que el menú aparezca encima de otros elementos */
+  }
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-links li {
+    margin: 10px;
+  }
+
+  .navbar-toggle {
+    display: block; /* Muestra el icono de menú (hamburguesa) */
+    cursor: pointer;
+    color: white;
+  }
 }
