@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  max-width: 1200px;
+  
   margin: 0 auto;
 }
 
@@ -47,6 +47,6 @@
 @media (max-width: 768px) {
   /* Modifica los estilos para pantallas más pequeñas */
   .App {
-    padding: 0 10px; /* Reduzca el relleno en pantallas más pequeñas */
+   
   }
 }
