@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { RiLockPasswordFill } from "react-icons/ri";
+import { FaUser } from "react-icons/fa";
+
 import './Home.css';
 
 function Home() {
@@ -33,37 +36,39 @@ function Home() {
   return (
     <div className="home-container">
       <div className="home-content">
-      <h1 className="home-title">Trabajo Comunal Universitario</h1>
-      <hr style={{ borderColor: '#F66226' }} />
-      <br></br>
-        <p className='home-texto'> Monitorea, controla y da seguimiento a las actividades, 
-          tareas y productos de los estudiantes en sus proyectos de  TCU de manera detallada y eficiente.</p>
+        <h1 className="home-title">Trabajo Comunal Universitario</h1>
+        <hr className="title-divider" />
+        <p className='home-texto'>Monitorea, controla y da seguimiento a las actividades, tareas y productos de los estudiantes en sus proyectos de TCU de manera detallada y eficiente.</p>
       </div>
 
       <div className="login-form">
         <h2 className="login-title">Iniciar Sesión</h2>
-        <form>
-          <label htmlFor="username">Nombre de usuario:</label>
-          <input 
-            type="text" 
-            id="username" 
-            name="username" 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)} 
-          />
-
-          <label htmlFor="password">Contraseña:</label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} 
-          />
-
-          <button type="submit" onClick={handleSubmit}>Acceder</button>
-
-          <p>¿Olvidó su contraseña?</p>
+        <hr className="login-divider" />
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <FaUser className="icon"/>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              placeholder="Nombre de usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} 
+            />
+          </div>
+          <div className="input-container">
+            <RiLockPasswordFill className="icon"/>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+          </div>
+          <button type="submit" className="login-button">Acceder</button>
+          <p className="forgot-password">¿Olvidó su contraseña?</p>
         </form>
         {error && <p className="error-message">{error}</p>}
       </div>
