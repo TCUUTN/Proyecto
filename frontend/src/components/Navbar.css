@@ -1,35 +1,69 @@
-* { 
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+/* Definimos la animación */
+@keyframes borderAnimation {
+  0% {
+    border-bottom-color: #6fbadf;
+  }
+  25% {
+    border-bottom-color: #75c8f1;
+  }
+  50% {
+    border-bottom-color: rgb(66, 150, 192);
+  }
+  75% {
+    border-bottom-color: #1fa1e2;
+  }
+  100% {
+    border-bottom-color:  #0c9ce4;
+  }
+}
+
+/* Aplicamos la animación a la barra de navegación */
 .navbar {
   display: flex;
   align-items: center;
-  width: 100%; /* Añadido para que el navbar ocupe todo el ancho de la página */
-  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad); /* Add gradient */
+  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
   border-bottom: 4.5px solid #6fbadf;
   height: 80px;
   position: sticky;
+  top: 0;
   color: #fff;
   z-index: 20;
+  padding: 0 2rem;
+  justify-content: space-between;
+  width: 100%;
+  animation: borderAnimation 4s infinite; /* Añadimos la animación aquí */
 }
 
-.navbar-logo {
+.navbar-container {
+  display: flex;
   align-items: center;
-  margin-right: auto;
-  margin-left: 35px; /* Añade un margen izquierdo de 20 píxeles */
+  justify-content: space-between;
+  width: 100%;
 }
+
 .navbar-logo img {
   height: 60px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-links {
   list-style: none;
   display: flex;
   margin: 0;
-  margin-right: 10px;
+}
+
+.navbar-links li {
+  margin-right: 20px;
 }
 
 .navbar-links li:hover a {
@@ -40,6 +74,12 @@
   color: white;
   text-decoration: none;
   font-size: 20px;
+  font-family: 'Century Gothic', sans-serif;
+}
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-user {
@@ -49,45 +89,65 @@
   align-items: center;
 }
 
-.user-icon  {
+.user-icon {
   color: #f66226;
-  font-size: 24px; /* Adjust the icon size as needed */
-}
-
-.icon{
-  color: #f66226;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .navbar-toggle {
-  display: none; /* Initially hidden on large screens */
+  display: none;
   cursor: pointer;
   color: white;
-}
-.navbar-right {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  margin-right: 35px; /* Añade un margen derecho de 20 píxeles */
+  margin-left: 10px;
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
   .navbar-links {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 70px;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
-      z-index: 10;
-    }
-  
-  .navbar-links.active {
-      display: flex;
-    }
-  
-  .navbar-toggle {
-      display: block;
-    }
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
+    z-index: 10;
+    padding: 1rem 0;
+    width: 100%;
+   
   }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .navbar-logo {
+    margin: 0;
+  }
+
+  .navbar-right {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-icons {
+    margin-left: auto;
+  }
+}
