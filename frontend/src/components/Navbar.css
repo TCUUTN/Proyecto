@@ -101,6 +101,49 @@
   margin-left: 10px;
 }
 
+.nav-link{
+  color: white !important;
+  transition: 0.5s;
+}
+
+.nav-link:hover{
+  color: #f66226 !important;
+  transition: 0.5s;
+}
+
+.dropdown-style{
+  color: white !important;
+  transition: 0.5s;
+}
+
+.bg-blue {
+  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
+  transition: 0.5s;
+}
+
+.dropdown-style:hover{
+  background-color: white !important;
+  color: #f66226 !important;
+  transition: 0.5s;
+}
+
+.dropdown-style2{
+  color: white !important;
+  transition: 0.5s;
+}
+
+.bg-lightblue {
+  background-color: #81a1ad !important;
+}
+
+.dropdown-style2:hover{
+  background-color: #5f818d !important;
+  transition: 0.5s;
+}
+#navbarSupportedContent {
+  background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
+}
+
 @media only screen and (max-width: 1024px) {
   .navbar-links {
     display: none;
