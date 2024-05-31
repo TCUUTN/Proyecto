@@ -6,16 +6,12 @@ import Contact from './pages/Grupos/Grupos.js';
 import Home from './pages/Login/Home_Login.js';
 import Footer from './components/Footer';
 import InicioAdmin  from './pages/Inicio/Home_Admin.js';
-import CambiarContrasena from './pages/Cambio_Olvidar/CambiarClave.js';
-import OlvidarContrasena from './pages/Cambio_Olvidar/OlvidarClave.js;'
+import CambiarContrasena from './pages/CambioContrasenna/CambiarClave.js';
+import OlvidarContrasena from './pages/OlvidarContrasenna/OlvidarClave.js'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
-
-
-
-
 
   function App() {
   
