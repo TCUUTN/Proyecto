@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { RiLockPasswordFill } from "react-icons/ri";
-import { FaUser } from "react-icons/fa";
-
+import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import './Home.css';
 
 function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
@@ -31,6 +31,10 @@ function Home() {
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
     }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -59,16 +63,20 @@ function Home() {
           <div className="input-container">
             <RiLockPasswordFill className="icon"/>
             <input 
-              type="password" 
+              type={showPassword ? 'text' : 'password'} 
               id="password" 
               name="password" 
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)} 
             />
+            <span className="icon2" onClick={toggleShowPassword}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
           </div>
-          <button type="submit" className="login-button">Acceder</button>
           <p className="forgot-password">¿Olvidó su contraseña?</p>
+          <br></br>
+          <button type="submit" className="login-button">Acceder</button>
         </form>
         {error && <p className="error-message">{error}</p>}
       </div>
