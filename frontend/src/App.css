@@ -48,7 +48,5 @@
 
 @media (max-width: 768px) {
   /* Modifica los estilos para pantallas más pequeñas */
-  .App {
-    padding: 0 10px; /* Reduzca el relleno en pantallas más pequeñas */
-  }
+
 }

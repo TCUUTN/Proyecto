@@ -4,7 +4,7 @@ import './Footer.css';
 function Footer() {
   return (
     <footer className="footer">
-      © Universidad Técnica Nacional
+      &copy; {new Date().getFullYear()} Universidad Técnica Nacional. Todos los derechos reservados.
     </footer>
   );
 }
