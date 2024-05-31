@@ -6,7 +6,8 @@ import Contact from './pages/Grupos/Grupos.js';
 import Home from './pages/Login/Home_Login.js';
 import Footer from './components/Footer';
 import InicioAdmin  from './pages/Inicio/Home_Admin.js';
-import CambiarContrasena from './pages/Login/Cambio_Olvidar/Cambiar_Contrasena.js';
+import CambiarContrasena from './pages/Cambio_Olvidar/CambiarClave.js';
+import OlvidarContrasena from './pages/Cambio_Olvidar/OlvidarClave.js;'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
@@ -26,7 +27,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaSc
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/Home_Admin" element={<InicioAdmin/>} />
-            <Route path="/Cambiar_Contrasena" element={<CambiarContrasena/>} />
+            <Route path="/CambiarClave" element={<CambiarContrasena/>} />
+            <Route path="/OlvidarClave" element={<OlvidarContrasena/>} />
           </Routes>
           <Footer />
       </div>

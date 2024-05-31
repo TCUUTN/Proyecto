@@ -72,7 +72,7 @@ function Navbar() {
               <FaUser className="user-icon" />
               </Link>
               <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
-                <li><Link className="dropdown-item dropdown-style2" to="/CambiarContrasena">Cambio de contraseña</Link></li>
+                <li><Link className="dropdown-item dropdown-style2" to="/CambiarClave">Cambio de contraseña</Link></li>
                 <li><hr className="dropdown-divider" /></li> 
                 <li><Link className="dropdown-item dropdown-style2" to="#">Cerrar Sesión</Link></li>
 
