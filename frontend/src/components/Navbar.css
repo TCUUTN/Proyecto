@@ -46,6 +46,12 @@
   justify-content: space-between;
   width: 100%;
 }
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
 
 .navbar-logo img {
   height: 60px;

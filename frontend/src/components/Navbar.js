@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FaUser, FaBars } from 'react-icons/fa';
+import { Link} from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
 import './Navbar.css';
 
 function Navbar() {
@@ -40,41 +40,41 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">Usuarios</a>
+              <Link className="nav-link" aria-current="page" to="#">Usuarios</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Grupos</a>
+              <Link className="nav-link" to="#">Grupos</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Carga de horas</a>
+              <Link className="nav-link" to="#">Carga de horas</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Socios Comunitarios</a>
+              <Link className="nav-link" to="#">Socios Comunitarios</Link>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <Link className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Reportes
-              </a>
+              </Link>
               <ul className="dropdown-menu bg-blue">
-                <li><a className="dropdown-item dropdown-style" href="#">Reporte #1</a></li>
-                <li><a className="dropdown-item dropdown-style" href="#">Reporte #2</a></li>
+                <li><Link className="dropdown-item dropdown-style" to="#">Reporte #1</Link></li>
+                <li><Link className="dropdown-item dropdown-style" to="#">Reporte #2</Link></li>
                 {/* <li><hr className="dropdown-divider" /></li> */}
-                <li><a className="dropdown-item dropdown-style" href="#">Reporte #3</a></li>
+                <li><Link className="dropdown-item dropdown-style" to="#">Reporte #3</Link></li>
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link " aria-disabled="true">Información</a>
+              <Link className="nav-link " aria-disabled="true">Información</Link>
             </li>
           </ul>
 
           <ul className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <Link className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <FaUser className="user-icon" />
-              </a>
+              </Link>
               <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
-                <li><a className="dropdown-item dropdown-style2" href="#">Cambio de contraseña</a></li>
+                <li><Link className="dropdown-item dropdown-style2" to="/CambiarContrasena">Cambio de contraseña</Link></li>
                 <li><hr className="dropdown-divider" /></li> 
-                <li><a className="dropdown-item dropdown-style2" href="#">Cerrar Sesión</a></li>
+                <li><Link className="dropdown-item dropdown-style2" to="#">Cerrar Sesión</Link></li>
 
               </ul>
             </ul>
