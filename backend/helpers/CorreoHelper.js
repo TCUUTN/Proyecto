@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
   try {
@@ -6,8 +7,8 @@ const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: 'bitacoratcuutn@gmail.com', // Reemplaza con tu correo electrónico
-          pass: 'ozau tzwo gjee uupt' // Reemplaza con tu contraseña
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
         },
         tls: {
             rejectUnauthorized: false // Permitir certificados autofirmados
@@ -17,7 +18,7 @@ const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
       
 
     const mailOptions = {
-      from: 'bitacoratcuutn@gmail.com',
+      from: process.env.EMAIL_USER,
       to: destinatario,
       subject: asunto,
       html: mensajeHtml,

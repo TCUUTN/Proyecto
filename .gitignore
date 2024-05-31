@@ -7,3 +7,7 @@ logs/
 
 # Docker volumes
 db_data/
+
+
+#Archivo de credenciales
+.env
