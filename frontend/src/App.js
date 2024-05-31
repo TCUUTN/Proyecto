@@ -2,10 +2,10 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Contact from './pages/Contact';
-import Home from './pages/Home_Login';
+import Contact from './pages/Grupos/Grupos.js';
+import Home from './pages/Login/Home_Login.js';
 import Footer from './components/Footer';
-import InicioAdmin  from './pages/Inicio/Home_Admin';
+import InicioAdmin  from './pages/Inicio/Home_Admin.js';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
 

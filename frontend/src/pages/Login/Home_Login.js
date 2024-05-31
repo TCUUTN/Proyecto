@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
-import './Home.css';
+import './Login.css';
 
 function Home() {
   const [username, setUsername] = useState('');
