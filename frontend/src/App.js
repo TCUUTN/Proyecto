@@ -1,10 +1,11 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Contact from './pages/Contact';
 import Home from './pages/Home_Login';
 import FooterPage from './pages/FooterPage';
+import InicioAdmin  from './pages/Inicio/Home_Admin';
 
 
 
@@ -16,11 +17,13 @@ import FooterPage from './pages/FooterPage';
         <div className="App">
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home/>} />
+            <Route path="/" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/footer" element={<FooterPage />} />
+            <Route path="/Home_Admin" element={<InicioAdmin/>} />
           </Routes>
-        </div>
+
+      </div>
       </Router>
     );
   }

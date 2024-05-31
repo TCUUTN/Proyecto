@@ -1,27 +1,39 @@
 .home-container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 20px;
-   
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  padding: 20px;
+}
+
+  /* Home para el texto */
+  .home-texto{
+    color: #012C6A;
+    margin-bottom: 10px;
+    font-family: Century Gothic, sans-serif;
+  }
+  h1.home-title {
+    font-family: 'Brush-TipTerrence', cursive; /* Title font from the palette */
+    color: #012C6A; /* Title color from the palette */
+    margin-bottom: 10px;
+    font-size: 2.5rem;
   }
   
-  .home-content,
-  .login-form {
-    flex: 1;
-    padding: 20px;
-  }
+
+/* hOME FORM */
+
+.home-content,
+.login-form {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
   
   .login-form {
     background-color: #fff; /* Background color from the palette */
     border-radius: 5px;
   }
   
-  h1.home-title {
-    font-family: 'Brush-TipTerrence', sans-serif; /* Title font from the palette */
-    color: #002b69; /* Title color from the palette */
-    margin-bottom: 10px;
-  }
+ 
   
   h2.login-title {
     font-family: 'Brush-TipTerrence', sans-serif; /* Title font from the palette */
@@ -60,3 +72,8 @@
     color: #F66226; /* Background color from the palette */
   }
   
+  @media (max-width: 768px) {
+    .home-container {
+       grid-template-columns: 1fr;
+     }
+   }
