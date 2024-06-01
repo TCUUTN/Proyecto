@@ -49,7 +49,13 @@ const getUsuarioPorCredenciales = async (req, res) => {
       // Comparar la contraseña proporcionada con la contraseña encriptada en la base de datos
       const contrasennaValida = await bcrypt.compare(Contrasenna, usuario.Contrasenna);
       if (contrasennaValida) {
-        res.json(usuario);
+        // Devolver solo Nombre, RolUsuario y CorreoElectronico
+        const usuarioResponse = {
+          Nombre: usuario.Nombre,
+          RolUsuario: usuario.RolUsuario,
+          CorreoElectronico: usuario.CorreoElectronico,
+        };
+        res.json(usuarioResponse);
       } else {
         // Si la contraseña no es válida, devolver un mensaje de error
         res.status(401).json({ error: "Usuario o contraseña inválida" });
@@ -63,7 +69,6 @@ const getUsuarioPorCredenciales = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 const actualizarContrasenna = async (req, res) => {
   try {
