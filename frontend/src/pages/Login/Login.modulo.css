@@ -3,9 +3,9 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
   padding: 20px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   height: 80vh;
-  overflow: auto;
+  overflow: auto;
 }
 
 .home-content {
@@ -21,21 +21,21 @@
 }
 
 .home-texto {
-  color: #012C6A;
+  color: #012c6a;
   margin-bottom: 10px;
-  font-family: 'Century Gothic', sans-serif;
+  font-family: "Century Gothic", sans-serif;
   text-align: center;
 }
 
 h1.home-title {
-  font-family: 'Brush-TipTerrence', cursive; /* Title font */
-  color: #012C6A; /* Title color */
+  font-family: "Brush-TipTerrence", cursive; /* Title font */
+  color: #012c6a; /* Title color */
   margin-bottom: 10px;
   font-size: 2.5rem;
 }
 
 .title-divider {
-  border: 2px solid #F66226; /* Divider color */
+  border: 2px solid #f66226; /* Divider color */
   width: 50%;
   margin-bottom: 20px;
 }
@@ -53,13 +53,13 @@ h1.home-title {
 }
 
 .login-divider {
-  border: 2px solid #F66226; /* Divider color */
+  border: 2px solid #f66226; /* Divider color */
   width: 50%;
   margin-bottom: 20px;
 }
 
 h2.login-title {
-  font-family: 'Brush-TipTerrence', cursive; /* Title font */
+  font-family: "Brush-TipTerrence", cursive; /* Title font */
   color: #002b69; /* Title color */
   margin-bottom: 20px;
   text-align: center;
@@ -72,9 +72,9 @@ h2.login-title {
 
 .icon {
   position: absolute;
-  left: -15px; /* Posicionar el icono a 10px de la izquierda del campo de texto */
+  left: -30px; /* Posicionar el icono a 10px de la izquierda del campo de texto */
   top: 10px;
-  color: #F66226;
+  color: #f66226;
   font-size: 24px;
 }
 
@@ -82,10 +82,9 @@ h2.login-title {
   position: absolute;
   right: -10px; /* Posicionar el icono a 10px de la izquierda del campo de texto */
   top: 10px;
-  color: #F66226;
+  color: #f66226;
   font-size: 24px;
 }
-
 
 input[type="text"],
 input[type="password"] {
@@ -94,7 +93,7 @@ input[type="password"] {
   padding: 10px 35px 10px 10px; /* Ajustar el padding para mayor espacio a la derecha */
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-family: 'Century Gothic', sans-serif;
+  font-family: "Century Gothic", sans-serif;
   margin: 0 auto;
   position: relative;
 }
@@ -103,12 +102,12 @@ button.login-button {
   width: 45%;
   max-width: 3000px; /* Max width to match the inputs */
   padding: 10px;
-  background-color: #0DAACE; /* Background color */
+  background-color: #0daace; /* Background color */
   color: #fff; /* Text color */
   border: none;
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
-  font-family: 'Century Gothic', sans-serif; /* Button font */
+  font-family: "Century Gothic", sans-serif; /* Button font */
   margin: 0 auto; /* Center the button */
 }
 
@@ -117,22 +116,18 @@ button.login-button:hover {
 }
 
 .forgot-password {
-  font-family: 'Century Gothic', sans-serif; /* Font */
+  font-family: "Century Gothic", sans-serif; /* Font */
   text-decoration: none;
-  color: #012C6A; /* Link color */
+  color: #012c6a; /* Link color */
   text-align: right;
-  margin-top: 10px
+  margin-top: 10px;
 }
-
-
 
 .error-message {
   color: red;
   text-align: center;
   margin-top: 10px;
 }
-
-
 
 @media (max-width: 768px) {
   .home-container {

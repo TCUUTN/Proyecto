@@ -1,81 +1,82 @@
 .olvidar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7.5%;
 }
 
 .olvidar-form {
-    padding: 40px;
-    border: 2px solid #012C6A; /* Borde alrededor del formulario */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 400px;
-    margin: 0;
+  padding: 40px;
+  border: 2px solid #012c6a; /* Borde alrededor del formulario */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+  margin: 0;
 }
 
 .title {
-    font-family: 'Century Gothic', sans-serif;
-    color: #012C6A;
-    margin-bottom: 10px;
-    font-size: 2.5rem;
+  font-family: "Century Gothic", sans-serif;
+  color: #012c6a;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
 }
 
 .Title-linea {
-    border: 2px solid #F66226; /* Divider color */
-    width: 50%;
-    margin: 0 auto 20px;
+  border: 2px solid #f66226; /* Divider color */
+  width: 50%;
+  margin: 0 auto 20px;
 }
 
 .input-wrapper {
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: left;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
 }
 
 .input-label {
-    font-family: 'Century Gothic', sans-serif;
-    color: #012C6A;
-    font-size: 1rem;
-    margin-bottom: 5px;
-    display: block;
+  font-family: "Century Gothic", sans-serif;
+  color: #012c6a;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  display: block;
 }
 
 .input-container {
-    position: relative;
-    width: 100%;
+  position: relative;
+  align-items: center;
+  width: 100%;
 }
 
 input[type="text"],
 input[type="password"] {
-    width: 100%;
-    padding: 10px 35px 10px 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-family: 'Century Gothic', sans-serif;
-    align-items: center;
+  width: 100%;
+  padding: 10px 35px 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-family: "Century Gothic", sans-serif;
+  align-items: center;
 }
 .icon-email {
-    position: absolute;
-    left: 10px; /* Position the icon to the left of the text field */
-    top: 50%;
-    transform: translateY(-50%);
-    color: #F66226;
-    font-size: 24px;
+  position: absolute;
+  left: 10px; /* Position the icon to the left of the text field */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f66226;
+  font-size: 24px;
 }
 
 button.olvidar-button {
-    width: 45%;
-    padding: 10px;
-    background-color: #0DAACE; /* Background color */
-    color: #fff; /* Text color */
-    border: none;
-    border-radius: 20px; /* Rounded corners */
-    cursor: pointer;
-    font-family: 'Century Gothic', sans-serif; /* Button font */
+  width: 45%;
+  padding: 10px;
+  background-color: #0daace; /* Background color */
+  color: #fff; /* Text color */
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+  font-family: "Century Gothic", sans-serif; /* Button font */
 }
 
 button.olvidar-button:hover {
-    background-color: #e55620; /* Darker shade for hover effect */
+  background-color: #e55620; /* Darker shade for hover effect */
 }
