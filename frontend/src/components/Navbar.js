@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link} from 'react-router-dom';
-import { FaUser } from 'react-icons/fa';
+import { FaCircleUser } from "react-icons/fa6";
 import './Navbar.css';
 
 function Navbar() {
@@ -46,7 +46,7 @@ function Navbar() {
               <Link className="nav-link" to="#">Grupos</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#">Carga de horas</Link>
+              <Link className="nav-link" to="#">Ingresar horas</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="#">Socios Comunitarios</Link>
@@ -69,7 +69,7 @@ function Navbar() {
 
           <ul className="nav-item dropdown">
               <Link className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <FaUser className="user-icon" />
+              <FaCircleUser className="user-icon" />
               </Link>
               <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
                 <li><Link className="dropdown-item dropdown-style2" to="/CambiarClave">Cambio de contraseña</Link></li>
