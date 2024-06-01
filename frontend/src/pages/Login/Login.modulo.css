@@ -35,7 +35,7 @@ h1.home-title {
 }
 
 .title-divider {
-  border: 1px solid #F66226; /* Divider color */
+  border: 2px solid #F66226; /* Divider color */
   width: 50%;
   margin-bottom: 20px;
 }
@@ -53,7 +53,7 @@ h1.home-title {
 }
 
 .login-divider {
-  border: 1px solid #F66226; /* Divider color */
+  border: 2px solid #F66226; /* Divider color */
   width: 50%;
   margin-bottom: 20px;
 }

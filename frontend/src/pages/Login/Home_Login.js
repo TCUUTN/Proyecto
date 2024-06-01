@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link} from 'react-router-dom';
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
-import './Login.css';
+import './Login.modulo.css';
 
 function Home() {
   const [username, setUsername] = useState('');
@@ -74,7 +75,8 @@ function Home() {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
-          <p className="forgot-password">¿Olvidó su contraseña?</p>
+          <Link className="forgot-password" to="/OlvidarClave">¿Olvidó su contraseña?</Link>
+          
           <br></br>
           <button type="submit" className="login-button">Acceder</button>
         </form>
