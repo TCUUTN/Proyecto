@@ -3,14 +3,14 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
   padding: 20px;
-  background-color: #fafafa;
+
   height: 80vh;
   overflow: auto;
 }
 
 .home-content {
   padding: 20px;
-  background-color: #fff;
+
   border-radius: 5px;
   display: flex;
   flex-direction: column;

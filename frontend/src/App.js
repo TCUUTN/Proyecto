@@ -9,6 +9,7 @@ import Inicio from './pages/Inicio/Home.js';
 import Acceso from './pages/Denegado/Denegado.js';
 import CambiarContrasena from './pages/CambioContrasenna/CambiarClave.js';
 import OlvidarContrasena from './pages/OlvidarContrasenna/OlvidarClave.js'
+import MantUser from './pages/Usuarios/ManteminientoUs.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
@@ -36,6 +37,8 @@ function App() {
           <Route path="/AccesoDenegado" element={<Acceso />} />
           <Route path="/CambiarClave" element={<CambiarContrasena />} />
           <Route path="/OlvidarClave" element={<OlvidarContrasena />} />
+          <Route path="/MantUser" element={<MantUser />} />
+          
         </Routes>
         <Footer />
       </div>
