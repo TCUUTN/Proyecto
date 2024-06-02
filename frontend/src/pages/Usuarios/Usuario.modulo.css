@@ -238,17 +238,18 @@ input:focus + .slider {
   width: 75%;
   max-width: 500px;
   z-index: 1000;
-}
-
-.overlay {
   background-color: #FAFAFA;
   border: 1px solid #002B69;
   border-radius: 10px;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 25%;
-  left:25%;
-  right: 25%;
-  bottom: 25%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 999;
 }
 

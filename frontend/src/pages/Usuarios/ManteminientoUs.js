@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ModalAdd from "./ModelAdd";
 import {
   FaEdit,
   FaInfoCircle,
@@ -8,6 +9,7 @@ import {
 import { IoMdAddCircle } from "react-icons/io";
 import Modal from "react-modal";
 import "./Usuario.modulo.css";
+import { Link } from "react-router-dom";
 
 // Configurar el elemento raíz para el modal
 Modal.setAppElement("#root");
@@ -121,7 +123,9 @@ function MantenimientoUs() {
 
   return (
     <div className="user-container">
+
       <aside className="sidebar-user">
+        <Link to="/ModeU">Model</Link>
         <button className="add-user" onClick={openModal}>
           Agregar Usuario <IoMdAddCircle className="icon-add" />
         </button>
@@ -202,129 +206,14 @@ function MantenimientoUs() {
       </main>
 
       {/* Modal de Agregar Usuario */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Agregar Usuario"
-        className="modal"
-        overlayClassName="overlay"
-      >
-          
-
-        <h2>Agregar Usuario</h2>
-        <form className="add-user-form" onSubmit={handleSubmit}>
-          <label htmlFor="identificacion">Identificación:</label>
-          <input
-            id="identificacion"
-            name="Identificacion"
-            type="text"
-            value={nuevoUsuario.Identificacion}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="nombre">Nombre:</label>
-          <input
-            id="nombre"
-            name="Nombre"
-            type="text"
-            value={nuevoUsuario.Nombre}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="apellido1">Apellido1:</label>
-          <input
-            id="apellido1"
-            name="Apellido1"
-            type="text"
-            value={nuevoUsuario.Apellido1}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="apellido2">Apellido2:</label>
-          <input
-            id="apellido2"
-            name="Apellido2"
-            type="text"
-            value={nuevoUsuario.Apellido2}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="genero">Género:</label>
-          <select
-            id="genero"
-            name="Genero"
-            value={nuevoUsuario.Genero}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleccione</option>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-            <option value="otro">Otro</option>
-          </select>
-
-          <label htmlFor="correo">Correo Electrónico:</label>
-          <input
-            id="correo"
-            name="CorreoElectronico"
-            type="email"
-            value={nuevoUsuario.CorreoElectronico}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="rol">Rol Usuario:</label>
-          <input
-            id="rol"
-            name="RolUsuario"
-            type="text"
-            value={nuevoUsuario.RolUsuario}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="contrasenna">Contraseña:</label>
-          <input
-            id="contrasenna"
-            name="Contrasenna"
-            type="password"
-            value={nuevoUsuario.Contrasenna}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="estado">Estado:</label>
-          <select
-            id="estado"
-            name="Estado"
-            value={nuevoUsuario.Estado}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleccione</option>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-
-          <label htmlFor="tipo-identificacion">Tipo Identificación:</label>
-          <input
-            id="tipo-identificacion"
-            name="TipoIdentificacion"
-            type="text"
-            value={nuevoUsuario.TipoIdentificacion}
-            onChange={handleChange}
-            required
-          />
-
-          <button type="submit">Guardar</button>
-          <button type="button" onClick={closeModal}>
-            Cancelar
-          </button>
-        </form>
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="modal" overlayClassName="modal-overlay">
+        <h2>Agregar Nuevo Usuario</h2>
+        <ModalAdd
+          nuevoUsuario={nuevoUsuario}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          closeModal={closeModal}
+        />
       </Modal>
     </div>
   );
