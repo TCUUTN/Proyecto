@@ -1,6 +1,6 @@
 .home-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr minmax(auto, 400px); /* Adjust the second column to a fixed max width */
   grid-gap: 20px;
   padding: 20px;
 
@@ -10,19 +10,19 @@
 
 .home-content {
   padding: 20px;
-
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  margin-top: 75px;
+  margin-top: 0;
+  width: 100%; /* Ensure it takes up the remaining space */
 }
 
 .home-texto {
   color: #012c6a;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  max-width: 600px;
   font-family: "Century Gothic", sans-serif;
   text-align: center;
 }
@@ -42,14 +42,29 @@ h1.home-title {
 
 .login-form {
   padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
+  border-radius: 20px !important; /* Rounded corners */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  margin-top: 75px;
+  position: relative;
+  border: 5px solid transparent; /* Placeholder for gradient border */
+  border-image: linear-gradient(45deg, #012c6a, #0daace, #012c6a, #0daace) 1; /* Initial gradient border */
+  animation: gradient-border-animation 5s infinite; /* Animation for gradient border */
+  width: 100%;
+  padding: 40px; /* Adjust padding for better spacing */
+}
+
+@keyframes gradient-border-animation {
+  0% {
+    border-image-source: linear-gradient(45deg, #012c6a, #0daace, #012c6a, #0daace);
+  }
+  50% {
+    border-image-source: linear-gradient(45deg, #0daace, #012c6a, #0daace, #012c6a);
+  }
+  100% {
+    border-image-source: linear-gradient(45deg, #012c6a, #0daace, #012c6a, #0daace);
+  }
 }
 
 .login-divider {
@@ -68,11 +83,12 @@ h2.login-title {
 .input-container {
   position: relative;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .icon {
   position: absolute;
-  left: -30px; /* Posicionar el icono a 10px de la izquierda del campo de texto */
+  left: 10px;
   top: 10px;
   color: #f66226;
   font-size: 24px;
@@ -80,17 +96,17 @@ h2.login-title {
 
 .icon2 {
   position: absolute;
-  right: -10px; /* Posicionar el icono a 10px de la izquierda del campo de texto */
+  right: 10px;
   top: 10px;
   color: #f66226;
   font-size: 24px;
+  cursor: pointer;
 }
 
 input[type="text"],
 input[type="password"] {
-  width: calc(100% - 40px);
-  max-width: 300px;
-  padding: 10px 35px 10px 10px; /* Ajustar el padding para mayor espacio a la derecha */
+  width: 100%;
+  padding: 10px 35px 10px 35px; /* Adjust padding for more space */
   border: 1px solid #ccc;
   border-radius: 20px;
   font-family: "Century Gothic", sans-serif;
@@ -99,8 +115,7 @@ input[type="password"] {
 }
 
 button.login-button {
-  width: 45%;
-  max-width: 3000px; /* Max width to match the inputs */
+  width: 100%;
   padding: 10px;
   background-color: #0daace; /* Background color */
   color: #fff; /* Text color */
@@ -108,11 +123,15 @@ button.login-button {
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   font-family: "Century Gothic", sans-serif; /* Button font */
-  margin: 0 auto; /* Center the button */
+  margin-top: 10px;
+  transition: 2s;
+
 }
 
 button.login-button:hover {
-  background-color: #e55620; /* Darker shade for hover effect */
+  background-color: #ff4500; /* Color base más oscuro para el efecto hover */
+  background-image: linear-gradient(to right, #ff8c00, #ff4500); /* Gradiente de color */
+  transition: 2s;
 }
 
 .forgot-password {
@@ -121,6 +140,30 @@ button.login-button:hover {
   color: #012c6a; /* Link color */
   text-align: right;
   margin-top: 10px;
+  transition: 0.5s;
+}
+
+.forgot-password:hover {
+  color: #ff4500; /* Color base más oscuro para el efecto hover */
+  background-image: linear-gradient(to right, #ff8c00, #ff4500); /* Gradiente de color */
+  -webkit-background-clip: text; /* Para navegadores basados en WebKit */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Hace que el texto sea transparente para que se vea el gradiente */
+  transition: 0.5s;
+  text-decoration: underline;
+  animation: gradient-text-animation 5s ease-in-out infinite alternate; /* Animación del gradiente */
+}
+
+@keyframes gradient-text-animation {
+  0% {
+    background-image: linear-gradient(to right, #ff8c00, #ff4500);
+  }
+  50% {
+    background-image: linear-gradient(to right, #ff4500, #ff8c00);
+  }
+  100% {
+    background-image: linear-gradient(to right, #ff8c00, #ff4500);
+  }
 }
 
 .error-message {
@@ -129,8 +172,19 @@ button.login-button:hover {
   margin-top: 10px;
 }
 
+iframe {
+  max-width: 100%;
+  height: 100%;
+  border-radius: 10px; /* Ajusta este valor según lo redondeado que desees que sean los bordes */
+}
+
+
 @media (max-width: 768px) {
   .home-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr minmax(auto, auto); /* Adjust the second column to a fixed max width */
+  }
+
+  .home-content {
+    display: none; /* Hide the first container on mobile devices */
   }
 }

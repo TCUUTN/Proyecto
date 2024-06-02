@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import imagen from '../Assets/Images/Banderautn.jpg';
 import { FaCircleUser } from "react-icons/fa6";
 import './Navbar.css';
 
@@ -51,7 +52,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <div className="navbar-logo">
-          <Link to="/"><img src="./assets/images/Banderautn.jpg" alt="UTN Logo" /></Link>
+          <Link to="/"><img src={imagen} alt="UTN Logo" /></Link>
         </div>
         {isAuthenticated && (
           <>
