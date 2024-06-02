@@ -160,7 +160,6 @@ function MantenimientoUs() {
     <div className="user-container">
 
       <aside className="sidebar-user">
-        <Link to="/ModeU">Model</Link>
         <button className="add-user" onClick={openModal}>
           Agregar Usuario <IoMdAddCircle className="icon-add" />
         </button>
