@@ -46,7 +46,7 @@ function Login() {
         sessionStorage.setItem("CorreoElectronico", data.CorreoElectronico);
 
         // Si las credenciales son correctas, redirige a la página Contact.js
-        window.location.href = "/pages/Inicio/home_Admin";
+        window.location.href = "/Home";
       } else {
         // Si las credenciales son incorrectas, muestra una notificación
         setError("Usuario o contraseña incorrectos");
