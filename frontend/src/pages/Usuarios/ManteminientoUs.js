@@ -47,10 +47,12 @@ function MantenimientoUs() {
   }, []);
 
   const openModal = () => {
+    console.log("Opening modal...");
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
+    console.log("Closing modal...");
     setModalIsOpen(false);
   };
 
@@ -207,6 +209,8 @@ function MantenimientoUs() {
         className="modal"
         overlayClassName="overlay"
       >
+          
+
         <h2>Agregar Usuario</h2>
         <form className="add-user-form" onSubmit={handleSubmit}>
           <label htmlFor="identificacion">Identificación:</label>
