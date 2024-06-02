@@ -63,7 +63,7 @@ function Navbar() {
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {rolUsuario === 'Administrativo' && (
                   <li className="nav-item">
-                    <Link className="nav-link" aria-current="page" to="#">Usuarios</Link>
+                    <Link className="nav-link" aria-current="page" to="/MantUser">Usuarios</Link>
                   </li>
                 )}
                 {(rolUsuario === 'Academico' || rolUsuario === 'Administrativo') && (

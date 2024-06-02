@@ -7,6 +7,8 @@ app.use(express.json());
 
 const seguridadRoute = require('./routes/seguridadRoute');
 app.use('/usuarios', seguridadRoute);
+// Ruta para crear o actualizar un usuario
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

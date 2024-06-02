@@ -3,10 +3,22 @@
   margin: 0;
   box-sizing: border-box;
 }
+:root {
+  --color-principal: #002B69;
+  --color-anaranjado: #F66226;
+  --color-celeste: #6FBADF;
+  --color-azulMedio: #81A1AD;
+  --color-gris:#CAC7C8;
+  --color-fondo: #FAFAFA;
+  --color-celesteclaro:#6FBADF;
+
+}
+
 
 .App {
   text-align: center;
   margin: 0 auto;
+  background-color: var(--color-fondo);
 }
 
 .App-logo {
