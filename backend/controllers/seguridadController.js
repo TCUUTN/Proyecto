@@ -46,6 +46,12 @@ const getUsuarioPorCredenciales = async (req, res) => {
     });
 
     if (usuario) {
+      // Verificar si el usuario está inactivo
+      if (!usuario.Estado) {
+        // Si el usuario está inactivo, devolver un mensaje de error
+        return res.status(403).json({ error: "El usuario está inactivo" });
+      }
+
       // Comparar la contraseña proporcionada con la contraseña encriptada en la base de datos
       const contrasennaValida = await bcrypt.compare(Contrasenna, usuario.Contrasenna);
       if (contrasennaValida) {
@@ -69,6 +75,7 @@ const getUsuarioPorCredenciales = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const actualizarContrasenna = async (req, res) => {
   try {
