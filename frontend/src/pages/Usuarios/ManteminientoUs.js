@@ -9,7 +9,6 @@ import {
 import { IoMdAddCircle } from "react-icons/io";
 import Modal from "react-modal";
 import "./Usuario.modulo.css";
-import { Link } from "react-router-dom";
 
 // Configurar el elemento raíz para el modal
 Modal.setAppElement("#root");
