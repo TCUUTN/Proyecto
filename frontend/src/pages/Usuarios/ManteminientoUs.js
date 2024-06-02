@@ -27,22 +27,29 @@ function MantenimientoUs() {
     TipoIdentificacion: "",
   });
   const [usuarios, setUsuarios] = useState([]);
+  const [filteredUsuarios, setFilteredUsuarios] = useState([]);
+  const [identificacionFilter, setIdentificacionFilter] = useState("");
+  const [estadoFilter, setEstadoFilter] = useState("");
+  const [rolFilter, setRolFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usuariosPerPage = 10;
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await fetch("/usuarios");
+      if (response.ok) {
+        const data = await response.json();
+        setUsuarios(data);
+        setFilteredUsuarios(data);
+      } else {
+        console.error("Error al obtener la lista de usuarios");
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de usuarios:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsuarios = async () => {
-      try {
-        const response = await fetch("/usuarios");
-        if (response.ok) {
-          const data = await response.json();
-          setUsuarios(data);
-        } else {
-          console.error("Error al obtener la lista de usuarios");
-        }
-      } catch (error) {
-        console.error("Error al obtener la lista de usuarios:", error);
-      }
-    };
-
     fetchUsuarios();
   }, []);
 
@@ -76,7 +83,7 @@ function MantenimientoUs() {
 
       if (response.ok) {
         const data = await response.json();
-        setUsuarios([...usuarios, data]);
+        setUsuarios((prevUsuarios) => [...prevUsuarios, data]);
         closeModal();
       } else {
         console.error("Error al agregar el usuario");
@@ -86,34 +93,62 @@ function MantenimientoUs() {
     }
   };
 
-  const handleToggle = async (identificacion, estadoActual) => {
-    const nuevoEstado = !estadoActual;
+  const handleIdentificacionFilterChange = (e) => {
+    const value = e.target.value;
+    setIdentificacionFilter(value);
+    applyFilters(value, estadoFilter, rolFilter);
+  };
 
-    try {
-      const response = await fetch("/usuarios/EstadoUsuario", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Identificacion: identificacion,
-          Estado: nuevoEstado ? true : false,
-        }),
-      });
+  const handleEstadoFilterChange = (e) => {
+    const value = e.target.value;
+    setEstadoFilter(value);
+    applyFilters(identificacionFilter, value, rolFilter);
+  };
 
-      if (response.ok) {
-        setUsuarios(
-          usuarios.map((usuario) =>
-            usuario.Identificacion === identificacion
-              ? { ...usuario, Estado: nuevoEstado ? true : false }
-              : usuario
-          )
-        );
-      } else {
-        console.error("Error al actualizar el estado del usuario");
-      }
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+  const handleRolFilterChange = (e) => {
+    const value = e.target.value;
+    setRolFilter(value);
+    applyFilters(identificacionFilter, estadoFilter, value);
+  };
+
+  const applyFilters = (identificacion, estado, rol) => {
+    let filtered = usuarios;
+
+    if (identificacion) {
+      filtered = filtered.filter((usuario) =>
+        usuario.Identificacion.includes(identificacion)
+      );
+    }
+
+    if (estado) {
+      const estadoBool = estado === "true";
+      filtered = filtered.filter((usuario) => usuario.Estado === estadoBool);
+    }
+
+    if (rol) {
+      filtered = filtered.filter((usuario) => usuario.RolUsuario === rol);
+    }
+
+    setFilteredUsuarios(filtered);
+    setCurrentPage(1); // Reset to first page on filter change
+  };
+
+  const indexOfLastUsuario = currentPage * usuariosPerPage;
+  const indexOfFirstUsuario = indexOfLastUsuario - usuariosPerPage;
+  const currentUsuarios = filteredUsuarios.slice(
+    indexOfFirstUsuario,
+    indexOfLastUsuario
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(filteredUsuarios.length / usuariosPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -147,9 +182,28 @@ function MantenimientoUs() {
             type="text"
             placeholder="Identificación"
             className="filter-input"
+            value={identificacionFilter}
+            onChange={handleIdentificacionFilterChange}
           />
-          <select className="filter-select">
-            <option value="activo-inactivo">Estatus de Usuario</option>
+          <select
+            className="filter-select"
+            value={estadoFilter}
+            onChange={handleEstadoFilterChange}
+          >
+            <option value="">Todos</option>
+            <option value="true">Activos</option>
+            <option value="false">Inactivos</option>
+          </select>
+
+          <select
+            className="filter-select"
+            value={rolFilter}
+            onChange={handleRolFilterChange}
+          >
+            <option value="">Todos</option>
+            <option value="Academico">Académico</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Administrativo">Administrativo</option>
           </select>
         </div>
         <table>
@@ -162,25 +216,11 @@ function MantenimientoUs() {
             </tr>
           </thead>
           <tbody>
-            {usuarios.map((usuario) => (
+            {currentUsuarios.map((usuario) => (
               <tr key={usuario.Identificacion}>
                 <td>{usuario.Identificacion}</td>
                 <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
-                <td>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={usuario.Estado === true}
-                      onChange={() =>
-                        handleToggle(
-                          usuario.Identificacion,
-                          usuario.Estado === true
-                        )
-                      }
-                    />
-                    <span className="slider round"></span>
-                  </label>
-                </td>
+                <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
                 <td>
                   <button className="icon-btn">
                     <FaEdit />
@@ -194,21 +234,28 @@ function MantenimientoUs() {
           </tbody>
         </table>
         <div className="pagination">
-          <button>&lt;</button>
-          <button>&gt;</button>
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            Anterior
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={
+              currentPage === Math.ceil(filteredUsuarios.length / usuariosPerPage)
+            }
+          >
+            Siguiente
+          </button>
         </div>
       </main>
 
-      {/* Modal de Agregar Usuario */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Agregar Usuario"
         className="modal"
-        overlayClassName="overlay"
       >
         <h2>Agregar Usuario</h2>
-        <form className="add-user-form" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="identificacion">Identificación:</label>
           <input
             id="identificacion"
