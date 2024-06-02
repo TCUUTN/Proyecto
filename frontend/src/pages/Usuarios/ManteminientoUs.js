@@ -54,10 +54,12 @@ function MantenimientoUs() {
   }, []);
 
   const openModal = () => {
+    console.log("Opening modal...");
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
+    console.log("Closing modal...");
     setModalIsOpen(false);
   };
 
@@ -254,6 +256,8 @@ function MantenimientoUs() {
         contentLabel="Agregar Usuario"
         className="modal"
       >
+          
+
         <h2>Agregar Usuario</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="identificacion">Identificación:</label>

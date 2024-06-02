@@ -148,65 +148,7 @@
     margin: 0 5px;
   }
   
-  /* Estilos para el model */
-  .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    outline: none;
-    width: 400px;
-    max-width: 80%;
-  }
-  
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-  
-  /* Estilos para el formulario dentro del modal */
-  .add-user-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .add-user-form label {
-    margin: 10px 0 5px;
-    color: #002B69;
-  }
-  
-  .add-user-form input,
-  .add-user-form select {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .add-user-form button {
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-user-form button[type="submit"] {
-    background-color: #002B69;
-    color: white;
-  }
-  
-  .add-user-form button[type="button"] {
-    background-color: #ccc;
-  }
-
-
+ /* CSS for smaller toggle switch with X and ✔ on opposite sides */
 .switch {
   position: relative;
   display: inline-block;
@@ -280,4 +222,79 @@ input:focus + .slider {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+ /* Estilos para el model */
+ .modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  outline: none;
+  width: 75%;
+  max-width: 500px;
+  z-index: 1000;
+}
+
+.overlay {
+  background-color: #FAFAFA;
+  border: 1px solid #002B69;
+  border-radius: 10px;
+  position: fixed;
+  top: 25%;
+  left:25%;
+  right: 25%;
+  bottom: 25%;
+  z-index: 999;
+}
+
+/* Estilos para el formulario dentro del modal */
+.add-user-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-user-form label {
+  margin: 10px 0 5px;
+  color: #002B69;
+}
+
+.add-user-form input,
+.add-user-form select {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.add-user-form button {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-user-form button[type="submit"] {
+  background-color: #0daace;
+  color: #fff;
+}
+
+.add-user-form button[type="button"] {
+  background-color: #ccc;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #000;
 }
