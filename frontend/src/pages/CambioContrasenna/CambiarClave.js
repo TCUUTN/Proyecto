@@ -14,6 +14,8 @@ function CambiarClave() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState([]);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     const storedCorreo = sessionStorage.getItem("CorreoElectronico");
@@ -24,7 +26,6 @@ function CambiarClave() {
   }, []);
 
   useEffect(() => {
-    // Función para mostrar la notificación después de la redirección
     const showNotificationAfterRedirect = () => {
       const params = new URLSearchParams(window.location.search);
       const cambioExitoso = params.get("cambioExitoso");
@@ -33,7 +34,7 @@ function CambiarClave() {
       }
     };
 
-    showNotificationAfterRedirect(); // Llama a la función al cargar el componente
+    showNotificationAfterRedirect();
   }, []);
 
   const toggleShowCurrentPassword = () =>
@@ -41,6 +42,49 @@ function CambiarClave() {
   const toggleShowNewPassword = () => setShowNewPassword(!showNewPassword);
   const toggleShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
+
+  const validatePassword = (password) => {
+    const errors = [];
+    if (password.length < 8) {
+      errors.push("Debe tener al menos 8 caracteres");
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Debe tener al menos una letra mayúscula");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Debe tener al menos una letra minúscula");
+    }
+    if (!/[0-9]/.test(password)) {
+      errors.push("Debe tener al menos un número");
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.push("Debe tener al menos un carácter especial");
+    }
+    return errors;
+  };
+
+  const handleNewPasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setNewPassword(newPassword);
+    const errors = validatePassword(newPassword);
+    setPasswordErrors(errors);
+    validateForm(errors, newPassword, confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const confirmPassword = e.target.value;
+    setConfirmPassword(confirmPassword);
+    validateForm(passwordErrors, newPassword, confirmPassword);
+  };
+
+  const validateForm = (passwordErrors, newPassword, confirmPassword) => {
+    const isValid = 
+      passwordErrors.length === 0 && 
+      newPassword === confirmPassword &&
+      newPassword !== "" && 
+      confirmPassword !== "";
+    setIsFormValid(isValid);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,13 +104,9 @@ function CambiarClave() {
       });
 
       if (response.ok) {
-        // Si las credenciales son correctas, redirige a la página de inicio.js
-        window.location.href = "/Home?cambioExitoso=true"; // Agrega un parámetro en la URL para indicar que el cambio fue exitoso
+        window.location.href = "/Home?cambioExitoso=true";
       } else {
-        // Si las credenciales son incorrectas, muestra una notificación
-        setError(
-          "Error al cambiar la contraseña, por favor verificar los datos"
-        );
+        setError("Error al cambiar la contraseña, por favor verificar los datos");
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
@@ -111,18 +151,24 @@ function CambiarClave() {
                 name="newPassword"
                 placeholder="Contraseña nueva"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handleNewPasswordChange}
               />
               <span className="icon2" onClick={toggleShowNewPassword}>
                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+            {passwordErrors.length > 0 && (
+              <ul className="error-list">
+                {passwordErrors.map((error, index) => (
+                  <li key={index} className="error-message">{error}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="input-wrapper">
             <label htmlFor="confirmPassword" className="input-label">
               Confirmar contraseña:
             </label>
-
             <div className="input-container">
               <RiLockPasswordFill className="icon" />
               <input
@@ -131,15 +177,18 @@ function CambiarClave() {
                 name="confirmPassword"
                 placeholder="Confirmar contraseña"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={handleConfirmPasswordChange}
               />
               <span className="icon2" onClick={toggleShowConfirmPassword}>
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+            {confirmPassword !== newPassword && (
+              <p className="error-message">Las contraseñas no coinciden</p>
+            )}
           </div>
 
-          <button type="submit" className="login-button">
+          <button type="submit" className="login-button" disabled={!isFormValid}>
             Guardar cambios
           </button>
         </form>

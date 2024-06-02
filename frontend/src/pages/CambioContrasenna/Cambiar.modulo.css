@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5vh 0;
+  margin: 1rem 0 ;
 }
 
 .cambio-form {
@@ -20,7 +20,7 @@
   font-family: "Century Gothic", sans-serif;
   color: #012c6a;
   margin-bottom: 10px;
-  font-size: 2.5rem;
+  font-size: 35px !important;
 }
 
 .Title-linea {
@@ -77,8 +77,15 @@ button.cambiar-button {
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   font-family: "Century Gothic", sans-serif; /* Button font */
+  transition: 5s;
 }
 
 button.cambiar-button:hover {
   background-color: #e55620; /* Darker shade for hover effect */
+  transition: 5s;
+}
+
+button.cambiar-button:disabled {
+  background-color: grey!important;
+  cursor: not-allowed!important;
 }
