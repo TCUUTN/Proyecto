@@ -52,7 +52,11 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <div className="navbar-logo">
-          <Link to="/"><img src={imagen} alt="UTN Logo" /></Link>
+          {nombre ? (
+            <Link to="/Home"><img src={imagen} alt="UTN Logo" /></Link>
+          ) : (
+            <img src={imagen} alt="UTN Logo" />
+          )}
         </div>
         {isAuthenticated && (
           <>

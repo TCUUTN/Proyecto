@@ -205,3 +205,79 @@
   .add-user-form button[type="button"] {
     background-color: #ccc;
   }
+
+/* CSS for smaller toggle switch with X and ✔ on opposite sides */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;  /* Half of 60px */
+  height: 17px; /* Half of 34px */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: red; /* Default color for inactive state */
+  transition: .4s;
+  border-radius: 17px; /* Half of 34px */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px; /* Half of 26px */
+  width: 13px;  /* Half of 26px */
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.slider:after {
+  content: 'X';
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  top: 50%;
+  right: 4px; /* Align to the left */
+  transform: translateY(-50%);
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: green; /* Color for active state */
+}
+
+input:checked + .slider:before {
+  transform: translateX(13px); /* Half of 26px */
+}
+
+input:checked + .slider:after {
+  content: '✔'; /* Check mark for active state */
+  left: 4px; /* Reset left */
+  right: auto; /* Align to the right */
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px green;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px; /* Half of 34px */
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
