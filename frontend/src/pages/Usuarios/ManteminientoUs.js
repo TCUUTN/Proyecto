@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ModalAdd from "./ModelAdd";
 import {
   FaEdit,
   FaInfoCircle,
@@ -7,26 +6,10 @@ import {
   FaFileUpload,
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
-import Modal from "react-modal";
 import "./Usuario.modulo.css";
-
-// Configurar el elemento raíz para el modal
-Modal.setAppElement("#root");
+import CrearActualizarUsuario from './CrearActualizarUsuario'; // Importa el nuevo componente
 
 function MantenimientoUs() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [nuevoUsuario, setNuevoUsuario] = useState({
-    Identificacion: "",
-    Nombre: "",
-    Apellido1: "",
-    Apellido2: "",
-    Genero: "",
-    CorreoElectronico: "",
-    RolUsuario: "",
-    Contrasenna: "",
-    Estado: "",
-    TipoIdentificacion: "",
-  });
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [identificacionFilter, setIdentificacionFilter] = useState("");
@@ -34,6 +17,9 @@ function MantenimientoUs() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
+
+  const [modalOpen, setModalOpen] = useState(false); // Estado para controlar el modal
+  const [editingUser, setEditingUser] = useState(null); // Estado para saber si estamos editando un usuario
 
   const fetchUsuarios = async () => {
     try {
@@ -53,48 +39,6 @@ function MantenimientoUs() {
   useEffect(() => {
     fetchUsuarios();
   }, []);
-
-  const openModal = () => {
-    console.log("Opening modal...");
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    console.log("Closing modal...");
-    setModalIsOpen(false);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNuevoUsuario((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await fetch("/usuarios", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(nuevoUsuario),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsuarios((prevUsuarios) => [...prevUsuarios, data]);
-        closeModal();
-      } else {
-        console.error("Error al agregar el usuario");
-      }
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
 
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
@@ -155,11 +99,25 @@ function MantenimientoUs() {
     }
   };
 
+  const handleAddUser = () => {
+    setEditingUser(null);
+    setModalOpen(true);
+  };
+
+  const handleEditUser = (usuario) => {
+    setEditingUser(usuario);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    fetchUsuarios();
+  };
+
   return (
     <div className="user-container">
-
       <aside className="sidebar-user">
-        <button className="add-user" onClick={openModal}>
+        <button className="add-user" onClick={handleAddUser}>
           Agregar Usuario <IoMdAddCircle className="icon-add" />
         </button>
         <hr className="user-divider" />
@@ -226,7 +184,7 @@ function MantenimientoUs() {
                 <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
                 <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <button className="icon-btn">
+                  <button className="icon-btn" onClick={() => handleEditUser(usuario)}>
                     <FaEdit />
                   </button>
                   <button className="icon-btn">
@@ -251,17 +209,13 @@ function MantenimientoUs() {
           </button>
         </div>
       </main>
-      {/* Modal de Agregar Usuario */}
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="modal" overlayClassName="modal-overlay">
-        <h2>Agregar Nuevo Usuario</h2>
-        <ModalAdd
-          nuevoUsuario={nuevoUsuario}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          closeModal={closeModal}
-        />
 
-      </Modal>
+      {modalOpen && (
+        <CrearActualizarUsuario
+          usuario={editingUser}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   );
 }
