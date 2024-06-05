@@ -9,21 +9,27 @@
   }
   
   .user-container {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    padding: 20px;
-    gap: 20px;
-    height: 80vh;
-    color: #002B69;
-  }
-  
-  .sidebar-user {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    gap: 20px;
+    height: 80vh;
+    color: #002B69;
+    margin-bottom: 80vh !important;
+  }
+  
+  .sidebar-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; 
+    padding: 20px;
     border: 2px solid #002B69;
     border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    margin-left: 25%;
   }
   
   .add-user {
@@ -32,32 +38,35 @@
     color: #002B69;
     font-size: 25px;
     text-decoration: none;
-    margin-bottom: 10px;
     border: none;
     background: none;
   }
   
   .icon-add {
     margin-left: 10px;
-    font-size: 24px;
+    font-size: 35px;
   }
   
   .user-divider {
-    width: 80%;
+    width: 2px;
+    height: 100px;
     border: 1px solid #ff6600;
-    margin: 20px 0;
+    margin: 0 20px;
+
   }
   
   .title-user {
     color: #002B69;
-    font-size: 35px;
+    font-size: 25px;
     margin-bottom: 10px;
+    text-align: center;
   }
   
   .bulk-upload {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: flex-start;
   }
   
   .upload-option {
@@ -147,154 +156,3 @@
     cursor: pointer;
     margin: 0 5px;
   }
-  
- /* CSS for smaller toggle switch with X and ✔ on opposite sides */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 30px;  /* Half of 60px */
-  height: 17px; /* Half of 34px */
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: red; /* Default color for inactive state */
-  transition: .4s;
-  border-radius: 17px; /* Half of 34px */
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 13px; /* Half of 26px */
-  width: 13px;  /* Half of 26px */
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-.slider:after {
-  content: 'X';
-  color: white;
-  font-size: 10px;
-  position: absolute;
-  top: 50%;
-  right: 4px; /* Align to the left */
-  transform: translateY(-50%);
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: green; /* Color for active state */
-}
-
-input:checked + .slider:before {
-  transform: translateX(13px); /* Half of 26px */
-}
-
-input:checked + .slider:after {
-  content: '✔'; /* Check mark for active state */
-  left: 4px; /* Reset left */
-  right: auto; /* Align to the right */
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px green;
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 17px; /* Half of 34px */
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
- /* Estilos para el model */
- .modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  outline: none;
-  width: 75%;
-  max-width: 500px;
-  z-index: 1000;
-}
-
-.overlay {
-  background-color: #FAFAFA;
-  border: 1px solid #002B69;
-  border-radius: 10px;
-  position: fixed;
-  top: 25%;
-  left: 25%;
-  right: 25%;
-  bottom: 25%;
-  z-index: 999;
-}
-
-/* Estilos para el formulario dentro del modal */
-.add-user-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.add-user-form label {
-  margin: 10px 0 5px;
-  color: #002B69;
-}
-
-.add-user-form input,
-.add-user-form select {
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.add-user-form button {
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-user-form button[type="submit"] {
-  background-color: #0daace;
-  color: #fff;
-}
-
-.add-user-form button[type="button"] {
-  background-color: #ccc;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1.5em;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  color: #000;
-}

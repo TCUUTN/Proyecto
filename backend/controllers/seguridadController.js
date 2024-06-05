@@ -254,6 +254,59 @@ const crearOActualizarUsuario = async (req, res) => {
   }
 };
 
+// Función para crear o modificar un usuario
+const cargarUsuario = async (req, res) => {
+  const users = req.body;
+
+  try {
+    for (let userData of users) {
+      const hashedPassword = await bcrypt.hash(userData.Contrasenna, 10);
+      userData.Contrasenna = hashedPassword;
+
+      // Check if a user with the provided ID already exists
+      let usuarioExistente = await Usuario.findOne({
+        where: {
+          Identificacion: userData.Identificacion,
+        },
+      });
+
+      if (usuarioExistente) {
+        // Update the existing user
+        await usuarioExistente.update({
+          Nombre: userData.Nombre,
+          Apellido1: userData.Apellido1,
+          Apellido2: userData.Apellido2,
+          Genero: userData.Genero,
+          CorreoElectronico: userData.CorreoElectronico,
+          RolUsuario: userData.RolUsuario,
+          Contrasenna: userData.Contrasenna,
+          Estado: userData.Estado,
+          TipoIdentificacion: userData.TipoIdentificacion,
+        });
+      } else {
+        // Create a new user
+        await Usuario.create({
+          Identificacion: userData.Identificacion,
+          Nombre: userData.Nombre,
+          Apellido1: userData.Apellido1,
+          Apellido2: userData.Apellido2,
+          Genero: userData.Genero,
+          CorreoElectronico: userData.CorreoElectronico,
+          RolUsuario: userData.RolUsuario,
+          Contrasenna: userData.Contrasenna,
+          Estado: userData.Estado,
+          TipoIdentificacion: userData.TipoIdentificacion,
+        });
+      }
+    }
+
+    res.status(200).send('Usuarios cargados/actualizados exitosamente');
+  } catch (error) {
+    console.error('Error al cargar/actualizar los usuarios:', error);
+    res.status(500).send('Error al cargar/actualizar los usuarios');
+  }
+};
+
 const EstadoUsuario = async (req, res) => {
   try {
     const { Identificacion } = req.body;
@@ -288,5 +341,6 @@ module.exports = {
   olvidoContrasenna,
   crearOActualizarUsuario,
   EstadoUsuario,
-  getUsuarioPorIdentificacion
+  getUsuarioPorIdentificacion,
+  cargarUsuario
 };
