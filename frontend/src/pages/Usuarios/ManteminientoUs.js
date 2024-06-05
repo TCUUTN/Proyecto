@@ -197,34 +197,28 @@ function MantenimientoUs() {
 
   return (
     <div className="user-container">
+      
+
+      <main>
       <aside className="sidebar-user">
         <button className="add-user" onClick={handleAddUser}>
           Agregar Usuario <IoMdAddCircle className="icon-add" />
         </button>
         <hr className="user-divider" />
+        <div>
         <h2 className="title-user">Carga masiva</h2>
-        <br />
+        <br></br>
         <div className="bulk-upload">
           <div className="upload-option">
             <FaFileDownload className="icon-other" /> Descargar Plantilla
           </div>
           <div className="upload-option">
-            <label htmlFor="file-upload" className="upload-label">
-              <FaFileUpload className="icon-other" /> Subir Plantilla
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".xlsx"
-              style={{ display: "none" }}
-              onChange={handleFileUpload}
-            />
+            <FaFileUpload className="icon-other" /> Subir Plantilla
           </div>
         </div>
+        </div>
       </aside>
-
-      <main>
-        <h1 className="main-title">Título</h1>
+      
         <div className="filters">
           <label className="filter-label" htmlFor="identificacion">
             Buscar por Identificación
