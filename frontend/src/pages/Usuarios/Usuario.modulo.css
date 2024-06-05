@@ -9,8 +9,9 @@
   }
   
   .user-container {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     gap: 20px;
     height: 80vh;
@@ -19,11 +20,15 @@
   
   .sidebar-user {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center; 
     padding: 20px;
     border: 2px solid #002B69;
     border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    margin-left: 25%;
   }
   
   .add-user {
@@ -32,32 +37,35 @@
     color: #002B69;
     font-size: 25px;
     text-decoration: none;
-    margin-bottom: 10px;
     border: none;
     background: none;
   }
   
   .icon-add {
     margin-left: 10px;
-    font-size: 24px;
+    font-size: 35px;
   }
   
   .user-divider {
-    width: 80%;
+    width: 2px;
+    height: 100px;
     border: 1px solid #ff6600;
-    margin: 20px 0;
+    margin: 0 20px;
+
   }
   
   .title-user {
     color: #002B69;
-    font-size: 35px;
+    font-size: 25px;
     margin-bottom: 10px;
+    text-align: center;
   }
   
   .bulk-upload {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: flex-start;
   }
   
   .upload-option {
