@@ -1,4 +1,6 @@
+// CrearActualizarUsuario.js
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import "./CrearActualizarUsuario.module.css";
 
 function CrearActualizarUsuario({ usuario, onClose }) {
@@ -50,7 +52,6 @@ function CrearActualizarUsuario({ usuario, onClose }) {
 
   useEffect(() => {
     validateForm();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
   const validateForm = () => {
@@ -108,7 +109,7 @@ function CrearActualizarUsuario({ usuario, onClose }) {
     }
   };
 
-  return (
+  return ReactDOM.createPortal(
     <div className="modal">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>
@@ -178,12 +179,16 @@ function CrearActualizarUsuario({ usuario, onClose }) {
 
           <div className="form-group">
             <label>Género:</label>
-            <input
-              type="text"
+            <select
               name="Genero"
               value={formData.Genero}
               onChange={handleChange}
-            />
+            >
+              <option value="">Seleccione Género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
           </div>
           {errors.Genero && <p className="error">{errors.Genero}</p>}
 
@@ -199,29 +204,30 @@ function CrearActualizarUsuario({ usuario, onClose }) {
           {errors.CorreoElectronico && <p className="error">{errors.CorreoElectronico}</p>}
 
           <div className="form-group">
-            <label>Rol de Usuario:</label>
+            <label>Rol Usuario:</label>
             <select
               name="RolUsuario"
               value={formData.RolUsuario}
               onChange={handleChange}
             >
-              <option value="">Rol de Usuario</option>
-              <option value="Academico">Académico</option>
-              <option value="Estudiante">Estudiante</option>
-              <option value="Administrativo">Administrativo</option>
+              <option value="">Seleccione Rol</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Usuario">Usuario</option>
             </select>
           </div>
           {errors.RolUsuario && <p className="error">{errors.RolUsuario}</p>}
 
-          <div className="form-group">
-            <label>Contraseña:</label>
-            <input
-              type="password"
-              name="Contrasenna"
-              value={formData.Contrasenna}
-              onChange={handleChange}
-            />
-          </div>
+          {!usuario && (
+            <div className="form-group">
+              <label>Contraseña:</label>
+              <input
+                type="password"
+                name="Contrasenna"
+                value={formData.Contrasenna}
+                onChange={handleChange}
+              />
+            </div>
+          )}
           {errors.Contrasenna && <p className="error">{errors.Contrasenna}</p>}
 
           <div className="form-group">
@@ -231,23 +237,21 @@ function CrearActualizarUsuario({ usuario, onClose }) {
               value={formData.Estado}
               onChange={handleChange}
             >
-              <option value={true}>Activo</option>
-              <option value={false}>Inactivo</option>
+              <option value="">Seleccione Estado</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             </select>
           </div>
           {errors.Estado && <p className="error">{errors.Estado}</p>}
 
           <div className="modal-actions">
-            <button type="submit" disabled={!isFormValid}>
-              Guardar
-            </button>
-            <button type="button" onClick={onClose}>
-              Cancelar
-            </button>
+            <button type="submit">{usuario ? "Actualizar" : "Crear"}</button>
+            <button type="button" onClick={onClose}>Cancelar</button>
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
