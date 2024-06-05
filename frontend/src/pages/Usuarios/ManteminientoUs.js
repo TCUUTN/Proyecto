@@ -7,7 +7,8 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
-import CrearActualizarUsuario from './CrearActualizarUsuario'; // Importa el nuevo componente
+import CrearActualizarUsuario from './CrearActualizarUsuario';
+import * as XLSX from "xlsx";
 
 function MantenimientoUs() {
   const [usuarios, setUsuarios] = useState([]);
@@ -18,8 +19,8 @@ function MantenimientoUs() {
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
 
-  const [modalOpen, setModalOpen] = useState(false); // Estado para controlar el modal
-  const [editingUser, setEditingUser] = useState(null); // Estado para saber si estamos editando un usuario
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
 
   const fetchUsuarios = async () => {
     try {
@@ -114,6 +115,86 @@ function MantenimientoUs() {
     fetchUsuarios();
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
+
+        if (worksheet[0].join(",") === "Identificacion,Nombre Completo,Genero,CorreoElectronico") {
+          const jsonData = worksheet.slice(1).map(row => {
+            const [Identificacion, NombreCompleto, Genero, CorreoElectronico] = row;
+            const nombres = NombreCompleto.split(' ');
+            const Apellido1 = nombres[0];
+            const Apellido2 = nombres[1] || '';
+            const Nombre = nombres.slice(2).join(' ');
+
+            return {
+              Identificacion,
+              Nombre,
+              Apellido1,
+              Apellido2,
+              Genero,
+              CorreoElectronico,
+              RolUsuario: "Estudiante",
+              Contrasenna: generateRandomPassword(),
+              Estado: true,
+              TipoIdentificacion: "Cedula",
+            };
+          });
+          uploadJsonData(jsonData);
+        } else {
+          console.error("Formato de archivo inválido");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      console.error("Por favor, suba un archivo Excel válido");
+    }
+  };
+
+  const generateRandomPassword = () => {
+    const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lower = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+";
+    const allChars = upper + lower + numbers + symbols;
+    let password = "";
+    password += upper[Math.floor(Math.random() * upper.length)];
+    password += lower[Math.floor(Math.random() * lower.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += symbols[Math.floor(Math.random() * symbols.length)];
+    for (let i = 4; i < 8; i++) {
+      password += allChars[Math.floor(Math.random() * allChars.length)];
+    }
+    return password.split('').sort(() => 0.5 - Math.random()).join('');
+  };
+
+  const uploadJsonData = async (data) => {
+    try {
+      const response = await fetch("/usuarios/cargaUsuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log("Usuarios cargados exitosamente");
+        fetchUsuarios();
+      } else {
+        console.error("Error al cargar los usuarios");
+      }
+    } catch (error) {
+      console.error("Error al cargar los usuarios:", error);
+    }
+  };
+
   return (
     <div className="user-container">
       <aside className="sidebar-user">
@@ -122,13 +203,22 @@ function MantenimientoUs() {
         </button>
         <hr className="user-divider" />
         <h2 className="title-user">Carga masiva</h2>
-        <br></br>
+        <br />
         <div className="bulk-upload">
           <div className="upload-option">
             <FaFileDownload className="icon-other" /> Descargar Plantilla
           </div>
           <div className="upload-option">
-            <FaFileUpload className="icon-other" /> Subir Plantilla
+            <label htmlFor="file-upload" className="upload-label">
+              <FaFileUpload className="icon-other" /> Subir Plantilla
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx"
+              style={{ display: "none" }}
+              onChange={handleFileUpload}
+            />
           </div>
         </div>
       </aside>
