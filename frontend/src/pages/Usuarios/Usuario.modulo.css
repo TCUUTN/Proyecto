@@ -16,6 +16,7 @@
     gap: 20px;
     height: 80vh;
     color: #002B69;
+    margin-bottom: 80vh !important;
   }
   
   .sidebar-user {

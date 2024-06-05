@@ -209,12 +209,21 @@ function MantenimientoUs() {
         <h2 className="title-user">Carga masiva</h2>
         <br></br>
         <div className="bulk-upload">
-          <div className="upload-option">
+        <div className="upload-option">
             <FaFileDownload className="icon-other" /> Descargar Plantilla
           </div>
           <div className="upload-option">
-            <FaFileUpload className="icon-other" /> Subir Plantilla
-          </div>
+            <label htmlFor="file-upload" className="upload-label">
+              <FaFileUpload className="icon-other" /> Subir Plantilla
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx"
+              style={{ display: "none" }}
+              onChange={handleFileUpload}
+            />
+          </div>
         </div>
         </div>
       </aside>
