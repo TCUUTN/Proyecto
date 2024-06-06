@@ -11,9 +11,7 @@ router.post('/cargaUsuarios', seguridadController.cargarUsuario);
 router.post('/EstadoUsuario', seguridadController.EstadoUsuario);
 router.get('/:Identificacion', seguridadController.getUsuarioPorIdentificacion);
 
-router.get('/test', (req, res) => {
-    res.send('Hello from exampleRoute!');
-});
+
 
 
 module.exports = router;

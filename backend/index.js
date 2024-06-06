@@ -11,6 +11,10 @@ const seguridadRoute = require('./routes/seguridadRoute');
 app.use('/usuarios', seguridadRoute);
 // Ruta para crear o actualizar un usuario
 
+const gruposRoute = require('./routes/gruposRoute');
+app.use('/grupos', gruposRoute);
+// Ruta para crear o actualizar un usuario
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
