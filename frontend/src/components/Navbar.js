@@ -71,8 +71,14 @@ function Navbar() {
                   </li>
                 )}
                 {(rolUsuario === 'Academico' || rolUsuario === 'Administrativo') && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="#">Grupos</Link>
+                  <li className="nav-item dropdown">
+                    <Link className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Grupos
+                    </Link>
+                    <ul className="dropdown-menu bg-blue">
+                    <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
+                    <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
+                  </ul>
                   </li>
                 )}
                 {(rolUsuario === 'Estudiante' || rolUsuario === 'Administrativo') && (
