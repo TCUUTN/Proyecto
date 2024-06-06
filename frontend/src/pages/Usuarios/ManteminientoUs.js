@@ -227,7 +227,7 @@ function MantenimientoUs() {
         </div>
         </div>
       </aside>
-      
+       {/* Filtors */}
         <div className="filters">
           <label className="filter-label" htmlFor="identificacion">
             Buscar por Identificación
@@ -261,6 +261,8 @@ function MantenimientoUs() {
             <option value="Administrativo">Administrativo</option>
           </select>
         </div>
+          {/* Toda la tabla */}
+
         <table>
           <thead>
             <tr>
@@ -277,10 +279,10 @@ function MantenimientoUs() {
                 <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
                 <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <button className="icon-btn" onClick={() => handleEditUser(usuario)}>
+                  <button className="icon-btn-user" onClick={() => handleEditUser(usuario)}>
                     <FaEdit />
                   </button>
-                  <button className="icon-btn">
+                  <button className="icon-btn-user">
                     <FaInfoCircle />
                   </button>
                 </td>
@@ -288,6 +290,7 @@ function MantenimientoUs() {
             ))}
           </tbody>
         </table>
+         {/* La paginacion */}
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Anterior
@@ -309,6 +312,7 @@ function MantenimientoUs() {
           onClose={handleModalClose}
         />
       )}
+       {/* Fin */}
     </div>
   );
 }

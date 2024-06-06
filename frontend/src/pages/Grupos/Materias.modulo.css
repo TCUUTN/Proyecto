@@ -7,10 +7,11 @@
   body {
     font-family: "Century Gothic", sans-serif;
     height: 100vh;
-    overflow: hidden;/* overflow: hidden; :Evita el scroll */
+    overflow: hidden;
+      /* overflow: hidden; :Evita el scroll */
   }
-  
-  .user-container {
+
+  .materia-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,9 +20,11 @@
     height: 100vh;
     color: #002B69;
     margin-bottom: 80vh !important;
-  }
   
-  .sidebar-user {
+  }
+
+  /*Aside */
+  .sidebar-mater {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -31,10 +34,11 @@
     border-radius: 5px;
     cursor: pointer;
     width: 45%;
-    margin-left: 25%;
+    margin-left: 24%;
   }
-  
-  .add-user {
+
+  /*Botton de agregar*/
+  .add-mater {
     display: flex;
     align-items: center;
     color: #002B69;
@@ -44,58 +48,57 @@
     background: none;
   }
   
-  .icon-add {
+  .icon-addMater {
     margin-left: 10px;
     font-size: 35px;
   }
-  
-  .user-divider {
+
+  .mater-divider {
     width: 2px;
     height: 100px;
     border: 1px solid #ff6600;
     margin: 0 20px;
 
   }
-  
-  .title-user {
+
+  .title-mater {
     color: #002B69;
     font-size: 25px;
     margin-bottom: 10px;
     text-align: center;
   }
-  
-  .bulk-upload {
+
+  .bulk-upload-mater {
     display: flex;
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
   }
   
-  .upload-option {
+  .upload-option-mater {
     display: flex;
     align-items: center;
     color: #002B69;
     font-size: 18px;
   }
   
-  .icon-other {
+  .icon-othermat {
     margin-right: 10px;
     font-size: 20px;
     color: #ff6600;
   }
-
   /*Tabla y filtros*/
-  main {
+  .main {
     width: 100%;
   }
-  
   .main-title {
     color: #002B69;
     text-align: center;
     margin-bottom: 20px;
   }
-  
-  .filters {
+
+  /* Filtros */
+  .filters-mat {
     display: flex;
     justify-content: space-between;
     margin: 25px;
@@ -103,54 +106,55 @@
   margin-bottom: 20px;
   }
   
-  .filter-input {
+  .filter-input-mat input {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 300px;
+    width: 50px;
   }
   
-  .filter-select {
+  .filter-select-mat {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     width: 200px;
   }
-  
-  table {
+
+  /* Tabla */
+  .mat-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
   
-  thead th {
+  .mat-thead th {
     background-color: #002B69;
     color: white;
     padding: 10px;
   }
   
-  tbody td {
+  .mat-tbody td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: center;
   }
   
-  .icon-btn-user {
+  .icon-btn-mat {
     background: none;
     border: none;
     cursor: pointer;
     color: #ff6600;
     font-size: 1.8em;
   }
+  /*Paginacion*/
   
-  .pagination {
+  .pagination-mat {
     text-align: center;
     justify-content: center;
-    margin-bottom: 20px;
     
   }
   
-  .pagination button {
+  .pagination-mat button {
     background-color: #002B69;
     color: white;
     border: none;
@@ -160,104 +164,95 @@
     margin: 0 5px;
   }
 
-  /* Media Queries para Responsividad */
+  /* Responsivo */
+
+/* Media Queries para Responsividad */
 @media (max-width: 1024px) {
-  .sidebar-user {
-    width: 60%;
-    margin-left: 20%;
+    .sidebar-mater {
+      width: 60%;
+      margin-left: 20%;
+    }
   }
-}
-
-@media (max-width: 768px) {
-  .sidebar-user {
-    width: 80%;
-    margin-left: 10%;
+  
+  @media (max-width: 768px) {
+    .sidebar-mater {
+      width: 80%;
+      margin-left: 10%;
+    }
+  
+    .add-mater {
+      font-size: 20px;
+    }
+  
+    .icon-addMater {
+      font-size: 30px;
+    }
+  
+    .mater-divider {
+      height: 50px;
+    }
+  
+    .upload-option-mater {
+      font-size: 16px;
+    }
+  
+    .icon-othermat {
+      font-size: 18px;
+    }
   }
-
-  .add-user {
-    font-size: 20px;
+  
+  @media (max-width: 480px) {
+    .sidebar-mater {
+      width: 90%;
+      margin-left: 5%;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .add-mater {
+      font-size: 18px;
+    }
+  
+    .icon-addMater {
+      font-size: 28px;
+    }
+  
+    .mater-divider {
+      display: none;
+    }
+  
+    .upload-option-mater {
+      font-size: 14px;
+    }
+  
+    .icon-othermat {
+      font-size: 16px;
+    }
+  
+    .filters-mat {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+  
+    .filter-input-mat input,
+    .filter-select-mat {
+      width: 100%;
+    }
+  
+    .mat-table {
+      display: block;
+      width: 100%;
+      overflow-x: auto; /* Permite desplazamiento horizontal */
+      font-size: 12px;
+    }
+  
+    .mat-table th,
+    .mat-table td {
+      white-space: nowrap; /* Evita que el texto se ajuste a la línea */
+    }
+  
+    .icon-btn-mat {
+      font-size: 1.5em;
+    }
   }
-
-  .icon-add {
-    font-size: 30px;
-  }
-
-  .user-divider {
-    height: 50px;
-  }
-
-  .upload-option {
-    font-size: 16px;
-  }
-
-  .icon-other {
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar-user {
-    width: 90%;
-    margin-left: 5%;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .add-user {
-    font-size: 18px;
-  }
-
-  .icon-add {
-    font-size: 28px;
-  }
-
-  .user-divider {
-    display: none;
-  }
-
-  .upload-option {
-    font-size: 14px;
-  }
-
-  .icon-other {
-    font-size: 16px;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .filter-input,
-  .filter-select {
-    width: 100%;
-  }
-
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto; /* Permite desplazamiento horizontal */
-    font-size: 12px;
-  }
-
-  table th,
-  table td {
-    white-space: nowrap; /* Evita que el texto se ajuste a la línea */
-  }
-
-  .icon-btn-user {
-    font-size: 1.5em;
-  }
-
-  .pagination {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .pagination button {
-    padding: 8px 15px;
-    margin: 5px 0;
-  }
-}
- 
