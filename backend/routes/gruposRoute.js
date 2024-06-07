@@ -12,6 +12,7 @@ router.post('/crearOActualizarTipoGrupo', gruposController.crearOActualizarTipoG
 router.post('/crearOActualizarGrupo', gruposController.crearOActualizarGrupo);
 router.post('/crearOActualizarGrupoEstudiante', gruposController.crearOActualizarGrupoEstudiante);
 router.post('/cargarGrupos', gruposController.cargarGrupos);
+router.post('/cargarTipoGrupos', gruposController.cargarTipoGrupos);
 router.post('/EstadoGrupo', gruposController.EstadoGrupo);
 
 router.get('/test', (req, res) => {

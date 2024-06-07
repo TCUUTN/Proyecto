@@ -7,7 +7,12 @@ const Usuario = require('../models/Usuario');
 
 const getAllGrupos = async (req, res) => {
   try {
-    const grupos = await Grupo.findAll();
+    const grupos = await Grupo.findAll({
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2'] }
+      ],
+    });
     res.json(grupos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -270,6 +275,42 @@ const cargarGrupos = async (req, res) => {
   }
 };
 
+const cargarTipoGrupos = async (req, res) => {
+  const tipoGrupos = req.body;
+
+  try {
+    for (let tipoGrupoData of tipoGrupos) {
+      // Check if a TipoGrupo with the provided CodigoMateria already exists
+      let tipoGrupoExistente = await TipoGrupo.findOne({
+        where: {
+          CodigoMateria: tipoGrupoData.CodigoMateria,
+        },
+      });
+
+      if (!tipoGrupoExistente) {
+        // If it doesn't exist, create a new TipoGrupo
+        await TipoGrupo.create({
+          CodigoMateria: tipoGrupoData.CodigoMateria,
+          NombreProyecto: tipoGrupoData.NombreProyecto,
+          TipoCurso: tipoGrupoData.TipoCurso
+        });
+      } else {
+        // If it exists, update the existing TipoGrupo
+        await tipoGrupoExistente.update({
+          NombreProyecto: tipoGrupoData.NombreProyecto,
+          TipoCurso: tipoGrupoData.TipoCurso
+        });
+      }
+    }
+
+    res.status(200).send('TipoGrupos cargados/actualizados exitosamente');
+  } catch (error) {
+    console.error('Error al cargar/actualizar los TipoGrupos:', error);
+    res.status(500).send('Error al cargar/actualizar los TipoGrupos');
+  }
+};
+
+
 
 const EstadoGrupo = async (req, res) => {
   try {
@@ -310,5 +351,6 @@ module.exports = {
   crearOActualizarGrupo,
   crearOActualizarGrupoEstudiante,
   EstadoGrupo,
-  cargarGrupos
+  cargarGrupos,
+  cargarTipoGrupos
 };

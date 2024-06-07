@@ -1,82 +1,239 @@
-import React from "react";
-import {  FaEdit,
-  FaInfoCircle, FaFileDownload, FaFileUpload } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import {
+  FaEdit,
+  FaInfoCircle,
+  FaFileDownload,
+  FaFileUpload
+} from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
-
+import * as XLSX from "xlsx";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
 
 function MantMaterias() {
+  const [materias, setMaterias] = useState([]);
+  const [filteredMaterias, setFilteredMaterias] = useState([]);
+  const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
+  const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
+  const [tipoFilter, setTipoFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const materiasPerPage = 10;
+
+
+  const fetchMaterias = async () => {
+    try {
+      const response = await fetch("/grupos/tipos");
+      if (response.ok) {
+        const data = await response.json();
+        setMaterias(data);
+        setFilteredMaterias(data);
+      } else {
+        console.error("Error al obtener la lista de materias");
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de materias:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchMaterias();
+  }, []);
+
+  const handleCodigoMateriaFilterChange = (e) => {
+    const value = e.target.value;
+    setCodigoMateriaFilter(value);
+    applyFilters(value, nombreProyectoFilter, tipoFilter);
+  };
+
+  const handleNombreProyectoFilterChange = (e) => {
+    const value = e.target.value;
+    setNombreProyectoFilter(value);
+    applyFilters(codigoMateriaFilter, value, tipoFilter);
+  };
+
+  const handleTipoFilterChange = (e) => {
+    const value = e.target.value;
+    setTipoFilter(value);
+    applyFilters(codigoMateriaFilter, nombreProyectoFilter, value);
+  };
+
+  const applyFilters = (CodigoMateria, NombreProyecto, TipoCurso) => {
+    let filtered = materias;
+
+    if (CodigoMateria) {
+      filtered = filtered.filter((materia) =>
+        materia.CodigoMateria?.includes(CodigoMateria)
+      );
+    }
+
+    if (NombreProyecto) {
+      filtered = filtered.filter((materia) =>
+        materia.NombreProyecto?.toLowerCase().includes(NombreProyecto.toLowerCase())
+      );
+    }
+
+    if (TipoCurso) {
+      filtered = filtered.filter((materia) => materia.TipoCurso === TipoCurso);
+    }
+
+    setFilteredMaterias(filtered);
+    setCurrentPage(1); // Reset to first page on filter change
+  };
+
+  const indexOfLastMateria = currentPage * materiasPerPage;
+  const indexOfFirstMateria = indexOfLastMateria - materiasPerPage;
+  const currentMaterias = filteredMaterias.slice(
+    indexOfFirstMateria,
+    indexOfLastMateria
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(filteredMaterias.length / materiasPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
+
+        if (worksheet[0].join(",") === "CodigoMateria,NombreProyecto,TipoCurso") {
+          const jsonData = worksheet.slice(1).map(row => {
+            const [CodigoMateria, NombreProyecto, TipoCurso] = row;
+            return {
+              CodigoMateria,
+              NombreProyecto,
+              TipoCurso,
+            };
+          });
+          uploadJsonData(jsonData);
+        } else {
+          console.error("Formato de archivo inválido");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      console.error("Por favor, suba un archivo Excel válido");
+    }
+  };
+
+  const uploadJsonData = async (data) => {
+    try {
+      const response = await fetch("/grupos/cargarTipoGrupos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log("Datos cargados exitosamente");
+        fetchMaterias();
+      } else {
+        console.error("Error al cargar los datos");
+      }
+    } catch (error) {
+      console.error("Error al cargar los datos:", error);
+    }
+  };
+
   return (
     <div className="materia-container">
       <main>
-      <aside className="sidebar-mater">
-        <button className="add-mater">
-          Agregar Materias <IoMdAddCircle className="icon-addMater" />
-        </button>
-        <hr className="mater-divider" />
-        <div>
-          <h2 className="title-mater">Carga masiva</h2>
-          <br></br>
-          <div className="bulk-upload-mater">
-            <div className="upload-option-mater">
-              <FaFileDownload className="icon-othermat" /> Descargar Plantilla
-            </div>
-            <div className="upload-option-mater">
-              <label htmlFor="file-upload" className="upload-label">
-                <FaFileUpload className="icon-othermat" /> Subir Plantilla
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                accept=".xlsx"
-                style={{ display: "none" }}
-              />
-                        
+        <aside className="sidebar-mater">
+          <button className="add-mater">
+            Agregar Materias <IoMdAddCircle className="icon-addMater" />
+          </button>
+          <hr className="mater-divider" />
+          <div>
+            <h2 className="title-mater">Carga masiva</h2>
+            <br></br>
+            <div className="bulk-upload-mater">
+              <div className="upload-option-mater">
+                <FaFileDownload className="icon-othermat" /> Descargar Plantilla
+              </div>
+              <div className="upload-option-mater">
+                <label htmlFor="file-upload" className="upload-label">
+                  <FaFileUpload className="icon-othermat" /> Subir Plantilla
+                </label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept=".xlsx"
+                  style={{ display: "none" }}
+                  onChange={handleFileUpload}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </aside>
-      {/* Filtors */}
-      <div className="filters-mat">
-          <label className="filter-label-mat" htmlFor="identificacion">
+        </aside>
+        {/* Filtros */}
+        <div className="filters-mat">
+          <label className="filter-label-mat" htmlFor="CodigoMateria">
+            Buscar por Código de Materia
+          </label>
+          <input
+            id="CodigoMateria-Busqueda"
+            type="text"
+            placeholder="Código de Materia"
+            className="filter-input-mat"
+            value={codigoMateriaFilter}
+            onChange={handleCodigoMateriaFilterChange}
+          />
+          <label className="filter-label-mat" htmlFor="Proyecto">
             Buscar por Nombre de Proyecto
           </label>
           <input
-            id="NombreP-Busqueda"
+            id="NombreProyecto-Busqueda"
             type="text"
             placeholder="Nombre de Proyecto"
             className="filter-input-mat"
+            value={nombreProyectoFilter}
+            onChange={handleNombreProyectoFilterChange}
           />
           <select
             className="filter-select-mat"
-            placeholder="Tipo"
+            value={tipoFilter}
+            onChange={handleTipoFilterChange}
           >
-            <option value="">Presencial</option>
-            <option value="">Híbrido</option>
+            <option value="">Modalidad</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Hibrido">Híbrido</option>
+            <option value="Virtual">Virtual</option>
           </select>
-
         </div>
-
-
-      {/* Toda la tabla */}
-      <table className="mat-table">
+        {/* Toda la tabla */}
+        <table className="mat-table">
           <thead className="mat-thead">
             <tr>
-              <th>Código</th>
-              <th>Nombre Proyecto</th>
+              <th>Código de Materia</th>
+              <th>Nombre del Proyecto</th>
               <th>Tipo</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody className="mat-tbody">
-            
-              <tr >
-                <td></td>
-                <td></td>
-                <td></td>
+            {currentMaterias.map((materia) => (
+              <tr key={materia.CodigoMateria}>
+                <td>{materia.CodigoMateria}</td>
+                <td>{materia.NombreProyecto}</td>
+                <td>{materia.TipoCurso}</td>
                 <td>
-                  <button className="icon-btn-mat" >
+                  <button className="icon-btn-mat">
                     <FaEdit />
                   </button>
                   <button className="icon-btn-mat">
@@ -84,15 +241,24 @@ function MantMaterias() {
                   </button>
                 </td>
               </tr>
-
+            ))}
           </tbody>
         </table>
-       {/* La paginacion */}
-       <div className="pagination-mat">
-       <button>
+        {/* La paginacion */}
+        <div className="pagination-mat">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+          >
             Anterior
           </button>
-          <button>
+          <span>
+            Página {currentPage} de {Math.ceil(filteredMaterias.length / materiasPerPage)}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === Math.ceil(filteredMaterias.length / materiasPerPage)}
+          >
             Siguiente
           </button>
         </div>

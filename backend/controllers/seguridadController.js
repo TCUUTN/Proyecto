@@ -13,6 +13,32 @@ const getAllUsuarios = async (req, res) => {
   }
 };
 
+const getUsuarioPorNombre = async (req, res) => {
+  try {
+    const { Apellido1, Apellido2, Nombre } = req.query;
+    console.log(Apellido1, Apellido2, Nombre);
+
+    // Buscar el usuario por su nombre y apellidos
+    const usuario = await Usuario.findOne({
+      where: {
+        Apellido1: Apellido1,
+        Apellido2: Apellido2,
+        Nombre: Nombre,
+      },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado por nombre" });
+    }
+
+    // Retornar solo el campo de Identificación
+    res.status(200).json({ Identificacion: usuario.Identificacion });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 const getUsuarioPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -336,6 +362,7 @@ const EstadoUsuario = async (req, res) => {
 
 module.exports = {
   getAllUsuarios,
+  getUsuarioPorNombre,
   getUsuarioPorCredenciales,
   actualizarContrasenna,
   olvidoContrasenna,
