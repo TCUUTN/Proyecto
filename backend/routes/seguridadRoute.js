@@ -9,7 +9,9 @@ router.post('/olvidoContrasenna', seguridadController.olvidoContrasenna);
 router.post('/crearOActualizarUsuario', seguridadController.crearOActualizarUsuario);
 router.post('/cargaUsuarios', seguridadController.cargarUsuario);
 router.post('/EstadoUsuario', seguridadController.EstadoUsuario);
+router.get('/nombre', seguridadController.getUsuarioPorNombre);
 router.get('/:Identificacion', seguridadController.getUsuarioPorIdentificacion);
+
 
 
 

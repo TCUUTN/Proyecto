@@ -115,7 +115,7 @@ function MantenimientoUs() {
     fetchUsuarios();
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       const reader = new FileReader();
@@ -140,7 +140,7 @@ function MantenimientoUs() {
               Apellido2,
               Genero,
               CorreoElectronico,
-              RolUsuario: "Estudiante",
+              RolUsuario: role,
               Contrasenna: generateRandomPassword(),
               Estado: true,
               TipoIdentificacion: "Cedula",
@@ -213,21 +213,33 @@ function MantenimientoUs() {
             <FaFileDownload className="icon-other" /> Descargar Plantilla
           </div>
           <div className="upload-option">
-            <label htmlFor="file-upload" className="upload-label">
-              <FaFileUpload className="icon-other" /> Subir Plantilla
+            <label htmlFor="file-upload-estudiante" className="upload-label">
+              <FaFileUpload className="icon-other" /> Subir Estudiantes
             </label>
             <input
-              id="file-upload"
+              id="file-upload-estudiante"
               type="file"
               accept=".xlsx"
               style={{ display: "none" }}
-              onChange={handleFileUpload}
+              onChange={(e) => handleFileUpload(e, "Estudiante")}
+            />
+          </div>
+          <div className="upload-option">
+            <label htmlFor="file-upload-academico" className="upload-label">
+              <FaFileUpload className="icon-other" /> Cargar Académicos
+            </label>
+            <input
+              id="file-upload-academico"
+              type="file"
+              accept=".xlsx"
+              style={{ display: "none" }}
+              onChange={(e) => handleFileUpload(e, "Academico")}
             />
           </div>
         </div>
         </div>
       </aside>
-       {/* Filtors */}
+       {/* Filtros */}
         <div className="filters">
           <label className="filter-label" htmlFor="identificacion">
             Buscar por Identificación
