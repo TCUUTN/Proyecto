@@ -2,6 +2,8 @@ const pool = require("../config/db");
 const { enviarCorreo } = require('../helpers/CorreoHelper'); // Importa el helper
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/Usuario");
+const Grupo = require("../models/Grupo");
+const GruposEstudiantes = require("../models/GruposEstudiantes");
 const crypto = require("crypto");
 
 const getAllUsuarios = async (req, res) => {
@@ -288,41 +290,102 @@ const cargarUsuario = async (req, res) => {
 
   try {
     for (let userData of users) {
+      // Hashear la contraseña
       const hashedPassword = await bcrypt.hash(userData.Contrasenna, 10);
       userData.Contrasenna = hashedPassword;
 
-      // Check if a user with the provided ID already exists
+      // Verificar si el usuario ya existe
       let usuarioExistente = await Usuario.findOne({
         where: {
           Identificacion: userData.Identificacion,
         },
       });
 
-      if (usuarioExistente) {
-        // Update the existing user
-        await usuarioExistente.update({
-          Nombre: userData.Nombre,
-          Apellido1: userData.Apellido1,
-          Apellido2: userData.Apellido2,
-          CorreoElectronico: userData.CorreoElectronico,
-          RolUsuario: userData.RolUsuario,
-          Contrasenna: userData.Contrasenna,
-          Estado: userData.Estado,
-          TipoIdentificacion: userData.TipoIdentificacion,
+      if (userData.RolUsuario === 'Academico') {
+        if (usuarioExistente) {
+          // Actualizar el usuario existente
+          await usuarioExistente.update({
+            Nombre: userData.Nombre,
+            Apellido1: userData.Apellido1,
+            Apellido2: userData.Apellido2,
+            CorreoElectronico: userData.CorreoElectronico,
+            RolUsuario: userData.RolUsuario,
+            Estado: userData.Estado,
+            TipoIdentificacion: userData.TipoIdentificacion,
+          });
+        } else {
+          // Crear un nuevo usuario
+          await Usuario.create({
+            Identificacion: userData.Identificacion,
+            Nombre: userData.Nombre,
+            Apellido1: userData.Apellido1,
+            Apellido2: userData.Apellido2,
+            CorreoElectronico: userData.CorreoElectronico,
+            RolUsuario: userData.RolUsuario,
+            Contrasenna: userData.Contrasenna,
+            Estado: userData.Estado,
+            TipoIdentificacion: userData.TipoIdentificacion,
+          });
+        }
+      } else if (userData.RolUsuario === 'Estudiante') {
+        // Buscar el grupoId en la tabla Grupo
+        let grupo = await Grupo.findOne({
+          where: {
+            CodigoMateria: userData.CodigoMateria,
+            Cuatrimestre: userData.Cuatrimestre,
+            Anno: userData.Anno,
+          },
         });
-      } else {
-        // Create a new user
-        await Usuario.create({
-          Identificacion: userData.Identificacion,
-          Nombre: userData.Nombre,
-          Apellido1: userData.Apellido1,
-          Apellido2: userData.Apellido2,
-          CorreoElectronico: userData.CorreoElectronico,
-          RolUsuario: userData.RolUsuario,
-          Contrasenna: userData.Contrasenna,
-          Estado: userData.Estado,
-          TipoIdentificacion: userData.TipoIdentificacion,
+
+        if (!grupo) {
+          // Si el grupo no se encuentra, retornar un mensaje de error
+          return res.status(400).send(`Grupo no encontrado para CodigoMateria: ${userData.CodigoMateria}, Cuatrimestre: ${userData.Cuatrimestre}, Anno: ${userData.Anno}`);
+        }
+
+        const grupoId = grupo.GrupoId; // Asumiendo que el campo ID es "GrupoId"
+
+        if (usuarioExistente) {
+          // Actualizar el usuario existente
+          await usuarioExistente.update({
+            Nombre: userData.Nombre,
+            Apellido1: userData.Apellido1,
+            Apellido2: userData.Apellido2,
+            CorreoElectronico: userData.CorreoElectronico,
+            RolUsuario: userData.RolUsuario,
+            Estado: userData.Estado,
+            TipoIdentificacion: userData.TipoIdentificacion,
+          });
+        } else {
+          // Crear un nuevo usuario
+          await Usuario.create({
+            Identificacion: userData.Identificacion,
+            Nombre: userData.Nombre,
+            Apellido1: userData.Apellido1,
+            Apellido2: userData.Apellido2,
+            CorreoElectronico: userData.CorreoElectronico,
+            RolUsuario: userData.RolUsuario,
+            Contrasenna: userData.Contrasenna,
+            Estado: userData.Estado,
+            TipoIdentificacion: userData.TipoIdentificacion,
+          });
+        }
+
+        // Verificar si el registro en GruposEstudiantes ya existe
+        let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+          where: {
+            Identificacion: userData.Identificacion,
+            GrupoId: grupoId,
+          },
         });
+
+        if (!grupoEstudianteExistente) {
+          // Crear un nuevo registro en GruposEstudiantes
+          await GruposEstudiantes.create({
+            Identificacion: userData.Identificacion,
+            GrupoId: grupoId,
+            Estado: true,
+          });
+        }
       }
     }
 
