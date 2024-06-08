@@ -126,32 +126,83 @@ function MantenimientoUs() {
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
-
-        if (worksheet[0].join(",") === "Identificacion,Nombre Completo,CorreoElectronico") {
-          const jsonData = worksheet.slice(1).map(row => {
+  
+        if (role === "Academico") {
+          // Manejo para el rol de Academico (estructura original)
+          const jsonData = worksheet.map(row => {
             const [Identificacion, NombreCompleto, CorreoElectronico] = row;
             const nombres = NombreCompleto.split(' ');
             const Apellido1 = nombres[0];
             const Apellido2 = nombres[1] || '';
             const Nombre = nombres.slice(2).join(' ');
-
+  
             return {
               Identificacion,
               Nombre,
               Apellido1,
               Apellido2,
-              Genero:"Indefinido",
+              Genero: "Indefinido", // Valor predeterminado
               CorreoElectronico,
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
-              Estado: true,
-              TipoIdentificacion: "Cedula",
+              Estado: true, // Valor predeterminado
+              TipoIdentificacion: "Cedula", // Valor predeterminado
             };
           });
+  
+          console.log("Datos JSON a enviar:", jsonData); // Agregado para mostrar el JSON antes de enviarlo
+  
           uploadJsonData(jsonData, role);
+        } else if (role === "Estudiante") {
+          // Manejo para el rol de Estudiante (estructura original con integración de datos de la primera columna)
+          if (worksheet.length > 2) {
+            const firstRow = worksheet[0];
+            const defaultValues = {};
+            for (let i = 0; i < firstRow.length; i += 2) {
+              defaultValues[firstRow[i]] = firstRow[i + 1];
+            }
+  
+            const jsonData = worksheet.slice(2).map(row => {
+              const [Identificacion, NombreCompleto, CorreoElectronico] = row;
+              const nombres = NombreCompleto.split(' ');
+              const Apellido1 = nombres[0];
+              const Apellido2 = nombres[1] || '';
+              const Nombre = nombres.slice(2).join(' ');
+  
+              const user = {
+                Identificacion,
+                Nombre,
+                Apellido1,
+                Apellido2,
+                Genero: "Indefinido",
+                CorreoElectronico,
+                RolUsuario: role,
+                Contrasenna: generateRandomPassword(),
+                Estado: true,
+                TipoIdentificacion: "Cedula",
+              };
+  
+              // Integrar valores de la primera columna al final del objeto de usuario
+              for (let i = 0; i < firstRow.length; i += 2) {
+                const key = firstRow[i];
+                if (!user[key]) {
+                  user[key] = defaultValues[key];
+                }
+              }
+  
+              return user;
+            });
+  
+            console.log("Datos JSON a enviar:", jsonData); // Agregado para mostrar el JSON antes de enviarlo
+  
+            uploadJsonData(jsonData, role);
+          } else {
+            console.error("Formato de archivo inválido");
+            toast.error("Formato de archivo inválido");
+          }
         } else {
-          console.error("Formato de archivo inválido");
-          toast.error("Formato de archivo inválido");
+          console.error("Rol de usuario no reconocido");
+          toast.error("Rol de usuario no reconocido");
         }
       };
       reader.readAsArrayBuffer(file);
@@ -160,6 +211,7 @@ function MantenimientoUs() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
+  
 
   const generateRandomPassword = () => {
     const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
