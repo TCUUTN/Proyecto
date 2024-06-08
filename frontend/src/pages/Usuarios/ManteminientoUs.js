@@ -9,6 +9,8 @@ import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
 import CrearActualizarUsuario from './CrearActualizarUsuario';
 import * as XLSX from "xlsx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MantenimientoUs() {
   const [usuarios, setUsuarios] = useState([]);
@@ -125,9 +127,9 @@ function MantenimientoUs() {
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
 
-        if (worksheet[0].join(",") === "Identificacion,Nombre Completo,Genero,CorreoElectronico") {
+        if (worksheet[0].join(",") === "Identificacion,Nombre Completo,CorreoElectronico") {
           const jsonData = worksheet.slice(1).map(row => {
-            const [Identificacion, NombreCompleto, Genero, CorreoElectronico] = row;
+            const [Identificacion, NombreCompleto, CorreoElectronico] = row;
             const nombres = NombreCompleto.split(' ');
             const Apellido1 = nombres[0];
             const Apellido2 = nombres[1] || '';
@@ -138,7 +140,7 @@ function MantenimientoUs() {
               Nombre,
               Apellido1,
               Apellido2,
-              Genero,
+              Genero:"Indefinido",
               CorreoElectronico,
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
@@ -146,14 +148,16 @@ function MantenimientoUs() {
               TipoIdentificacion: "Cedula",
             };
           });
-          uploadJsonData(jsonData);
+          uploadJsonData(jsonData, role);
         } else {
           console.error("Formato de archivo inválido");
+          toast.error("Formato de archivo inválido");
         }
       };
       reader.readAsArrayBuffer(file);
     } else {
       console.error("Por favor, suba un archivo Excel válido");
+      toast.error("Por favor, suba un archivo Excel válido");
     }
   };
 
@@ -174,7 +178,7 @@ function MantenimientoUs() {
     return password.split('').sort(() => 0.5 - Math.random()).join('');
   };
 
-  const uploadJsonData = async (data) => {
+  const uploadJsonData = async (data, role) => {
     try {
       const response = await fetch("/usuarios/cargaUsuarios", {
         method: "POST",
@@ -186,19 +190,20 @@ function MantenimientoUs() {
 
       if (response.ok) {
         console.log("Usuarios cargados exitosamente");
+        toast.success(`${role}s cargados exitosamente`);
         fetchUsuarios();
       } else {
         console.error("Error al cargar los usuarios");
+        toast.error("Error al cargar los usuarios");
       }
     } catch (error) {
       console.error("Error al cargar los usuarios:", error);
+      toast.error("Error al cargar los usuarios");
     }
   };
 
   return (
     <div className="user-container">
-      
-
       <main>
       <aside className="sidebar-user">
         <button className="add-user" onClick={handleAddUser}>
@@ -324,6 +329,7 @@ function MantenimientoUs() {
           onClose={handleModalClose}
         />
       )}
+      <ToastContainer position="bottom-right" />
        {/* Fin */}
     </div>
   );

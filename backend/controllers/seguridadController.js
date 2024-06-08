@@ -83,9 +83,11 @@ const getUsuarioPorCredenciales = async (req, res) => {
       if (contrasennaValida) {
         // Devolver solo Nombre, RolUsuario y CorreoElectronico
         const usuarioResponse = {
+          Identificacion:usuario.Identificacion,
           Nombre: usuario.Nombre,
           RolUsuario: usuario.RolUsuario,
           CorreoElectronico: usuario.CorreoElectronico,
+          Genero: usuario.Genero
         };
         res.json(usuarioResponse);
       } else {
@@ -302,7 +304,6 @@ const cargarUsuario = async (req, res) => {
           Nombre: userData.Nombre,
           Apellido1: userData.Apellido1,
           Apellido2: userData.Apellido2,
-          Genero: userData.Genero,
           CorreoElectronico: userData.CorreoElectronico,
           RolUsuario: userData.RolUsuario,
           Contrasenna: userData.Contrasenna,
@@ -316,7 +317,6 @@ const cargarUsuario = async (req, res) => {
           Nombre: userData.Nombre,
           Apellido1: userData.Apellido1,
           Apellido2: userData.Apellido2,
-          Genero: userData.Genero,
           CorreoElectronico: userData.CorreoElectronico,
           RolUsuario: userData.RolUsuario,
           Contrasenna: userData.Contrasenna,
@@ -360,6 +360,33 @@ const EstadoUsuario = async (req, res) => {
   }
 };
 
+const actualizarGenero = async (req, res) => {
+  try {
+    const { Identificacion, Genero } = req.body;
+
+    // Buscar el usuario por su número de identificación
+    const usuario = await Usuario.findOne({
+      where: {
+        Identificacion: Identificacion,
+      },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Actualizar el género del usuario
+    usuario.Genero = Genero;
+
+    // Guardar los cambios en la base de datos
+    await usuario.save();
+
+    res.status(200).json({ message: "Género actualizado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsuarios,
   getUsuarioPorNombre,
@@ -369,5 +396,6 @@ module.exports = {
   crearOActualizarUsuario,
   EstadoUsuario,
   getUsuarioPorIdentificacion,
+  actualizarGenero,
   cargarUsuario
 };

@@ -7,6 +7,8 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from 'xlsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./Materias.modulo.css";
 
 function MantGrupos() {
@@ -33,11 +35,14 @@ function MantGrupos() {
         setFilteredGrupos(data);
         const years = [...new Set(data.map(grupo => grupo.Anno))];
         setUniqueYears(years.sort((a, b) => a - b));
+        toast.success("Grupos cargados exitosamente");
       } else {
         console.error("Error al obtener la lista de grupos");
+        toast.error("Error al obtener la lista de grupos");
       }
     } catch (error) {
       console.error("Error al obtener la lista de grupos:", error);
+      toast.error("Error al obtener la lista de grupos");
     }
   };
 
@@ -121,6 +126,7 @@ function MantGrupos() {
       const [headers, ...rows] = worksheet;
       if (!headers.includes('CodigoMateria') || !headers.includes('NumeroGrupo') || !headers.includes('Horario') || !headers.includes('Aula') || !headers.includes('Cuatrimestre') || !headers.includes('Anno') || !headers.includes('Academico')) {
         console.error("El archivo no contiene las columnas requeridas");
+        toast.error("El archivo no contiene las columnas requeridas");
         return;
       }
 
@@ -161,9 +167,11 @@ function MantGrupos() {
             });
           } else {
             console.error(`Error al obtener la identificación para ${Nombre} ${Apellido1} ${Apellido2}`);
+            toast.error(`Error al obtener la identificación para ${Nombre} ${Apellido1} ${Apellido2}`);
           }
         } catch (error) {
           console.error("Error al procesar los datos del usuario:", error);
+          toast.error("Error al procesar los datos del usuario");
         }
       }
 
@@ -178,12 +186,15 @@ function MantGrupos() {
 
         if (response.ok) {
           console.log('Datos cargados correctamente');
+          toast.success('Datos cargados correctamente');
           fetchGrupos(); // Refresh table
         } else {
           console.error('Error al cargar los datos de los grupos');
+          toast.error('Error al cargar los datos de los grupos');
         }
       } catch (error) {
         console.error('Error al cargar los datos de los grupos:', error);
+        toast.error('Error al cargar los datos de los grupos');
       }
     };
 
@@ -192,6 +203,7 @@ function MantGrupos() {
 
   return (
     <div className="materia-container">
+      <ToastContainer position="bottom-right" />
       <main>
         <aside className="sidebar-mater">
           <button className="add-mater">

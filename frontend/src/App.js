@@ -8,12 +8,11 @@ import Footer from './components/Footer';
 import Inicio from './pages/Inicio/Home.js';
 import Acceso from './pages/Denegado/Denegado.js';
 import CambiarContrasena from './pages/CambioContrasenna/CambiarClave.js';
-import OlvidarContrasena from './pages/OlvidarContrasenna/OlvidarClave.js'
-import MantUser from './pages/Usuarios/ManteminientoUs.js'
-import MantMaterias from './pages/Grupos/MantMaterias.js'
-import MantGrupos from './pages/Grupos/MantCreaGrupos.js'
-
-
+import OlvidarContrasena from './pages/OlvidarContrasenna/OlvidarClave.js';
+import MantUser from './pages/Usuarios/ManteminientoUs.js';
+import MantMaterias from './pages/Grupos/MantMaterias.js';
+import MantGrupos from './pages/Grupos/MantCreaGrupos.js';
+import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
@@ -21,10 +20,17 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaSc
 function App() {
   useEffect(() => {
     const storedCorreo = sessionStorage.getItem('CorreoElectronico');
+    const storedGenero = sessionStorage.getItem('Genero');
     const currentPath = window.location.pathname;
 
-    // Si no hay información en el sessionStorage y la ruta no es '/' ni '/AccesoDenegado'
-    if (!storedCorreo && currentPath !== '/' && currentPath !== '/AccesoDenegado') {
+    // Si no hay información en el sessionStorage o el género es "Indefinido"
+    // y la ruta no es '/' ni '/AccesoDenegado' ni '/CompletarPerfil'
+    if (
+      (!storedCorreo || storedGenero === 'Indefinido') &&
+      currentPath !== '/' &&
+      currentPath !== '/AccesoDenegado' &&
+      currentPath !== '/CompletarPerfil'
+    ) {
       // Redirigir a la página de acceso denegado
       window.location.href = '/AccesoDenegado';
     }
@@ -43,9 +49,7 @@ function App() {
           <Route path="/MantUser" element={<MantUser />} />
           <Route path="/MantMaterias" element={<MantMaterias />} />
           <Route path="/MantGrupos" element={<MantGrupos />} />
-     
-
-          
+          <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
         </Routes>
         <Footer />
       </div>

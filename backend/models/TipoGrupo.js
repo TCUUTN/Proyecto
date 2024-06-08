@@ -17,7 +17,7 @@ const Grupos_TipoGrupo = sequelize.define('Grupos_TipoGrupo', {
     comment: 'Nombre del proyecto'
   },
   TipoCurso: {
-    type: DataTypes.ENUM('Presencial', 'Vitual', 'Hibrido'),
+    type: DataTypes.ENUM('Presencial', 'Virtual', 'Hibrido'),
     allowNull: false,
     defaultValue: 'Presencial',
     comment: 'Modalidad del curso'

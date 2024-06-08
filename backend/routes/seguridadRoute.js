@@ -5,6 +5,7 @@ const seguridadController = require('../controllers/seguridadController');
 router.get('/', seguridadController.getAllUsuarios);
 router.post('/credenciales', seguridadController.getUsuarioPorCredenciales);
 router.post('/actualizarContrasenna', seguridadController.actualizarContrasenna);
+router.post('/actualizarGenero', seguridadController.actualizarGenero);
 router.post('/olvidoContrasenna', seguridadController.olvidoContrasenna);
 router.post('/crearOActualizarUsuario', seguridadController.crearOActualizarUsuario);
 router.post('/cargaUsuarios', seguridadController.cargarUsuario);

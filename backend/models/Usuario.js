@@ -29,6 +29,12 @@ const Usuario = sequelize.define('Usuario', {
     defaultValue: '-',
     comment: 'Segundo apellido'
   },
+  CarreraEstudiante: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Carrera del Estudiante'
+  },
   Genero: {
     type: DataTypes.ENUM('Masculino', 'Femenino', 'Indefinido'),
     allowNull: false,
@@ -48,15 +54,15 @@ const Usuario = sequelize.define('Usuario', {
     comment: 'Rol de usuario'
   },
   Contrasenna: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(60),
     allowNull: false,
     defaultValue: '-',
     comment: 'Contraseña'
   },
   Estado: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.TINYINT,
     allowNull: false,
-    defaultValue: true,
+    defaultValue: 1,
     comment: 'Estado de Usuario'
   },
   TipoIdentificacion: {
@@ -68,7 +74,7 @@ const Usuario = sequelize.define('Usuario', {
   UniversalUniqueIdentifier: {
     type: DataTypes.CHAR(36),
     allowNull: false,
-    defaultValue: 'UUID',
+    defaultValue: DataTypes.UUIDV4,
     comment: 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()'
   },
   LastUpdate: {

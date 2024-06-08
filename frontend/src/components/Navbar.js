@@ -8,14 +8,18 @@ function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [nombre, setNombre] = useState('');
   const [rolUsuario, setRolUsuario] = useState('');
+  const [genero, setGenero] = useState('');
 
   useEffect(() => {
     const storedNombre = sessionStorage.getItem('Nombre');
     const storedRolUsuario = sessionStorage.getItem('RolUsuario');
-    if (storedNombre && storedRolUsuario) {
+    const storedGenero = sessionStorage.getItem('Genero');
+    
+    if (storedNombre && storedRolUsuario && storedGenero && storedGenero !== 'Indefinido') {
       setIsAuthenticated(true);
       setNombre(storedNombre);
       setRolUsuario(storedRolUsuario);
+      setGenero(storedGenero);
     }
 
     const navbarCollapse = document.getElementById('navbarSupportedContent');

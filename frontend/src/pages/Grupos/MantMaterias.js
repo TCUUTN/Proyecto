@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
 
@@ -19,7 +20,6 @@ function MantMaterias() {
   const [currentPage, setCurrentPage] = useState(1);
   const materiasPerPage = 10;
 
-
   const fetchMaterias = async () => {
     try {
       const response = await fetch("/grupos/tipos");
@@ -27,14 +27,16 @@ function MantMaterias() {
         const data = await response.json();
         setMaterias(data);
         setFilteredMaterias(data);
+        toast.success("Materias cargadas exitosamente");
       } else {
         console.error("Error al obtener la lista de materias");
+        toast.error("Error al obtener la lista de materias");
       }
     } catch (error) {
       console.error("Error al obtener la lista de materias:", error);
+      toast.error("Error al obtener la lista de materias");
     }
   };
-
 
   useEffect(() => {
     fetchMaterias();
@@ -122,11 +124,13 @@ function MantMaterias() {
           uploadJsonData(jsonData);
         } else {
           console.error("Formato de archivo inválido");
+          toast.error("Formato de archivo inválido");
         }
       };
       reader.readAsArrayBuffer(file);
     } else {
       console.error("Por favor, suba un archivo Excel válido");
+      toast.error("Por favor, suba un archivo Excel válido");
     }
   };
 
@@ -142,17 +146,21 @@ function MantMaterias() {
 
       if (response.ok) {
         console.log("Datos cargados exitosamente");
+        toast.success("Datos cargados exitosamente");
         fetchMaterias();
       } else {
         console.error("Error al cargar los datos");
+        toast.error("Error al cargar los datos");
       }
     } catch (error) {
       console.error("Error al cargar los datos:", error);
+      toast.error("Error al cargar los datos");
     }
   };
 
   return (
     <div className="materia-container">
+      <ToastContainer position="bottom-right" />
       <main>
         <aside className="sidebar-mater">
           <button className="add-mater">
