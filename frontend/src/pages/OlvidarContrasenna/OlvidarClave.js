@@ -7,24 +7,25 @@ import "./Olvidar.css";
 function OlvidarClave() {
   const [CorreoElectronico, setCorreoElectronico] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Función para mostrar la notificación después de la redirección
     const showNotificationAfterRedirect = () => {
       const params = new URLSearchParams(window.location.search);
       const mensajeExitoso = params.get("mensajeExitoso");
       if (mensajeExitoso === "true") {
         toast.success(
-          "Se ha enviado el correo electronico con la clave temporal correctamente"
+          "Se ha enviado el correo electrónico con la clave temporal correctamente"
         );
       }
     };
 
-    showNotificationAfterRedirect(); // Llama a la función al cargar el componente
+    showNotificationAfterRedirect();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Show loading screen
 
     try {
       const response = await fetch("/usuarios/olvidoContrasenna", {
@@ -36,18 +37,25 @@ function OlvidarClave() {
       });
 
       if (response.ok) {
-        // Si las credenciales son correctas, redirige a la página Contact.js
         window.location.href = "/?mensajeExitoso=true";
       } else {
-        // Si las credenciales son incorrectas, muestra una notificación
         setError("El correo ingresado no es válido, favor verificar.");
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
+      setError("Error al enviar la solicitud, por favor intenta de nuevo.");
+    } finally {
+      setLoading(false); // Hide loading screen
     }
   };
+
   return (
     <div className="olvidar-container">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       <div className="olvidar-form">
         <h1 className="title">¿Olvidaste tu contraseña?</h1>
         <hr className="Title-linea" />
@@ -63,13 +71,13 @@ function OlvidarClave() {
                 type="text"
                 id="email"
                 name="email"
-                placeholder="Correo electronico"
+                placeholder="Correo electrónico"
                 value={CorreoElectronico}
                 onChange={(e) => setCorreoElectronico(e.target.value)}
               />
             </div>
           </div>
-          <button type="submit" className="olvidar-button">
+          <button type="submit" className="olvidar-button" disabled={loading}>
             Enviar
           </button>
         </form>

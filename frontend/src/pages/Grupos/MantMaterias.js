@@ -3,7 +3,7 @@ import {
   FaEdit,
   FaInfoCircle,
   FaFileDownload,
-  FaFileUpload
+  FaFileUpload,
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
@@ -18,6 +18,7 @@ function MantMaterias() {
   const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
   const [tipoFilter, setTipoFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
 
   const fetchMaterias = async () => {
@@ -27,7 +28,6 @@ function MantMaterias() {
         const data = await response.json();
         setMaterias(data);
         setFilteredMaterias(data);
-        toast.success("Materias cargadas exitosamente");
       } else {
         console.error("Error al obtener la lista de materias");
         toast.error("Error al obtener la lista de materias");
@@ -71,7 +71,9 @@ function MantMaterias() {
 
     if (NombreProyecto) {
       filtered = filtered.filter((materia) =>
-        materia.NombreProyecto?.toLowerCase().includes(NombreProyecto.toLowerCase())
+        materia.NombreProyecto?.toLowerCase().includes(
+          NombreProyecto.toLowerCase()
+        )
       );
     }
 
@@ -104,16 +106,25 @@ function MantMaterias() {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    if (
+      file &&
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
+        const worksheet = XLSX.utils.sheet_to_json(
+          workbook.Sheets[firstSheetName],
+          { header: 1 }
+        );
 
-        if (worksheet[0].join(",") === "CodigoMateria,NombreProyecto,TipoCurso") {
-          const jsonData = worksheet.slice(1).map(row => {
+        if (
+          worksheet[0].join(",") === "CodigoMateria,NombreProyecto,TipoCurso"
+        ) {
+          const jsonData = worksheet.slice(1).map((row) => {
             const [CodigoMateria, NombreProyecto, TipoCurso] = row;
             return {
               CodigoMateria,
@@ -135,6 +146,7 @@ function MantMaterias() {
   };
 
   const uploadJsonData = async (data) => {
+    setLoading(true);
     try {
       const response = await fetch("/grupos/cargarTipoGrupos", {
         method: "POST",
@@ -155,11 +167,18 @@ function MantMaterias() {
     } catch (error) {
       console.error("Error al cargar los datos:", error);
       toast.error("Error al cargar los datos");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="materia-container">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       <ToastContainer position="bottom-right" />
       <main>
         <aside className="sidebar-mater">
@@ -191,38 +210,50 @@ function MantMaterias() {
         </aside>
         {/* Filtros */}
         <div className="filters-mat">
+          <div className="filter-group-mat">
           <label className="filter-label-mat" htmlFor="CodigoMateria">
-            Buscar por Código de Materia
-          </label>
-          <input
-            id="CodigoMateria-Busqueda"
-            type="text"
-            placeholder="Código de Materia"
-            className="filter-input-mat"
-            value={codigoMateriaFilter}
-            onChange={handleCodigoMateriaFilterChange}
-          />
+              Buscar por Código de Materia
+            </label>
+            <input
+              id="CodigoMateria-Busqueda"
+              type="text"
+              placeholder="Código de Materia"
+              className="filter-input-mat"
+              value={codigoMateriaFilter}
+              onChange={handleCodigoMateriaFilterChange}
+            />
+            
+          </div>
+          <div className="filter-group-mat">
           <label className="filter-label-mat" htmlFor="Proyecto">
-            Buscar por Nombre de Proyecto
-          </label>
-          <input
-            id="NombreProyecto-Busqueda"
-            type="text"
-            placeholder="Nombre de Proyecto"
-            className="filter-input-mat"
-            value={nombreProyectoFilter}
-            onChange={handleNombreProyectoFilterChange}
-          />
-          <select
-            className="filter-select-mat"
-            value={tipoFilter}
-            onChange={handleTipoFilterChange}
-          >
-            <option value="">Modalidad</option>
-            <option value="Presencial">Presencial</option>
-            <option value="Hibrido">Híbrido</option>
-            <option value="Virtual">Virtual</option>
-          </select>
+              Buscar por Nombre de Proyecto
+            </label>
+            <input
+              id="NombreProyecto-Busqueda"
+              type="text"
+              placeholder="Nombre de Proyecto"
+              className="filter-input-mat"
+              value={nombreProyectoFilter}
+              onChange={handleNombreProyectoFilterChange}
+            />
+            
+          </div>
+          <div className="filter-group-mat">
+          <label className="filter-label-mat" htmlFor="Modalidad">
+              Seleccione Modalidad
+            </label>
+            <select
+              className="filter-select-mat"
+              value={tipoFilter}
+              onChange={handleTipoFilterChange}
+            >
+              <option value="">Modalidad</option>
+              <option value="Presencial">Presencial</option>
+              <option value="Hibrido">Híbrido</option>
+              <option value="Virtual">Virtual</option>
+            </select>
+            
+          </div>
         </div>
         {/* Toda la tabla */}
         <table className="mat-table">
@@ -254,23 +285,23 @@ function MantMaterias() {
         </table>
         {/* La paginacion */}
         <div className="pagination-mat">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-          >
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Anterior
           </button>
           <span>
-            Página {currentPage} de {Math.ceil(filteredMaterias.length / materiasPerPage)}
+            Página {currentPage} de{" "}
+            {Math.ceil(filteredMaterias.length / materiasPerPage)}
           </span>
           <button
             onClick={handleNextPage}
-            disabled={currentPage === Math.ceil(filteredMaterias.length / materiasPerPage)}
+            disabled={
+              currentPage ===
+              Math.ceil(filteredMaterias.length / materiasPerPage)
+            }
           >
             Siguiente
           </button>
         </div>
-        {/* Fin */}
       </main>
     </div>
   );

@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
-import CrearActualizarUsuario from './CrearActualizarUsuario';
+import CrearActualizarUsuario from "./CrearActualizarUsuario";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,6 +16,7 @@ function MantenimientoUs() {
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [identificacionFilter, setIdentificacionFilter] = useState("");
+  const [nombreCompletoFilter, setNombreCompletoFilter] = useState(""); // Nuevo estado
   const [estadoFilter, setEstadoFilter] = useState("");
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +24,7 @@ function MantenimientoUs() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
 
   const fetchUsuarios = async () => {
     try {
@@ -46,27 +48,46 @@ function MantenimientoUs() {
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
     setIdentificacionFilter(value);
-    applyFilters(value, estadoFilter, rolFilter);
+    applyFilters(value, nombreCompletoFilter, estadoFilter, rolFilter);
+  };
+
+  const handleNombreCompletoFilterChange = (e) => {
+    const value = e.target.value;
+    setNombreCompletoFilter(value);
+    applyFilters(identificacionFilter, value, estadoFilter, rolFilter);
   };
 
   const handleEstadoFilterChange = (e) => {
     const value = e.target.value;
     setEstadoFilter(value);
-    applyFilters(identificacionFilter, value, rolFilter);
+    applyFilters(identificacionFilter, nombreCompletoFilter, value, rolFilter);
   };
 
   const handleRolFilterChange = (e) => {
     const value = e.target.value;
     setRolFilter(value);
-    applyFilters(identificacionFilter, estadoFilter, value);
+    applyFilters(
+      identificacionFilter,
+      nombreCompletoFilter,
+      estadoFilter,
+      value
+    );
   };
 
-  const applyFilters = (identificacion, estado, rol) => {
+  const applyFilters = (identificacion, nombreCompleto, estado, rol) => {
     let filtered = usuarios;
 
     if (identificacion) {
       filtered = filtered.filter((usuario) =>
         usuario.Identificacion.includes(identificacion)
+      );
+    }
+
+    if (nombreCompleto) {
+      filtered = filtered.filter((usuario) =>
+        `${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`
+          .toLowerCase()
+          .includes(nombreCompleto.toLowerCase())
       );
     }
 
@@ -119,56 +140,60 @@ function MantenimientoUs() {
 
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
-    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    if (
+      file &&
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setIsLoading(true); // Mostrar pantalla de carga
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
-  
+        const worksheet = XLSX.utils.sheet_to_json(
+          workbook.Sheets[firstSheetName],
+          { header: 1 }
+        );
+
         if (role === "Academico") {
-          // Manejo para el rol de Academico (estructura original)
-          const jsonData = worksheet.map(row => {
+          const jsonData = worksheet.map((row) => {
             const [Identificacion, NombreCompleto, CorreoElectronico] = row;
-            const nombres = NombreCompleto.split(' ');
+            const nombres = NombreCompleto.split(" ");
             const Apellido1 = nombres[0];
-            const Apellido2 = nombres[1] || '';
-            const Nombre = nombres.slice(2).join(' ');
-  
+            const Apellido2 = nombres[1] || "";
+            const Nombre = nombres.slice(2).join(" ");
+
             return {
               Identificacion,
               Nombre,
               Apellido1,
               Apellido2,
-              Genero: "Indefinido", // Valor predeterminado
+              Genero: "Indefinido",
               CorreoElectronico,
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
-              Estado: true, // Valor predeterminado
-              TipoIdentificacion: "Cedula", // Valor predeterminado
+              Estado: true,
+              TipoIdentificacion: "Cedula",
             };
           });
-  
-          console.log("Datos JSON a enviar:", jsonData); // Agregado para mostrar el JSON antes de enviarlo
-  
+
           uploadJsonData(jsonData, role);
         } else if (role === "Estudiante") {
-          // Manejo para el rol de Estudiante (estructura original con integración de datos de la primera columna)
           if (worksheet.length > 2) {
             const firstRow = worksheet[0];
             const defaultValues = {};
             for (let i = 0; i < firstRow.length; i += 2) {
               defaultValues[firstRow[i]] = firstRow[i + 1];
             }
-  
-            const jsonData = worksheet.slice(2).map(row => {
+
+            const jsonData = worksheet.slice(2).map((row) => {
               const [Identificacion, NombreCompleto, CorreoElectronico] = row;
-              const nombres = NombreCompleto.split(' ');
+              const nombres = NombreCompleto.split(" ");
               const Apellido1 = nombres[0];
-              const Apellido2 = nombres[1] || '';
-              const Nombre = nombres.slice(2).join(' ');
-  
+              const Apellido2 = nombres[1] || "";
+              const Nombre = nombres.slice(2).join(" ");
+
               const user = {
                 Identificacion,
                 Nombre,
@@ -181,20 +206,17 @@ function MantenimientoUs() {
                 Estado: true,
                 TipoIdentificacion: "Cedula",
               };
-  
-              // Integrar valores de la primera columna al final del objeto de usuario
+
               for (let i = 0; i < firstRow.length; i += 2) {
                 const key = firstRow[i];
                 if (!user[key]) {
                   user[key] = defaultValues[key];
                 }
               }
-  
+
               return user;
             });
-  
-            console.log("Datos JSON a enviar:", jsonData); // Agregado para mostrar el JSON antes de enviarlo
-  
+
             uploadJsonData(jsonData, role);
           } else {
             console.error("Formato de archivo inválido");
@@ -211,7 +233,6 @@ function MantenimientoUs() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
-  
 
   const generateRandomPassword = () => {
     const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -227,7 +248,10 @@ function MantenimientoUs() {
     for (let i = 4; i < 8; i++) {
       password += allChars[Math.floor(Math.random() * allChars.length)];
     }
-    return password.split('').sort(() => 0.5 - Math.random()).join('');
+    return password
+      .split("")
+      .sort(() => 0.5 - Math.random())
+      .join("");
   };
 
   const uploadJsonData = async (data, role) => {
@@ -251,86 +275,121 @@ function MantenimientoUs() {
     } catch (error) {
       console.error("Error al cargar los usuarios:", error);
       toast.error("Error al cargar los usuarios");
+    } finally {
+      setIsLoading(false); // Ocultar pantalla de carga
     }
   };
 
   return (
     <div className="user-container">
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       <main>
-      <aside className="sidebar-user">
-        <button className="add-user" onClick={handleAddUser}>
-          Agregar Usuario <IoMdAddCircle className="icon-add" />
-        </button>
-        <hr className="user-divider" />
-        <div>
-        <h2 className="title-user">Carga masiva</h2>
-        <br></br>
-        <div className="bulk-upload">
-        <div className="upload-option">
-            <FaFileDownload className="icon-other" /> Descargar Plantilla
+        <aside className="sidebar-user">
+          <button className="add-user" onClick={handleAddUser}>
+            Agregar Usuario <IoMdAddCircle className="icon-add" />
+          </button>
+          <hr className="user-divider" />
+          <div>
+            <h2 className="title-user">Carga masiva</h2>
+            <br></br>
+            <div className="bulk-upload">
+              <div className="upload-option">
+                <FaFileDownload className="icon-other" /> Descargar Plantilla
+              </div>
+              <div className="upload-option">
+                <label
+                  htmlFor="file-upload-estudiante"
+                  className="upload-label"
+                >
+                  <FaFileUpload className="icon-other" /> Subir Estudiantes
+                </label>
+                <input
+                  id="file-upload-estudiante"
+                  type="file"
+                  accept=".xlsx"
+                  style={{ display: "none" }}
+                  onChange={(e) => handleFileUpload(e, "Estudiante")}
+                />
+              </div>
+              <div className="upload-option">
+                <label htmlFor="file-upload-academico" className="upload-label">
+                  <FaFileUpload className="icon-other" /> Cargar Académicos
+                </label>
+                <input
+                  id="file-upload-academico"
+                  type="file"
+                  accept=".xlsx"
+                  style={{ display: "none" }}
+                  onChange={(e) => handleFileUpload(e, "Academico")}
+                />
+              </div>
+            </div>
           </div>
-          <div className="upload-option">
-            <label htmlFor="file-upload-estudiante" className="upload-label">
-              <FaFileUpload className="icon-other" /> Subir Estudiantes
-            </label>
-            <input
-              id="file-upload-estudiante"
-              type="file"
-              accept=".xlsx"
-              style={{ display: "none" }}
-              onChange={(e) => handleFileUpload(e, "Estudiante")}
-            />
-          </div>
-          <div className="upload-option">
-            <label htmlFor="file-upload-academico" className="upload-label">
-              <FaFileUpload className="icon-other" /> Cargar Académicos
-            </label>
-            <input
-              id="file-upload-academico"
-              type="file"
-              accept=".xlsx"
-              style={{ display: "none" }}
-              onChange={(e) => handleFileUpload(e, "Academico")}
-            />
-          </div>
-        </div>
-        </div>
-      </aside>
-       {/* Filtros */}
+        </aside>
         <div className="filters">
-          <label className="filter-label" htmlFor="identificacion">
-            Buscar por Identificación
-          </label>
-          <input
-            id="identificacion-Busqueda"
-            type="text"
-            placeholder="Identificación"
-            className="filter-input"
-            value={identificacionFilter}
-            onChange={handleIdentificacionFilterChange}
-          />
-          <select
-            className="filter-select"
-            value={estadoFilter}
-            onChange={handleEstadoFilterChange}
-          >
-            <option value="">Todos</option>
-            <option value="true">Activos</option>
-            <option value="false">Inactivos</option>
-          </select>
+  <div className="filter-group">
+    <label className="filter-label" htmlFor="identificacion-Busqueda">
+      Buscar por Identificación
+    </label>
+    <input
+      id="identificacion-Busqueda"
+      type="text"
+      placeholder="Identificación"
+      className="filter-input"
+      value={identificacionFilter}
+      onChange={handleIdentificacionFilterChange}
+    />
+  </div>
+  <div className="filter-group">
+    <label className="filter-label" htmlFor="nombre-completo-busqueda">
+      Buscar por Nombre Completo
+    </label>
+    <input
+      id="nombre-completo-busqueda"
+      type="text"
+      placeholder="Nombre Completo"
+      className="filter-input"
+      value={nombreCompletoFilter}
+      onChange={handleNombreCompletoFilterChange}
+    />
+  </div>
+  <div className="filter-group">
+    <label className="filter-label" htmlFor="estado-filter">
+      Estado
+    </label>
+    <select
+      id="estado-filter"
+      className="filter-select"
+      value={estadoFilter}
+      onChange={handleEstadoFilterChange}
+    >
+      <option value="">Todos</option>
+      <option value="true">Activos</option>
+      <option value="false">Inactivos</option>
+    </select>
+  </div>
+  <div className="filter-group">
+    <label className="filter-label" htmlFor="rol-filter">
+      Rol
+    </label>
+    <select
+      id="rol-filter"
+      className="filter-select"
+      value={rolFilter}
+      onChange={handleRolFilterChange}
+    >
+      <option value="">Todos</option>
+      <option value="Academico">Académico</option>
+      <option value="Estudiante">Estudiante</option>
+      <option value="Administrativo">Administrativo</option>
+    </select>
+  </div>
+</div>
 
-          <select
-            className="filter-select"
-            value={rolFilter}
-            onChange={handleRolFilterChange}
-          >
-            <option value="">Todos</option>
-            <option value="Academico">Académico</option>
-            <option value="Estudiante">Estudiante</option>
-            <option value="Administrativo">Administrativo</option>
-          </select>
-        </div>
-          {/* Toda la tabla */}
 
         <table>
           <thead>
@@ -348,7 +407,10 @@ function MantenimientoUs() {
                 <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
                 <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
                 <td>
-                  <button className="icon-btn-user" onClick={() => handleEditUser(usuario)}>
+                  <button
+                    className="icon-btn-user"
+                    onClick={() => handleEditUser(usuario)}
+                  >
                     <FaEdit />
                   </button>
                   <button className="icon-btn-user">
@@ -359,15 +421,19 @@ function MantenimientoUs() {
             ))}
           </tbody>
         </table>
-         {/* La paginacion */}
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Anterior
           </button>
+          <span>
+            Página {currentPage} de{" "}
+            {Math.ceil(filteredUsuarios.length / usuariosPerPage)}
+          </span>
           <button
             onClick={handleNextPage}
             disabled={
-              currentPage === Math.ceil(filteredUsuarios.length / usuariosPerPage)
+              currentPage ===
+              Math.ceil(filteredUsuarios.length / usuariosPerPage)
             }
           >
             Siguiente
@@ -382,7 +448,6 @@ function MantenimientoUs() {
         />
       )}
       <ToastContainer position="bottom-right" />
-       {/* Fin */}
     </div>
   );
 }

@@ -10,6 +10,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -25,6 +26,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Show loading screen
 
     try {
       const response = await fetch("/usuarios/credenciales", {
@@ -59,6 +61,8 @@ function Login() {
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
+    } finally {
+      setLoading(false); // Hide loading screen
     }
   };
 
@@ -68,6 +72,7 @@ function Login() {
 
   return (
     <div className="home-container">
+      {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
       <div className="home-content">
         <h1 className="home-title">
           Bitacora Virtual para Trabajo Comunal Universitario
