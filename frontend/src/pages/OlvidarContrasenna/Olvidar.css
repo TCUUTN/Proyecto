@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 85vh;
   background-color: #f7f7f7;
 }
 
@@ -78,4 +78,88 @@ input[type="text"] {
 .error-message {
   margin-top: 10px;
   color: red;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .olvidar-form {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .input-label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 992px) {
+  .olvidar-form {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .input-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .olvidar-container {
+    padding: 20px;
+  }
+
+  .olvidar-form {
+    max-width: 90%;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .input-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .olvidar-container {
+    padding: 10px;
+  }
+
+  .olvidar-form {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .input-label {
+    font-size: 11px;
+  }
+
+  .input-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .icon {
+    position: relative;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"] {
+    padding-left: 10px;
+  }
+
+  .olvidar-button {
+    font-size: 14px;
+    padding: 8px;
+  }
 }
