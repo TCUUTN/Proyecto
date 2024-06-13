@@ -216,15 +216,27 @@ const crearOActualizarGrupoEstudiante = async (req, res) => {
 
 const cargarGrupos = async (req, res) => {
   const grupos = req.body;
-
+  console.log(grupos);
   try {
     for (let grupoData of grupos) {
-      if (!grupoData.GrupoId) {
-        // If GrupoId is not provided, create a new group immediately
+      // Buscar el grupo existente por Anno, Sede, Cuatrimestre, NumeroGrupo, y CodigoMateria
+      let grupoExistente = await Grupo.findOne({
+        where: {
+          Anno: grupoData.Anno,
+          Sede: grupoData.Sede,
+          Cuatrimestre: grupoData.Cuatrimestre,
+          NumeroGrupo: grupoData.NumeroGrupo,
+          CodigoMateria: grupoData.CodigoMateria
+        },
+      });
+
+      if (!grupoExistente) {
+        // Si no existe un grupo con los criterios proporcionados, crear un nuevo grupo
         await Grupo.create({
           CodigoMateria: grupoData.CodigoMateria,
           NumeroGrupo: grupoData.NumeroGrupo,
           Horario: grupoData.Horario,
+          Sede: grupoData.Sede,
           Aula: grupoData.Aula,
           Cuatrimestre: grupoData.Cuatrimestre,
           Anno: grupoData.Anno,
@@ -232,39 +244,18 @@ const cargarGrupos = async (req, res) => {
           Estado: grupoData.Estado
         });
       } else {
-        // If GrupoId is provided, check if the group exists
-        let grupoExistente = await Grupo.findOne({
-          where: {
-            GrupoId: grupoData.GrupoId,
-          },
+        // Si el grupo existe, actualizarlo
+        await grupoExistente.update({
+          CodigoMateria: grupoData.CodigoMateria,
+          NumeroGrupo: grupoData.NumeroGrupo,
+          Horario: grupoData.Horario,
+          Sede: grupoData.Sede,
+          Aula: grupoData.Aula,
+          Cuatrimestre: grupoData.Cuatrimestre,
+          Anno: grupoData.Anno,
+          Identificacion: grupoData.Identificacion,
+          Estado: grupoData.Estado
         });
-
-        if (!grupoExistente) {
-          // If the group with provided GrupoId doesn't exist, create a new group
-          await Grupo.create({
-            GrupoId: grupoData.GrupoId,
-            CodigoMateria: grupoData.CodigoMateria,
-            NumeroGrupo: grupoData.NumeroGrupo,
-            Horario: grupoData.Horario,
-            Aula: grupoData.Aula,
-            Cuatrimestre: grupoData.Cuatrimestre,
-            Anno: grupoData.Anno,
-            Identificacion: grupoData.Identificacion,
-            Estado: grupoData.Estado
-          });
-        } else {
-          // If the group exists, update it
-          await grupoExistente.update({
-            CodigoMateria: grupoData.CodigoMateria,
-            NumeroGrupo: grupoData.NumeroGrupo,
-            Horario: grupoData.Horario,
-            Aula: grupoData.Aula,
-            Cuatrimestre: grupoData.Cuatrimestre,
-            Anno: grupoData.Anno,
-            Identificacion: grupoData.Identificacion,
-            Estado: grupoData.Estado
-          });
-        }
       }
     }
 
@@ -274,6 +265,7 @@ const cargarGrupos = async (req, res) => {
     res.status(500).send('Error al cargar/actualizar los grupos');
   }
 };
+
 
 const cargarTipoGrupos = async (req, res) => {
   const tipoGrupos = req.body;

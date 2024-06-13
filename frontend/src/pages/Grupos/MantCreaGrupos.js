@@ -22,6 +22,7 @@ function MantGrupos() {
   const [loading, setLoading] = useState(false); // Estado de carga
   const gruposPerPage = 10;
   const [uniqueYears, setUniqueYears] = useState([]);
+  const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
 
   useEffect(() => {
     fetchGrupos();
@@ -32,9 +33,12 @@ function MantGrupos() {
       const response = await fetch("/grupos");
       if (response.ok) {
         const data = await response.json();
-        setGrupos(data);
-        setFilteredGrupos(data);
-        const years = [...new Set(data.map((grupo) => grupo.Anno))];
+        const filteredData = sedeFilter === "Todas"
+          ? data
+          : data.filter((grupo) => grupo.Sede === sedeFilter);
+        setGrupos(filteredData);
+        setFilteredGrupos(filteredData);
+        const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
         setUniqueYears(years.sort((a, b) => a - b));
       } else {
         console.error("Error al obtener la lista de grupos");
@@ -131,22 +135,59 @@ function MantGrupos() {
     const file = e.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = async (e) => {
-      const data = new Uint8Array(e.target.result);
+    reader.onload = async (event) => {
+      const data = new Uint8Array(event.target.result);
       const workbook = XLSX.read(data, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
         header: 1,
       });
 
-      const [headers, ...rows] = worksheet;
+      // Verificar que haya al menos tres filas
+      if (worksheet.length < 3) {
+        console.error("El archivo no contiene las filas requeridas");
+        toast.error("El archivo no contiene las filas requeridas");
+        setLoading(false); // Termina la carga
+        return;
+      }
+
+      // Obtener valores predeterminados de la primera fila
+      const firstRow = worksheet[0];
+      const defaultValues = {};
+      for (let i = 0; i < firstRow.length; i += 2) {
+        let key = firstRow[i];
+        const value = firstRow[i + 1];
+
+        // Transformar "Año" en "Anno"
+        if (key === "Año") key = "Anno";
+
+        defaultValues[key] = value;
+      }
+
+      // Verificar que los encabezados predeterminados sean "Cuatrimestre", "Anno" y "Sede"
+      const requiredDefaultHeaders = ["Cuatrimestre", "Anno", "Sede"];
+      for (const header of requiredDefaultHeaders) {
+        if (!defaultValues.hasOwnProperty(header)) {
+          console.error(`El archivo no contiene la columna requerida: ${header}`);
+          toast.error(`El archivo no contiene la columna requerida: ${header}`);
+          setLoading(false); // Termina la carga
+          return;
+        }
+      }
+
+      // Verificar encabezados en la segunda fila y aplicar las transformaciones
+      let headers = worksheet[1];
+      headers = headers.map(header => {
+        if (header === "Codigo de Proyecto") return "CodigoMateria";
+        if (header === "Numero de Grupo") return "NumeroGrupo";
+        return header;
+      });
+
       if (
         !headers.includes("CodigoMateria") ||
         !headers.includes("NumeroGrupo") ||
         !headers.includes("Horario") ||
         !headers.includes("Aula") ||
-        !headers.includes("Cuatrimestre") ||
-        !headers.includes("Anno") ||
         !headers.includes("Academico")
       ) {
         console.error("El archivo no contiene las columnas requeridas");
@@ -156,19 +197,18 @@ function MantGrupos() {
       }
 
       const grupos = [];
+      const rows = worksheet.slice(2); // Datos a partir de la tercera fila
+
       for (const row of rows) {
         const [
           CodigoMateria,
           NumeroGrupo,
           Horario,
           Aula,
-          Cuatrimestre,
-          Anno,
           Academico,
         ] = row;
 
         const [Apellido1, Apellido2, ...nombreArray] = Academico.split(" ");
-
         const Nombre = nombreArray.join(" ");
 
         try {
@@ -184,15 +224,22 @@ function MantGrupos() {
 
           const data = await response.json();
           if (response.ok && data.Identificacion) {
-            grupos.push({
+            const grupo = {
               CodigoMateria,
               NumeroGrupo,
               Horario,
               Aula,
-              Cuatrimestre,
-              Anno,
               Identificacion: data.Identificacion,
-            });
+            };
+
+            // Agregar valores predeterminados si faltan
+            for (const key in defaultValues) {
+              if (!grupo[key]) {
+                grupo[key] = defaultValues[key];
+              }
+            }
+
+            grupos.push(grupo);
           } else {
             console.error(
               `Error al obtener la identificación para ${Nombre} ${Apellido1} ${Apellido2}`
@@ -352,6 +399,7 @@ function MantGrupos() {
               <th>Tipo</th>
               <th>Grupo</th>
               <th>Horario</th>
+              <th>Sede</th>
               <th>Aula</th>
               <th>Académico</th>
               <th>Acciones</th>
@@ -365,6 +413,7 @@ function MantGrupos() {
                 <td>{grupo.Grupos_TipoGrupo.TipoCurso}</td>
                 <td>{grupo.NumeroGrupo}</td>
                 <td>{grupo.Horario}</td>
+                <td>{grupo.Sede}</td>
                 <td>{grupo.Aula}</td>
                 <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
                 <td>

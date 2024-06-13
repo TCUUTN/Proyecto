@@ -1,15 +1,17 @@
 // Importar Sequelize y la conexión a la base de datos
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Ajusta la ruta según la ubicación de tu archivo de configuración de la base de datos
-const TipoGrupo = require('./TipoGrupo');
-const Usuario = require('./Usuario'); // Asegúrate de tener este modelo definido
+const sequelize = require('../config/db'); 
+const Usuario = require('./Usuario'); 
+const TipoGrupo = require('./TipoGrupo'); 
 
-const Grupos_Grupo = sequelize.define('Grupos_Grupo', {
+// Definir el modelo de Grupos_Grupo
+const Grupo = sequelize.define('Grupo', {
   GrupoId: {
     type: DataTypes.MEDIUMINT.UNSIGNED,
     allowNull: false,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
+    comment: 'Llave primaria de la tabla'
   },
   CodigoMateria: {
     type: DataTypes.STRING(10),
@@ -35,6 +37,12 @@ const Grupos_Grupo = sequelize.define('Grupos_Grupo', {
     defaultValue: '-',
     comment: 'Aula del Curso'
   },
+  Sede: {
+    type: DataTypes.ENUM('Central', 'Atenas', 'Guanacaste', 'Pacífico', 'San Carlos', 'C.F.P.T.E.', 'Todas'),
+    allowNull: false,
+    defaultValue: 'Central',
+    comment: 'Sede en la que se imparte el curso'
+  },
   Cuatrimestre: {
     type: DataTypes.SMALLINT,
     allowNull: false,
@@ -51,7 +59,7 @@ const Grupos_Grupo = sequelize.define('Grupos_Grupo', {
     type: DataTypes.STRING(20),
     allowNull: false,
     defaultValue: '-',
-    comment: 'Llave primaria de la tabla'
+    comment: 'Identificación del Académico a cargo del grupo'
   },
   Estado: {
     type: DataTypes.TINYINT,
@@ -66,7 +74,7 @@ const Grupos_Grupo = sequelize.define('Grupos_Grupo', {
     comment: 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()'
   },
   LastUpdate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATE(4),
     allowNull: false,
     defaultValue: DataTypes.NOW,
     onUpdate: DataTypes.NOW,
@@ -79,21 +87,24 @@ const Grupos_Grupo = sequelize.define('Grupos_Grupo', {
     comment: 'Último usuario que modificó la fila'
   }
 }, {
-  tableName: 'Grupos_Grupo',
-  timestamps: false
+  tableName: 'Grupos_Grupo', // Nombre de la tabla en la base de datos (si difiere del nombre del modelo)
+  timestamps: false // Indica que Sequelize no manejará automáticamente las columnas de timestamps
 });
 
+
+
 // Relaciones
-Grupos_Grupo.belongsTo(TipoGrupo, {
+Grupo.belongsTo(TipoGrupo, {
   foreignKey: 'CodigoMateria',
   targetKey: 'CodigoMateria',
   onDelete: 'CASCADE'
 });
 
-Grupos_Grupo.belongsTo(Usuario, {
+Grupo.belongsTo(Usuario, {
     foreignKey: 'Identificacion',
     targetKey: 'Identificacion',
     onDelete: 'CASCADE'
   });
 
-module.exports = Grupos_Grupo;
+// Exportar el modelo para poder utilizarlo en otras partes de la aplicación
+module.exports = Grupo;

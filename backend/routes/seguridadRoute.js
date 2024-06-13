@@ -3,6 +3,7 @@ const router = express.Router();
 const seguridadController = require('../controllers/seguridadController');
 
 router.get('/', seguridadController.getAllUsuarios);
+router.get('/RolesUsuarios', seguridadController.getAllUsuarioRol);
 router.post('/credenciales', seguridadController.getUsuarioPorCredenciales);
 router.post('/actualizarContrasenna', seguridadController.actualizarContrasenna);
 router.post('/actualizarGenero', seguridadController.actualizarGenero);
@@ -11,6 +12,7 @@ router.post('/crearOActualizarUsuario', seguridadController.crearOActualizarUsua
 router.post('/cargaUsuarios', seguridadController.cargarUsuario);
 router.post('/EstadoUsuario', seguridadController.EstadoUsuario);
 router.get('/nombre', seguridadController.getUsuarioPorNombre);
+router.get('/RolesUsuarios/:Identificacion', seguridadController.getRolesPorIdentificacion);
 router.get('/:Identificacion', seguridadController.getUsuarioPorIdentificacion);
 
 
