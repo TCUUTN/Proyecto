@@ -25,7 +25,7 @@ function App() {
 
     // Si no hay información en el sessionStorage o el género es "Indefinido"
     // y la ruta no es '/' ni '/AccesoDenegado' ni '/CompletarPerfil'
-    if (
+    /*if (
       (!storedCorreo || storedGenero === 'Indefinido') &&
       currentPath !== '/' &&
       currentPath !== '/AccesoDenegado' &&
@@ -33,7 +33,7 @@ function App() {
     ) {
       // Redirigir a la página de acceso denegado
       window.location.href = '/AccesoDenegado';
-    }
+    }*/
   }, []);
 
   return (

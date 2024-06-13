@@ -77,10 +77,10 @@ function Navbar() {
                 {(rolUsuario === 'Academico' || rolUsuario === 'Administrativo') && (
                   <li className="nav-item dropdown">
                     <Link className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Grupos
+                     Grupos
                     </Link>
                     <ul className="dropdown-menu bg-blue">
-                    <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
+                    <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Proyectos</Link></li>
                     <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
                   </ul>
                   </li>
