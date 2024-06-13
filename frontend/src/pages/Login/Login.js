@@ -48,6 +48,7 @@ function Login() {
         sessionStorage.setItem("RolUsuario", data.RolUsuario);
         sessionStorage.setItem("CorreoElectronico", data.CorreoElectronico);
         sessionStorage.setItem("Genero", data.Genero);
+        sessionStorage.setItem("Sede", data.Sede);
 
         // Redirigir según el género del usuario
         if (data.Genero === "Indefinido" || !data.Genero) {

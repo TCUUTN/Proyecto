@@ -1,9 +1,10 @@
 // Importar Sequelize y la conexión a la base de datos
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Ajusta la ruta según la ubicación de tu archivo de configuración de la base de datos
+const sequelize = require('../config/db');
+ 
 
 // Definir el modelo de Usuarios
-const Usuario = sequelize.define('Usuario', {
+const Usuario = sequelize.define('Usuarios', {
   Identificacion: {
     type: DataTypes.STRING(20),
     allowNull: false,
@@ -36,7 +37,7 @@ const Usuario = sequelize.define('Usuario', {
     comment: 'Carrera del Estudiante'
   },
   Genero: {
-    type: DataTypes.ENUM('Masculino', 'Femenino', 'Indefinido'),
+    type: DataTypes.ENUM('Masculino', 'Femenino', 'Prefiero no Especificar', 'Indefinido'),
     allowNull: false,
     defaultValue: 'Indefinido',
     comment: 'Género de la persona'
@@ -46,12 +47,6 @@ const Usuario = sequelize.define('Usuario', {
     allowNull: false,
     defaultValue: '-',
     comment: 'Correo electrónico'
-  },
-  RolUsuario: {
-    type: DataTypes.ENUM('Academico', 'Administrativo', 'Estudiante'),
-    allowNull: false,
-    defaultValue: 'Estudiante',
-    comment: 'Rol de usuario'
   },
   Contrasenna: {
     type: DataTypes.STRING(60),
@@ -65,20 +60,20 @@ const Usuario = sequelize.define('Usuario', {
     defaultValue: 1,
     comment: 'Estado de Usuario'
   },
-  TipoIdentificacion: {
-    type: DataTypes.ENUM('Cedula', 'Dimex', 'Pasaporte'),
+  Sede: {
+    type: DataTypes.ENUM('Central', 'Atenas', 'Guanacaste', 'Pacífico', 'San Carlos', 'C.F.P.T.E.', 'Todas'),
     allowNull: false,
-    defaultValue: 'Cedula',
-    comment: 'Tipo de identificación'
+    defaultValue: 'Central',
+    comment: 'Sede del Usuario'
   },
   UniversalUniqueIdentifier: {
     type: DataTypes.CHAR(36),
     allowNull: false,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: 'UUID',
     comment: 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()'
   },
   LastUpdate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATE(4),
     allowNull: false,
     defaultValue: DataTypes.NOW,
     onUpdate: DataTypes.NOW,
@@ -91,9 +86,10 @@ const Usuario = sequelize.define('Usuario', {
     comment: 'Último usuario que modificó la fila'
   }
 }, {
-  tableName: 'Usuarios', // Nombre de la tabla en la base de datos (si difiere del nombre del modelo)
+  tableName: 'Usuarios', // Nombre de la tabla en la base de datos
   timestamps: false // Indica que Sequelize no manejará automáticamente las columnas de timestamps
 });
+
 
 // Exportar el modelo para poder utilizarlo en otras partes de la aplicación
 module.exports = Usuario;
