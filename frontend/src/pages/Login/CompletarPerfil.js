@@ -49,12 +49,12 @@ function CompletarPerfil() {
   };
 
   return (
-    <div className="home-container">
-      <div className="home-content">
+    <div className="perfil-container">
+      <div className="perfil-content">
         <h1 className="home-title">Completar Perfil</h1>
-        <hr className="title-divider" />
+        <hr className="perfil-divider" />
         <form onSubmit={handleSubmit}>
-          <div className="input-container">
+          <div className="perfil-input-container">
             <select
               id="genero"
               name="genero"
@@ -65,9 +65,10 @@ function CompletarPerfil() {
               <option value="">Seleccione un género</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
+              
             </select>
           </div>
-          <button type="submit" className="login-button">
+          <button type="submit" className="perfil-button">
             Guardar
           </button>
         </form>

@@ -89,3 +89,98 @@ button.cambiar-button:disabled {
   background-color: grey!important;
   cursor: not-allowed!important;
 }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .cambio-form {
+    padding: 30px;
+    width: 70%;
+  }
+
+  .title {
+    font-size: 28px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .cambio-form {
+    padding: 20px;
+    width: 80%;
+  }
+
+  .title {
+    font-size: 24px !important;
+  }
+
+  .input-label {
+    font-size: 0.9rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 60%;
+  }
+
+  .icon2 {
+    right: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .cambio-container {
+    padding: 20px;
+  }
+
+  .cambio-form {
+    width: 90%;
+  }
+
+  .title {
+    font-size: 22px !important;
+  }
+
+  .input-label {
+    font-size: 0.85rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 65%;
+  }
+
+  .icon2 {
+    right: 12%;
+  }
+}
+
+@media (max-width: 576px) {
+  .cambio-container {
+    padding: 10px;
+  }
+
+  .cambio-form {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 20px !important;
+  }
+
+  .input-label {
+    font-size: 0.8rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 70%;
+  }
+
+  .icon2 {
+    right: 15%;
+  }
+
+  button.cambiar-button {
+    width: 60%;
+    font-size: 14px;
+  }
+}
