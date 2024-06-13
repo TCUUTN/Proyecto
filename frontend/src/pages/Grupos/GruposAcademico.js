@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaEdit,
   FaInfoCircle,
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 import "./Materias.modulo.css";
 
 function GruposAcademico() {
+  const navigate = useNavigate();
   const [grupos, setGrupos] = useState([]);
   const [filteredGrupos, setFilteredGrupos] = useState([]);
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
@@ -133,6 +134,10 @@ function GruposAcademico() {
     }
   };
 
+  const handleLista = (grupoId) => {
+    navigate('/ListaEstudiantes', { state: { grupoId } });
+  };
+
   return (
     <div className="materia-container">
       {loading && (
@@ -238,10 +243,10 @@ function GruposAcademico() {
                 <td>{grupo.Sede}</td>
                 <td>{grupo.Aula}</td>
                 <td>
-                  <button className="icon-btn-mat">
-                    <FaEdit />
-                  </button>
-                  <button className="icon-btn-mat">
+                <button
+                    className="icon-btn-user"
+                    onClick={() => handleLista(grupo.GrupoId)}
+                  >
                     <FaInfoCircle />
                   </button>
                 </td>

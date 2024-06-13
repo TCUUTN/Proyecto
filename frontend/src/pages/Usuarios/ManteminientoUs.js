@@ -229,7 +229,7 @@ function MantenimientoUs() {
 
               return user;
             });
-
+            console.log(jsonData);
             uploadJsonData(jsonData, role);
           } else {
             console.error("Formato de archivo inválido");

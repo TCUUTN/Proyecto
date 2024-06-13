@@ -464,6 +464,7 @@ const cargarUsuario = async (req, res) => {
           where: {
             CodigoMateria: userData.CodigoMateria,
             Cuatrimestre: userData.Cuatrimestre,
+            NumeroGrupo: userData.Grupo,
             Anno: userData.Anno,
             Sede: userData.Sede
           },

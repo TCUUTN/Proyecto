@@ -126,6 +126,30 @@ const getEstudiantePorGrupo = async (req, res) => {
   }
 };
 
+const getListaEstudiantes = async (req, res) => {
+  try {
+    const {GrupoId } = req.params;
+
+    const estudianteGrupo = await GruposEstudiantes.findAll({
+      where: {
+        GrupoId: GrupoId,
+      },
+      attributes: [],
+      include: [
+        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2', 'CorreoElectronico', 'Identificacion'] },
+      ],
+    });
+
+    if (!estudianteGrupo) {
+      return res.status(404).json({ error: "Estudiante en el Grupo no encontrado" });
+    }
+
+    res.status(200).json(estudianteGrupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 
 // Crear o actualizar TipoGrupo
@@ -373,5 +397,6 @@ module.exports = {
   EstadoGrupo,
   cargarGrupos,
   getGrupoPorIdentificacion,
-  cargarTipoGrupos
+  cargarTipoGrupos,
+  getListaEstudiantes
 };
