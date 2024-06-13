@@ -57,6 +57,31 @@ const getGrupoPorGrupoId = async (req, res) => {
   }
 };
 
+const getGrupoPorIdentificacion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    const grupo = await Grupo.findAll({
+      where: {
+        Identificacion: Identificacion,
+        
+      },
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+      ],
+    });
+
+    if (grupo.length === 0) {
+      return res.status(404).json({ error: "El Académico no tiene grupos a cargo" });
+    }
+
+    res.status(200).json(grupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 const getTipoGrupoPorCodigoMateria = async (req, res) => {
   try {
     const { CodigoMateria } = req.params;
@@ -65,6 +90,9 @@ const getTipoGrupoPorCodigoMateria = async (req, res) => {
       where: {
         CodigoMateria: CodigoMateria,
       },
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+      ],
     });
 
     if (!tipoGrupo) {
@@ -344,5 +372,6 @@ module.exports = {
   crearOActualizarGrupoEstudiante,
   EstadoGrupo,
   cargarGrupos,
+  getGrupoPorIdentificacion,
   cargarTipoGrupos
 };

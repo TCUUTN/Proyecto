@@ -18,8 +18,6 @@ function Navbar() {
     const storedGenero = sessionStorage.getItem('Genero');
     const storedSelectedRole = sessionStorage.getItem('SelectedRole');
 
-    
-
     if (storedNombre && storedRolUsuario && storedGenero && storedGenero !== 'Indefinido') {
       setIsAuthenticated(true);
       setNombre(storedNombre);
@@ -93,8 +91,15 @@ function Navbar() {
                       Grupos
                     </Link>
                     <ul className="dropdown-menu bg-blue">
-                      <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
-                      <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
+                      {selectedRole === 'Administrativo' && (
+                        <>
+                          <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
+                          <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
+                        </>
+                      )}
+                      {selectedRole === 'Académico' && (
+                        <li><Link className="dropdown-item dropdown-style" to="/GruposAcademico">Grupos a cargo</Link></li>
+                      )}
                     </ul>
                   </li>
                 )}
@@ -136,7 +141,7 @@ function Navbar() {
                 <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
                   <li><Link className="dropdown-item dropdown-style2" to="/CambiarClave">Cambio de contraseña</Link></li>
                   <li><hr className="dropdown-divider" /></li>
-                  <li><Link className="dropdown-item dropdown-style2" onClick={handleLogout}>Cerrar Sesión</Link></li>
+                  <li><button className="dropdown-item dropdown-style2" onClick={handleLogout}>Cerrar Sesión</button></li>
                 </ul>
               </ul>
             </div>
