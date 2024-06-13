@@ -65,7 +65,7 @@ function MantMaterias() {
 
     if (CodigoMateria) {
       filtered = filtered.filter((materia) =>
-        materia.CodigoMateria?.includes(CodigoMateria)
+        materia.CodigoMateria?.toLowerCase().includes(CodigoMateria.toLowerCase())
       );
     }
 
@@ -212,12 +212,12 @@ function MantMaterias() {
         <div className="filters-mat">
           <div className="filter-group-mat">
           <label className="filter-label-mat" htmlFor="CodigoMateria">
-              Buscar por Código de Materia
+              Buscar por Código de Proyecto
             </label>
             <input
               id="CodigoMateria-Busqueda"
               type="text"
-              placeholder="Código de Materia"
+              placeholder="Código de Proyecto"
               className="filter-input-mat"
               value={codigoMateriaFilter}
               onChange={handleCodigoMateriaFilterChange}

@@ -9,17 +9,22 @@ function Navbar() {
   const [nombre, setNombre] = useState('');
   const [rolUsuario, setRolUsuario] = useState('');
   const [genero, setGenero] = useState('');
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
     const storedNombre = sessionStorage.getItem('Nombre');
     const storedRolUsuario = sessionStorage.getItem('RolUsuario');
     const storedGenero = sessionStorage.getItem('Genero');
-    
+    const storedSelectedRole = sessionStorage.getItem('SelectedRole');
+
     if (storedNombre && storedRolUsuario && storedGenero && storedGenero !== 'Indefinido') {
       setIsAuthenticated(true);
       setNombre(storedNombre);
       setRolUsuario(storedRolUsuario);
-      setGenero(storedGenero);
+      const rolesArray = storedRolUsuario.split(',');
+      setRoles(rolesArray);
+      setSelectedRole(storedSelectedRole || rolesArray[0]);
     }
 
     const navbarCollapse = document.getElementById('navbarSupportedContent');
@@ -52,6 +57,12 @@ function Navbar() {
     window.location.href = '/'; // Redirige a la página de inicio de sesión
   };
 
+  const handleRoleChange = (event) => {
+    const newRole = event.target.value;
+    setSelectedRole(newRole);
+    sessionStorage.setItem('SelectedRole', newRole);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -69,28 +80,35 @@ function Navbar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                {rolUsuario === 'Administrativo' && (
+                {selectedRole === 'Administrativo' && (
                   <li className="nav-item">
                     <Link className="nav-link" aria-current="page" to="/MantUser">Usuarios</Link>
                   </li>
                 )}
-                {(rolUsuario === 'Academico' || rolUsuario === 'Administrativo') && (
+                {(selectedRole === 'Académico' || selectedRole === 'Administrativo') && (
                   <li className="nav-item dropdown">
                     <Link className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      Grupos
                     </Link>
                     <ul className="dropdown-menu bg-blue">
-                    <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Proyectos</Link></li>
-                    <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
-                  </ul>
+                      {selectedRole === 'Administrativo' && (
+                        <>
+                          <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
+                          <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
+                        </>
+                      )}
+                      {selectedRole === 'Académico' && (
+                        <li><Link className="dropdown-item dropdown-style" to="/GruposAcademico">Grupos a cargo</Link></li>
+                      )}
+                    </ul>
                   </li>
                 )}
-                {(rolUsuario === 'Estudiante' || rolUsuario === 'Administrativo') && (
+                {(selectedRole === 'Estudiante' || selectedRole === 'Administrativo') && (
                   <li className="nav-item">
                     <Link className="nav-link" to="#">Ingresar horas</Link>
                   </li>
                 )}
-                {(rolUsuario === 'Academico' || rolUsuario === 'Administrativo') && (
+                {(selectedRole === 'Académico' || selectedRole === 'Administrativo') && (
                   <li className="nav-item">
                     <Link className="nav-link" to="#">Socios Comunitarios</Link>
                   </li>
@@ -109,9 +127,13 @@ function Navbar() {
                   <Link className="nav-link" aria-disabled="true">Información</Link>
                 </li>
               </ul>
-              <span className="navbar-link">
-                {nombre}: {rolUsuario}
-              </span>
+              <div className="navbar-link">
+                <select className="navbar-select" value={selectedRole} onChange={handleRoleChange}>
+                  {roles.map((role, index) => (
+                    <option key={index} value={role}>{nombre}: {role}</option>
+                  ))}
+                </select>
+              </div>
               <ul className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <FaCircleUser className="user-icon" />
@@ -119,7 +141,7 @@ function Navbar() {
                 <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
                   <li><Link className="dropdown-item dropdown-style2" to="/CambiarClave">Cambio de contraseña</Link></li>
                   <li><hr className="dropdown-divider" /></li>
-                  <li><Link className="dropdown-item dropdown-style2" onClick={handleLogout}>Cerrar Sesión</Link></li>
+                  <li><button className="dropdown-item dropdown-style2" onClick={handleLogout}>Cerrar Sesión</button></li>
                 </ul>
               </ul>
             </div>

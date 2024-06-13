@@ -31,8 +31,18 @@ function MantenimientoUs() {
       const response = await fetch("/usuarios");
       if (response.ok) {
         const data = await response.json();
-        setUsuarios(data);
-        setFilteredUsuarios(data);
+        const sede = sessionStorage.getItem("Sede");
+
+        if (sede && sede !== "Todas") {
+          const filteredBySede = data.filter(
+            (usuario) => usuario.Sede === sede
+          );
+          setUsuarios(filteredBySede);
+          setFilteredUsuarios(filteredBySede);
+        } else {
+          setUsuarios(data);
+          setFilteredUsuarios(data);
+        }
       } else {
         console.error("Error al obtener la lista de usuarios");
       }
@@ -156,9 +166,12 @@ function MantenimientoUs() {
           { header: 1 }
         );
 
-        if (role === "Academico") {
-          const jsonData = worksheet.map((row) => {
-            const [Identificacion, NombreCompleto, CorreoElectronico] = row;
+        if (role === "Académico") {
+          const headers = worksheet[0];
+          const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
+          
+          const jsonData = dataRows.map((row) => {
+            const [Identificacion, NombreCompleto, CorreoElectronico, Sede] = row;
             const nombres = NombreCompleto.split(" ");
             const Apellido1 = nombres[0];
             const Apellido2 = nombres[1] || "";
@@ -174,7 +187,7 @@ function MantenimientoUs() {
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
               Estado: true,
-              TipoIdentificacion: "Cedula",
+              Sede: Sede,
             };
           });
 
@@ -324,72 +337,71 @@ function MantenimientoUs() {
                   type="file"
                   accept=".xlsx"
                   style={{ display: "none" }}
-                  onChange={(e) => handleFileUpload(e, "Academico")}
+                  onChange={(e) => handleFileUpload(e, "Académico")}
                 />
               </div>
             </div>
           </div>
         </aside>
         <div className="filters">
-  <div className="filter-group">
-    <label className="filter-label" htmlFor="identificacion-Busqueda">
-      Buscar por Identificación
-    </label>
-    <input
-      id="identificacion-Busqueda"
-      type="text"
-      placeholder="Identificación"
-      className="filter-input"
-      value={identificacionFilter}
-      onChange={handleIdentificacionFilterChange}
-    />
-  </div>
-  <div className="filter-group">
-    <label className="filter-label" htmlFor="nombre-completo-busqueda">
-      Buscar por Nombre Completo
-    </label>
-    <input
-      id="nombre-completo-busqueda"
-      type="text"
-      placeholder="Nombre Completo"
-      className="filter-input"
-      value={nombreCompletoFilter}
-      onChange={handleNombreCompletoFilterChange}
-    />
-  </div>
-  <div className="filter-group">
-    <label className="filter-label" htmlFor="estado-filter">
-      Estado
-    </label>
-    <select
-      id="estado-filter"
-      className="filter-select"
-      value={estadoFilter}
-      onChange={handleEstadoFilterChange}
-    >
-      <option value="">Todos</option>
-      <option value="true">Activos</option>
-      <option value="false">Inactivos</option>
-    </select>
-  </div>
-  <div className="filter-group">
-    <label className="filter-label" htmlFor="rol-filter">
-      Rol
-    </label>
-    <select
-      id="rol-filter"
-      className="filter-select"
-      value={rolFilter}
-      onChange={handleRolFilterChange}
-    >
-      <option value="">Todos</option>
-      <option value="Academico">Académico</option>
-      <option value="Estudiante">Estudiante</option>
-      <option value="Administrativo">Administrativo</option>
-    </select>
-  </div>
-</div>
-
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="identificacion-Busqueda">
+              Buscar por Identificación
+            </label>
+            <input
+              id="identificacion-Busqueda"
+              type="text"
+              placeholder="Identificación"
+              className="filter-input"
+              value={identificacionFilter}
+              onChange={handleIdentificacionFilterChange}
+            />
+          </div>
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="nombre-completo-busqueda">
+              Buscar por Nombre Completo
+            </label>
+            <input
+              id="nombre-completo-busqueda"
+              type="text"
+              placeholder="Nombre Completo"
+              className="filter-input"
+              value={nombreCompletoFilter}
+              onChange={handleNombreCompletoFilterChange}
+            />
+          </div>
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="estado-filter">
+              Estado
+            </label>
+            <select
+              id="estado-filter"
+              className="filter-select"
+              value={estadoFilter}
+              onChange={handleEstadoFilterChange}
+            >
+              <option value="">Todos</option>
+              <option value="true">Activos</option>
+              <option value="false">Inactivos</option>
+            </select>
+          </div>
+          <div className="filter-group">
+            <label className="filter-label" htmlFor="rol-filter">
+              Rol
+            </label>
+            <select
+              id="rol-filter"
+              className="filter-select"
+              value={rolFilter}
+              onChange={handleRolFilterChange}
+            >
+              <option value="">Todos</option>
+              <option value="Academico">Académico</option>
+              <option value="Estudiante">Estudiante</option>
+              <option value="Administrativo">Administrativo</option>
+            </select>
+          </div>
+        </div>
 
         <table>
           <thead>
@@ -397,6 +409,7 @@ function MantenimientoUs() {
               <th>Identificación</th>
               <th>Nombre Completo</th>
               <th>Estado</th>
+              <th>Rol</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -406,6 +419,11 @@ function MantenimientoUs() {
                 <td>{usuario.Identificacion}</td>
                 <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
                 <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
+                <td>
+                  {usuario.Usuarios_Roles.map((ur) => ur.Rol.NombreRol).join(
+                    ", "
+                  )}
+                </td>
                 <td>
                   <button
                     className="icon-btn-user"

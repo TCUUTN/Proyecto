@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
 
-function MantGrupos() {
+function GruposAcademico() {
   const [grupos, setGrupos] = useState([]);
   const [filteredGrupos, setFilteredGrupos] = useState([]);
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
@@ -23,6 +23,7 @@ function MantGrupos() {
   const gruposPerPage = 10;
   const [uniqueYears, setUniqueYears] = useState([]);
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
+  const identificacion = sessionStorage.getItem("Identificacion");
 
   useEffect(() => {
     fetchGrupos();
@@ -30,16 +31,22 @@ function MantGrupos() {
 
   const fetchGrupos = async () => {
     try {
-      const response = await fetch("/grupos");
+        console.log(identificacion)
+      const response = await fetch(`/grupos/Academicos/${identificacion}`);
+      
       if (response.ok) {
         const data = await response.json();
         const filteredData = sedeFilter === "Todas"
           ? data
           : data.filter((grupo) => grupo.Sede === sedeFilter);
+          
         setGrupos(filteredData);
         setFilteredGrupos(filteredData);
         const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
         setUniqueYears(years.sort((a, b) => a - b));
+      } else if (response.status === 404) {
+        console.error("El Académico no tiene grupos a cargo");
+        toast.error("El Académico no tiene grupos a cargo");
       } else {
         console.error("Error al obtener la lista de grupos");
         toast.error("Error al obtener la lista de grupos");
@@ -291,34 +298,6 @@ function MantGrupos() {
       )}
       <ToastContainer position="bottom-right" />
       <main>
-        <aside className="sidebar-mater">
-          <button className="add-mater">
-            Agregar Grupos <IoMdAddCircle className="icon-addMater" />
-          </button>
-          <hr className="mater-divider" />
-          <div>
-            <h2 className="title-mater">Carga masiva</h2>
-            <br></br>
-            <div className="bulk-upload-mater">
-              <div className="upload-option-mater">
-                <FaFileDownload className="icon-othermat" /> Descargar Plantilla
-              </div>
-              <div className="upload-option-mater">
-                <label htmlFor="file-upload" className="upload-label">
-                  <FaFileUpload className="icon-othermat" /> Subir Plantilla
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept=".xlsx"
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                />
-              </div>
-            </div>
-          </div>
-        </aside>
-
         <div className="filters-mat">
           <div className="filter-group-mat">
             <label
@@ -401,7 +380,6 @@ function MantGrupos() {
               <th>Horario</th>
               <th>Sede</th>
               <th>Aula</th>
-              <th>Académico</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -415,7 +393,6 @@ function MantGrupos() {
                 <td>{grupo.Horario}</td>
                 <td>{grupo.Sede}</td>
                 <td>{grupo.Aula}</td>
-                <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
                 <td>
                   <button className="icon-btn-mat">
                     <FaEdit />
@@ -440,4 +417,4 @@ function MantGrupos() {
   );
 }
 
-export default MantGrupos;
+export default GruposAcademico;

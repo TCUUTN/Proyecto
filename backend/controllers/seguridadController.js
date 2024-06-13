@@ -1,15 +1,43 @@
 const pool = require("../config/db");
-const { enviarCorreo } = require('../helpers/CorreoHelper'); // Importa el helper
+const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/Usuario");
+const Rol = require("../models/Rol");
 const Grupo = require("../models/Grupo");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
+const Sequelize = require("sequelize");
+const UsuarioRoles = require("../models/UsuarioRol");
 const crypto = require("crypto");
 
 const getAllUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.findAll();
+    const usuarios = await Usuario.findAll({
+      include: {
+        model: UsuarioRoles,
+        attributes: ["RolId"],
+        include: {
+          model: Rol,
+          attributes: ["NombreRol"], // Incluir solo NombreRol de la tabla Rol
+        },
+      },
+    });
+
     res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getAllUsuarioRol = async (req, res) => {
+  try {
+    const roles = await UsuarioRoles.findAll({
+      include: [
+        {
+          model: Usuario, // Nombre del modelo relacionado
+        },
+      ],
+    });
+    res.json(roles);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -30,7 +58,9 @@ const getUsuarioPorNombre = async (req, res) => {
     });
 
     if (!usuario) {
-      return res.status(404).json({ error: "Usuario no encontrado por nombre" });
+      return res
+        .status(404)
+        .json({ error: "Usuario no encontrado por nombre" });
     }
 
     // Retornar solo el campo de Identificación
@@ -40,15 +70,17 @@ const getUsuarioPorNombre = async (req, res) => {
   }
 };
 
-
 const getUsuarioPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
 
-    // Buscar el usuario por su número de identificación
+    // Buscar el usuario por su número de identificación y traer también los roles asociados
     const usuario = await Usuario.findOne({
       where: {
         Identificacion: Identificacion,
+      },
+      include: {
+        model: UsuarioRoles,
       },
     });
 
@@ -57,6 +89,36 @@ const getUsuarioPorIdentificacion = async (req, res) => {
     }
 
     res.status(200).json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getRolesPorIdentificacion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    // Buscar el usuario por su número de identificación y traer solo el atributo RolID y el NombreRol relacionado
+    const roles = await UsuarioRoles.findAll({
+      where: {
+        Identificacion: Identificacion,
+      },
+      attributes: ["RolId"], // Seleccionar solo la columna RolID de UsuarioRoles
+      include: [
+        {
+          model: Rol,
+          attributes: ["NombreRol"], // Seleccionar solo la columna NombreRol de la tabla Rol
+        },
+      ],
+    });
+
+    if (roles.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Roles no encontrados para el usuario" });
+    }
+
+    res.status(200).json(roles);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -71,6 +133,14 @@ const getUsuarioPorCredenciales = async (req, res) => {
       where: {
         CorreoElectronico: CorreoElectronico,
       },
+      include: {
+        model: UsuarioRoles,
+        attributes: ["RolId"],
+        include: {
+          model: Rol,
+          attributes: ["NombreRol"], // Incluir solo NombreRol de la tabla Rol
+        },
+      },
     });
 
     if (usuario) {
@@ -81,15 +151,22 @@ const getUsuarioPorCredenciales = async (req, res) => {
       }
 
       // Comparar la contraseña proporcionada con la contraseña encriptada en la base de datos
-      const contrasennaValida = await bcrypt.compare(Contrasenna, usuario.Contrasenna);
+      const contrasennaValida = await bcrypt.compare(
+        Contrasenna,
+        usuario.Contrasenna
+      );
       if (contrasennaValida) {
-        // Devolver solo Nombre, RolUsuario y CorreoElectronico
+        // Extraer los roles del usuario
+        const roles = usuario.Usuarios_Roles.map(usuarioRol => usuarioRol.Rol.NombreRol);
+
+        // Devolver solo los campos requeridos
         const usuarioResponse = {
-          Identificacion:usuario.Identificacion,
+          Identificacion: usuario.Identificacion,
           Nombre: usuario.Nombre,
-          RolUsuario: usuario.RolUsuario,
+          RolUsuario: roles, // Aquí almacenamos todos los NombreRol
           CorreoElectronico: usuario.CorreoElectronico,
-          Genero: usuario.Genero
+          Genero: usuario.Genero,
+          Sede: usuario.Sede
         };
         res.json(usuarioResponse);
       } else {
@@ -106,14 +183,22 @@ const getUsuarioPorCredenciales = async (req, res) => {
   }
 };
 
-
 const actualizarContrasenna = async (req, res) => {
   try {
-    const { CorreoElectronico, ContrasennaAntigua, ContrasennaNueva, ConfirmacionContrasenna } = req.body;
+    const {
+      CorreoElectronico,
+      ContrasennaAntigua,
+      ContrasennaNueva,
+      ConfirmacionContrasenna,
+    } = req.body;
 
     // Verificar que las nuevas contraseñas coincidan
     if (ContrasennaNueva !== ConfirmacionContrasenna) {
-      return res.status(400).json({ error: "La nueva contraseña y la confirmación deben ser iguales" });
+      return res
+        .status(400)
+        .json({
+          error: "La nueva contraseña y la confirmación deben ser iguales",
+        });
     }
 
     // Buscar un usuario que coincida con el correo electrónico proporcionado
@@ -125,14 +210,19 @@ const actualizarContrasenna = async (req, res) => {
 
     // Si se encuentra un usuario, verificar la contraseña antigua y actualizar la contraseña
     if (usuario) {
-      const contrasennaValida = await bcrypt.compare(ContrasennaAntigua, usuario.Contrasenna);
+      const contrasennaValida = await bcrypt.compare(
+        ContrasennaAntigua,
+        usuario.Contrasenna
+      );
       if (contrasennaValida) {
         const hashedPassword = await bcrypt.hash(ContrasennaNueva, 10); // Encriptar la nueva contraseña
         usuario.Contrasenna = hashedPassword;
         await usuario.save(); // Guardar los cambios en la base de datos
         return res.json({ message: "Contraseña actualizada correctamente" });
       } else {
-        return res.status(401).json({ error: "La contraseña antigua no es válida" });
+        return res
+          .status(401)
+          .json({ error: "La contraseña antigua no es válida" });
       }
     } else {
       // Si no se encuentra ningún usuario que coincida, devolver un mensaje de error
@@ -143,7 +233,6 @@ const actualizarContrasenna = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 const generarContrasennaAleatoria = () => {
   // Definir los caracteres permitidos en la contraseña
@@ -179,8 +268,6 @@ const generarMensajeHtml = (nuevaContrasenna) => {
   `;
 };
 
-
-
 const olvidoContrasenna = async (req, res) => {
   try {
     const { CorreoElectronico } = req.body;
@@ -201,7 +288,7 @@ const olvidoContrasenna = async (req, res) => {
       await usuario.save(); // Guardar los cambios en la base de datos
 
       // Enviar el correo electrónico con la nueva contraseña
-      const asunto = 'Recuperación de contraseña';
+      const asunto = "Recuperación de contraseña";
       const mensajeHtml = generarMensajeHtml(nuevaContrasenna);
       await enviarCorreo(CorreoElectronico, asunto, mensajeHtml);
 
@@ -221,7 +308,18 @@ const olvidoContrasenna = async (req, res) => {
 // Función para crear o modificar un usuario
 const crearOActualizarUsuario = async (req, res) => {
   try {
-    const { Identificacion, Nombre, Apellido1, Apellido2, Genero, CorreoElectronico, RolUsuario, Contrasenna, Estado, TipoIdentificacion } = req.body;
+    const {
+      Identificacion,
+      Nombre,
+      Apellido1,
+      Apellido2,
+      Genero,
+      CorreoElectronico,
+      RolUsuario,
+      Contrasenna,
+      Estado,
+      TipoIdentificacion,
+    } = req.body;
 
     // Verificar si el correo electrónico ya está asignado a otro usuario
     const correoExistente = await Usuario.findOne({
@@ -231,7 +329,11 @@ const crearOActualizarUsuario = async (req, res) => {
     });
 
     if (correoExistente && correoExistente.Identificacion !== Identificacion) {
-      return res.status(400).json({ error: "El correo electrónico ya está asignado a otro usuario" });
+      return res
+        .status(400)
+        .json({
+          error: "El correo electrónico ya está asignado a otro usuario",
+        });
     }
 
     // Verificar si ya existe un usuario con la identificación proporcionada
@@ -244,8 +346,8 @@ const crearOActualizarUsuario = async (req, res) => {
     if (usuarioExistente) {
       // Modificar el usuario existente
 
-        // Encriptar la contraseña antes de almacenarla en la base de datos
-    const hashedPassword = await bcrypt.hash(Contrasenna, 10);
+      // Encriptar la contraseña antes de almacenarla en la base de datos
+      const hashedPassword = await bcrypt.hash(Contrasenna, 10);
       usuarioExistente = await usuarioExistente.update({
         Nombre: Nombre,
         Apellido1: Apellido1,
@@ -301,74 +403,82 @@ const cargarUsuario = async (req, res) => {
         },
       });
 
-      if (userData.RolUsuario === 'Academico') {
-        if (usuarioExistente) {
-          // Actualizar el usuario existente
-          await usuarioExistente.update({
-            Nombre: userData.Nombre,
-            Apellido1: userData.Apellido1,
-            Apellido2: userData.Apellido2,
-            CorreoElectronico: userData.CorreoElectronico,
-            RolUsuario: userData.RolUsuario,
-            Estado: userData.Estado,
-            TipoIdentificacion: userData.TipoIdentificacion,
-          });
-        } else {
-          // Crear un nuevo usuario
-          await Usuario.create({
-            Identificacion: userData.Identificacion,
-            Nombre: userData.Nombre,
-            Apellido1: userData.Apellido1,
-            Apellido2: userData.Apellido2,
-            CorreoElectronico: userData.CorreoElectronico,
-            RolUsuario: userData.RolUsuario,
-            Contrasenna: userData.Contrasenna,
-            Estado: userData.Estado,
-            TipoIdentificacion: userData.TipoIdentificacion,
-          });
-        }
-      } else if (userData.RolUsuario === 'Estudiante') {
+      if (usuarioExistente) {
+        // Actualizar el usuario existente
+        await usuarioExistente.update({
+          Nombre: userData.Nombre,
+          Apellido1: userData.Apellido1,
+          Apellido2: userData.Apellido2,
+          CorreoElectronico: userData.CorreoElectronico,
+          Estado: userData.Estado,
+          TipoIdentificacion: userData.TipoIdentificacion,
+        });
+      } else {
+        // Crear un nuevo usuario
+        usuarioExistente = await Usuario.create({
+          Identificacion: userData.Identificacion,
+          Nombre: userData.Nombre,
+          Apellido1: userData.Apellido1,
+          Apellido2: userData.Apellido2,
+          CorreoElectronico: userData.CorreoElectronico,
+          Contrasenna: userData.Contrasenna,
+          Estado: userData.Estado,
+          TipoIdentificacion: userData.TipoIdentificacion,
+        });
+      }
+
+      // Buscar el RolId correspondiente al RolUsuario
+      const rol = await Rol.findOne({
+        where: {
+          NombreRol: userData.RolUsuario,
+        },
+      });
+
+      if (!rol) {
+        return res
+          .status(400)
+          .send(`Rol no encontrado para RolUsuario: ${userData.RolUsuario}`);
+      }
+
+      const RolId = rol.RolId;
+
+      // Verificar si la combinación de Identificacion y RolId ya existe en UsuarioRoles
+      const usuarioRolExistente = await UsuarioRoles.findOne({
+        where: {
+          Identificacion: userData.Identificacion,
+          RolId: RolId,
+        },
+      });
+
+      if (!usuarioRolExistente) {
+        // Crear un nuevo registro en UsuarioRoles
+        await UsuarioRoles.create({
+          Identificacion: userData.Identificacion,
+          RolId: RolId,
+        });
+      }
+
+      if (userData.RolUsuario === "Estudiante") {
         // Buscar el grupoId en la tabla Grupo
         let grupo = await Grupo.findOne({
           where: {
             CodigoMateria: userData.CodigoMateria,
             Cuatrimestre: userData.Cuatrimestre,
             Anno: userData.Anno,
+            Sede: userData.Sede
           },
         });
 
         if (!grupo) {
           // Si el grupo no se encuentra, retornar un mensaje de error
-          return res.status(400).send(`Grupo no encontrado para CodigoMateria: ${userData.CodigoMateria}, Cuatrimestre: ${userData.Cuatrimestre}, Anno: ${userData.Anno}`);
+          return res
+            .status(400)
+            .send(
+              `Grupo no encontrado para CodigoMateria: ${userData.CodigoMateria}, Cuatrimestre: ${userData.Cuatrimestre}, Anno: ${userData.Anno}`
+            );
         }
 
         const grupoId = grupo.GrupoId; // Asumiendo que el campo ID es "GrupoId"
-
-        if (usuarioExistente) {
-          // Actualizar el usuario existente
-          await usuarioExistente.update({
-            Nombre: userData.Nombre,
-            Apellido1: userData.Apellido1,
-            Apellido2: userData.Apellido2,
-            CorreoElectronico: userData.CorreoElectronico,
-            RolUsuario: userData.RolUsuario,
-            Estado: userData.Estado,
-            TipoIdentificacion: userData.TipoIdentificacion,
-          });
-        } else {
-          // Crear un nuevo usuario
-          await Usuario.create({
-            Identificacion: userData.Identificacion,
-            Nombre: userData.Nombre,
-            Apellido1: userData.Apellido1,
-            Apellido2: userData.Apellido2,
-            CorreoElectronico: userData.CorreoElectronico,
-            RolUsuario: userData.RolUsuario,
-            Contrasenna: userData.Contrasenna,
-            Estado: userData.Estado,
-            TipoIdentificacion: userData.TipoIdentificacion,
-          });
-        }
 
         // Verificar si el registro en GruposEstudiantes ya existe
         let grupoEstudianteExistente = await GruposEstudiantes.findOne({
@@ -389,12 +499,13 @@ const cargarUsuario = async (req, res) => {
       }
     }
 
-    res.status(200).send('Usuarios cargados/actualizados exitosamente');
+    res.status(200).send("Usuarios cargados/actualizados exitosamente");
   } catch (error) {
-    console.error('Error al cargar/actualizar los usuarios:', error);
-    res.status(500).send('Error al cargar/actualizar los usuarios');
+    console.error("Error al cargar/actualizar los usuarios:", error);
+    res.status(500).send("Error al cargar/actualizar los usuarios");
   }
 };
+
 
 const EstadoUsuario = async (req, res) => {
   try {
@@ -456,9 +567,11 @@ module.exports = {
   getUsuarioPorCredenciales,
   actualizarContrasenna,
   olvidoContrasenna,
+  getRolesPorIdentificacion,
   crearOActualizarUsuario,
   EstadoUsuario,
+  getAllUsuarioRol,
   getUsuarioPorIdentificacion,
   actualizarGenero,
-  cargarUsuario
+  cargarUsuario,
 };

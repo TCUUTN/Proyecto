@@ -62,10 +62,12 @@
   align-items: center;
 }
 
-.navbar-links {
+.navbar-link {
   list-style: none;
   display: flex;
   margin: 0;
+  font-size: 15px !important;
+  font-family: 'Century Gothic', sans-serif !important;
 }
 
 .navbar-links li {
@@ -79,8 +81,8 @@
 .navbar-links a {
   color: white;
   text-decoration: none;
-  font-size: 20px;
-  font-family: 'Century Gothic', sans-serif;
+  font-size: 20px !important;
+  font-family: 'Century Gothic', sans-serif !important;
 }
 
 .navbar-icons {
@@ -90,7 +92,8 @@
 
 .navbar-user {
   color: white;
-  font-size: 24px;
+  font-size: 15px !important;
+  font-family: 'Century Gothic', sans-serif !important;
   display: flex;
   align-items: center;
 }
@@ -107,17 +110,17 @@
   margin-left: 10px;
 }
 
-.nav-link{
+.nav-link {
   color: white !important;
   transition: 0.5s;
 }
 
-.nav-link:hover{
+.nav-link:hover {
   color: #f66226 !important;
   transition: 0.5s;
 }
 
-.dropdown-style{
+.dropdown-style {
   color: white !important;
   transition: 0.5s;
 }
@@ -127,13 +130,13 @@
   transition: 0.5s;
 }
 
-.dropdown-style:hover{
+.dropdown-style:hover {
   background-color: white !important;
   color: #f66226 !important;
   transition: 0.5s;
 }
 
-.dropdown-style2{
+.dropdown-style2 {
   color: white !important;
   transition: 0.5s;
 }
@@ -142,12 +145,36 @@
   background-color: #81a1ad !important;
 }
 
-.dropdown-style2:hover{
+.dropdown-style2:hover {
   background-color: #5f818d !important;
   transition: 0.5s;
 }
+
 #navbarSupportedContent {
   background: linear-gradient(90deg, #002c6b, #002b69, #002b69, #81a1ad);
+}
+
+/* Styles for the select element */
+.navbar-select {
+  color: white;
+  background-color: #002d6b00;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 15px;
+  font-family: 'Century Gothic', sans-serif;
+  border-radius: 4px;
+  transition: 0.5s;
+}
+
+.navbar-select option {
+  background-color: #002c6b;
+  color: white;
+  transition: 0.5s;
+}
+
+.navbar-select:hover {
+  color: #f66226;
+  transition: 0.5s;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -161,7 +188,6 @@
     z-index: 10;
     padding: 1rem 0;
     width: 100%;
-   
   }
 
   .navbar-links.active {
@@ -200,3 +226,4 @@
     margin-left: auto;
   }
 }
+
