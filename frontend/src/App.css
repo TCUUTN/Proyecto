@@ -18,7 +18,7 @@
 .App {
   text-align: center;
   margin: 0 auto;
-  background-color: var(--color-fondo);
+  background-color: #f7f7f7;
 }
 
 .App-logo {

@@ -56,18 +56,26 @@ function CrearActualizarUsuario({ usuario, onClose }) {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.Identificacion) newErrors.Identificacion = "Identificación es requerida";
+    if (!formData.Identificacion)
+      newErrors.Identificacion = "Identificación es requerida";
     if (!formData.Nombre) newErrors.Nombre = "Nombre es requerido";
-    if (!formData.Apellido1) newErrors.Apellido1 = "Primer apellido es requerido";
-    if (!formData.Apellido2) newErrors.Apellido2 = "Segundo apellido es requerido";
+    if (!formData.Apellido1)
+      newErrors.Apellido1 = "Primer apellido es requerido";
+    if (!formData.Apellido2)
+      newErrors.Apellido2 = "Segundo apellido es requerido";
     if (!formData.Genero) newErrors.Genero = "Género es requerido";
-    if (!formData.CorreoElectronico) newErrors.CorreoElectronico = "Correo electrónico es requerido";
-    if (!formData.RolUsuario) newErrors.RolUsuario = "Rol de usuario es requerido";
-    if (!formData.TipoIdentificacion) newErrors.TipoIdentificacion = "Tipo de identificación es requerido";
+    if (!formData.CorreoElectronico)
+      newErrors.CorreoElectronico = "Correo electrónico es requerido";
+    if (!formData.RolUsuario)
+      newErrors.RolUsuario = "Rol de usuario es requerido";
+    if (!formData.TipoIdentificacion)
+      newErrors.TipoIdentificacion = "Tipo de identificación es requerido";
     if (!formData.Contrasenna) {
       newErrors.Contrasenna = "Contraseña es requerida";
     } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.Contrasenna)
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        formData.Contrasenna
+      )
     ) {
       newErrors.Contrasenna =
         "Contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial";
@@ -130,7 +138,9 @@ function CrearActualizarUsuario({ usuario, onClose }) {
               <option value="Pasaporte">Pasaporte</option>
             </select>
           </div>
-          {errors.TipoIdentificacion && <p className="error">{errors.TipoIdentificacion}</p>}
+          {errors.TipoIdentificacion && (
+            <p className="error">{errors.TipoIdentificacion}</p>
+          )}
 
           <div className="form-group">
             <label>Identificación:</label>
@@ -142,7 +152,9 @@ function CrearActualizarUsuario({ usuario, onClose }) {
               disabled={!!usuario}
             />
           </div>
-          {errors.Identificacion && <p className="error">{errors.Identificacion}</p>}
+          {errors.Identificacion && (
+            <p className="error">{errors.Identificacion}</p>
+          )}
 
           <div className="form-group">
             <label>Nombre:</label>
@@ -201,7 +213,9 @@ function CrearActualizarUsuario({ usuario, onClose }) {
               onChange={handleChange}
             />
           </div>
-          {errors.CorreoElectronico && <p className="error">{errors.CorreoElectronico}</p>}
+          {errors.CorreoElectronico && (
+            <p className="error">{errors.CorreoElectronico}</p>
+          )}
 
           <div className="form-group">
             <label>Rol Usuario:</label>
@@ -246,7 +260,9 @@ function CrearActualizarUsuario({ usuario, onClose }) {
 
           <div className="modal-actions">
             <button type="submit">{usuario ? "Actualizar" : "Crear"}</button>
-            <button type="button" onClick={onClose}>Cancelar</button>
+            <button type="button" onClick={onClose}>
+              Cancelar
+            </button>
           </div>
         </form>
       </div>
