@@ -93,7 +93,7 @@ function Navbar() {
                     <ul className="dropdown-menu bg-blue">
                       {selectedRole === 'Administrativo' && (
                         <>
-                          <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Materias</Link></li>
+                          <li><Link className="dropdown-item dropdown-style" to="/MantMaterias">Proyectos</Link></li>
                           <li><Link className="dropdown-item dropdown-style" to="/MantGrupos">Creación de grupos</Link></li>
                         </>
                       )}

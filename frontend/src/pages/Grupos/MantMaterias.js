@@ -65,7 +65,9 @@ function MantMaterias() {
 
     if (CodigoMateria) {
       filtered = filtered.filter((materia) =>
-        materia.CodigoMateria?.toLowerCase().includes(CodigoMateria.toLowerCase())
+        materia.CodigoMateria?.toLowerCase().includes(
+          CodigoMateria.toLowerCase()
+        )
       );
     }
 
@@ -174,21 +176,27 @@ function MantMaterias() {
 
   return (
     <div className="materia-container">
+      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
+      {/**/}
       <main>
-        <aside className="sidebar-mater">
-          <button className="add-mater">
-            Agregar Materias <IoMdAddCircle className="icon-addMater" />
-          </button>
+        {/*Agregar usuario y la carga */}
+        <div className="sidebar-mater">
+          <div className="mater-action">
+            <button className="add-mater">
+              Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
+            </button>
+          </div>
           <hr className="mater-divider" />
-          <div>
+          {/*Parte de las carga masiva*/}
+          <div className="bulk-upload-section">
             <h2 className="title-mater">Carga masiva</h2>
-            <br></br>
+
             <div className="bulk-upload-mater">
               <div className="upload-option-mater">
                 <FaFileDownload className="icon-othermat" /> Descargar Plantilla
@@ -207,11 +215,12 @@ function MantMaterias() {
               </div>
             </div>
           </div>
-        </aside>
+        </div>
+
         {/* Filtros */}
         <div className="filters-mat">
           <div className="filter-group-mat">
-          <label className="filter-label-mat" htmlFor="CodigoMateria">
+            <label className="filter-label-mat" htmlFor="CodigoMateria">
               Buscar por Código de Proyecto
             </label>
             <input
@@ -222,10 +231,9 @@ function MantMaterias() {
               value={codigoMateriaFilter}
               onChange={handleCodigoMateriaFilterChange}
             />
-            
           </div>
           <div className="filter-group-mat">
-          <label className="filter-label-mat" htmlFor="Proyecto">
+            <label className="filter-label-mat" htmlFor="Proyecto">
               Buscar por Nombre de Proyecto
             </label>
             <input
@@ -236,10 +244,9 @@ function MantMaterias() {
               value={nombreProyectoFilter}
               onChange={handleNombreProyectoFilterChange}
             />
-            
           </div>
           <div className="filter-group-mat">
-          <label className="filter-label-mat" htmlFor="Modalidad">
+            <label className="filter-label-mat" htmlFor="Modalidad">
               Seleccione Modalidad
             </label>
             <select
@@ -252,56 +259,59 @@ function MantMaterias() {
               <option value="Hibrido">Híbrido</option>
               <option value="Virtual">Virtual</option>
             </select>
-            
           </div>
         </div>
-        {/* Toda la tabla */}
-        <table className="mat-table">
-          <thead className="mat-thead">
-            <tr>
-              <th>Código de Materia</th>
-              <th>Nombre del Proyecto</th>
-              <th>Tipo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="mat-tbody">
-            {currentMaterias.map((materia) => (
-              <tr key={materia.CodigoMateria}>
-                <td>{materia.CodigoMateria}</td>
-                <td>{materia.NombreProyecto}</td>
-                <td>{materia.TipoCurso}</td>
-                <td>
-                  <button className="icon-btn-mat">
-                    <FaEdit />
-                  </button>
-                  <button className="icon-btn-mat">
-                    <FaInfoCircle />
-                  </button>
-                </td>
+
+        {/*Tabla*/}
+        <div className="table-container-mat">
+          <table className="mat-table">
+            <thead className="mat-thead">
+              <tr>
+                <th>Código de Materia</th>
+                <th>Nombre del Proyecto</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* La paginacion */}
-        <div className="pagination-mat">
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-            Anterior
-          </button>
-          <span>
-            Página {currentPage} de{" "}
-            {Math.ceil(filteredMaterias.length / materiasPerPage)}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={
-              currentPage ===
-              Math.ceil(filteredMaterias.length / materiasPerPage)
-            }
-          >
-            Siguiente
-          </button>
+            </thead>
+            <tbody className="mat-tbody">
+              {currentMaterias.map((materia) => (
+                <tr key={materia.CodigoMateria}>
+                  <td>{materia.CodigoMateria}</td>
+                  <td>{materia.NombreProyecto}</td>
+                  <td>{materia.TipoCurso}</td>
+                  <td>
+                    <button className="icon-btn-mat">
+                      <FaEdit />
+                    </button>
+                    <button className="icon-btn-mat">
+                      <FaInfoCircle />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* La paginacion */}
+          <div className="pagination-mat">
+            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              Anterior
+            </button>
+            <span>
+              Página {currentPage} de{" "}
+              {Math.ceil(filteredMaterias.length / materiasPerPage)}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={
+                currentPage ===
+                Math.ceil(filteredMaterias.length / materiasPerPage)
+              }
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
+        {/**/}
       </main>
     </div>
   );

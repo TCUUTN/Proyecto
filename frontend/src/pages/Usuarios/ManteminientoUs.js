@@ -21,9 +21,11 @@ function MantenimientoUs() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
-
+  //Para el Model o ventana emergente
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  //
+
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
 
   const fetchUsuarios = async () => {
@@ -169,9 +171,10 @@ function MantenimientoUs() {
         if (role === "Académico") {
           const headers = worksheet[0];
           const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
-          
+
           const jsonData = dataRows.map((row) => {
-            const [Identificacion, NombreCompleto, CorreoElectronico, Sede] = row;
+            const [Identificacion, NombreCompleto, CorreoElectronico, Sede] =
+              row;
             const nombres = NombreCompleto.split(" ");
             const Apellido1 = nombres[0];
             const Apellido2 = nombres[1] || "";
@@ -295,20 +298,26 @@ function MantenimientoUs() {
 
   return (
     <div className="user-container">
+      {/*Para la carga */}
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
+      {/**/}
       <main>
-        <aside className="sidebar-user">
-          <button className="add-user" onClick={handleAddUser}>
-            Agregar Usuario <IoMdAddCircle className="icon-add" />
-          </button>
+        {/*Agregar usuario y la carga */}
+        <div className="sidebar-user">
+          <div className="user-action">
+            <button className="add-user" onClick={handleAddUser}>
+              Agregar Usuario <IoMdAddCircle className="icon-add" />
+            </button>
+          </div>
           <hr className="user-divider" />
-          <div>
+          {/*Parte de las carga masiva*/}
+          <div className="bulk-upload-section">
             <h2 className="title-user">Carga masiva</h2>
-            <br></br>
+
             <div className="bulk-upload">
               <div className="upload-option">
                 <FaFileDownload className="icon-other" /> Descargar Plantilla
@@ -342,41 +351,48 @@ function MantenimientoUs() {
               </div>
             </div>
           </div>
-        </aside>
-        <div className="filters">
-          <div className="filter-group">
-            <label className="filter-label" htmlFor="identificacion-Busqueda">
+        </div>
+        {/*Filtros*/}
+        <div className="filters-user">
+          <div className="filter-group-user">
+            <label
+              className="filter-label-user"
+              htmlFor="identificacion-Busqueda"
+            >
               Buscar por Identificación
             </label>
             <input
               id="identificacion-Busqueda"
               type="text"
               placeholder="Identificación"
-              className="filter-input"
+              className="filter-input-user"
               value={identificacionFilter}
               onChange={handleIdentificacionFilterChange}
             />
           </div>
-          <div className="filter-group">
-            <label className="filter-label" htmlFor="nombre-completo-busqueda">
+          <div className="filter-group-user">
+            <label
+              className="filter-label-user"
+              htmlFor="nombre-completo-busqueda"
+            >
               Buscar por Nombre Completo
             </label>
             <input
               id="nombre-completo-busqueda"
               type="text"
               placeholder="Nombre Completo"
-              className="filter-input"
+              className="filter-input-user"
               value={nombreCompletoFilter}
               onChange={handleNombreCompletoFilterChange}
             />
           </div>
-          <div className="filter-group">
-            <label className="filter-label" htmlFor="estado-filter">
+          <div className="filter-group-user">
+            <label className="filter-label-user" htmlFor="estado-filter">
               Estado
             </label>
             <select
               id="estado-filter"
-              className="filter-select"
+              className="filter-select-user"
               value={estadoFilter}
               onChange={handleEstadoFilterChange}
             >
@@ -385,13 +401,13 @@ function MantenimientoUs() {
               <option value="false">Inactivos</option>
             </select>
           </div>
-          <div className="filter-group">
-            <label className="filter-label" htmlFor="rol-filter">
+          <div className="filter-group-user">
+            <label className="filter-label-user" htmlFor="rol-filter">
               Rol
             </label>
             <select
               id="rol-filter"
-              className="filter-select"
+              className="filter-select-user"
               value={rolFilter}
               onChange={handleRolFilterChange}
             >
@@ -403,60 +419,66 @@ function MantenimientoUs() {
           </div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Identificación</th>
-              <th>Nombre Completo</th>
-              <th>Estado</th>
-              <th>Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentUsuarios.map((usuario) => (
-              <tr key={usuario.Identificacion}>
-                <td>{usuario.Identificacion}</td>
-                <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
-                <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
-                <td>
-                  {usuario.Usuarios_Roles.map((ur) => ur.Rol.NombreRol).join(
-                    ", "
-                  )}
-                </td>
-                <td>
-                  <button
-                    className="icon-btn-user"
-                    onClick={() => handleEditUser(usuario)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button className="icon-btn-user">
-                    <FaInfoCircle />
-                  </button>
-                </td>
+        {/*Tabla*/}
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Identificación</th>
+                <th>Nombre Completo</th>
+                <th>Estado</th>
+                <th>Rol</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="pagination">
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-            Anterior
-          </button>
-          <span>
-            Página {currentPage} de{" "}
-            {Math.ceil(filteredUsuarios.length / usuariosPerPage)}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={
-              currentPage ===
-              Math.ceil(filteredUsuarios.length / usuariosPerPage)
-            }
-          >
-            Siguiente
-          </button>
+            </thead>
+            <tbody>
+              {currentUsuarios.map((usuario) => (
+                <tr key={usuario.Identificacion}>
+                  <td>{usuario.Identificacion}</td>
+                  <td>{`${usuario.Nombre} ${usuario.Apellido1} ${usuario.Apellido2}`}</td>
+                  <td>{usuario.Estado ? "Activo" : "Inactivo"}</td>
+                  <td>
+                    {usuario.Usuarios_Roles.map((ur) => ur.Rol.NombreRol).join(
+                      ", "
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className="icon-btn-user"
+                      onClick={() => handleEditUser(usuario)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button className="icon-btn-user">
+                      <FaInfoCircle />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* La paginacion */}
+          <div className="pagination">
+            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              Anterior
+            </button>
+            <span>
+              Página {currentPage} de{" "}
+              {Math.ceil(filteredUsuarios.length / usuariosPerPage)}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={
+                currentPage ===
+                Math.ceil(filteredUsuarios.length / usuariosPerPage)
+              }
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
+
+        {/**/}
       </main>
 
       {modalOpen && (

@@ -33,9 +33,10 @@ function MantGrupos() {
       const response = await fetch("/grupos");
       if (response.ok) {
         const data = await response.json();
-        const filteredData = sedeFilter === "Todas"
-          ? data
-          : data.filter((grupo) => grupo.Sede === sedeFilter);
+        const filteredData =
+          sedeFilter === "Todas"
+            ? data
+            : data.filter((grupo) => grupo.Sede === sedeFilter);
         setGrupos(filteredData);
         setFilteredGrupos(filteredData);
         const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
@@ -168,7 +169,9 @@ function MantGrupos() {
       const requiredDefaultHeaders = ["Cuatrimestre", "Anno", "Sede"];
       for (const header of requiredDefaultHeaders) {
         if (!defaultValues.hasOwnProperty(header)) {
-          console.error(`El archivo no contiene la columna requerida: ${header}`);
+          console.error(
+            `El archivo no contiene la columna requerida: ${header}`
+          );
           toast.error(`El archivo no contiene la columna requerida: ${header}`);
           setLoading(false); // Termina la carga
           return;
@@ -177,7 +180,7 @@ function MantGrupos() {
 
       // Verificar encabezados en la segunda fila y aplicar las transformaciones
       let headers = worksheet[1];
-      headers = headers.map(header => {
+      headers = headers.map((header) => {
         if (header === "Codigo de Proyecto") return "CodigoMateria";
         if (header === "Numero de Grupo") return "NumeroGrupo";
         return header;
@@ -200,13 +203,7 @@ function MantGrupos() {
       const rows = worksheet.slice(2); // Datos a partir de la tercera fila
 
       for (const row of rows) {
-        const [
-          CodigoMateria,
-          NumeroGrupo,
-          Horario,
-          Aula,
-          Academico,
-        ] = row;
+        const [CodigoMateria, NumeroGrupo, Horario, Aula, Academico] = row;
 
         const [Apellido1, Apellido2, ...nombreArray] = Academico.split(" ");
         const Nombre = nombreArray.join(" ");
@@ -284,21 +281,28 @@ function MantGrupos() {
 
   return (
     <div className="materia-container">
+      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
+      {/**/}
       <main>
-        <aside className="sidebar-mater">
-          <button className="add-mater">
-            Agregar Grupos <IoMdAddCircle className="icon-addMater" />
-          </button>
+        {/*Agregar usuario y la carga */}
+        <div className="sidebar-mater">
+          {/*Agregar usuario */}
+          <div className="mater-action">
+            <button className="add-mater">
+              Agregar Grupos <IoMdAddCircle className="icon-addMater" />
+            </button>
+          </div>
           <hr className="mater-divider" />
-          <div>
+          {/*Parte de las carga masiva*/}
+          <div className="bulk-upload-section">
             <h2 className="title-mater">Carga masiva</h2>
-            <br></br>
+
             <div className="bulk-upload-mater">
               <div className="upload-option-mater">
                 <FaFileDownload className="icon-othermat" /> Descargar Plantilla
@@ -317,8 +321,8 @@ function MantGrupos() {
               </div>
             </div>
           </div>
-        </aside>
-
+        </div>
+        {/* Filtros */}
         <div className="filters-mat">
           <div className="filter-group-mat">
             <label
@@ -390,50 +394,53 @@ function MantGrupos() {
             </select>
           </div>
         </div>
-
-        <table className="mat-table">
-          <thead className="mat-thead">
-            <tr>
-              <th>Materia</th>
-              <th>Nombre Proyecto</th>
-              <th>Tipo</th>
-              <th>Grupo</th>
-              <th>Horario</th>
-              <th>Sede</th>
-              <th>Aula</th>
-              <th>Académico</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="mat-tbody">
-            {currentGrupos.map((grupo) => (
-              <tr key={grupo.GrupoId}>
-                <td>{grupo.CodigoMateria}</td>
-                <td>{grupo.Grupos_TipoGrupo.NombreProyecto}</td>
-                <td>{grupo.Grupos_TipoGrupo.TipoCurso}</td>
-                <td>{grupo.NumeroGrupo}</td>
-                <td>{grupo.Horario}</td>
-                <td>{grupo.Sede}</td>
-                <td>{grupo.Aula}</td>
-                <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
-                <td>
-                  <button className="icon-btn-mat">
-                    <FaEdit />
-                  </button>
-                  <button className="icon-btn-mat">
-                    <FaInfoCircle />
-                  </button>
-                </td>
+        {/*Tabla*/}
+        <div className="table-container-mat">
+          <table className="mat-table">
+            <thead className="mat-thead">
+              <tr>
+                <th>Materia</th>
+                <th>Nombre Proyecto</th>
+                <th>Tipo</th>
+                <th>Grupo</th>
+                <th>Horario</th>
+                <th>Sede</th>
+                <th>Aula</th>
+                <th>Académico</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="pagination-mat">
-          <button onClick={handlePreviousPage}>Anterior</button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button onClick={handleNextPage}>Siguiente</button>
+            </thead>
+            <tbody className="mat-tbody">
+              {currentGrupos.map((grupo) => (
+                <tr key={grupo.GrupoId}>
+                  <td>{grupo.CodigoMateria}</td>
+                  <td>{grupo.Grupos_TipoGrupo.NombreProyecto}</td>
+                  <td>{grupo.Grupos_TipoGrupo.TipoCurso}</td>
+                  <td>{grupo.NumeroGrupo}</td>
+                  <td>{grupo.Horario}</td>
+                  <td>{grupo.Sede}</td>
+                  <td>{grupo.Aula}</td>
+                  <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
+                  <td>
+                    <button className="icon-btn-mat">
+                      <FaEdit />
+                    </button>
+                    <button className="icon-btn-mat">
+                      <FaInfoCircle />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* La paginacion */}
+          <div className="pagination-mat">
+            <button onClick={handlePreviousPage}>Anterior</button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button onClick={handleNextPage}>Siguiente</button>
+          </div>
         </div>
       </main>
     </div>
