@@ -226,13 +226,15 @@ iframe {
   justify-content: center;
   align-items: center;
   height: 85vh;
- 
+  background-color: #f7f7f7;
 }
 
 .perfil-content{
+  background-color: #fff;
   border: 1px solid #012c6a;
   padding: 20px;
   border-radius: 8px;
+  border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 25%;

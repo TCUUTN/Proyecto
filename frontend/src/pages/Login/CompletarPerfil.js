@@ -65,7 +65,7 @@ function CompletarPerfil() {
               <option value="">Seleccione un género</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
-              
+              <option value="Prefiero no Especificar">Prefiero no Especificar</option>
             </select>
           </div>
           <button type="submit" className="perfil-button">

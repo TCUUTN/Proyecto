@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import imagen from '../Assets/Images/Banderautn.jpg';
+import imagen from '../Assets/Images/Bandera Combinada.png';
 import { FaCircleUser } from "react-icons/fa6";
 import './Navbar.css';
 
@@ -103,7 +103,7 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-                {(selectedRole === 'Estudiante' || selectedRole === 'Administrativo') && (
+                {(selectedRole === 'Estudiante') && (
                   <li className="nav-item">
                     <Link className="nav-link" to="#">Ingresar horas</Link>
                   </li>
