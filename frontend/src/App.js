@@ -14,6 +14,7 @@ import MantMaterias from './pages/Grupos/MantMaterias.js';
 import MantGrupos from './pages/Grupos/MantCreaGrupos.js';
 import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 import GruposAcademico from './pages/Grupos/GruposAcademico.js';
+import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
@@ -49,6 +50,7 @@ function App() {
           <Route path="/OlvidarClave" element={<OlvidarContrasena />} />
           <Route path="/MantUser" element={<MantUser />} />
           <Route path="/GruposAcademico" element={<GruposAcademico />} />
+          <Route path="/ListaEstudiantes" element={<ListaEstudiantes />} />
           <Route path="/MantMaterias" element={<MantMaterias />} />
           <Route path="/MantGrupos" element={<MantGrupos />} />
           <Route path="/CompletarPerfil" element={<CompletarPerfil />} />

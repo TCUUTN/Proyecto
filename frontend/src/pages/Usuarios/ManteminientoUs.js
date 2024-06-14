@@ -102,14 +102,16 @@ function MantenimientoUs() {
           .includes(nombreCompleto.toLowerCase())
       );
     }
-
     if (estado) {
-      const estadoBool = estado === "true";
-      filtered = filtered.filter((usuario) => usuario.Estado === estadoBool);
+      const estadoNum = estado === "1" ? 1 : 0;
+      filtered = filtered.filter((usuario) => usuario.Estado === estadoNum);
     }
+    
 
     if (rol) {
-      filtered = filtered.filter((usuario) => usuario.RolUsuario === rol);
+      filtered = filtered.filter((usuario) => 
+        usuario.Usuarios_Roles.some((ur) => ur.Rol.NombreRol === rol)
+      );
     }
 
     setFilteredUsuarios(filtered);
@@ -232,7 +234,7 @@ function MantenimientoUs() {
 
               return user;
             });
-
+            console.log(jsonData);
             uploadJsonData(jsonData, role);
           } else {
             console.error("Formato de archivo inválido");
@@ -397,8 +399,8 @@ function MantenimientoUs() {
               onChange={handleEstadoFilterChange}
             >
               <option value="">Todos</option>
-              <option value="true">Activos</option>
-              <option value="false">Inactivos</option>
+              <option value="1">Activos</option>
+              <option value="0">Inactivos</option>
             </select>
           </div>
           <div className="filter-group-user">
@@ -412,9 +414,9 @@ function MantenimientoUs() {
               onChange={handleRolFilterChange}
             >
               <option value="">Todos</option>
-              <option value="Academico">Académico</option>
-              <option value="Estudiante">Estudiante</option>
               <option value="Administrativo">Administrativo</option>
+              <option value="Académico">Académico</option>
+              <option value="Estudiante">Estudiante</option>
             </select>
           </div>
         </div>
