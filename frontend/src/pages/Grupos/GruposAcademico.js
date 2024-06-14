@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaInfoCircle,
-} from "react-icons/fa";
+import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./Materias.modulo.css";
 
 function GruposAcademico() {
@@ -28,15 +26,16 @@ function GruposAcademico() {
 
   const fetchGrupos = async () => {
     try {
-        console.log(identificacion)
+      console.log(identificacion);
       const response = await fetch(`/grupos/Academicos/${identificacion}`);
-      
+
       if (response.ok) {
         const data = await response.json();
-        const filteredData = sedeFilter === "Todas"
-          ? data
-          : data.filter((grupo) => grupo.Sede === sedeFilter);
-          
+        const filteredData =
+          sedeFilter === "Todas"
+            ? data
+            : data.filter((grupo) => grupo.Sede === sedeFilter);
+
         setGrupos(filteredData);
         setFilteredGrupos(filteredData);
         const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
@@ -135,22 +134,25 @@ function GruposAcademico() {
   };
 
   const handleLista = (grupoId) => {
-    navigate('/ListaEstudiantes', { state: { grupoId } });
+    navigate("/ListaEstudiantes", { state: { grupoId } });
   };
 
   return (
     <div className="materia-container">
+      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
+      {/**/}
       <main>
-        <div className="filters-mat">
-          <div className="filter-group-mat">
+        {/* Filtros */}
+        <div className="filters-acad">
+          <div className="filter-group-acad">
             <label
-              className="filter-label-mat"
+              className="filter-label-acad"
               htmlFor="CodigoMateria-Busqueda"
             >
               Buscar por Código de Materia
@@ -159,15 +161,15 @@ function GruposAcademico() {
               id="CodigoMateria-Busqueda"
               type="text"
               placeholder="Código de Materia"
-              className="filter-input-mat"
+              className="filter-input-acad"
               value={codigoMateriaFilter}
               onChange={handleCodigoMateriaFilterChange}
             />
           </div>
 
-          <div className="filter-group-mat">
+          <div className="filter-group-acad">
             <label
-              className="filter-label-mat"
+              className="filter-label-acad"
               htmlFor="NombreProyecto-Busqueda"
             >
               Buscar por Nombre de Proyecto
@@ -176,19 +178,22 @@ function GruposAcademico() {
               id="NombreProyecto-Busqueda"
               type="text"
               placeholder="Nombre de Proyecto"
-              className="filter-input-mat"
+              className="filter-input-acad"
               value={nombreProyectoFilter}
               onChange={handleNombreProyectoFilterChange}
             />
           </div>
 
-          <div className="filter-group-mat">
-            <label className="filter-label-mat" htmlFor="Cuatrimestre-Busqueda">
+          <div className="filter-group-acad">
+            <label
+              className="filter-label-acad"
+              htmlFor="Cuatrimestre-Busqueda"
+            >
               Cuatrimestre
             </label>
             <select
               id="Cuatrimestre-Busqueda"
-              className="filter-select-mat"
+              className="filter-select-acad"
               value={cuatrimestreFilter}
               onChange={handleCuatrimestreFilterChange}
             >
@@ -199,13 +204,13 @@ function GruposAcademico() {
             </select>
           </div>
 
-          <div className="filter-group-mat">
-            <label className="filter-label-mat" htmlFor="Anno-Busqueda">
+          <div className="filter-group-acad">
+            <label className="filter-label-acad" htmlFor="Anno-Busqueda">
               Año
             </label>
             <select
               id="Anno-Busqueda"
-              className="filter-select-mat"
+              className="filter-select-acad"
               value={annoFilter}
               onChange={handleAnnoFilterChange}
             >
@@ -218,49 +223,51 @@ function GruposAcademico() {
             </select>
           </div>
         </div>
-
-        <table className="mat-table">
-          <thead className="mat-thead">
-            <tr>
-              <th>Materia</th>
-              <th>Nombre Proyecto</th>
-              <th>Tipo</th>
-              <th>Grupo</th>
-              <th>Horario</th>
-              <th>Sede</th>
-              <th>Aula</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="mat-tbody">
-            {currentGrupos.map((grupo) => (
-              <tr key={grupo.GrupoId}>
-                <td>{grupo.CodigoMateria}</td>
-                <td>{grupo.Grupos_TipoGrupo.NombreProyecto}</td>
-                <td>{grupo.Grupos_TipoGrupo.TipoCurso}</td>
-                <td>{grupo.NumeroGrupo}</td>
-                <td>{grupo.Horario}</td>
-                <td>{grupo.Sede}</td>
-                <td>{grupo.Aula}</td>
-                <td>
+        {/*Tarjetitas */}
+        <div className="card-container">
+          {currentGrupos.map((grupo) => (
+            <div className="card" key={grupo.GrupoId}>
+              <div className="card-header">{grupo.CodigoMateria}</div>
+              <div className="card-title">
+                {grupo.Grupos_TipoGrupo.NombreProyecto}
+              </div>
+              <div className="card-content">
+                <p>
+                  <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
+                </p>
+                <p>
+                  <strong>Grupo:</strong> {grupo.NumeroGrupo}
+                </p>
+                <p>
+                  <strong>Horario:</strong> {grupo.Horario}
+                </p>
+                <p>
+                  <strong>Sede: </strong>
+                  {grupo.Sede} &nbsp;&nbsp;&nbsp; <strong>Aula: </strong>
+                  {grupo.Aula}
+                </p>
+              </div>
+              <div className="card-footer">
                 <button
-                    className="icon-btn-user"
-                    onClick={() => handleLista(grupo.GrupoId)}
-                  >
-                    <FaInfoCircle />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="pagination-mat">
+                  className="btn-view-group"
+                  onClick={() => handleLista(grupo.GrupoId)}
+                >
+                  Ver Grupo
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* La paginacion */}
+        <div className="pagination-acad">
           <button onClick={handlePreviousPage}>Anterior</button>
           <span>
             Página {currentPage} de {totalPages}
           </span>
           <button onClick={handleNextPage}>Siguiente</button>
         </div>
+        {/**/}
       </main>
     </div>
   );

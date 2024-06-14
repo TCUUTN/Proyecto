@@ -442,6 +442,7 @@ function MantGrupos() {
             <button onClick={handleNextPage}>Siguiente</button>
           </div>
         </div>
+         {/**/}
       </main>
     </div>
   );
