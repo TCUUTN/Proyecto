@@ -9,12 +9,15 @@ app.use(bodyParser.json());
 
 const seguridadRoute = require('./routes/seguridadRoute');
 app.use('/usuarios', seguridadRoute);
-// Ruta para crear o actualizar un usuario
+// Rutas para el modulo de Usuarios
 
 const gruposRoute = require('./routes/gruposRoute');
 app.use('/grupos', gruposRoute);
-// Ruta para crear o actualizar un usuario
+// Rutas para el modulo de Grupos
 
+const horasRoute = require('./routes/horasRoute');
+app.use('/horas', horasRoute);
+// Rutas para el modulo de Horas
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

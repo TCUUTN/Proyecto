@@ -61,6 +61,7 @@ function Navbar() {
     const newRole = event.target.value;
     setSelectedRole(newRole);
     sessionStorage.setItem('SelectedRole', newRole);
+    window.location.href = '/Home';
   };
 
   return (

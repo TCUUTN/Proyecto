@@ -6,6 +6,7 @@ router.get('/', gruposController.getAllGrupos);
 router.get('/tipos', gruposController.getAllTiposGrupos);
 router.get('/GruposEstudiantes', gruposController.getAllGruposEstudiantes);
 router.get('/GruposEstudiantes/:Identificacion/:GrupoId', gruposController.getEstudiantePorGrupo);
+router.get('/GrupoEstudiante/:Identificacion', gruposController.getGrupoEstudianteporIdentificacion);
 router.get('/tipos/:CodigoMateria', gruposController.getTipoGrupoPorCodigoMateria);
 router.get('/Academicos/:Identificacion', gruposController.getGrupoPorIdentificacion);
 router.get('/ListaEstudiantes/:GrupoId', gruposController.getListaEstudiantes);
@@ -16,12 +17,5 @@ router.post('/crearOActualizarGrupoEstudiante', gruposController.crearOActualiza
 router.post('/cargarGrupos', gruposController.cargarGrupos);
 router.post('/cargarTipoGrupos', gruposController.cargarTipoGrupos);
 router.post('/EstadoGrupo', gruposController.EstadoGrupo);
-
-
-
-router.get('/test', (req, res) => {
-    res.send('Hello from exampleRoute!');
-});
-
 
 module.exports = router;
