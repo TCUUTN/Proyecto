@@ -180,7 +180,7 @@ body {
 /* Tabla */
 .table-container-mat {
   width: 80%;
-  margin: 0 auto; 
+  margin: 10px auto; 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px; 

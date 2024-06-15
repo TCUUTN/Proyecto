@@ -15,7 +15,9 @@ import MantGrupos from './pages/Grupos/MantCreaGrupos.js';
 import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 import GruposAcademico from './pages/Grupos/GruposAcademico.js';
 import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
-
+import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
+import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
+import CrearoActualizarHoras from './pages/HorasBitacora/CrearoActualizarHoras.js';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
 
@@ -54,6 +56,9 @@ function App() {
           <Route path="/MantMaterias" element={<MantMaterias />} />
           <Route path="/MantGrupos" element={<MantGrupos />} />
           <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
+          <Route path="/VistaHorasEstudiantes" element={<VistaHorasEstudiantes />} />
+          <Route path="/RechazoHoras" element={<RechazoHoras />} />
+          <Route path="/CrearoActualizarHoras" element={<CrearoActualizarHoras />} />
         </Routes>
         <Footer />
       </div>
