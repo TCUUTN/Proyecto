@@ -134,7 +134,8 @@ function GruposAcademico() {
   };
 
   const handleLista = (grupoId) => {
-    navigate("/ListaEstudiantes", { state: { grupoId } });
+    localStorage.setItem("GrupoSeleccionado", grupoId);
+    navigate("/ListaEstudiantes");
   };
 
   return (

@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation } from "react-router-dom";
 import "./Materias.modulo.css";
 import { FaChevronLeft } from "react-icons/fa6";
 
 function ListaEstudiantes() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { grupoId } = location.state;
-  console.log(grupoId);
+  const  grupoId  = localStorage.getItem("GrupoSeleccionado");
 
   const [estudiantes, setEstudiantes] = useState([]);
   const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
@@ -104,6 +101,11 @@ function ListaEstudiantes() {
     }
   };
 
+  const handleViewDetails = (identificacion) => {
+    sessionStorage.setItem("IdentificacionHoras", identificacion);
+    navigate("/VistaHorasEstudiantes");
+  };
+
   return (
     <div className="materia-container">
       {/*Para la carga */}
@@ -177,7 +179,9 @@ function ListaEstudiantes() {
                 <td>{estudiante.Usuario.CorreoElectronico}</td>
                 <td>{estudiante.Usuario.Identificacion}</td>
                 <td>
-                  <button className="icon-btn-mat">
+                  <button 
+                    className="icon-btn-mat"
+                    onClick={() => handleViewDetails(estudiante.Usuario.Identificacion)}>
                     <FaInfoCircle />
                   </button>
                 </td>

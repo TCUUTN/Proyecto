@@ -88,7 +88,7 @@ const getHorasPorBitacoraId = async (req, res) => {
                 TipoActividad,
                 HoraInicio,
                 HoraFinal,
-                EstadoHoras,
+                EstadoHoras:"Aprobado",
                 ComentariosRechazo
             };
 
