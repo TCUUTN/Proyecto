@@ -62,7 +62,7 @@ h1.home-title {
   font-family: "Brush-TipTerrence", cursive;
   color: #012c6a;
   margin-bottom: 10px;
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 .title-divider {
@@ -227,6 +227,7 @@ iframe {
   align-items: center;
   height: 85vh;
   background-color: #f7f7f7;
+  padding: 20rem 0 23rem 0;
 }
 
 .perfil-content{
@@ -237,7 +238,7 @@ iframe {
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 25%;
+  width: 35%;
 }
 .perfil-dropdown {
   width: 85%;
@@ -248,21 +249,23 @@ iframe {
   color: #2b3945;
 }
 .perfil-button{
-  width: 50%;
+  width: 47%;
   padding: 10px;
-  background-color: #0daace;
+  background-color: #002b69;
   color: #fff;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-family: "Century Gothic", sans-serif;
   margin-top: 10px;
-  transition: 2s;
+  margin-left:2.5px;
+  margin-right:2.5px;
+  transition: 0.5s;
 }
 .perfil-button:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
-  transition: 2s;
+  transition: 0.5s;
 }
 
 .perfil-input-container{
@@ -324,6 +327,48 @@ iframe {
     width: 70%;
   }
 
+}
+
+/* Textarea */
+.perfil-textarea,
+.perfil-input-date,
+.perfil-input-time {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #2b3945;
+  font-family: "Century Gothic", sans-serif;
+  margin: 0 auto;
+  display: block;
+}
+
+.perfil-textarea {
+  resize:vertical;
+  height: auto;
+  border-radius: 20px;
+}
+.react-time-picker__wrapper{
+  border: none !important;
+}
+
+/* Inputs Time and Date */
+.perfil-input-date,
+.perfil-input-time {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.perfil-input-date::-webkit-inner-spin-button,
+.perfil-input-time::-webkit-inner-spin-button {
+  display: none;
+}
+
+.perfil-input-date::-webkit-calendar-picker-indicator,
+.perfil-input-time::-webkit-calendar-picker-indicator {
+  color: #2b3945;
 }
 
 

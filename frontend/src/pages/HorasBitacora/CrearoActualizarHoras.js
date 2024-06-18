@@ -32,6 +32,8 @@ function CrearoActualizarHoras() {
       fetch(`horas/${storedBitacoraId}`)
         .then((response) => response.json())
         .then((data) => {
+          const formattedHoraInicio = formatTime(data.HoraInicio);
+          const formattedHoraFinal = formatTime(data.HoraFinal);
           setFormData((prevFormData) => ({
             ...prevFormData,
             Identificacion: data.Identificacion || "",
@@ -39,15 +41,25 @@ function CrearoActualizarHoras() {
             Fecha: data.Fecha || "",
             DescripcionActividad: data.DescripcionActividad || "",
             TipoActividad: data.TipoActividad || "Ejecucion",
-            HoraInicio: data.HoraInicio || "",
-            HoraFinal: data.HoraFinal || "",
+            HoraInicio: formattedHoraInicio || "",
+            HoraFinal: formattedHoraFinal || "",
           }));
-          updateHoraFinalLimits(data);
-          validateForm(data);
+          updateHoraFinalLimits({
+            ...data,
+            HoraInicio: formattedHoraInicio,
+            HoraFinal: formattedHoraFinal,
+          });
+          validateForm({
+            ...data,
+            HoraInicio: formattedHoraInicio,
+            HoraFinal: formattedHoraFinal,
+          });
         })
         .catch((error) => {
           console.error("Error al obtener los datos:", error);
-          setError("Error al obtener los datos. Por favor, inténtelo de nuevo.");
+          setError(
+            "Error al obtener los datos. Por favor, inténtelo de nuevo."
+          );
         });
     } else {
       const identificacion = sessionStorage.getItem("Identificacion");
@@ -63,20 +75,31 @@ function CrearoActualizarHoras() {
           })
           .catch((error) => {
             console.error("Error al obtener el grupo:", error);
-            setError("Error al obtener el grupo. Por favor, inténtelo de nuevo.");
+            setError(
+              "Error al obtener el grupo. Por favor, inténtelo de nuevo."
+            );
           });
       }
     }
   }, []);
 
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+    const [hours, minutes] = timeString.split(":");
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+  };
+
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
     setFormData(newFormData);
-    console.log(newFormData)
     if (name === "HoraInicio" || name === "TipoActividad") {
       updateHoraFinalLimits(newFormData);
     }
-    if (name === "HoraInicio" || name === "HoraFinal" || name === "TipoActividad") {
+    if (
+      name === "HoraInicio" ||
+      name === "HoraFinal" ||
+      name === "TipoActividad"
+    ) {
       validateForm(newFormData);
     }
   };
@@ -106,7 +129,9 @@ function CrearoActualizarHoras() {
 
       if (TipoActividad === "Planificacion" || TipoActividad === "Ejecucion") {
         if (difference > 8) {
-          setError("La duración de Planificación o Ejecución no puede exceder 8 horas.");
+          setError(
+            "La duración de Planificación o Ejecución no puede exceder 8 horas."
+          );
           isValid = false;
         }
       } else if (TipoActividad === "Gira") {
@@ -117,7 +142,9 @@ function CrearoActualizarHoras() {
       }
 
       if (end <= start) {
-        setError("La hora de finalización no puede ser menor o igual que la hora de inicio.");
+        setError(
+          "La hora de finalización no puede ser menor o igual que la hora de inicio."
+        );
         isValid = false;
       }
 
@@ -138,7 +165,7 @@ function CrearoActualizarHoras() {
     ];
 
     for (let field of requiredFields) {
-      console.log(formData)
+      console.log(formData);
       if (!formData[field]) {
         setError(`Por favor, ingrese ${field}.`);
         setIsSubmitDisabled(true);
@@ -162,7 +189,9 @@ function CrearoActualizarHoras() {
         sessionStorage.removeItem("BitacoraId");
         navigate("/VistaHorasEstudiantes");
       } else {
-        setError("Error al registrar la actividad. Por favor, inténtelo de nuevo.");
+        setError(
+          "Error al registrar la actividad. Por favor, inténtelo de nuevo."
+        );
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
@@ -182,12 +211,6 @@ function CrearoActualizarHoras() {
   return (
     <div className="perfil-container">
       <div className="perfil-content">
-        <div className="regred-action">
-          <button onClick={handleBackClick} className="back-button">
-            <FaChevronLeft />
-            Regresar
-          </button>
-        </div>
         <h1 className="home-title">Registro de Horas</h1>
         <hr className="perfil-divider" />
         <form onSubmit={handleSubmit}>
@@ -196,14 +219,12 @@ function CrearoActualizarHoras() {
             id="Identificacion"
             name="Identificacion"
             value={formData.Identificacion}
-            onChange={(e) => handleChange(e.target.name, e.target.value)}
           />
           <input
             type="hidden"
             id="GrupoId"
             name="GrupoId"
             value={formData.GrupoId}
-            onChange={(e) => handleChange(e.target.name, e.target.value)}
           />
           <div className="perfil-input-container">
             <input
@@ -212,21 +233,20 @@ function CrearoActualizarHoras() {
               name="Fecha"
               value={formData.Fecha}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-input"
+              className="perfil-input-date"
               placeholder="Ingrese la fecha"
               min={minDate.toISOString().split("T")[0]}
               max={maxDate.toISOString().split("T")[0]}
             />
           </div>
           <div className="perfil-input-container">
-            <input
-              type="text"
+            <textarea
               id="DescripcionActividad"
               name="DescripcionActividad"
               value={formData.DescripcionActividad}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-input"
-              placeholder="Ingrese la descripción de la actividad"
+              className="perfil-textarea"
+              placeholder="Descripción de la actividad"
             />
           </div>
           <div className="perfil-input-container">
@@ -235,29 +255,33 @@ function CrearoActualizarHoras() {
               name="TipoActividad"
               value={formData.TipoActividad}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-input"
+              className="perfil-dropdown"
             >
-              <option value="Planificacion">Planificación</option>
               <option value="Ejecucion">Ejecución</option>
+              <option value="Planificacion">Planificación</option>
               <option value="Gira">Gira</option>
             </select>
           </div>
           <div className="perfil-input-container">
             <TimePicker
-              onChange={(value) => handleChange("HoraInicio", value)}
+              id="HoraInicio"
+              name="HoraInicio"
               value={formData.HoraInicio}
+              onChange={(value) =>
+                handleChange("HoraInicio", formatTime(value))
+              }
+              className="perfil-input-time"
               disableClock={true}
-              format="h:mm a"
-              className="perfil-input"
             />
           </div>
           <div className="perfil-input-container">
             <TimePicker
-              onChange={(value) => handleChange("HoraFinal", value)}
+              id="HoraFinal"
+              name="HoraFinal"
               value={formData.HoraFinal}
+              onChange={(value) => handleChange("HoraFinal", formatTime(value))}
+              className="perfil-input-time"
               disableClock={true}
-              format="h:mm a"
-              className="perfil-input"
               minTime={horaFinalLimits.min}
               maxTime={horaFinalLimits.max}
             />
@@ -268,16 +292,25 @@ function CrearoActualizarHoras() {
               id="Evidencias"
               name="Evidencias"
               onChange={(e) => handleChange(e.target.name, e.target.files[0])}
-              className="perfil-input"
-              placeholder="Suba las evidencias"
+              className="perfil-file"
             />
           </div>
-          <button type="submit" className="perfil-button" disabled={isSubmitDisabled}>
-            Enviar
-          </button>
+          <div className="perfil-input-container">
+            <button onClick={handleBackClick} className="perfil-button">
+              <FaChevronLeft />
+              Regresar
+            </button>
+            <button
+              type="submit"
+              className="perfil-button"
+              disabled={isSubmitDisabled}
+            >
+              Guardar
+            </button>
+          </div>
+          {error && <div className="error-message">{error}</div>}
         </form>
-        {error && <p className="error-message">{error}</p>}
-        <ToastContainer position="bottom-right" />
+        <ToastContainer />
       </div>
     </div>
   );
