@@ -65,13 +65,7 @@ function RechazoHoras() {
     <div className="perfil-container">
       
       <div className="perfil-content">
-      <div className="regred-action">
-            <button onClick={handleBackClick}
-              className="back-button" >
-              <FaChevronLeft />
-              Regresar
-            </button>
-          </div>
+      
         <h1 className="home-title">Rechazo de Horas</h1>
         <hr className="perfil-divider" />
         <form onSubmit={handleSubmit}>
@@ -86,9 +80,18 @@ function RechazoHoras() {
               placeholder="Ingrese los comentarios de rechazo"
             />
           </div>
-          <button type="submit" className="perfil-button">
-            Enviar
-          </button>
+          <div className="perfil-input-container">
+            <button onClick={handleBackClick} className="perfil-button">
+              <FaChevronLeft />
+              Regresar
+            </button>
+            <button
+              type="submit"
+              className="perfil-button"
+            >
+              Guardar
+            </button>
+          </div>
         </form>
         {error && <p className="error-message">{error}</p>}
         <ToastContainer position="bottom-right" />

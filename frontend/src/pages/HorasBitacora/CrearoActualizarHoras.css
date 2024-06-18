@@ -1,3 +1,4 @@
+/* Loading Overlay */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -29,7 +30,7 @@
   }
 }
 
-
+/* Titles */
 h1.home-title {
   font-family: "Brush-TipTerrence", cursive;
   color: #012c6a;
@@ -37,7 +38,7 @@ h1.home-title {
   font-size: 2.5rem;
 }
 
-
+/* Inputs */
 input[type="password"],
 input[type="text"] {
   width: 100% !important;
@@ -49,10 +50,8 @@ input[type="text"] {
   position: relative !important;
 }
 
-
 /* Completar Perfil - Genero */
-
-.perfil-container{
+.perfil-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +59,7 @@ input[type="text"] {
   background-color: #f7f7f7;
 }
 
-.perfil-content{
+.perfil-content {
   background-color: #fff;
   border: 1px solid #012c6a;
   padding: 20px;
@@ -70,6 +69,14 @@ input[type="text"] {
   text-align: center;
   width: 25%;
 }
+
+.perfil-input-container {
+  margin: 20px 0;
+}
+
+.perfil-input,
+.perfil-textarea,
+.perfil-file,
 .perfil-dropdown {
   width: 85%;
   padding: 10px;
@@ -78,10 +85,16 @@ input[type="text"] {
   font-size: 16px;
   color: #2b3945;
 }
-.perfil-button{
-  width: 50%;
+
+.create-textarea {
+  resize: auto;
+  height: 100px;
+}
+
+.create-button {
+  width: 45%;
   padding: 10px;
-  background-color: #0daace;
+  background-color: #002b69 !important;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -90,21 +103,24 @@ input[type="text"] {
   margin-top: 10px;
   transition: 2s;
 }
-.perfil-button:hover {
+
+.create-button:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   transition: 2s;
 }
 
-.perfil-input-container{
-  margin: 20px 0;
-}
-
-.perfil-divider{
+.perfil-divider {
   width: 50%;
   border: 1px solid #f66226;
   margin-left: 65px;
   margin: 10px auto;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
 }
 
 /* Media Queries for Responsiveness */
@@ -125,12 +141,12 @@ input[type="text"] {
     width: 70%;
   }
 
-  .dropdown {
-    width: 90%;
-  }
-
+  .perfil-input,
+  .perfil-textarea,
+  .perfil-file,
+  .perfil-dropdown,
   .perfil-button {
-    width: 60%;
+    width: 90%;
   }
 
   .perfil-divider {
@@ -143,21 +159,20 @@ input[type="text"] {
     width: 90%;
   }
 
-  .dropdown {
-    width: 95%;
-  }
-
+  .perfil-input,
+  .perfil-textarea,
+  .perfil-file,
+  .perfil-dropdown,
   .perfil-button {
-    width: 70%;
+    width: 90%;
   }
 
   .perfil-divider {
     width: 70%;
   }
-
 }
 
-/* Boton de regresar*/
+/* Boton de regresar */
 .back-button {
   display: flex;
   align-items: center;
@@ -175,4 +190,41 @@ input[type="text"] {
   transition: 0.3s;
 }
 
+/* Textarea */
+.perfil-textarea,
+.perfil-input-date,
+.perfil-input-time {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #2b3945;
+  font-family: "Century Gothic", sans-serif;
+  margin: 0 auto;
+  display: block;
+}
+
+.perfil-textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+/* Inputs Time and Date */
+.perfil-input-date,
+.perfil-input-time {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.perfil-input-date::-webkit-inner-spin-button,
+.perfil-input-time::-webkit-inner-spin-button {
+  display: none;
+}
+
+.perfil-input-date::-webkit-calendar-picker-indicator,
+.perfil-input-time::-webkit-calendar-picker-indicator {
+  color: #2b3945;
+}
 
