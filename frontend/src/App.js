@@ -19,6 +19,7 @@ import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
 // Agregar el import correcto
 import CrearActualizarUsuario from './pages/Usuarios/CrearActualizarUsuario.js';
 import CrearActuProyectos from './pages/Grupos/CrearActuProyectos.js';
+import CrearActuCreacionGrupos from './pages/Grupos/CrearActuCreacionGrupos.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
@@ -60,6 +61,7 @@ function App() {
           <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
           <Route path="/CrearActualizarUsuario" element={<CrearActualizarUsuario />} />
           <Route path="/CrearActuProyectos" element={<CrearActuProyectos />} />
+          <Route path="/CrearActuCreacionGrupos" element={<CrearActuCreacionGrupos/>} />
         </Routes>
         <Footer />
       </div>
