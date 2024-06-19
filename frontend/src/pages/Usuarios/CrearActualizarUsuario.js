@@ -209,7 +209,6 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Administrador"
-                checked={formData.roles.includes("Administrador")}
                 onChange={() => handleRoleChange("Administrador")}
               />
               Administrador
@@ -219,7 +218,6 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Estudiante"
-                checked={formData.roles.includes("Estudiante")}
                 onChange={() => handleRoleChange("Estudiante")}
               />
               Estudiante
@@ -229,7 +227,6 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Académico"
-                checked={formData.roles.includes("Académico")}
                 onChange={() => handleRoleChange("Académico")}
               />
               Académico
