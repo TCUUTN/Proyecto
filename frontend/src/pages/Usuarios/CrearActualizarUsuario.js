@@ -5,6 +5,8 @@ import styles from "./CrearActualizarUsuario.module.css";
 const CrearActualizarUsuario = () => {
   const location = useLocation();
   const usuario = location.state?.usuario;
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     identificacion: "",
     nombre: "",
@@ -19,40 +21,51 @@ const CrearActualizarUsuario = () => {
     contrasena: "",
   });
 
-  const navigate = useNavigate();
-  const { id } = useParams();
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const identificacionUsuario = sessionStorage.getItem("IdentificacionUsuario");
 
   useEffect(() => {
-    if (usuario) {
-      setFormData({
-        Identificacion: usuario.Identificacion,
-        Nombre: usuario.Nombre,
-        Apellido1: usuario.Apellido1,
-        Apellido2: usuario.Apellido2,
-        Genero: usuario.Genero,
-        CorreoElectronico: usuario.CorreoElectronico,
-        RolUsuario: usuario.RolUsuario,
-        Contrasenna: "",
-        Estado: usuario.Estado,
-        TipoIdentificacion: usuario.TipoIdentificacion,
-      });
-    } else {
-      setFormData({
-        Identificacion: "",
-        Nombre: "",
-        Apellido1: "",
-        Apellido2: "",
-        Genero: "",
-        CorreoElectronico: "",
-        RolUsuario: "",
-        Contrasenna: "",
-        Estado: "",
-        TipoIdentificacion: "",
-      });
-    }
-  }, [usuario]);
+    const fetchUserData = async () => {
+      if (identificacionUsuario) {
+        try {
+          const response = await fetch(`/usuarios/${identificacionUsuario}`);
+          const data = await response.json();
+          setFormData({
+            identificacion: data.Identificacion,
+            nombre: data.Nombre,
+            primerApellido: data.Apellido1,
+            segundoApellido: data.Apellido2,
+            genero: data.Genero,
+            correo: data.CorreoElectronico,
+            roles: data.Usuarios_Roles.map((role) => role.RolId),
+            sede: data.Sede,
+            estado: data.Estado === 1 ? "Activo" : "Inactivo",
+            carrera: data.CarreraEstudiante !== "-" ? data.CarreraEstudiante : "",
+            contrasena: "",
+          });
+        } catch (error) {
+          console.log("Error fetching user data:", error);
+        }
+      } else {
+        setFormData({
+          identificacion: "",
+          nombre: "",
+          primerApellido: "",
+          segundoApellido: "",
+          genero: "",
+          carrera: "",
+          roles: [],
+          sede: "",
+          estado: "",
+          correo: "",
+          contrasena: "",
+        });
+      }
+    };
+
+    fetchUserData();
+  }, [identificacionUsuario]);
 
   useEffect(() => {
     validateForm();
@@ -60,30 +73,21 @@ const CrearActualizarUsuario = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.Identificacion)
-      newErrors.Identificacion = "Identificación es requerida";
-    if (!formData.Nombre) newErrors.Nombre = "Nombre es requerido";
-    if (!formData.Apellido1)
-      newErrors.Apellido1 = "Primer apellido es requerido";
-    if (!formData.Apellido2)
-      newErrors.Apellido2 = "Segundo apellido es requerido";
-    if (!formData.Genero) newErrors.Genero = "Género es requerido";
-    if (!formData.CorreoElectronico)
-      newErrors.CorreoElectronico = "Correo electrónico es requerido";
-    if (!formData.RolUsuario)
-      newErrors.RolUsuario = "Rol de usuario es requerido";
-    if (!formData.TipoIdentificacion)
-      newErrors.TipoIdentificacion = "Tipo de identificación es requerido";
-    if (!formData.Contrasenna && !usuario) {
-      newErrors.Contrasenna = "Contraseña es requerida";
-    } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-        formData.Contrasenna
-      )
-    ) {
-      newErrors.Contrasenna =
-        "Contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial";
+    if (!formData.identificacion)
+      newErrors.identificacion = "Identificación es requerida";
+    if (!formData.nombre) newErrors.nombre = "Nombre es requerido";
+    if (!formData.primerApellido)
+      newErrors.primerApellido = "Primer apellido es requerido";
+    if (!formData.segundoApellido)
+      newErrors.segundoApellido = "Segundo apellido es requerido";
+    if (identificacionUsuario) {
+      if (!formData.genero) newErrors.genero = "Género es requerido";
+      if (!formData.estado) newErrors.estado = "Estado es requerido";
     }
+    if (!formData.correo)
+      newErrors.correo = "Correo electrónico es requerido";
+    if (!formData.roles.length)
+      newErrors.roles = "Al menos un rol es requerido";
 
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
@@ -108,17 +112,50 @@ const CrearActualizarUsuario = () => {
       return;
     }
 
+    const mappedRoles = formData.roles.map((role) =>
+      role === "Administrador"
+        ? 1
+        : role === "Académico"
+        ? 2
+        : role === "Estudiante"
+        ? 3
+        : role
+    );
+
+    const payload = {
+      Identificacion: formData.identificacion,
+      Nombre: formData.nombre,
+      Apellido1: formData.primerApellido,
+      Apellido2: formData.segundoApellido,
+      CarreraEstudiante: formData.roles.includes(3) ? formData.carrera : "-",
+      Genero: formData.genero,
+      CorreoElectronico: formData.correo,
+      Contrasenna: formData.contrasena,
+      Estado: formData.estado,
+      Sede: formData.sede,
+      Usuarios_Roles: mappedRoles.map((rolId) => ({
+        Identificacion: formData.identificacion,
+        RolId: rolId,
+        UniversalUniqueIdentifier: "UUID",
+        LastUpdate: new Date().toISOString(),
+        LastUser: "-",
+      })),
+    };
+
+    console.log("Form Data to be submitted:", payload);
+
     try {
       const response = await fetch("/usuarios/crearOActualizarUsuario", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         console.log("Usuario guardado con éxito");
+        sessionStorage.removeItem("IdentificacionUsuario");
         navigate(-1); // Regresar a la página anterior
       } else {
         console.log("Error al guardar el usuario");
@@ -128,10 +165,15 @@ const CrearActualizarUsuario = () => {
     }
   };
 
+  const handleRegresar = () => {
+    sessionStorage.removeItem("IdentificacionUsuario");
+    navigate("/MantUser");
+  };
+
   return (
     <div className={styles["creaediUsu-container"]}>
       <h2 className={styles["creaediUsu-titulo"]}>
-        {usuario ? "Editar Usuario" : "Crear Usuario"}
+        {usuario ? "Crear Usuario" : "Editar Usuario"}
       </h2>
       <div className={styles["creaediUsu-line"]}></div>{" "}
       {/* Línea bajo el título */}
@@ -149,6 +191,7 @@ const CrearActualizarUsuario = () => {
             onChange={handleChange}
             className={styles["creaediUsu-input"]}
             placeholder="Identificación"
+            disabled={!!identificacionUsuario}
           />
         </div>
         {/* Nombre */}
@@ -194,7 +237,8 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Administrador"
-                onChange={() => handleRoleChange("Administrador")}
+                checked={formData.roles.includes(1)}
+                onChange={() => handleRoleChange(1)}
               />
               Administrador
             </label>
@@ -203,7 +247,8 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Estudiante"
-                onChange={() => handleRoleChange("Estudiante")}
+                checked={formData.roles.includes(3)}
+                onChange={() => handleRoleChange(3)}
               />
               Estudiante
             </label>
@@ -212,7 +257,8 @@ const CrearActualizarUsuario = () => {
                 type="checkbox"
                 name="roles"
                 value="Académico"
-                onChange={() => handleRoleChange("Académico")}
+                checked={formData.roles.includes(2)}
+                onChange={() => handleRoleChange(2)}
               />
               Académico
             </label>
@@ -250,7 +296,7 @@ const CrearActualizarUsuario = () => {
           </select>
         </div>
         {/* Div contiene genero, estado y carrera  */}
-        {usuario && (
+        {identificacionUsuario && (
           <div className={styles["creaediUsu-otros"]}>
             <div className={styles["creaediUsu-genero-estado"]}>
               {/* Genero */}
@@ -284,17 +330,19 @@ const CrearActualizarUsuario = () => {
               </div>
             </div>
             {/* Carrera */}
-            <div className={styles["creaediUsu-formGroup"]}>
-              <input
-                type="text"
-                id="carrera"
-                name="carrera"
-                value={formData.carrera}
-                onChange={handleChange}
-                className={styles["creaediUsu-input"]}
-                placeholder="Carrera"
-              />
-            </div>
+            {formData.roles.includes(3) && (
+              <div className={styles["creaediUsu-formGroup"]}>
+                <input
+                  type="text"
+                  id="carrera"
+                  name="carrera"
+                  value={formData.carrera}
+                  onChange={handleChange}
+                  className={styles["creaediUsu-input"]}
+                  placeholder="Carrera"
+                />
+              </div>
+            )}
           </div>
         )}
         {/* Botones */}
@@ -302,7 +350,7 @@ const CrearActualizarUsuario = () => {
           <button
             type="button"
             className={styles["creaediUsu-btnRegresar"]}
-            onClick={() => navigate("/MantUser")}
+            onClick={handleRegresar}
           >
             Regresar
           </button>

@@ -21,10 +21,6 @@ function MantenimientoUs() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
-  //Para el Model o ventana emergente
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  //
 
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
 
@@ -142,9 +138,10 @@ function MantenimientoUs() {
     navigate("/CrearActualizarUsuario");
   };
 
-  const handleEditUser = (usuario) => {
-    navigate("/CrearActualizarUsuario", { state: { usuario } });
-  };
+  const handleEditUser = (Identificacion) => {
+    sessionStorage.setItem("IdentificacionUsuario", Identificacion);
+    navigate("/CrearActualizarUsuario");
+  }; 
 
  
   const handleFileUpload = (e, role) => {
@@ -442,7 +439,7 @@ function MantenimientoUs() {
                   <td>
                     <button
                       className="icon-btn-user"
-                      onClick={() => handleEditUser(usuario)}
+                      onClick={() => handleEditUser(usuario.Identificacion)}
                     >
                       <FaEdit />
                     </button>
