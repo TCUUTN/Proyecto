@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
+import { useNavigate } from "react-router-dom";
 
 function MantMaterias() {
   const [materias, setMaterias] = useState([]);
@@ -20,6 +21,8 @@ function MantMaterias() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
+
+  const navigate = useNavigate();
 
   const fetchMaterias = async () => {
     try {
@@ -188,7 +191,7 @@ function MantMaterias() {
         {/*Agregar usuario y la carga */}
         <div className="sidebar-mater">
           <div className="mater-action">
-            <button className="add-mater">
+            <button className="add-mater" onClick={() => navigate("/CrearActuProyectos")}>
               Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>

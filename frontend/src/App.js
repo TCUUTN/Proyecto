@@ -16,6 +16,10 @@ import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 import GruposAcademico from './pages/Grupos/GruposAcademico.js';
 import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
 
+// Agregar el import correcto
+import CrearActualizarUsuario from './pages/Usuarios/CrearActualizarUsuario.js';
+import CrearActuProyectos from './pages/Grupos/CrearActuProyectos.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
 
@@ -54,6 +58,8 @@ function App() {
           <Route path="/MantMaterias" element={<MantMaterias />} />
           <Route path="/MantGrupos" element={<MantGrupos />} />
           <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
+          <Route path="/CrearActualizarUsuario" element={<CrearActualizarUsuario />} />
+          <Route path="/CrearActuProyectos" element={<CrearActuProyectos />} />
         </Routes>
         <Footer />
       </div>

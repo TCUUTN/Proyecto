@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
-import CrearActualizarUsuario from "./CrearActualizarUsuario";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -136,22 +136,17 @@ function MantenimientoUs() {
       setCurrentPage(currentPage - 1);
     }
   };
+  const navigate = useNavigate();
 
   const handleAddUser = () => {
-    setEditingUser(null);
-    setModalOpen(true);
+    navigate("/CrearActualizarUsuario");
   };
 
   const handleEditUser = (usuario) => {
-    setEditingUser(usuario);
-    setModalOpen(true);
+    navigate("/CrearActualizarUsuario", { state: { usuario } });
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-    fetchUsuarios();
-  };
-
+ 
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (
@@ -483,12 +478,7 @@ function MantenimientoUs() {
         {/**/}
       </main>
 
-      {modalOpen && (
-        <CrearActualizarUsuario
-          usuario={editingUser}
-          onClose={handleModalClose}
-        />
-      )}
+     
       <ToastContainer position="bottom-right" />
     </div>
   );

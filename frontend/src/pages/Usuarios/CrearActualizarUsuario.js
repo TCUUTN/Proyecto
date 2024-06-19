@@ -1,22 +1,26 @@
-// CrearActualizarUsuario.js
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import "./CrearActualizarUsuario.module.css";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import styles from "./CrearActualizarUsuario.module.css";
 
-function CrearActualizarUsuario({ usuario, onClose }) {
+const CrearActualizarUsuario = () => {
+  const location = useLocation();
+  const usuario = location.state?.usuario;
   const [formData, setFormData] = useState({
-    Identificacion: "",
-    Nombre: "",
-    Apellido1: "",
-    Apellido2: "",
-    Genero: "",
-    CorreoElectronico: "",
-    RolUsuario: "",
-    Contrasenna: "",
-    Estado: "",
-    TipoIdentificacion: "",
+    identificacion: "",
+    nombre: "",
+    primerApellido: "",
+    segundoApellido: "",
+    genero: "",
+    carrera: "",
+    roles: [],
+    sede: "",
+    estado: "",
+    correo: "",
+    contrasena: "",
   });
 
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -70,7 +74,7 @@ function CrearActualizarUsuario({ usuario, onClose }) {
       newErrors.RolUsuario = "Rol de usuario es requerido";
     if (!formData.TipoIdentificacion)
       newErrors.TipoIdentificacion = "Tipo de identificación es requerido";
-    if (!formData.Contrasenna) {
+    if (!formData.Contrasenna && !usuario) {
       newErrors.Contrasenna = "Contraseña es requerida";
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
@@ -88,6 +92,13 @@ function CrearActualizarUsuario({ usuario, onClose }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRoleChange = (role) => {
+    const roles = formData.roles.includes(role)
+      ? formData.roles.filter((r) => r !== role)
+      : [...formData.roles, role];
+    setFormData({ ...formData, roles });
   };
 
   const handleSubmit = async (e) => {
@@ -108,7 +119,7 @@ function CrearActualizarUsuario({ usuario, onClose }) {
 
       if (response.ok) {
         console.log("Usuario guardado con éxito");
-        onClose();
+        navigate(-1); // Regresar a la página anterior
       } else {
         console.log("Error al guardar el usuario");
       }
@@ -117,158 +128,177 @@ function CrearActualizarUsuario({ usuario, onClose }) {
     }
   };
 
-  return ReactDOM.createPortal(
-    <div className="modal">
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
-          &times;
-        </button>
-        <h2>{usuario ? "Editar Usuario" : "Crear Usuario"}</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Tipo de Identificación:</label>
-            <select
-              name="TipoIdentificacion"
-              value={formData.TipoIdentificacion}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione Tipo</option>
-              <option value="Cedula">Cédula</option>
-              <option value="Dimex">Dimex</option>
-              <option value="Pasaporte">Pasaporte</option>
-            </select>
-          </div>
-          {errors.TipoIdentificacion && (
-            <p className="error">{errors.TipoIdentificacion}</p>
-          )}
-
-          <div className="form-group">
-            <label>Identificación:</label>
-            <input
-              type="text"
-              name="Identificacion"
-              value={formData.Identificacion}
-              onChange={handleChange}
-              disabled={!!usuario}
-            />
-          </div>
-          {errors.Identificacion && (
-            <p className="error">{errors.Identificacion}</p>
-          )}
-
-          <div className="form-group">
-            <label>Nombre:</label>
-            <input
-              type="text"
-              name="Nombre"
-              value={formData.Nombre}
-              onChange={handleChange}
-            />
-          </div>
-          {errors.Nombre && <p className="error">{errors.Nombre}</p>}
-
-          <div className="form-group">
-            <label>Apellido1:</label>
-            <input
-              type="text"
-              name="Apellido1"
-              value={formData.Apellido1}
-              onChange={handleChange}
-            />
-          </div>
-          {errors.Apellido1 && <p className="error">{errors.Apellido1}</p>}
-
-          <div className="form-group">
-            <label>Apellido2:</label>
-            <input
-              type="text"
-              name="Apellido2"
-              value={formData.Apellido2}
-              onChange={handleChange}
-            />
-          </div>
-          {errors.Apellido2 && <p className="error">{errors.Apellido2}</p>}
-
-          <div className="form-group">
-            <label>Género:</label>
-            <select
-              name="Genero"
-              value={formData.Genero}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione Género</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Femenino">Femenino</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          {errors.Genero && <p className="error">{errors.Genero}</p>}
-
-          <div className="form-group">
-            <label>Correo Electrónico:</label>
-            <input
-              type="email"
-              name="CorreoElectronico"
-              value={formData.CorreoElectronico}
-              onChange={handleChange}
-            />
-          </div>
-          {errors.CorreoElectronico && (
-            <p className="error">{errors.CorreoElectronico}</p>
-          )}
-
-          <div className="form-group">
-            <label>Rol Usuario:</label>
-            <select
-              name="RolUsuario"
-              value={formData.RolUsuario}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione Rol</option>
-              <option value="Administrador">Administrador</option>
-              <option value="Usuario">Usuario</option>
-            </select>
-          </div>
-          {errors.RolUsuario && <p className="error">{errors.RolUsuario}</p>}
-
-          {!usuario && (
-            <div className="form-group">
-              <label>Contraseña:</label>
+  return (
+    <div className={styles.container}>
+      <h2>{usuario ? "Editar Usuario" : "Crear Usuario"}</h2>
+      <form onSubmit={handleSubmit} className={styles.formUserEdit}>
+        <div className={styles.formGroup}>
+          <label htmlFor="identificacion">Identificación:</label>
+          <input
+            type="text"
+            id="identificacion"
+            name="identificacion"
+            value={formData.identificacion}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="nombre">Nombre:</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="primerApellido">Primer apellido:</label>
+          <input
+            type="text"
+            id="primerApellido"
+            name="primerApellido"
+            value={formData.primerApellido}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="segundoApellido">Segundo apellido:</label>
+          <input
+            type="text"
+            id="segundoApellido"
+            name="segundoApellido"
+            value={formData.segundoApellido}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="genero">Género:</label>
+          <select
+            id="genero"
+            name="genero"
+            value={formData.genero}
+            onChange={handleChange}
+            className={styles.input}
+          >
+            <option value="">Seleccione</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="carrera">Carrera:</label>
+          <input
+            type="text"
+            id="carrera"
+            name="carrera"
+            value={formData.carrera}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Roles:</label>
+          <div className={styles.roles}>
+            <label>
               <input
-                type="password"
-                name="Contrasenna"
-                value={formData.Contrasenna}
-                onChange={handleChange}
+                type="checkbox"
+                name="roles"
+                value="Administrador"
+                checked={formData.roles.includes("Administrador")}
+                onChange={() => handleRoleChange("Administrador")}
               />
-            </div>
-          )}
-          {errors.Contrasenna && <p className="error">{errors.Contrasenna}</p>}
-
-          <div className="form-group">
-            <label>Estado:</label>
-            <select
-              name="Estado"
-              value={formData.Estado}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione Estado</option>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
+              Administrador
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="roles"
+                value="Estudiante"
+                checked={formData.roles.includes("Estudiante")}
+                onChange={() => handleRoleChange("Estudiante")}
+              />
+              Estudiante
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="roles"
+                value="Académico"
+                checked={formData.roles.includes("Académico")}
+                onChange={() => handleRoleChange("Académico")}
+              />
+              Académico
+            </label>
           </div>
-          {errors.Estado && <p className="error">{errors.Estado}</p>}
-
-          <div className="modal-actions">
-            <button type="submit">{usuario ? "Actualizar" : "Crear"}</button>
-            <button type="button" onClick={onClose}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>,
-    document.body
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="sede">Sede:</label>
+          <select
+            id="sede"
+            name="sede"
+            value={formData.sede}
+            onChange={handleChange}
+            className={styles.input}
+          >
+            <option value="">Seleccione</option>
+            <option value="Principal">Principal</option>
+            <option value="Secundaria">Secundaria</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="estado">Estado:</label>
+          <select
+            id="estado"
+            name="estado"
+            value={formData.estado}
+            onChange={handleChange}
+            className={styles.input}
+          >
+            <option value="">Seleccione</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="correo">Correo electrónico:</label>
+          <input
+            type="email"
+            id="correo"
+            name="correo"
+            value={formData.correo}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="contrasena">Contraseña:</label>
+          <input
+            type="password"
+            id="contrasena"
+            name="contrasena"
+            value={formData.contrasena}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formButtons}>
+          <button
+            type="submit"
+            className={styles.btnPrimary}
+            disabled={!isFormValid}
+          >
+            {id ? "Actualizar" : "Crear"}
+          </button>
+          <button className="" onClick={() => navigate("/MantUser")} >Regresar</button>
+        </div>
+      </form>
+    </div>
   );
-}
+};
 
 export default CrearActualizarUsuario;
