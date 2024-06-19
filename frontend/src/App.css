@@ -14,11 +14,13 @@
 
 }
 
-
+body{
+  background-color: #f7f7f7;
+}
 .App {
   text-align: center;
   margin: 0 auto;
-  background-color: #f7f7f7;
+
 }
 
 .App-logo {

@@ -129,81 +129,66 @@ const CrearActualizarUsuario = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2>{usuario ? "Editar Usuario" : "Crear Usuario"}</h2>
-      <form onSubmit={handleSubmit} className={styles.formUserEdit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="identificacion">Identificación:</label>
+    <div className={styles["creaediUsu-container"]}>
+      <h2 className={styles["creaediUsu-titulo"]}>
+        {usuario ? "Editar Usuario" : "Crear Usuario"}
+      </h2>
+      <div className={styles["creaediUsu-line"]}></div>{" "}
+      {/* Línea bajo el título */}
+      <form
+        onSubmit={handleSubmit}
+        className={styles["creaediUsu-formUserEdit"]}
+      >
+        {/* Identificacion */}
+        <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
             id="identificacion"
             name="identificacion"
             value={formData.identificacion}
             onChange={handleChange}
-            className={styles.input}
+            className={styles["creaediUsu-input"]}
+            placeholder="Identificación"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="nombre">Nombre:</label>
+        {/* Nombre */}
+        <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
             id="nombre"
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            className={styles.input}
+            className={styles["creaediUsu-input"]}
+            placeholder="Nombre"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="primerApellido">Primer apellido:</label>
+        <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
             id="primerApellido"
             name="primerApellido"
             value={formData.primerApellido}
             onChange={handleChange}
-            className={styles.input}
+            className={styles["creaediUsu-input"]}
+            placeholder="Primer Apellido"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="segundoApellido">Segundo apellido:</label>
+        <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
             id="segundoApellido"
             name="segundoApellido"
             value={formData.segundoApellido}
             onChange={handleChange}
-            className={styles.input}
+            className={styles["creaediUsu-input"]}
+            placeholder="Segundo Apellido"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="genero">Género:</label>
-          <select
-            id="genero"
-            name="genero"
-            value={formData.genero}
-            onChange={handleChange}
-            className={styles.input}
-          >
-            <option value="">Seleccione</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Femenino">Femenino</option>
-          </select>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="carrera">Carrera:</label>
-          <input
-            type="text"
-            id="carrera"
-            name="carrera"
-            value={formData.carrera}
-            onChange={handleChange}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Roles:</label>
-          <div className={styles.roles}>
+        {/* Roles */}
+        <div className={styles["creaediUsu-formGroupRoles"]}>
+          <span>Roles:</span>
+          <div className={styles["creaediUsu-roles"]}>
             <label>
               <input
                 type="checkbox"
@@ -233,65 +218,101 @@ const CrearActualizarUsuario = () => {
             </label>
           </div>
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="sede">Sede:</label>
-          <select
-            id="sede"
-            name="sede"
-            value={formData.sede}
-            onChange={handleChange}
-            className={styles.input}
-          >
-            <option value="">Seleccione</option>
-            <option value="Principal">Principal</option>
-            <option value="Secundaria">Secundaria</option>
-          </select>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="estado">Estado:</label>
-          <select
-            id="estado"
-            name="estado"
-            value={formData.estado}
-            onChange={handleChange}
-            className={styles.input}
-          >
-            <option value="">Seleccione</option>
-            <option value="Activo">Activo</option>
-            <option value="Inactivo">Inactivo</option>
-          </select>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="correo">Correo electrónico:</label>
+        {/* Correo */}
+        <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="email"
             id="correo"
             name="correo"
             value={formData.correo}
             onChange={handleChange}
-            className={styles.input}
+            className={styles["creaediUsu-input"]}
+            placeholder="Correo electrónico"
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="contrasena">Contraseña:</label>
-          <input
-            type="password"
-            id="contrasena"
-            name="contrasena"
-            value={formData.contrasena}
+        {/* Sedes */}
+        <div className={styles["creaediUsu-formGroup"]}>
+          <select
+            id="sede"
+            name="sede"
+            value={formData.sede}
             onChange={handleChange}
-            className={styles.input}
-          />
+            className={styles["creaediUsu-select"]}
+          >
+            <option value="">Sedes</option>
+            <option value="Central">Central</option>
+            <option value="Atenas">Atenas</option>
+            <option value="Guanacaste">Guanacaste</option>
+            <option value="Pacífico">Pacífico</option>
+            <option value="San Carlos">San Carlos</option>
+            <option value="C. F. P. T. E.">C. F. P. T. E.</option>
+            <option value="Todas">Todas.</option>
+          </select>
         </div>
-        <div className={styles.formButtons}>
+        {/* Div contiene genero, estado y carrera  */}
+        {usuario && (
+          <div className={styles["creaediUsu-otros"]}>
+            <div className={styles["creaediUsu-genero-estado"]}>
+              {/* Genero */}
+              <div className={styles["creaediUsu-formGroup"]}>
+                <select
+                  id="genero"
+                  name="genero"
+                  value={formData.genero}
+                  onChange={handleChange}
+                  className={styles["creaediUsu-select"]}
+                >
+                  <option value="">Género</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              {/* Estado */}
+              <div className={styles["creaediUsu-formGroup"]}>
+                <select
+                  id="estado"
+                  name="estado"
+                  value={formData.estado}
+                  onChange={handleChange}
+                  className={styles["creaediUsu-select"]}
+                >
+                  <option value="">Estados</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </select>
+              </div>
+            </div>
+            {/* Carrera */}
+            <div className={styles["creaediUsu-formGroup"]}>
+              <input
+                type="text"
+                id="carrera"
+                name="carrera"
+                value={formData.carrera}
+                onChange={handleChange}
+                className={styles["creaediUsu-input"]}
+                placeholder="Carrera"
+              />
+            </div>
+          </div>
+        )}
+        {/* Botones */}
+        <div className={styles["creaediUsu-formButtons"]}>
+          <button
+            type="button"
+            className={styles["creaediUsu-btnRegresar"]}
+            onClick={() => navigate("/MantUser")}
+          >
+            Regresar
+          </button>
           <button
             type="submit"
-            className={styles.btnPrimary}
+            className={styles["creaediUsu-btnGuardar"]}
             disabled={!isFormValid}
           >
-            {id ? "Actualizar" : "Crear"}
+            {id ? "Actualizar" : "Guardar"}
           </button>
-          <button className="" onClick={() => navigate("/MantUser")} >Regresar</button>
         </div>
       </form>
     </div>
