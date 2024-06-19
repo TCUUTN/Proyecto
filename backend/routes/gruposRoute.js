@@ -6,7 +6,7 @@ router.get('/', gruposController.getAllGrupos);
 router.get('/tipos', gruposController.getAllTiposGrupos);
 router.get('/GruposEstudiantes', gruposController.getAllGruposEstudiantes);
 router.get('/GruposEstudiantes/:Identificacion/:GrupoId', gruposController.getEstudiantePorGrupo);
-router.get('/tipos/:CodigoMateria', gruposController.getTipoGrupoPorCodigoMateria);
+router.get('/tipos/:CodigoProyecto', gruposController.getTipoGrupoPorCodigoMateria);
 router.get('/Academicos/:Identificacion', gruposController.getGrupoPorIdentificacion);
 router.get('/ListaEstudiantes/:GrupoId', gruposController.getListaEstudiantes);
 router.get('/:GrupoId', gruposController.getGrupoPorGrupoId);
