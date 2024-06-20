@@ -135,3 +135,16 @@ body {
   text-align: left; /* Alinea texto a la izquierda en inputs */
   margin-bottom: 25px;
 }
+
+
+/*Estilos para los errores*/
+
+.creaediUsu-error-list {
+  padding: 0;
+  width: 100%;
+}
+
+.creaediUsu-error {
+  color: #ff0000;
+  font-size: 0.9rem;
+}

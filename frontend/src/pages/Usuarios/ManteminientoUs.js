@@ -30,7 +30,12 @@ function MantenimientoUs() {
       if (response.ok) {
         const data = await response.json();
         const sede = sessionStorage.getItem("Sede");
+        const UserSaved = sessionStorage.getItem("userSaved");
 
+        if (UserSaved==="true") {
+          toast.success("Usuario guardado con éxito");
+          sessionStorage.removeItem("userSaved");
+        }
         if (sede && sede !== "Todas") {
           const filteredBySede = data.filter(
             (usuario) => usuario.Sede === sede

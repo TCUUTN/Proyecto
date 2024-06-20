@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import styles from "./CrearActualizarUsuario.module.css";
 
 const CrearActualizarUsuario = () => {
-  const location = useLocation();
-  const usuario = location.state?.usuario;
   const navigate = useNavigate();
-  const { id } = useParams();
   const [formData, setFormData] = useState({
     identificacion: "",
     nombre: "",
@@ -40,8 +39,9 @@ const CrearActualizarUsuario = () => {
             correo: data.CorreoElectronico,
             roles: data.Usuarios_Roles.map((role) => role.RolId),
             sede: data.Sede,
-            estado: data.Estado === 1 ? "Activo" : "Inactivo",
-            carrera: data.CarreraEstudiante !== "-" ? data.CarreraEstudiante : "",
+            estado: data.Estado === 1 ? 1 : 0,
+            carrera:
+              data.CarreraEstudiante !== "-" ? data.CarreraEstudiante : "",
             contrasena: "",
           });
         } catch (error) {
@@ -73,21 +73,55 @@ const CrearActualizarUsuario = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.identificacion)
+
+    if (!formData.identificacion) {
       newErrors.identificacion = "Identificación es requerida";
-    if (!formData.nombre) newErrors.nombre = "Nombre es requerido";
-    if (!formData.primerApellido)
-      newErrors.primerApellido = "Primer apellido es requerido";
-    if (!formData.segundoApellido)
-      newErrors.segundoApellido = "Segundo apellido es requerido";
-    if (identificacionUsuario) {
-      if (!formData.genero) newErrors.genero = "Género es requerido";
-      if (!formData.estado) newErrors.estado = "Estado es requerido";
+    } else if (formData.identificacion.length < 3) {
+      newErrors.identificacion = "La identificación debe tener al menos 3 caracteres";
     }
-    if (!formData.correo)
+
+    if (!formData.nombre) {
+      newErrors.nombre = "Nombre es requerido";
+    } else if (formData.nombre.length < 3) {
+      newErrors.nombre = "El nombre debe tener al menos 3 caracteres";
+    }
+
+    if (!formData.primerApellido) {
+      newErrors.primerApellido = "Primer apellido es requerido";
+    } else if (formData.primerApellido.length < 3) {
+      newErrors.primerApellido =
+        "El primer apellido debe tener al menos 3 caracteres";
+    }
+
+    if (!formData.segundoApellido) {
+      newErrors.segundoApellido = "Segundo apellido es requerido";
+    } else if (formData.segundoApellido.length < 3) {
+      newErrors.segundoApellido =
+        "El segundo apellido debe tener al menos 3 caracteres";
+    }
+
+    if (identificacionUsuario) {
+      if (!formData.genero) {
+        newErrors.genero = "Género es requerido";
+      }
+      if (!formData.estado) {
+        newErrors.estado = "Estado es requerido";
+      }
+    }
+
+    if (!formData.sede || formData.sede === "") {
+      newErrors.sede = "Sede es requerida";
+    }
+
+    if (!formData.correo) {
       newErrors.correo = "Correo electrónico es requerido";
-    if (!formData.roles.length)
+    } else if (!/\S+@\S+\.\S+/.test(formData.correo)) {
+      newErrors.correo = "Correo electrónico no tiene un formato válido";
+    }
+
+    if (!formData.roles.length) {
       newErrors.roles = "Al menos un rol es requerido";
+    }
 
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
@@ -131,7 +165,7 @@ const CrearActualizarUsuario = () => {
       Genero: formData.genero,
       CorreoElectronico: formData.correo,
       Contrasenna: formData.contrasena,
-      Estado: formData.estado,
+      Estado: identificacionUsuario ? formData.estado : 1, // Valor predeterminado de 1 si identificacionUsuario no existe
       Sede: formData.sede,
       Usuarios_Roles: mappedRoles.map((rolId) => ({
         Identificacion: formData.identificacion,
@@ -155,13 +189,17 @@ const CrearActualizarUsuario = () => {
 
       if (response.ok) {
         console.log("Usuario guardado con éxito");
+        sessionStorage.setItem("userSaved", "true");
         sessionStorage.removeItem("IdentificacionUsuario");
         navigate(-1); // Regresar a la página anterior
       } else {
-        console.log("Error al guardar el usuario");
+        const errorData = await response.json();
+        console.log("Error al guardar el usuario", errorData);
+        toast.error(`${errorData.error}`);
       }
     } catch (error) {
-      console.log("Error al guardar el usuario");
+      console.log("Error al guardar el usuario", error);
+      toast.error("Error al guardar el usuario");
     }
   };
 
@@ -172,11 +210,11 @@ const CrearActualizarUsuario = () => {
 
   return (
     <div className={styles["creaediUsu-container"]}>
+      <ToastContainer position="bottom-right" />
       <h2 className={styles["creaediUsu-titulo"]}>
-        {usuario ? "Crear Usuario" : "Editar Usuario"}
+        {identificacionUsuario ? "Editar Usuario" : "Crear Usuario"}
       </h2>
-      <div className={styles["creaediUsu-line"]}></div>{" "}
-      {/* Línea bajo el título */}
+      <div className={styles["creaediUsu-line"]}></div> {/* Línea bajo el título */}
       <form
         onSubmit={handleSubmit}
         className={styles["creaediUsu-formUserEdit"]}
@@ -206,6 +244,7 @@ const CrearActualizarUsuario = () => {
             placeholder="Nombre"
           />
         </div>
+        {/* Primer Apellido */}
         <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
@@ -217,6 +256,7 @@ const CrearActualizarUsuario = () => {
             placeholder="Primer Apellido"
           />
         </div>
+        {/* Segundo Apellido */}
         <div className={styles["creaediUsu-formGroup"]}>
           <input
             type="text"
@@ -292,10 +332,10 @@ const CrearActualizarUsuario = () => {
             <option value="Pacífico">Pacífico</option>
             <option value="San Carlos">San Carlos</option>
             <option value="C. F. P. T. E.">C. F. P. T. E.</option>
-            <option value="Todas">Todas.</option>
+            <option value="Todas">Todas</option>
           </select>
         </div>
-        {/* Div contiene genero, estado y carrera  */}
+        {/* Div contiene genero, estado y carrera */}
         {identificacionUsuario && (
           <div className={styles["creaediUsu-otros"]}>
             <div className={styles["creaediUsu-genero-estado"]}>
@@ -311,7 +351,7 @@ const CrearActualizarUsuario = () => {
                   <option value="">Género</option>
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
-                  <option value="Otro">Otro</option>
+                  <option value="Prefiero no Especificar">Prefiero no Especificar</option>
                 </select>
               </div>
               {/* Estado */}
@@ -323,9 +363,8 @@ const CrearActualizarUsuario = () => {
                   onChange={handleChange}
                   className={styles["creaediUsu-select"]}
                 >
-                  <option value="">Estados</option>
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
+                  <option value="1">Activo</option>
+                  <option value="0">Inactivo</option>
                 </select>
               </div>
             </div>
@@ -345,6 +384,19 @@ const CrearActualizarUsuario = () => {
             )}
           </div>
         )}
+
+        {/* Mensajes de error al final */}
+        {Object.keys(errors).length > 0 && (
+          <div className={styles["creaediUsu-errors"]}>
+            <ul className={styles["creaediUsu-error-list"]}>
+              {Object.values(errors).map((error, index) => (
+                <li key={index} className={styles["creaediUsu-error"]}>
+                  {error}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {/* Botones */}
         <div className={styles["creaediUsu-formButtons"]}>
           <button
@@ -359,9 +411,10 @@ const CrearActualizarUsuario = () => {
             className={styles["creaediUsu-btnGuardar"]}
             disabled={!isFormValid}
           >
-            {id ? "Actualizar" : "Guardar"}
+            {identificacionUsuario ? "Actualizar" : "Guardar"}
           </button>
         </div>
+        
       </form>
     </div>
   );
