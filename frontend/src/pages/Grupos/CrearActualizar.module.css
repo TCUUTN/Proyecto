@@ -1,0 +1,175 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Century Gothic", sans-serif;
+    overflow: auto;
+    background-color: #f9f9f9;
+}
+
+.container-projcreaed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    width: 35%;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 10%;
+}
+
+.projcreaed-tit {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    border: none;
+    color:  #002b69;
+    font-family: "Brush-TipTerrence", cursive;
+}
+
+.diver-projcreaed {
+    width: 50%;
+    border: 2px solid #f66226;
+    margin-bottom: 20px;
+}
+
+.formgroup-projcreaed {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    width: 65%;
+}
+
+.label-projcreaed {
+    font-weight: bold;
+    flex: 1;
+}
+
+.imput-projcreaed {
+    width: 25%;
+    padding: 8px;
+    border: 1px solid #002B69;
+    border-radius: 8px;
+    flex: 2;
+}
+.sele-projcreaed {
+    width: 25%;
+    padding: 8px;
+    border: 1px solid #002B69;
+    border-radius: 8px;
+    flex: 2;
+}
+
+.buttongroup-projcreaed {
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+}
+
+.button-projcreaed {
+    padding: 5px 20px;
+    border: none;
+    border-radius: 50px;
+    background-color: #00bfff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.button-projcreaed:hover {
+    background-color: #f66226;
+    transition: 0.3s;
+}
+
+/* Pagina de crear y editar la creacion de grupos */
+.creagrup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+    width: 35%;
+    margin: 40px auto;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.creagrup-tit {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    border: none;
+    color: #002b69;
+    font-family: "Brush-TipTerrence", cursive;
+}
+
+.creagrup-diver {
+    width: 50%;
+    border: 2px solid #f66226;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.creagrup-formcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.creagrup-formrow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.creagrup-inputfield,
+.creagrup-select {
+    width: 48%;
+    padding: 10px;
+    border: 2px solid #1c3b70 !important; /* Borde azul */
+    border-radius: 25px !important;
+    box-sizing: border-box;
+}
+
+.creagrup-inputfield::placeholder {
+    color: #303031;
+    opacity: 0.6;
+}
+
+.creagrup-buttonrow {
+    display: flex;
+    justify-content: center; /* Centramos los botones */
+    margin-top: 20px;
+    width: 100%;
+}
+
+.creagrup-button {
+    width: 48%;
+    padding: 10px;
+    background-color: #00bfff; /* Color celeste */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin: 0 5px; /* Espacio entre los botones */
+}
+
+.creagrup-button:hover {
+    background-color: #ff4500;
+    transition: background-color 0.3s;
+}

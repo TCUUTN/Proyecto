@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
-import CrearActualizarUsuario from "./CrearActualizarUsuario";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,10 +21,6 @@ function MantenimientoUs() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
-  //Para el Model o ventana emergente
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  //
 
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
 
@@ -34,7 +30,12 @@ function MantenimientoUs() {
       if (response.ok) {
         const data = await response.json();
         const sede = sessionStorage.getItem("Sede");
+        const UserSaved = sessionStorage.getItem("userSaved");
 
+        if (UserSaved==="true") {
+          toast.success("Usuario guardado con éxito");
+          sessionStorage.removeItem("userSaved");
+        }
         if (sede && sede !== "Todas") {
           const filteredBySede = data.filter(
             (usuario) => usuario.Sede === sede
@@ -136,22 +137,18 @@ function MantenimientoUs() {
       setCurrentPage(currentPage - 1);
     }
   };
+  const navigate = useNavigate();
 
   const handleAddUser = () => {
-    setEditingUser(null);
-    setModalOpen(true);
+    navigate("/CrearActualizarUsuario");
   };
 
-  const handleEditUser = (usuario) => {
-    setEditingUser(usuario);
-    setModalOpen(true);
-  };
+  const handleEditUser = (Identificacion) => {
+    sessionStorage.setItem("IdentificacionUsuario", Identificacion);
+    navigate("/CrearActualizarUsuario");
+  }; 
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-    fetchUsuarios();
-  };
-
+ 
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (
@@ -447,7 +444,7 @@ function MantenimientoUs() {
                   <td>
                     <button
                       className="icon-btn-user"
-                      onClick={() => handleEditUser(usuario)}
+                      onClick={() => handleEditUser(usuario.Identificacion)}
                     >
                       <FaEdit />
                     </button>
@@ -483,12 +480,7 @@ function MantenimientoUs() {
         {/**/}
       </main>
 
-      {modalOpen && (
-        <CrearActualizarUsuario
-          usuario={editingUser}
-          onClose={handleModalClose}
-        />
-      )}
+     
       <ToastContainer position="bottom-right" />
     </div>
   );

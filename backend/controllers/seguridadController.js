@@ -313,13 +313,20 @@ const crearOActualizarUsuario = async (req, res) => {
       Nombre,
       Apellido1,
       Apellido2,
-      Genero,
+      Genero = "Indefinido",
       CorreoElectronico,
-      RolUsuario,
       Contrasenna,
       Estado,
-      TipoIdentificacion,
+      CarreraEstudiante = "-",
+      Sede,
+      Usuarios_Roles,
     } = req.body;
+
+    console.log('Datos recibidos:', req.body);
+
+    // Asignar valores por defecto si son cadenas vacías
+    const generoFinal = Genero === '' ? 'Indefinido' : Genero;
+    const carreraEstudianteFinal = CarreraEstudiante === '' ? '-' : CarreraEstudiante;
 
     // Verificar si el correo electrónico ya está asignado a otro usuario
     const correoExistente = await Usuario.findOne({
@@ -329,11 +336,9 @@ const crearOActualizarUsuario = async (req, res) => {
     });
 
     if (correoExistente && correoExistente.Identificacion !== Identificacion) {
-      return res
-        .status(400)
-        .json({
-          error: "El correo electrónico ya está asignado a otro usuario",
-        });
+      return res.status(400).json({
+        error: "El correo electrónico ya está asignado a otro usuario",
+      });
     }
 
     // Verificar si ya existe un usuario con la identificación proporcionada
@@ -343,46 +348,108 @@ const crearOActualizarUsuario = async (req, res) => {
       },
     });
 
+    // Encriptar la contraseña si se proporciona
+    const hashedPassword = Contrasenna ? await bcrypt.hash(Contrasenna, 10) : null;
+
     if (usuarioExistente) {
       // Modificar el usuario existente
-
-      // Encriptar la contraseña antes de almacenarla en la base de datos
-      const hashedPassword = await bcrypt.hash(Contrasenna, 10);
-      usuarioExistente = await usuarioExistente.update({
+      const updateData = {
         Nombre: Nombre,
         Apellido1: Apellido1,
         Apellido2: Apellido2,
-        Genero: Genero,
+        Genero: generoFinal,
         CorreoElectronico: CorreoElectronico,
-        RolUsuario: RolUsuario,
-        Contrasenna: hashedPassword,
         Estado: Estado,
-        TipoIdentificacion: TipoIdentificacion,
-      });
+        CarreraEstudiante: carreraEstudianteFinal,
+        Sede: Sede,
+      };
+
+      if (hashedPassword) {
+        updateData.Contrasenna = hashedPassword;
+      }
+
+      console.log('Actualizando usuario existente:', Identificacion);
+      usuarioExistente = await usuarioExistente.update(updateData);
+
+      // Actualizar roles de usuario
+      await actualizarRolesUsuario(Identificacion, Usuarios_Roles);
 
       return res.status(200).json(usuarioExistente);
     }
 
-    // Encriptar la contraseña antes de almacenarla en la base de datos
-    const hashedPassword = await bcrypt.hash(Contrasenna, 10);
-
     // Crear el nuevo usuario
+    const nuevaContrasenna = Contrasenna || generarContrasennaAleatoria();
+    const nuevaContrasennaHashed = await bcrypt.hash(nuevaContrasenna, 10);
+
     const nuevoUsuario = await Usuario.create({
       Identificacion: Identificacion,
       Nombre: Nombre,
       Apellido1: Apellido1,
       Apellido2: Apellido2,
-      Genero: Genero,
+      Genero: generoFinal,
       CorreoElectronico: CorreoElectronico,
-      RolUsuario: RolUsuario,
-      Contrasenna: hashedPassword, // Se almacena la contraseña encriptada
+      Contrasenna: nuevaContrasennaHashed, // Se almacena la contraseña encriptada
       Estado: Estado,
-      TipoIdentificacion: TipoIdentificacion,
+      CarreraEstudiante: carreraEstudianteFinal,
+      Sede: Sede,
     });
 
+    // Agregar roles de usuario
+    await agregarRolesUsuario(Identificacion, Usuarios_Roles);
+
+    console.log('Usuario creado:', nuevoUsuario);
     res.status(201).json(nuevoUsuario);
   } catch (error) {
+    console.error('Error al crear o actualizar el usuario:', error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+const agregarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
+  for (const rol of Usuarios_Roles) {
+    await UsuarioRoles.create({
+      Identificacion: Identificacion,
+      RolId: rol.RolId,
+      LastUpdate: rol.LastUpdate,
+      LastUser: rol.LastUser,
+      UniversalUniqueIdentifier: rol.UniversalUniqueIdentifier,
+    });
+  }
+};
+
+const actualizarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
+  const rolesExistentes = await UsuarioRoles.findAll({
+    where: { Identificacion: Identificacion },
+  });
+
+  // Eliminar roles no presentes en Usuarios_Roles
+  for (const rolExistente of rolesExistentes) {
+    if (!Usuarios_Roles.some(rol => rol.RolId === rolExistente.RolId)) {
+      await rolExistente.destroy();
+    }
+  }
+
+  // Agregar o actualizar roles presentes en Usuarios_Roles
+  for (const rol of Usuarios_Roles) {
+    const rolExistente = rolesExistentes.find(re => re.RolId === rol.RolId);
+    if (rolExistente) {
+      await rolExistente.update({
+        LastUpdate: rol.LastUpdate,
+        LastUser: rol.LastUser,
+        UniversalUniqueIdentifier: rol.UniversalUniqueIdentifier,
+      });
+    } else {
+      await UsuarioRoles.create({
+        Identificacion: Identificacion,
+        RolId: rol.RolId,
+        LastUpdate: rol.LastUpdate,
+        LastUser: rol.LastUser,
+        UniversalUniqueIdentifier: rol.UniversalUniqueIdentifier,
+      });
+    }
   }
 };
 
