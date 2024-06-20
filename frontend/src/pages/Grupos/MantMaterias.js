@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
+import { useNavigate } from "react-router-dom";
 
 function MantMaterias() {
   const [materias, setMaterias] = useState([]);
@@ -20,6 +21,11 @@ function MantMaterias() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
+
+  const banderaProyecto = sessionStorage.getItem("proyectoGuardado")
+    console.log(banderaProyecto)
+
+  const navigate = useNavigate();
 
   const fetchMaterias = async () => {
     try {
@@ -40,6 +46,11 @@ function MantMaterias() {
 
   useEffect(() => {
     fetchMaterias();
+    
+    if (banderaProyecto==="true") {
+      toast.success("El proyecto fue guardado con éxito.");
+      sessionStorage.removeItem("proyectoGuardado");
+    }
   }, []);
 
   const handleCodigoMateriaFilterChange = (e) => {
@@ -176,24 +187,23 @@ function MantMaterias() {
 
   return (
     <div className="materia-container">
-      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
-      {/**/}
       <main>
-        {/*Agregar usuario y la carga */}
         <div className="sidebar-mater">
           <div className="mater-action">
-            <button className="add-mater">
+            <button
+              className="add-mater"
+              onClick={() => navigate("/CrearActuProyectos")}
+            >
               Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
           <hr className="mater-divider" />
-          {/*Parte de las carga masiva*/}
           <div className="bulk-upload-section">
             <h2 className="title-mater">Carga masiva</h2>
 
@@ -217,7 +227,6 @@ function MantMaterias() {
           </div>
         </div>
 
-        {/* Filtros */}
         <div className="filters-mat">
           <div className="filter-group-mat">
             <label className="filter-label-mat" htmlFor="CodigoMateria">
@@ -262,7 +271,6 @@ function MantMaterias() {
           </div>
         </div>
 
-        {/*Tabla*/}
         <div className="table-container-mat">
           <table className="mat-table">
             <thead className="mat-thead">
@@ -280,7 +288,16 @@ function MantMaterias() {
                   <td>{materia.NombreProyecto}</td>
                   <td>{materia.TipoCurso}</td>
                   <td>
-                    <button className="icon-btn-mat">
+                    <button
+                      className="icon-btn-mat"
+                      onClick={() => {
+                        sessionStorage.setItem(
+                          "CodigoProyecto",
+                          materia.CodigoMateria
+                        );
+                        navigate("/CrearActuProyectos");
+                      }}
+                    >
                       <FaEdit />
                     </button>
                     <button className="icon-btn-mat">
@@ -291,7 +308,6 @@ function MantMaterias() {
               ))}
             </tbody>
           </table>
-          {/* La paginacion */}
           <div className="pagination-mat">
             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
               Anterior
@@ -311,7 +327,6 @@ function MantMaterias() {
             </button>
           </div>
         </div>
-        {/**/}
       </main>
     </div>
   );

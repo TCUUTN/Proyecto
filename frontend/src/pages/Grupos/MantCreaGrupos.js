@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
+import { useNavigate } from "react-router-dom";
 
 function MantGrupos() {
   const [grupos, setGrupos] = useState([]);
@@ -23,6 +24,8 @@ function MantGrupos() {
   const gruposPerPage = 10;
   const [uniqueYears, setUniqueYears] = useState([]);
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchGrupos();
@@ -294,7 +297,7 @@ function MantGrupos() {
         <div className="sidebar-mater">
           {/*Agregar usuario */}
           <div className="mater-action">
-            <button className="add-mater">
+            <button className="add-mater" onClick={() => navigate("/CrearActuCreacionGrupos")}>
               Agregar Grupos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>

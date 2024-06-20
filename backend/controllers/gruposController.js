@@ -84,15 +84,14 @@ const getGrupoPorIdentificacion = async (req, res) => {
 
 const getTipoGrupoPorCodigoMateria = async (req, res) => {
   try {
-    const { CodigoMateria } = req.params;
+    const {CodigoProyecto} = req.params;
 
     const tipoGrupo = await TipoGrupo.findOne({
       where: {
-        CodigoMateria: CodigoMateria,
+        CodigoMateria: CodigoProyecto,
       },
-      include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
-      ],
+      attributes: ['CodigoMateria','NombreProyecto', 'TipoCurso']
+
     });
 
     if (!tipoGrupo) {

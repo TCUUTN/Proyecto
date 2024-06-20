@@ -15,6 +15,9 @@ import MantGrupos from './pages/Grupos/MantCreaGrupos.js';
 import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 import GruposAcademico from './pages/Grupos/GruposAcademico.js';
 import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
+import CrearActualizarUsuario from './pages/Usuarios/CrearActualizarUsuario.js';
+import CrearActuProyectos from './pages/Grupos/CrearActuProyectos.js';
+import CrearActuCreacionGrupos from './pages/Grupos/CrearActuCreacionGrupos.js';
 import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
 import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
 import CrearoActualizarHoras from './pages/HorasBitacora/CrearoActualizarHoras.js';
@@ -56,6 +59,9 @@ function App() {
           <Route path="/MantMaterias" element={<MantMaterias />} />
           <Route path="/MantGrupos" element={<MantGrupos />} />
           <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
+          <Route path="/CrearActualizarUsuario" element={<CrearActualizarUsuario />} />
+          <Route path="/CrearActuProyectos" element={<CrearActuProyectos />} />
+          <Route path="/CrearActuCreacionGrupos" element={<CrearActuCreacionGrupos/>} />
           <Route path="/VistaHorasEstudiantes" element={<VistaHorasEstudiantes />} />
           <Route path="/RechazoHoras" element={<RechazoHoras />} />
           <Route path="/CrearoActualizarHoras" element={<CrearoActualizarHoras />} />
