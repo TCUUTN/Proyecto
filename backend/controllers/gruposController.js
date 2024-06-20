@@ -125,6 +125,27 @@ const getEstudiantePorGrupo = async (req, res) => {
   }
 };
 
+const getGrupoEstudianteporIdentificacion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    const estudianteGrupo = await GruposEstudiantes.findOne({
+      where: {
+        Identificacion: Identificacion,
+        Estado: 1,
+      },
+    });
+
+    if (!estudianteGrupo) {
+      return res.status(404).json({ error: "Estudiante en el Grupo no encontrado" });
+    }
+
+    res.status(200).json(estudianteGrupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getListaEstudiantes = async (req, res) => {
   try {
     const {GrupoId } = req.params;
@@ -397,5 +418,6 @@ module.exports = {
   cargarGrupos,
   getGrupoPorIdentificacion,
   cargarTipoGrupos,
-  getListaEstudiantes
+  getListaEstudiantes,
+  getGrupoEstudianteporIdentificacion
 };
