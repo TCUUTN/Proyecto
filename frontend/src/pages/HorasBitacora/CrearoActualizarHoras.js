@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-time-picker/dist/TimePicker.css";
 import TimePicker from "react-time-picker";
-import "./RechazoHoras.module.css";
+import "./CrearoActualizarHoras.css"
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -209,10 +209,10 @@ function CrearoActualizarHoras() {
   const maxDate = new Date();
 
   return (
-    <div className="perfil-container">
-      <div className="perfil-content">
-        <h1 className="home-title">Registro de Horas</h1>
-        <hr className="perfil-divider" />
+    <div className="crehoras-container">
+      <div className="crehoras-content">
+        <h1 className="crehoras-title">Registro de Horas</h1>
+        <hr className="crehoras-divider" />
         <form onSubmit={handleSubmit}>
           <input
             type="hidden"
@@ -233,36 +233,36 @@ function CrearoActualizarHoras() {
               name="Fecha"
               value={formData.Fecha}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-input-date"
+              className="crehoras-input-date"
               placeholder="Ingrese la fecha"
               min={minDate.toISOString().split("T")[0]}
               max={maxDate.toISOString().split("T")[0]}
             />
           </div>
-          <div className="perfil-input-container">
+          <div className="crehoras-input-container">
             <textarea
               id="DescripcionActividad"
               name="DescripcionActividad"
               value={formData.DescripcionActividad}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-textarea"
+              className="crehoras-textarea"
               placeholder="Descripción de la actividad"
             />
           </div>
-          <div className="perfil-input-container">
+          <div className="crehoras-input-container">
             <select
               id="TipoActividad"
               name="TipoActividad"
               value={formData.TipoActividad}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="perfil-dropdown"
+              className="crehoras-dropdown"
             >
               <option value="Ejecucion">Ejecución</option>
               <option value="Planificacion">Planificación</option>
               <option value="Gira">Gira</option>
             </select>
           </div>
-          <div className="perfil-input-container">
+          <div className="crehoras-input-container">
             <TimePicker
               id="HoraInicio"
               name="HoraInicio"
@@ -270,39 +270,39 @@ function CrearoActualizarHoras() {
               onChange={(value) =>
                 handleChange("HoraInicio", formatTime(value))
               }
-              className="perfil-input-time"
+              className="crehoras-input-time"
               disableClock={true}
             />
           </div>
-          <div className="perfil-input-container">
+          <div className="crehoras-input-container">
             <TimePicker
               id="HoraFinal"
               name="HoraFinal"
               value={formData.HoraFinal}
               onChange={(value) => handleChange("HoraFinal", formatTime(value))}
-              className="perfil-input-time"
+              className="crehoras-input-time"
               disableClock={true}
               minTime={horaFinalLimits.min}
               maxTime={horaFinalLimits.max}
             />
           </div>
-          <div className="perfil-input-container">
+          <div className="crehoras-input-container">
             <input
               type="file"
               id="Evidencias"
               name="Evidencias"
               onChange={(e) => handleChange(e.target.name, e.target.files[0])}
-              className="perfil-file"
+              className="crehoras-file"
             />
           </div>
-          <div className="perfil-input-container">
-            <button onClick={handleBackClick} className="perfil-button">
+          <div className="crehoras-input-container">
+            <button onClick={handleBackClick} className="crehoras-button">
               <FaChevronLeft />
               Regresar
             </button>
             <button
               type="submit"
-              className="perfil-button"
+              className="crehoras-button"
               disabled={isSubmitDisabled}
             >
               Guardar

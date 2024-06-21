@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./RechazoHoras.module.css";
+import "./RechazoHoras.modulo.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -48,7 +48,9 @@ function RechazoHoras() {
         // Redirigir a la página VistaHorasEstudiantes
         window.location.href = "/VistaHorasEstudiantes";
       } else {
-        setError("Error al rechazar la actividad. Por favor, inténtelo de nuevo.");
+        setError(
+          "Error al rechazar la actividad. Por favor, inténtelo de nuevo."
+        );
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
@@ -62,33 +64,29 @@ function RechazoHoras() {
   };
 
   return (
-    <div className="perfil-container">
-      
-      <div className="perfil-content">
-      
-        <h1 className="home-title">Rechazo de Horas</h1>
-        <hr className="perfil-divider" />
+    <div className="rechazo-container">
+      <div className="rechazo-content">
+        <h1 className="rechazo-title">Rechazo de Horas</h1>
+        <hr className="rechazo-divider" />
         <form onSubmit={handleSubmit}>
-          <div className="perfil-input-container">
+          <div className="rechazo-inputcontainer">
             <input
               type="text"
               id="comentariosRechazo"
               name="comentariosRechazo"
               value={comentariosRechazo}
               onChange={(e) => setComentariosRechazo(e.target.value)}
-              className="perfil-input"
+              className="rechazo-input"
               placeholder="Ingrese los comentarios de rechazo"
             />
           </div>
-          <div className="perfil-input-container">
-            <button onClick={handleBackClick} className="perfil-button">
+          <div className="rechazo-inputcontainer">
+            <button onClick={handleBackClick} className="rechazo-button">
               <FaChevronLeft />
               Regresar
             </button>
-            <button
-              type="submit"
-              className="perfil-button"
-            >
+            &nbsp;
+            <button type="submit" className="rechazo-button">
               Guardar
             </button>
           </div>

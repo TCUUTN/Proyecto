@@ -329,47 +329,6 @@ iframe {
 
 }
 
-/* Textarea */
-.perfil-textarea,
-.perfil-input-date,
-.perfil-input-time {
-  width: 85%;
-  padding: 10px;
-  border: 1px solid #dee2e6;
-  border-radius: 20px;
-  font-size: 16px;
-  color: #2b3945;
-  font-family: "Century Gothic", sans-serif;
-  margin: 0 auto;
-  display: block;
-}
-
-.perfil-textarea {
-  resize:vertical;
-  height: auto;
-  border-radius: 20px;
-}
-.react-time-picker__wrapper{
-  border: none !important;
-}
-
-/* Inputs Time and Date */
-.perfil-input-date,
-.perfil-input-time {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.perfil-input-date::-webkit-inner-spin-button,
-.perfil-input-time::-webkit-inner-spin-button {
-  display: none;
-}
-
-.perfil-input-date::-webkit-calendar-picker-indicator,
-.perfil-input-time::-webkit-calendar-picker-indicator {
-  color: #2b3945;
-}
 
 
 

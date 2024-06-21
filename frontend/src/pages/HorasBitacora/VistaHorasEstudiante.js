@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaEdit,
-} from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoMdAddCircle } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import "./VistaHorasEstudiante.module.CSS";
+import "./VistaHorasEstudiante.modulo.css";
 
 function VistaHorasEstudiante() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [materias, setMaterias] = useState([]);
   const [filteredApprovedMaterias, setFilteredApprovedMaterias] = useState([]);
   const [filteredRejectedMaterias, setFilteredRejectedMaterias] = useState([]);
-  const [descripcionActividadFilter, setDescripcionActividadFilter] = useState("");
+  const [descripcionActividadFilter, setDescripcionActividadFilter] =
+    useState("");
   const [tipoFilter, setTipoFilter] = useState("");
-  const [descripcionActividadFilterRejected, setDescripcionActividadFilterRejected] = useState("");
+  const [
+    descripcionActividadFilterRejected,
+    setDescripcionActividadFilterRejected,
+  ] = useState("");
   const [tipoFilterRejected, setTipoFilterRejected] = useState("");
   const [fechaFilter, setFechaFilter] = useState("");
   const [fechaFilterRejected, setFechaFilterRejected] = useState("");
@@ -58,8 +60,12 @@ function VistaHorasEstudiante() {
         if (response.ok) {
           const data = await response.json();
           setMaterias(data);
-          setFilteredApprovedMaterias(data.filter(m => m.EstadoHoras === "Aprobado"));
-          setFilteredRejectedMaterias(data.filter(m => m.EstadoHoras === "Rechazado"));
+          setFilteredApprovedMaterias(
+            data.filter((m) => m.EstadoHoras === "Aprobado")
+          );
+          setFilteredRejectedMaterias(
+            data.filter((m) => m.EstadoHoras === "Rechazado")
+          );
         } else {
           console.error("Error al obtener la lista de actividades");
           toast.error("Error al obtener la lista de actividades");
@@ -74,50 +80,96 @@ function VistaHorasEstudiante() {
   const handleDescripcionActividadFilterChange = (e) => {
     const value = e.target.value;
     setDescripcionActividadFilter(value);
-    applyFilters(value, tipoFilter, fechaFilter, "Aprobado", setFilteredApprovedMaterias);
+    applyFilters(
+      value,
+      tipoFilter,
+      fechaFilter,
+      "Aprobado",
+      setFilteredApprovedMaterias
+    );
   };
 
   const handleTipoFilterChange = (e) => {
     const value = e.target.value;
     setTipoFilter(value);
-    applyFilters(descripcionActividadFilter, value, fechaFilter, "Aprobado", setFilteredApprovedMaterias);
+    applyFilters(
+      descripcionActividadFilter,
+      value,
+      fechaFilter,
+      "Aprobado",
+      setFilteredApprovedMaterias
+    );
   };
 
   const handleFechaFilterChange = (e) => {
     const value = e.target.value;
     setFechaFilter(value);
-    applyFilters(descripcionActividadFilter, tipoFilter, value, "Aprobado", setFilteredApprovedMaterias);
+    applyFilters(
+      descripcionActividadFilter,
+      tipoFilter,
+      value,
+      "Aprobado",
+      setFilteredApprovedMaterias
+    );
   };
 
   const handleDescripcionActividadFilterRejectedChange = (e) => {
     const value = e.target.value;
     setDescripcionActividadFilterRejected(value);
-    applyFilters(value, tipoFilterRejected, fechaFilterRejected, "Rechazado", setFilteredRejectedMaterias);
+    applyFilters(
+      value,
+      tipoFilterRejected,
+      fechaFilterRejected,
+      "Rechazado",
+      setFilteredRejectedMaterias
+    );
   };
 
   const handleTipoFilterRejectedChange = (e) => {
     const value = e.target.value;
     setTipoFilterRejected(value);
-    applyFilters(descripcionActividadFilterRejected, value, fechaFilterRejected, "Rechazado", setFilteredRejectedMaterias);
+    applyFilters(
+      descripcionActividadFilterRejected,
+      value,
+      fechaFilterRejected,
+      "Rechazado",
+      setFilteredRejectedMaterias
+    );
   };
 
   const handleFechaFilterRejectedChange = (e) => {
     const value = e.target.value;
     setFechaFilterRejected(value);
-    applyFilters(descripcionActividadFilterRejected, tipoFilterRejected, value, "Rechazado", setFilteredRejectedMaterias);
+    applyFilters(
+      descripcionActividadFilterRejected,
+      tipoFilterRejected,
+      value,
+      "Rechazado",
+      setFilteredRejectedMaterias
+    );
   };
 
-  const applyFilters = (DescripcionActividad, TipoCurso, Fecha, status, setFilteredMaterias) => {
-    let filtered = materias.filter(m => m.EstadoHoras === status);
+  const applyFilters = (
+    DescripcionActividad,
+    TipoCurso,
+    Fecha,
+    status,
+    setFilteredMaterias
+  ) => {
+    let filtered = materias.filter((m) => m.EstadoHoras === status);
 
     if (DescripcionActividad) {
       filtered = filtered.filter((materia) =>
-        materia.DescripcionActividad?.toLowerCase().includes(DescripcionActividad.toLowerCase())
+        materia.DescripcionActividad?.toLowerCase().includes(
+          DescripcionActividad.toLowerCase()
+        )
       );
     }
 
     if (TipoCurso) {
-      filtered = filtered.filter((materia) => materia.TipoActividad === TipoCurso);
+      filtered = filtered.filter(
+        (materia) => materia.TipoActividad === TipoCurso
+      );
     }
 
     if (Fecha) {
@@ -140,8 +192,11 @@ function VistaHorasEstudiante() {
   );
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredApprovedMaterias.length / materiasPerPage) || 
-        currentPage < Math.ceil(filteredRejectedMaterias.length / materiasPerPage)) {
+    if (
+      currentPage <
+        Math.ceil(filteredApprovedMaterias.length / materiasPerPage) ||
+      currentPage < Math.ceil(filteredRejectedMaterias.length / materiasPerPage)
+    ) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -167,75 +222,94 @@ function VistaHorasEstudiante() {
   };
 
   const handleButtonClick = () => {
-    navigate('/CrearoActualizarHoras');
-};
+    navigate("/CrearoActualizarHoras");
+  };
 
   return (
-    <div className="materia-container">
+    <div className="horasi-container">
+      {/* */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
+      {/* */}
       <main>
-        <div className="sidebar-mater">
-        {selectedRole === "Académico" && 
-            <button className="add-mater" onClick={() => handleViewDetails()}>
-              <FaChevronLeft className="icon-addMater"/> Regresar
-            </button>}
-            {selectedRole === "Estudiante" && 
-            <button className="add-mater" onClick={handleButtonClick}>
-            Agregar Actividades <IoMdAddCircle className="icon-addMater" />
-        </button>}
+        {/* */}
+        <div className="horasi-botton">
+          {selectedRole === "Académico" && (
+            <button className="add-horasiRegresar" onClick={handleViewDetails}>
+              <FaChevronLeft className="icon-horasiRegresar" /> Regresar
+            </button>
+          )}
+          {selectedRole === "Estudiante" && (
+            <button className="add-horasi" onClick={handleButtonClick}>
+              Agregar Actividades <IoMdAddCircle className="icon-horasi" />
+            </button>
+          )}
         </div>
-
-        {filteredApprovedMaterias.length === 0 && filteredRejectedMaterias.length === 0 ? (
+        {/* */}
+        {filteredApprovedMaterias.length === 0 &&
+        filteredRejectedMaterias.length === 0 ? (
           <div className="no-data-message">
             Inserte actividades para verlas aquí
           </div>
         ) : (
           <>
-            <div className="table-container-mat">
-              <h2>Actividades Aprobadas</h2>
-              <div className="filter-group">
-                <label>
-                  <span>Fecha:</span>
+            {/* */}
+            <div className="container-tableapro">
+              <h2 className="apro-titl">Actividades Aprobadas</h2>
+              <hr className="apro-divider"></hr>
+              {/* Filtros*/}
+              <div className="filter-apro">
+                {/* Fecha*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">Fecha</label>
                   <input
-                  className="filter-select-acad"
+                    className="filter-select-apro"
                     type="date"
                     value={fechaFilter}
                     onChange={handleFechaFilterChange}
                     placeholder="Buscar por fecha"
                   />
-                </label>
-                <label>
-                  <span>Descripción de la Actividad:</span>
+                </div>
+                {/*  Descripcion actividades*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">
+                    Descripción de la Actividad
+                  </label>
                   <input
+                    className="filter-input-apro"
                     type="text"
                     value={descripcionActividadFilter}
                     onChange={handleDescripcionActividadFilterChange}
                     placeholder="Buscar por descripción"
                   />
-                </label>
-                <label>
-                  <span>Tipo de Actividad:</span>
+                </div>
+                {/*  Tipo de Actividad*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">
+                    Tipo de Actividad:
+                  </label>
                   <select
-                    className="filter-select-acad"
+                    className="filter-select-apro"
                     value={tipoFilter}
                     onChange={handleTipoFilterChange}
                   >
-                    <option value="">Modalidad</option>
+                    <option value="">Tipo de Actividad</option>
                     <option value="Planificacion">Planificación</option>
                     <option value="Ejecucion">Ejecución</option>
                     <option value="Gira">Gira</option>
                   </select>
-                </label>
+                </div>
               </div>
+              {/* */}
               {currentApprovedMaterias.length > 0 ? (
                 <>
-                  <table className="mat-table">
-                    <thead className="mat-thead">
+                  {/*Tabla */}
+                  <table className="apro-table">
+                    <thead className="apro-thead">
                       <tr>
                         <th>Fecha</th>
                         <th>Descripción de la Actividad</th>
@@ -246,7 +320,7 @@ function VistaHorasEstudiante() {
                         {selectedRole === "Académico" && <th>Acciones</th>}
                       </tr>
                     </thead>
-                    <tbody className="mat-tbody">
+                    <tbody className="apro-tbody">
                       {currentApprovedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
                           <td>{materia.Fecha}</td>
@@ -254,10 +328,19 @@ function VistaHorasEstudiante() {
                           <td>{materia.TipoActividad}</td>
                           <td>{materia.HoraInicio}</td>
                           <td>{materia.HoraFinal}</td>
-                          <td>{materia.Evidencias ? materia.Evidencias : "No se presentó ninguna evidencia"}</td>
+                          <td>
+                            {materia.Evidencias
+                              ? materia.Evidencias
+                              : "No se presentó ninguna evidencia"}
+                          </td>
                           {selectedRole === "Académico" && (
                             <td>
-                              <button className="icon-btn-mat" onClick={() => handleEditClick(materia.BitacoraId)}>
+                              <button
+                                className="icon-btn-acade"
+                                onClick={() =>
+                                  handleEditClick(materia.BitacoraId)
+                                }
+                              >
                                 <FaEdit />
                               </button>
                             </td>
@@ -266,7 +349,8 @@ function VistaHorasEstudiante() {
                       ))}
                     </tbody>
                   </table>
-                  <div className="pagination-mat">
+                  {/* La paginacion */}
+                  <div className="pagination-apro">
                     <button
                       onClick={handlePreviousPage}
                       disabled={currentPage === 1}
@@ -275,13 +359,17 @@ function VistaHorasEstudiante() {
                     </button>
                     <span>
                       Página {currentPage} de{" "}
-                      {Math.ceil(filteredApprovedMaterias.length / materiasPerPage)}
+                      {Math.ceil(
+                        filteredApprovedMaterias.length / materiasPerPage
+                      )}
                     </span>
                     <button
                       onClick={handleNextPage}
                       disabled={
                         currentPage ===
-                        Math.ceil(filteredApprovedMaterias.length / materiasPerPage)
+                        Math.ceil(
+                          filteredApprovedMaterias.length / materiasPerPage
+                        )
                       }
                     >
                       Siguiente
@@ -289,36 +377,51 @@ function VistaHorasEstudiante() {
                   </div>
                 </>
               ) : (
-                <div className="no-data-message">No hay actividades aprobadas que coincidan con los filtros.</div>
+                <div className="no-data-message">
+                  No hay actividades aprobadas que coincidan con los filtros.
+                </div>
               )}
             </div>
+            {/*Tabla de rechazo horas estudiante*/}
 
-            <div className="table-container-mat">
-              <h2>Actividades Rechazadas</h2>
-              <div className="filter-group">
-                <label>
-                  <span>Fecha:</span>
+            <div className="container-tablerecha">
+              <h2 className="apro-titl">Actividades Rechazadas</h2>
+              <hr className="apro-divider"></hr>
+              {/* Filtros*/}
+              <div className="filter-apro">
+                {/* Fecha*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">Fecha</label>
                   <input
-                  className="filter-select-acad"
+                    className="filter-select-apro"
                     type="date"
                     value={fechaFilterRejected}
                     onChange={handleFechaFilterRejectedChange}
                     placeholder="Buscar por fecha"
                   />
-                </label>
-                <label>
-                  <span>Descripción de la Actividad:</span>
+                </div>
+
+                {/*  Descripcion actividades*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">
+                    Descripción de la Actividad
+                  </label>
                   <input
+                    className="filter-input-apro"
                     type="text"
                     value={descripcionActividadFilterRejected}
                     onChange={handleDescripcionActividadFilterRejectedChange}
                     placeholder="Buscar por descripción"
                   />
-                </label>
-                <label>
-                  <span>Tipo de Actividad:</span>
+                </div>
+
+                {/*  Tipo de Actividad*/}
+                <div className="filter-group-apro">
+                  <label className="filter-label-apro">
+                    Tipo de Actividad:
+                  </label>
                   <select
-                  className="filter-select-acad"
+                    className="filter-select-acad"
                     value={tipoFilterRejected}
                     onChange={handleTipoFilterRejectedChange}
                   >
@@ -327,12 +430,14 @@ function VistaHorasEstudiante() {
                     <option value="Ejecucion">Ejecución</option>
                     <option value="Gira">Gira</option>
                   </select>
-                </label>
+                </div>
               </div>
+              {/* */}
               {currentRejectedMaterias.length > 0 ? (
                 <>
-                  <table className="mat-table">
-                    <thead className="mat-thead">
+                  {/*Tabla */}
+                  <table className="apro-table">
+                    <thead className="apro-thead">
                       <tr>
                         <th>Fecha</th>
                         <th>Descripción de la Actividad</th>
@@ -341,7 +446,7 @@ function VistaHorasEstudiante() {
                         {selectedRole === "Estudiante" && <th>Acciones</th>}
                       </tr>
                     </thead>
-                    <tbody className="mat-tbody">
+                    <tbody className="apro-tbody">
                       {currentRejectedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
                           <td>{materia.Fecha}</td>
@@ -350,7 +455,12 @@ function VistaHorasEstudiante() {
                           <td>{materia.ComentariosRechazo}</td>
                           {selectedRole === "Estudiante" && (
                             <td>
-                              <button className="icon-btn-mat" onClick={() => handleEditClick2(materia.BitacoraId)}>
+                              <button
+                                className="icon-btn-acade"
+                                onClick={() =>
+                                  handleEditClick2(materia.BitacoraId)
+                                }
+                              >
                                 <FaEdit />
                               </button>
                             </td>
@@ -359,7 +469,8 @@ function VistaHorasEstudiante() {
                       ))}
                     </tbody>
                   </table>
-                  <div className="pagination-mat">
+                  {/* La paginacion */}
+                  <div className="pagination-apro">
                     <button
                       onClick={handlePreviousPage}
                       disabled={currentPage === 1}
@@ -368,13 +479,17 @@ function VistaHorasEstudiante() {
                     </button>
                     <span>
                       Página {currentPage} de{" "}
-                      {Math.ceil(filteredRejectedMaterias.length / materiasPerPage)}
+                      {Math.ceil(
+                        filteredRejectedMaterias.length / materiasPerPage
+                      )}
                     </span>
                     <button
                       onClick={handleNextPage}
                       disabled={
                         currentPage ===
-                        Math.ceil(filteredRejectedMaterias.length / materiasPerPage)
+                        Math.ceil(
+                          filteredRejectedMaterias.length / materiasPerPage
+                        )
                       }
                     >
                       Siguiente
@@ -382,7 +497,9 @@ function VistaHorasEstudiante() {
                   </div>
                 </>
               ) : (
-                <div className="no-data-message">No hay actividades rechazadas que coincidan con los filtros.</div>
+                <div className="no-data-message">
+                  No hay actividades rechazadas que coincidan con los filtros.
+                </div>
               )}
             </div>
           </>

@@ -79,12 +79,25 @@ body {
  align-items: center;
 }
 
+.creaediUsu-input:focus,
+.creaediUsu-select:focus,
+.creaediUsu-check:focus {
+  border-color: #ff6600 !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+.creaediUsu-check{
+  border: 2px solid #002B69 !important;
+  border-radius: 25px !important;
+  font-size: 16px;
+}
 .creaediUsu-roles {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin-left: 10px;
   font-size: 16px;
+
 }
 
 .creaediUsu-roles label {
@@ -103,7 +116,7 @@ body {
 
 .creaediUsu-btnGuardar,
 .creaediUsu-btnRegresar {
-  background-color: #00bfff; /* Color celeste */
+  background-color: #002b69; /* Color celeste */
   color: white;
   padding: 10px 20px;
   border: none;

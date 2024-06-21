@@ -26,9 +26,12 @@
 }
 
 .Title-linea {
-  border: 2px solid #f66226; /* Divider color */
-  width: 50%;
-  margin: 0 auto 20px;
+  height: 2px;
+  background-color: #ff6600 !important;
+  width: 125px;
+  margin: 0 auto 20px auto;
+  border: none;
+ 
 }
 
 .input-wrapper {
