@@ -27,9 +27,9 @@ body {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 10px;
+    margin-top: 10px;
     border: none;
-    color:  #002b69;
+    color: #002b69;
     font-family: "Brush-TipTerrence", cursive;
 }
 
@@ -69,25 +69,57 @@ body {
 
 .buttongroup-projcreaed {
     display: flex;
-    justify-content: space-between;
-    width: 65%;
+    justify-content: center; /* Centramos los botones */
+    margin-top: 20px;
+    width: 100%;
 }
 
 .button-projcreaed {
-    padding: 5px 20px;
-    border: none;
-    border-radius: 50px;
-    background-color: #00bfff;
+    width: 35%;
+    padding: 10px;
+    background-color: #002b69;
     color: white;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 .button-projcreaed:hover {
     background-color: #f66226;
     transition: 0.3s;
 }
+
+
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container-projcreaed {
+      width: 80%;
+      margin-top: 20%;
+    }
+  
+    .formgroup-projcreaed {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+  
+    .label-projcreaed {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+  
+    .imput-projcreaed, .sele-projcreaed {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .button-projcreaed {
+      width: 35%;
+    }
+  }
 
 /* Pagina de crear y editar la creacion de grupos */
 .creagrup-container {
@@ -148,7 +180,10 @@ body {
     color: #303031;
     opacity: 0.6;
 }
-
+.creagrup-select::placeholder {
+    color: #303031;
+    opacity: 0.6;
+}
 .creagrup-buttonrow {
     display: flex;
     justify-content: center; /* Centramos los botones */
@@ -157,19 +192,65 @@ body {
 }
 
 .creagrup-button {
-    width: 48%;
+    width: 35%;
     padding: 10px;
-    background-color: #00bfff; /* Color celeste */
+    background-color: #002b69;
     color: white;
     border: none;
     border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-    margin: 0 5px; /* Espacio entre los botones */
 }
 
 .creagrup-button:hover {
     background-color: #ff4500;
     transition: background-color 0.3s;
+}
+
+/* Media queries para tamaños de pantalla más pequeños */
+@media (max-width: 768px) {
+    .creagrup-container {
+        width: 80%; /* Ajustamos el ancho del contenedor principal */
+    }
+
+    .creagrup-formrow {
+        margin-bottom: 15px; 
+        flex-direction: column;
+    }
+
+    .creagrup-inputfield,
+    .creagrup-select {
+        width: 100%; /* Ajustamos el ancho de los campos a 100% en pantallas pequeñas */
+    }
+
+    .creagrup-button {
+        width: 50%; /* Ajustamos el ancho de los botones en pantallas pequeñas */
+    }
+}
+
+/* Media queries para tamaños de pantalla aún más pequeños, como celulares */
+@media (max-width: 480px) {
+    .creagrup-container {
+        width: 90%; /* Reducimos aún más el ancho del contenedor principal */
+        padding: 10px; /* Reducimos el padding para optimizar el espacio */
+    }
+
+    .creagrup-tit {
+        font-size: 18px; /* Reducimos el tamaño del título para pantallas pequeñas */
+    }
+    .creagrup-formrow {
+        flex-direction: column;
+    }
+
+    .creagrup-inputfield,
+    .creagrup-select {
+        padding: 8px; /* Reducimos el padding de los campos para pantallas pequeñas */
+        font-size: 14px; /* Reducimos el tamaño de la fuente de los campos */
+    }
+
+    .creagrup-button {
+        padding: 8px; /* Reducimos el padding de los botones para pantallas pequeñas */
+        font-size: 14px; /* Reducimos el tamaño de la fuente de los botones */
+    }
 }

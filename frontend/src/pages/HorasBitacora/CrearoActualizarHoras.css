@@ -31,7 +31,7 @@
 }
 
 /* Titles */
-h1.home-title {
+.crehoras-title {
   font-family: "Brush-TipTerrence", cursive;
   color: #012c6a;
   margin-bottom: 10px;
@@ -50,8 +50,14 @@ input[type="text"] {
   position: relative !important;
 }
 
+.crehoras-input:focus{
+  border-color: #ff6600 !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
 /* Completar Perfil - Genero */
-.perfil-container {
+.crehoras-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,7 +65,7 @@ input[type="text"] {
   background-color: #f7f7f7;
 }
 
-.perfil-content {
+.crehoras-content {
   background-color: #fff;
   border: 1px solid #012c6a;
   padding: 20px;
@@ -70,14 +76,14 @@ input[type="text"] {
   width: 25%;
 }
 
-.perfil-input-container {
+.crehoras-input-container {
   margin: 20px 0;
 }
 
-.perfil-input,
-.perfil-textarea,
-.perfil-file,
-.perfil-dropdown {
+.crehoras-input,
+.crehoras-textarea,
+.crehoras-file,
+.crehoras-dropdown {
   width: 85%;
   padding: 10px;
   border: 1px solid #dee2e6;
@@ -86,12 +92,12 @@ input[type="text"] {
   color: #2b3945;
 }
 
-.create-textarea {
+.crehoras-textarea {
   resize: auto;
   height: 100px;
 }
 
-.create-button {
+.crehoras-button {
   width: 45%;
   padding: 10px;
   background-color: #002b69 !important;
@@ -104,13 +110,13 @@ input[type="text"] {
   transition: 2s;
 }
 
-.create-button:hover {
+.crehoras-button:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   transition: 2s;
 }
 
-.perfil-divider {
+.crehoras-divider {
   width: 50%;
   border: 1px solid #f66226;
   margin-left: 65px;
@@ -125,7 +131,7 @@ input[type="text"] {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
-  .perfil-content {
+  .crehoras-content {
     width: 35%;
   }
 }
@@ -137,37 +143,37 @@ input[type="text"] {
 }
 
 @media (max-width: 768px) {
-  .perfil-content {
+  .crehoras-content {
     width: 70%;
   }
 
-  .perfil-input,
-  .perfil-textarea,
-  .perfil-file,
-  .perfil-dropdown,
-  .perfil-button {
+  .crehoras-input,
+  .crehoras-textarea,
+  .crehoras-file,
+  .crehoras-dropdown,
+  .crehoras-button {
     width: 90%;
   }
 
-  .perfil-divider {
+  .crehoras-divider {
     width: 60%;
   }
 }
 
 @media (max-width: 576px) {
-  .perfil-content {
+  .crehoras-content {
     width: 90%;
   }
 
-  .perfil-input,
-  .perfil-textarea,
-  .perfil-file,
-  .perfil-dropdown,
-  .perfil-button {
+  .crehoras-input,
+  .crehoras-textarea,
+  .crehoras-file,
+  .crehoras-dropdown,
+  .crehoras-button {
     width: 90%;
   }
 
-  .perfil-divider {
+  .crehoras-divider {
     width: 70%;
   }
 }
@@ -190,10 +196,11 @@ input[type="text"] {
   transition: 0.3s;
 }
 
+
 /* Textarea */
-.perfil-textarea,
-.perfil-input-date,
-.perfil-input-time {
+.crehoras-textarea,
+.crehoras-input-date,
+.crehoras-input-time {
   width: 85%;
   padding: 10px;
   border: 1px solid #dee2e6;
@@ -205,26 +212,29 @@ input[type="text"] {
   display: block;
 }
 
-.perfil-textarea {
-  resize: vertical;
-  height: 100px;
+.crehoras-textarea {
+  resize:vertical;
+  height: auto;
+  border-radius: 20px;
+}
+.react-time-picker__wrapper{
+  border: none !important;
 }
 
 /* Inputs Time and Date */
-.perfil-input-date,
-.perfil-input-time {
+.crehoras-input-date,
+.crehoras-input-time {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
 
-.perfil-input-date::-webkit-inner-spin-button,
-.perfil-input-time::-webkit-inner-spin-button {
+.crehoras-input-date::-webkit-inner-spin-button,
+.crehoras-input-time::-webkit-inner-spin-button {
   display: none;
 }
 
-.perfil-input-date::-webkit-calendar-picker-indicator,
-.perfil-input-time::-webkit-calendar-picker-indicator {
+.crehoras-input-date::-webkit-calendar-picker-indicator,
+.crehoras-input-time::-webkit-calendar-picker-indicator {
   color: #2b3945;
 }
-

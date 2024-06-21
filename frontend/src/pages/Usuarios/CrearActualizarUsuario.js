@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import styles from "./CrearActualizarUsuario.module.css";
+import styles from "./CrearActuUsuario.module.css";
+
 
 const CrearActualizarUsuario = () => {
   const navigate = useNavigate();
@@ -274,6 +275,7 @@ const CrearActualizarUsuario = () => {
           <div className={styles["creaediUsu-roles"]}>
             <label>
               <input
+              className="creaediUsu-check"
                 type="checkbox"
                 name="roles"
                 value="Administrador"
@@ -284,6 +286,7 @@ const CrearActualizarUsuario = () => {
             </label>
             <label>
               <input
+                 className="creaediUsu-check"
                 type="checkbox"
                 name="roles"
                 value="Estudiante"
@@ -294,6 +297,7 @@ const CrearActualizarUsuario = () => {
             </label>
             <label>
               <input
+                 className="creaediUsu-check"
                 type="checkbox"
                 name="roles"
                 value="Académico"

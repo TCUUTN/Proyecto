@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from "./CrearActualizar.module.css";
+import "./CrearActualizar.css";
 
 function CrearActuProyectos() {
     const navigate = useNavigate();
@@ -62,34 +62,34 @@ function CrearActuProyectos() {
     };
 
     return (
-        <div className={styles["container-projcreaed"]}>
+        <div className="container-projcreaed">
             <ToastContainer position="bottom-right" />
-            <h1 className={styles["projcreaed-tit"]}>{titulo}</h1>
-            <hr className={styles["diver-projcreaed"]}/>
-            <div className={styles["formgroup-projcreaed"]}>
-                <label className={styles["label-projcreaed"]}>Código de materia:</label>
+            <h1 className="projcreaed-tit">{titulo}</h1>
+            <hr className="diver-projcreaed"/>
+            <div className="formgroup-projcreaed">
+                <label className="label-projcreaed">Código de materia:</label>
                 <input
                     type="text"
-                    className={styles["imput-projcreaed"]}
+                    className="imput-projcreaed"
                     placeholder="Código de materia"
                     value={CodigoMateria}
                     onChange={(e) => setCodigoMateria(e.target.value)}
                 />
             </div>
-            <div className={styles["formgroup-projcreaed"]}>
-                <label className={styles["label-projcreaed"]}>Nombre del Proyecto:</label>
+            <div className="formgroup-projcreaed">
+                <label className="label-projcreaed">Nombre del Proyecto:</label>
                 <input
                     type="text"
-                    className={styles["imput-projcreaed"]}
+                    className="imput-projcreaed"
                     placeholder="Nombre Proyecto"
                     value={NombreProyecto}
                     onChange={(e) => setNombreProyecto(e.target.value)}
                 />
             </div>
-            <div className={styles["formgroup-projcreaed"]}>
-                <label className={styles["label-projcreaed"]}>Tipo de curso:</label>
+            <div className="formgroup-projcreaed">
+                <label className="label-projcreaed">Tipo de curso:</label>
                 <select
-                    className={styles["sele-projcreaed"]}
+                    className="sele-projcreaed"
                     value={TipoCurso}
                     onChange={(e) => setTipoCurso(e.target.value)}
                 >
@@ -99,9 +99,10 @@ function CrearActuProyectos() {
                     <option value="Hibrido">Híbrido</option>
                 </select>
             </div>
-            <div className={styles["buttongroup-projcreaed"]}>
-                <button className={styles["button-projcreaed"]} onClick={() => navigate("/MantMaterias")}>Regresar</button>
-                <button className={styles["button-projcreaed"]} onClick={handleGuardar}>Guardar</button>
+            <div className="buttongroup-projcreaed">
+                <button className="button-projcreaed" onClick={() => navigate("/MantMaterias")}>Regresar</button>
+                &nbsp;&nbsp;&nbsp;
+                <button className="button-projcreaed" onClick={handleGuardar}>Guardar</button>
             </div>
         </div>
     );

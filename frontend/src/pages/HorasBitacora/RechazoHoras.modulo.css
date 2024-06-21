@@ -1,0 +1,148 @@
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rechazo-title {
+  font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.rechazo-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  background-color: #f7f7f7;
+}
+
+.rechazo-content{
+  background-color: #fff;
+  border: 1px solid #012c6a;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 25%;
+}
+.rechazo-dropdown {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 9px;
+  font-size: 16px;
+  color: #2b3945;
+}
+.rechazo-button{
+  width: 45%;
+  padding: 10px;
+  background-color: #002b69;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: "Century Gothic", sans-serif;
+  margin-top: 10px;
+  transition: 2s;
+}
+.rechazo-button:hover {
+  background-color: #ff4500;
+  background-image: linear-gradient(to right, #ff8c00, #ff4500);
+  transition: 2s;
+}
+.rechazo-input:focus{
+  border-color: #ff6600 !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+.rechazo-inputcontainer{
+  margin: 20px 0;
+}
+
+.rechazo-divider{
+  width: 50%;
+  border: 1px solid #f66226;
+  margin-left: 65px;
+  margin: 10px auto;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .rechazo-content {
+    width: 35%;
+  }
+}
+
+@media (max-width: 992px) {
+  .rechazo-content {
+    width: 45%;
+  }
+
+  .rechazo-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .rechazo-content {
+    width: 60%;
+  }
+
+  .rechazo-button {
+    width: 60%;
+  }
+}
+
+@media (max-width: 576px) {
+  .rechazo-content {
+    width: 80%;
+  }
+
+  .rechazo-button {
+    width: 80%;
+  }
+
+  .rechazo-title {
+    font-size: 1.5rem;
+  }
+
+  .rechazo-divider {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+
+
