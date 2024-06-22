@@ -54,6 +54,11 @@ function MantGrupos() {
     }
   };
 
+  const handleClick = (grupoId) => {
+    localStorage.setItem("GrupoIdUpdate", grupoId);
+    navigate("/CrearActuCreacionGrupos");
+  };
+
   const handleCodigoMateriaFilterChange = (e) => {
     const value = e.target.value;
     setCodigoMateriaFilter(value);
@@ -297,7 +302,10 @@ function MantGrupos() {
         <div className="sidebar-mater">
           {/*Agregar usuario */}
           <div className="mater-action">
-            <button className="add-mater" onClick={() => navigate("/CrearActuCreacionGrupos")}>
+            <button
+              className="add-mater"
+              onClick={() => navigate("/CrearActuCreacionGrupos")}
+            >
               Agregar Grupos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
@@ -425,7 +433,10 @@ function MantGrupos() {
                   <td>{grupo.Aula}</td>
                   <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
                   <td>
-                    <button className="icon-btn-mat">
+                    <button
+                      className="icon-btn-mat"
+                      onClick={() => handleClick(grupo.GrupoId)}
+                    >
                       <FaEdit />
                     </button>
                     <button className="icon-btn-mat">
@@ -445,7 +456,7 @@ function MantGrupos() {
             <button onClick={handleNextPage}>Siguiente</button>
           </div>
         </div>
-         {/**/}
+        {/**/}
       </main>
     </div>
   );

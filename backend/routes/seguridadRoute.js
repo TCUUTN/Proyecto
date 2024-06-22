@@ -4,6 +4,7 @@ const seguridadController = require('../controllers/seguridadController');
 
 router.get('/', seguridadController.getAllUsuarios);
 router.get('/RolesUsuarios', seguridadController.getAllUsuarioRol);
+router.get('/RolesAcademicos', seguridadController.getAllAcademicos);
 router.post('/credenciales', seguridadController.getUsuarioPorCredenciales);
 router.post('/actualizarContrasenna', seguridadController.actualizarContrasenna);
 router.post('/actualizarGenero', seguridadController.actualizarGenero);
