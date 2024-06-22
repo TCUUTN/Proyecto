@@ -52,22 +52,27 @@ const getHorasPorBitacoraId = async (req, res) => {
 
   const crearOActualizarHoras = async (req, res) => {
     try {
-        const { 
+        const {
             BitacoraId,
-            Identificacion, 
-            GrupoId, 
-            Fecha, 
-            DescripcionActividad, 
-            TipoActividad, 
-            HoraInicio, 
-            HoraFinal, 
-            Evidencias, 
-            EstadoHoras, 
+            Identificacion,
+            GrupoId,
+            Fecha,
+            DescripcionActividad,
+            TipoActividad,
+            HoraInicio,
+            HoraFinal,
+            EstadoHoras,
             ComentariosRechazo = "-"  // Default to "-" if not provided
         } = req.body;
 
         if (!GrupoId || !Identificacion || !Fecha) {
             return res.status(400).json({ error: 'GrupoId, Identificacion, y Fecha son requeridos' });
+        }
+        console.log('Uploaded file:', req.file); // Log the file details
+        let Evidencias = null;
+        if (req.file) {
+            
+            Evidencias = req.file.buffer; // The file is stored in memory and accessed via req.file.buffer
         }
 
         if (BitacoraId) {
@@ -88,14 +93,11 @@ const getHorasPorBitacoraId = async (req, res) => {
                 TipoActividad,
                 HoraInicio,
                 HoraFinal,
-                EstadoHoras:"Aprobado",
+                EstadoHoras: "Aprobado",
                 ComentariosRechazo
             };
 
-            if (Evidencias === null) {
-                // Borrar la evidencia existente si no se proporciona nueva evidencia
-                updateData.Evidencias = null;
-            } else {
+            if (Evidencias !== null) {
                 updateData.Evidencias = Evidencias;
             }
 
@@ -123,6 +125,8 @@ const getHorasPorBitacoraId = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 
 const rechazarHoras = async (req, res) => {
     try {
