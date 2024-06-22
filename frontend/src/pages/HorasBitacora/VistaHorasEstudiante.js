@@ -25,8 +25,8 @@ function VistaHorasEstudiante() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
-
   const identificacion = localStorage.getItem("IdentificacionHoras");
+  console.log(identificacion)
   const selectedRole = sessionStorage.getItem("SelectedRole");
   useEffect(() => {
     if (identificacion) {

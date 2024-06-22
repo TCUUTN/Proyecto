@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -168,6 +168,7 @@ function MantenimientoUs() {
         );
 
         if (role === "Académico") {
+          // eslint-disable-next-line no-unused-vars
           const headers = worksheet[0];
           const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
 
