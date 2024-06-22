@@ -43,6 +43,25 @@ const getAllUsuarioRol = async (req, res) => {
   }
 };
 
+const getAllAcademicos = async (req, res) => {
+  try {
+    const usuarios = await Usuario.findAll({
+      attributes: ['Identificacion', 'Nombre', 'Apellido1', 'Apellido2','Sede'],
+      include: [
+        {
+          model: UsuarioRoles,
+          where: { RolId: 2 },
+          attributes: [], // No incluir ningún atributo de UsuarioRoles
+        },
+      ],
+    });
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 const getUsuarioPorNombre = async (req, res) => {
   try {
     const { Apellido1, Apellido2, Nombre } = req.query;
@@ -639,6 +658,7 @@ module.exports = {
   crearOActualizarUsuario,
   EstadoUsuario,
   getAllUsuarioRol,
+  getAllAcademicos,
   getUsuarioPorIdentificacion,
   actualizarGenero,
   cargarUsuario,
