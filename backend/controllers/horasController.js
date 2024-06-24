@@ -13,7 +13,6 @@ const getAllHoras = async (req, res) => {
 const descargarArchivo = async (req, res) => {
   try {
       const { BitacoraId } = req.params;
-      console.log("Entramos");
 
       const horas = await HorasBitacora.findOne({
           where: {
@@ -28,8 +27,6 @@ const descargarArchivo = async (req, res) => {
       if (!horas) {
           return res.status(404).json({ error: "Registro no encontrado" });
       }
-
-      console.log(horas);
       const filePath = path.join(__dirname, '../assets/dbAttachment/', horas.NombreEvidencia);
 
       fs.writeFileSync(filePath, horas.Evidencias);
