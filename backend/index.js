@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3001;
+const path = require('path')
 require('dotenv').config();
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname,'../backend/assets/dbAttachment')))
+
 // Aumentar el límite del tamaño del cuerpo de la solicitud
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));

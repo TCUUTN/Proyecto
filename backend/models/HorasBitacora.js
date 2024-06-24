@@ -55,7 +55,7 @@ const HorasBitacora = sequelize.define('Horas_Bitacora', {
     comment: 'Hora de Finalización'
   },
   Evidencias: {
-    type: DataTypes.BLOB,
+    type: DataTypes.BLOB('long'),
     allowNull: true,
     comment: 'Archivos de Evidencias'
   },
@@ -67,6 +67,12 @@ const HorasBitacora = sequelize.define('Horas_Bitacora', {
   },
   ComentariosRechazo: {
     type: DataTypes.STRING(250),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Comentarios de Rechazo'
+  },
+  NombreEvidencia: {
+    type: DataTypes.STRING(255),
     allowNull: false,
     defaultValue: '-',
     comment: 'Comentarios de Rechazo'
