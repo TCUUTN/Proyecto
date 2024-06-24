@@ -102,9 +102,7 @@ function ListaEstudiantes() {
   };
 
   const handleViewDetails = (identificacion) => {
-    console.log(identificacion)
     localStorage.setItem("IdentificacionHoras", identificacion);
-    console.log(localStorage.getItem("IdentificacionHoras"))
     navigate("/VistaHorasEstudiantes");
   };
 

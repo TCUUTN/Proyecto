@@ -26,7 +26,6 @@ function VistaHorasEstudiante() {
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
   const identificacion = localStorage.getItem("IdentificacionHoras");
-  console.log(identificacion)
   const selectedRole = sessionStorage.getItem("SelectedRole");
   useEffect(() => {
     if (identificacion) {
@@ -40,15 +39,57 @@ function VistaHorasEstudiante() {
       if (response.ok) {
         const data = await response.json();
         return data.GrupoId;
-      } else {
-        console.error("Error al obtener el GrupoId");
-        toast.error("Error al obtener el GrupoId");
       }
     } catch (error) {
-      console.error("Error al obtener el GrupoId:", error);
       toast.error("Error al obtener el GrupoId");
     }
   };
+
+  const handleDescargaArchivo = async (BitacoraId) => {
+    try {
+      const response = await fetch(`/horas/descargarAdjunto/${BitacoraId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const fileName = data;
+  
+        // Obtener el contenido del archivo
+        const fileResponse = await fetch(`/${fileName}`);
+        if (fileResponse.ok) {
+          const blob = await fileResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+          
+          // Crear un enlace temporal para la descarga del archivo
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+  
+          // Agregar el enlace al DOM y hacer clic en él
+          document.body.appendChild(a);
+          a.click();
+  
+          // Eliminar el enlace del DOM y revocar el objeto URL
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+  
+            // Solicitar la eliminación del archivo del servidor
+            fetch(`/horas/eliminarAdjunto/${fileName}`, {
+              method: "DELETE"
+            });
+          }, 100); // 100 milisegundos de retraso para asegurar que la descarga haya comenzado
+        } else {
+          console.log("Fallo al descargar el archivo");
+        }
+      } else {
+        console.log("Fallo al extraer imagen");
+      }
+    } catch (error) {
+      console.error("Error al manejar la descarga del archivo:", error);
+    }
+  };
+  
+  
+  
 
   const fetchHoras = async () => {
     try {
@@ -67,12 +108,10 @@ function VistaHorasEstudiante() {
             data.filter((m) => m.EstadoHoras === "Rechazado")
           );
         } else {
-          console.error("Error al obtener la lista de actividades");
           toast.error("Error al obtener la lista de actividades");
         }
       }
     } catch (error) {
-      console.error("Error al obtener la lista de actividades:", error);
       toast.error("Error al obtener la lista de actividades");
     }
   };
@@ -329,9 +368,22 @@ function VistaHorasEstudiante() {
                           <td>{materia.HoraInicio}</td>
                           <td>{materia.HoraFinal}</td>
                           <td>
-                            {materia.Evidencias
-                              ? materia.Evidencias
-                              : "No se presentó ninguna evidencia"}
+                            {materia.NombreEvidencia &&
+                            materia.NombreEvidencia !== "-" ? (
+                              <a
+                                href="#"
+                                onClick={() =>
+                                  handleDescargaArchivo(
+                                    materia.BitacoraId,
+                                    materia.NombreEvidencia
+                                  )
+                                }
+                              >
+                                {materia.NombreEvidencia}
+                              </a>
+                            ) : (
+                              "No se presentó ninguna evidencia"
+                            )}
                           </td>
                           {selectedRole === "Académico" && (
                             <td>

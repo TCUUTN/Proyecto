@@ -155,7 +155,7 @@ function CrearoActualizarHoras() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const requiredFields = [
       "Fecha",
       "DescripcionActividad",
@@ -163,18 +163,17 @@ function CrearoActualizarHoras() {
       "HoraInicio",
       "HoraFinal",
     ];
-
+  
     for (let field of requiredFields) {
-      console.log(formData);
       if (!formData[field]) {
         setError(`Por favor, ingrese ${field}.`);
         setIsSubmitDisabled(true);
         return;
       }
     }
-
+  
     const dataToSend = { ...formData, BitacoraId: bitacoraId };
-
+  
     try {
       const response = await fetch("horas/crearOActualizarHoras", {
         method: "POST",
@@ -183,21 +182,41 @@ function CrearoActualizarHoras() {
         },
         body: JSON.stringify(dataToSend),
       });
-
+  
       if (response.ok) {
+        const responseData = await response.json();
+        const { BitacoraId: newBitacoraId } = responseData;
+        if (formData.Evidencias) {
+          const formDataToSend = new FormData();
+          formDataToSend.append('BitacoraId', newBitacoraId);
+          console.log(formData.Evidencias);
+          formDataToSend.append('Evidencias', formData.Evidencias);
+  
+          const evidenceResponse = await fetch("horas/subirAdjunto", {
+            method: "POST",
+            body: formDataToSend,
+          });
+          
+          if (evidenceResponse.ok) {
+            console.log("Archivo subido exitosamente")
+          }else{
+            setError("Error al subir las evidencias. Por favor, inténtelo de nuevo.");
+            return;
+          }
+        }
+  
         toast.success("La actividad se ha registrado correctamente");
         sessionStorage.removeItem("BitacoraId");
         navigate("/VistaHorasEstudiantes");
       } else {
-        setError(
-          "Error al registrar la actividad. Por favor, inténtelo de nuevo."
-        );
+        setError("Error al registrar la actividad. Por favor, inténtelo de nuevo.");
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
+  
 
   const handleBackClick = () => {
     sessionStorage.removeItem("BitacoraId");
