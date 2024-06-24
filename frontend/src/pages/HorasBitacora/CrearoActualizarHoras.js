@@ -74,7 +74,7 @@ function CrearoActualizarHoras() {
             }));
           })
           .catch((error) => {
-            console.error("Error al obtener el grupo:", error);
+
             setError(
               "Error al obtener el grupo. Por favor, inténtelo de nuevo."
             );
@@ -189,7 +189,6 @@ function CrearoActualizarHoras() {
         if (formData.Evidencias) {
           const formDataToSend = new FormData();
           formDataToSend.append('BitacoraId', newBitacoraId);
-          console.log(formData.Evidencias);
           formDataToSend.append('Evidencias', formData.Evidencias);
   
           const evidenceResponse = await fetch("horas/subirAdjunto", {
@@ -198,7 +197,7 @@ function CrearoActualizarHoras() {
           });
           
           if (evidenceResponse.ok) {
-            console.log("Archivo subido exitosamente")
+
           }else{
             setError("Error al subir las evidencias. Por favor, inténtelo de nuevo.");
             return;
@@ -212,7 +211,6 @@ function CrearoActualizarHoras() {
         setError("Error al registrar la actividad. Por favor, inténtelo de nuevo.");
       }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };

@@ -21,8 +21,7 @@ const descargarArchivo = async (req, res) => {
           },
           attributes: [
               'Evidencias',
-              'NombreEvidencia',
-              'FormatoEvidencia',
+              'NombreEvidencia'
           ]
       });
 
@@ -187,7 +186,6 @@ const subirArchivo = async (req, res) => {
     const fileContent = fs.readFileSync(filePath);
     horaExistente.Evidencias = fileContent;
     horaExistente.NombreEvidencia = req.file.originalname;
-    horaExistente.FormatoEvidencia = req.file.mimetype;
 
     await horaExistente.save();
 

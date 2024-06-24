@@ -77,12 +77,6 @@ const HorasBitacora = sequelize.define('Horas_Bitacora', {
     defaultValue: '-',
     comment: 'Comentarios de Rechazo'
   },
-  FormatoEvidencia: {
-    type: DataTypes.STRING(10),
-    allowNull: false,
-    defaultValue: '-',
-    comment: 'Comentarios de Rechazo'
-  },
   UniversalUniqueIdentifier: {
     type: DataTypes.CHAR(36),
     allowNull: false,
