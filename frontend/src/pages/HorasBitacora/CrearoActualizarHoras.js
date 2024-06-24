@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-time-picker/dist/TimePicker.css";
 import TimePicker from "react-time-picker";
-import "./CrearoActualizarHoras.css"
+import "./CrearoActualizarHoras.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,7 @@ function CrearoActualizarHoras() {
     HoraInicio: "",
     HoraFinal: "",
     Evidencias: null,
+    NombreEvidencia: "",  // Nuevo campo para almacenar el nombre del archivo
   });
 
   const [error, setError] = useState("");
@@ -31,9 +32,10 @@ function CrearoActualizarHoras() {
     if (storedBitacoraId) {
       fetch(`horas/${storedBitacoraId}`)
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
           const formattedHoraInicio = formatTime(data.HoraInicio);
           const formattedHoraFinal = formatTime(data.HoraFinal);
+
           setFormData((prevFormData) => ({
             ...prevFormData,
             Identificacion: data.Identificacion || "",
@@ -43,6 +45,8 @@ function CrearoActualizarHoras() {
             TipoActividad: data.TipoActividad || "Ejecucion",
             HoraInicio: formattedHoraInicio || "",
             HoraFinal: formattedHoraFinal || "",
+            Evidencias: null,
+            NombreEvidencia: data.NombreEvidencia || "",
           }));
           updateHoraFinalLimits({
             ...data,
@@ -57,9 +61,7 @@ function CrearoActualizarHoras() {
         })
         .catch((error) => {
           console.error("Error al obtener los datos:", error);
-          setError(
-            "Error al obtener los datos. Por favor, inténtelo de nuevo."
-          );
+          setError("Error al obtener los datos. Por favor, inténtelo de nuevo.");
         });
     } else {
       const identificacion = sessionStorage.getItem("Identificacion");
@@ -74,10 +76,7 @@ function CrearoActualizarHoras() {
             }));
           })
           .catch((error) => {
-
-            setError(
-              "Error al obtener el grupo. Por favor, inténtelo de nuevo."
-            );
+            setError("Error al obtener el grupo. Por favor, inténtelo de nuevo.");
           });
       }
     }
@@ -186,22 +185,33 @@ function CrearoActualizarHoras() {
       if (response.ok) {
         const responseData = await response.json();
         const { BitacoraId: newBitacoraId } = responseData;
-        if (formData.Evidencias) {
+        if (formData.Evidencias || formData.NombreEvidencia !== "-") {
           const formDataToSend = new FormData();
           formDataToSend.append('BitacoraId', newBitacoraId);
-          formDataToSend.append('Evidencias', formData.Evidencias);
+
+          if (formData.Evidencias) {
+            formDataToSend.append('Evidencias', formData.Evidencias);
+          } else {
+            const fileUrl = `horas/${encodeURIComponent(formData.NombreEvidencia)}`;
+            const fileResponse = await fetch(fileUrl);
+            const fileBlob = await fileResponse.blob();
+            const file = new File([fileBlob], formData.NombreEvidencia);
+            formDataToSend.append('Evidencias', file);
+          }
   
           const evidenceResponse = await fetch("horas/subirAdjunto", {
             method: "POST",
             body: formDataToSend,
           });
           
-          if (evidenceResponse.ok) {
-
-          }else{
+          if (!evidenceResponse.ok) {
             setError("Error al subir las evidencias. Por favor, inténtelo de nuevo.");
             return;
           }
+          const fileName =encodeURIComponent(formData.NombreEvidencia);
+          fetch(`/horas/eliminarAdjunto/${fileName}`, {
+            method: "DELETE"
+          });
         }
   
         toast.success("La actividad se ha registrado correctamente");
@@ -214,7 +224,6 @@ function CrearoActualizarHoras() {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
-  
 
   const handleBackClick = () => {
     sessionStorage.removeItem("BitacoraId");
@@ -284,9 +293,7 @@ function CrearoActualizarHoras() {
               id="HoraInicio"
               name="HoraInicio"
               value={formData.HoraInicio}
-              onChange={(value) =>
-                handleChange("HoraInicio", formatTime(value))
-              }
+              onChange={(value) => handleChange("HoraInicio", formatTime(value))}
               className="crehoras-input-time"
               disableClock={true}
             />
@@ -311,6 +318,9 @@ function CrearoActualizarHoras() {
               onChange={(e) => handleChange(e.target.name, e.target.files[0])}
               className="crehoras-file"
             />
+            {formData.NombreEvidencia && formData.NombreEvidencia !== "-" && (
+              <div className="file-name">Archivo seleccionado: {formData.NombreEvidencia}</div>
+            )}
           </div>
           <div className="crehoras-input-container">
             <button onClick={handleBackClick} className="crehoras-button">
