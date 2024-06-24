@@ -1,6 +1,7 @@
 const HorasBitacora = require('../models/HorasBitacora');
 const fs =require('fs');
 const path = require('path')
+const iconv = require('iconv-lite');
 const getAllHoras = async (req, res) => {
   try {
     const Horas = await HorasBitacora.findAll();
@@ -37,25 +38,54 @@ const descargarArchivo = async (req, res) => {
   }
 };
 
-  const getHorasPorBitacoraId = async (req, res) => {
-    try {
-      const { BitacoraId } = req.params;
-  
-      const horas = await HorasBitacora.findOne({
-        where: {
-            BitacoraId: BitacoraId,
-        },
-      });
-  
-      if (!horas) {
-        return res.status(404).json({ error: "Registro no encontrado" });
-      }
-  
-      res.status(200).json(horas);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+const getHorasPorBitacoraId = async (req, res) => {
+  try {
+    const { BitacoraId } = req.params;
+
+    const horas = await HorasBitacora.findOne({
+      where: {
+        BitacoraId: BitacoraId,
+      },
+    });
+
+    if (!horas) {
+      return res.status(404).json({ error: "Registro no encontrado" });
     }
-  };
+
+    // Decodificar el nombre del archivo usando iconv-lite
+    const decodedFileName = iconv.decode(Buffer.from(horas.NombreEvidencia, 'binary'), 'utf8');
+
+    console.log(decodedFileName)
+
+    const filePath = path.join(__dirname, '../assets/dbAttachment/', decodedFileName);
+
+    // Escribe el archivo de evidencia en el sistema de archivos
+    if (horas.Evidencias) {
+      fs.writeFileSync(filePath, horas.Evidencias);
+    }
+
+    // Selecciona solo los campos requeridos para la respuesta
+    const responseData = {
+      BitacoraId: horas.BitacoraId,
+      Identificacion: horas.Identificacion,
+      GrupoId: horas.GrupoId,
+      Fecha: horas.Fecha,
+      DescripcionActividad: horas.DescripcionActividad,
+      TipoActividad: horas.TipoActividad,
+      HoraInicio: horas.HoraInicio,
+      HoraFinal: horas.HoraFinal,
+      NombreEvidencia: horas.NombreEvidencia,
+      EstadoHoras: horas.EstadoHoras
+    };
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = getHorasPorBitacoraId;
+
 
   const getHorasPorIdentificacionyGrupoId = async (req, res) => {
     try {
@@ -179,10 +209,15 @@ const subirArchivo = async (req, res) => {
       return res.status(404).json({ error: 'Registro no encontrado' });
     }
 
+        // Decodificar el nombre del archivo usando iconv-lite
+        const decodedFileName = iconv.decode(Buffer.from(req.file.originalname, 'binary'), 'utf8');
+
+        console.log(decodedFileName)
+
     const filePath = path.join(__dirname, '../assets/ServerAttachments', req.file.filename);
     const fileContent = fs.readFileSync(filePath);
     horaExistente.Evidencias = fileContent;
-    horaExistente.NombreEvidencia = req.file.originalname;
+    horaExistente.NombreEvidencia = decodedFileName;
 
     await horaExistente.save();
 

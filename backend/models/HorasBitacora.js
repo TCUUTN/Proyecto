@@ -99,6 +99,7 @@ const HorasBitacora = sequelize.define('Horas_Bitacora', {
 }, {
   tableName: 'Horas_Bitacora', // Nombre de la tabla en la base de datos (si difiere del nombre del modelo)
   timestamps: false // Indica que Sequelize no manejará automáticamente las columnas de timestamps
+  
 });
 
 // Relaciones
