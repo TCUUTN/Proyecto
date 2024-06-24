@@ -50,8 +50,8 @@ function VistaHorasEstudiante() {
       const response = await fetch(`/horas/descargarAdjunto/${BitacoraId}`);
       if (response.ok) {
         const data = await response.json();
-        const fileName = data;
-  
+        const fileName = encodeURIComponent(data);
+        
         // Obtener el contenido del archivo
         const fileResponse = await fetch(`/${fileName}`);
         if (fileResponse.ok) {
@@ -61,7 +61,7 @@ function VistaHorasEstudiante() {
           // Crear un enlace temporal para la descarga del archivo
           const a = document.createElement("a");
           a.href = url;
-          a.download = fileName;
+          a.download = data;
   
           // Agregar el enlace al DOM y hacer clic en él
           document.body.appendChild(a);

@@ -13,7 +13,7 @@ const getAllHoras = async (req, res) => {
 const descargarArchivo = async (req, res) => {
   try {
       const { BitacoraId } = req.params;
-
+      console.log(BitacoraId)
       const horas = await HorasBitacora.findOne({
           where: {
               BitacoraId: BitacoraId,
