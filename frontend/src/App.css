@@ -14,13 +14,21 @@
 
 }
 
-body{
-  background-color: #f7f7f7;
+body, html {
+  padding: 0;
+  min-height: 100vh;
+  margin: 0;
 }
-.App {
-  text-align: center;
-  margin: 0 auto;
 
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 2;
+ 
 }
 
 .App-logo {

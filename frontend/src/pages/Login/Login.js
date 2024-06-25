@@ -78,7 +78,7 @@ function Login() {
         <h1 className="home-title">
           Bitacora Virtual para Trabajo Comunal Universitario
         </h1>
-        <hr className="title-divider" />
+        <div className="title-divider" />
         <p className="home-texto">
           Monitorea, controla y da seguimiento a las actividades, tareas y
           productos de los estudiantes en sus proyectos de TCU de manera
@@ -98,30 +98,32 @@ function Login() {
 
       <div className="login-form">
         <h2 className="login-title">Iniciar Sesión</h2>
-        <hr className="login-divider" />
+        <div className="login-divider" />
         <form onSubmit={handleSubmit}>
-          <div className="input-container">
-            <FaUser className="icon" />
+          <div className="input-container-login">
+            <FaUser className="icon-login" />
             <input
               type="text"
               id="username"
               name="username"
+               className="login-input"
               placeholder="Nombre de usuario"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="input-container">
-            <RiLockPasswordFill className="icon" />
+          <div className="input-container-login">
+            <RiLockPasswordFill className="icon-login" />
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
+              className="login-input"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <span className="icon2" onClick={toggleShowPassword}>
+            <span className="icon2-login" onClick={toggleShowPassword}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
@@ -134,7 +136,7 @@ function Login() {
             Acceder
           </button>
         </form>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message-login">{error}</p>}
         <ToastContainer position="bottom-right" />
       </div>
     </div>

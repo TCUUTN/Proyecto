@@ -187,7 +187,7 @@ function Navbar() {
                 {(selectedRole === "Académico" ||
                   selectedRole === "Administrativo") && (
                   <li className="nav-item">
-                    <Link className="nav-link" to="#">
+                    <Link className="nav-link" to="/SocioComunitarios">
                       Socios Comunitarios
                     </Link>
                   </li>

@@ -85,9 +85,10 @@ body {
 }
 
 .mater-divider {
-  height: 60px;
-  border-left: 2px solid #ff6600;
-  margin: 0 20px;
+  width: 2px;
+  height: 65px;
+  background: #ff6600;
+  margin: auto 0 auto 20px;
 }
 
 .bulk-upload-section {
@@ -602,9 +603,10 @@ body {
 
 /* Linea */
 .estt-divider{
-  height: 60px;
-  border-left: 2px solid #ff6600;
-  margin: 0 20px;
+  width: 2px;
+  height: 65px;
+  background: #ff6600;
+  margin: auto 0 auto 20px;
 }
 /* Filtros */
 
