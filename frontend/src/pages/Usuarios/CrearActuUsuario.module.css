@@ -7,8 +7,8 @@
 body {
   font-family: "Century Gothic", sans-serif;
   background-color: #f7f7f7;
-
 }
+
 /* Centro del contenedor principal */
 .creaediUsu-container {
   background: #fff;
@@ -44,12 +44,12 @@ body {
 }
 
 .creaediUsu-formGroup {
-  grid-column: span 1;
+  grid-column: span 2; /* Ajuste para que cada campo ocupe toda la fila */
   margin-bottom: 20px;
 }
 
 .creaediUsu-formGroupRoles {
-  grid-column: span 2;
+  grid-column: span 2; /* Ajuste para que ocupe toda la fila */
   display: flex;
   align-items: center;
 }
@@ -75,7 +75,7 @@ body {
   padding: 8px;
   border: 2px solid #002B69 !important;
   border-radius: 25px !important;
- align-items: center;
+  align-items: center;
 }
 
 .creaediUsu-input:focus,
@@ -85,26 +85,21 @@ body {
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
-.creaediUsu-check{
-  border: 2px solid #002B69 !important;
-  border-radius: 25px !important;
-  font-size: 16px;
+
+.creaediUsu-check {
+  margin-right: 5px; /* Ajuste de margen para checkboxes */
 }
+
 .creaediUsu-roles {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin-left: 10px;
   font-size: 16px;
-
 }
 
 .creaediUsu-roles label {
   color: #000;
-}
-
-.creaediUsu-roles input[type="checkbox"] {
-  margin-right: 5px;
 }
 
 .creaediUsu-formButtons {
@@ -124,7 +119,7 @@ body {
   font-size: 16px;
   margin: 0 10px;
   width: 40%;
-  transition: 2.5s;
+  transition: 0.25s;
 }
 
 .creaediUsu-btnGuardar:disabled {
@@ -132,9 +127,9 @@ body {
 }
 
 .creaediUsu-btnGuardar,
-.creaediUsu-btnRegresar:hover{
+.creaediUsu-btnRegresar:hover {
   background-color: #ff4500;
-  transition: 2.5s;
+  transition: 0.25s;
 }
 
 .creaediUsu-otros {
@@ -149,9 +144,7 @@ body {
   margin-bottom: 25px;
 }
 
-
-/*Estilos para los errores*/
-
+/* Estilos para los errores */
 .creaediUsu-error-list {
   padding: 0;
   width: 100%;

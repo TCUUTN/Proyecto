@@ -67,7 +67,7 @@ function OlvidarClave() {
         </div>
       )}
       <div className="olvidar-form">
-        <h1 className="-olvidar-title">¿Olvidaste tu contraseña?</h1>
+        <h1 className="olvidar-title">¿Olvidaste tu contraseña?</h1>
         <div className="olvidar-Title-linea" />
         <form onSubmit={handleSubmit}>
           <div className="olvidar-input-wrapper">
