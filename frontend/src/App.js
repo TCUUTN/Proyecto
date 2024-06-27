@@ -15,14 +15,21 @@ import MantGrupos from './pages/Grupos/MantCreaGrupos.js';
 import CompletarPerfil from './pages/Login/CompletarPerfil.js';
 import GruposAcademico from './pages/Grupos/GruposAcademico.js';
 import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
+import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
+import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
+import SocioComunitarios from './pages/SociosComunitarios/ListSocioCom.js'
+
+//
 import CrearActualizarUsuario from './pages/Usuarios/CrearActualizarUsuario.js';
 import CrearActuProyectos from './pages/Grupos/CrearActuProyectos.js';
 import CrearActuCreacionGrupos from './pages/Grupos/CrearActuCreacionGrupos.js';
-import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
-import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
 import CrearoActualizarHoras from './pages/HorasBitacora/CrearoActualizarHoras.js';
+import CrearActuSocioComunitarios from './pages/SociosComunitarios/CrearActualizar.js'
+//
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
+
+//import CustomScrollbars from './CustomScrollbars';
 
 function App() {
   useEffect(() => {
@@ -47,25 +54,31 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/Home" element={<Inicio />} />
-          <Route path="/AccesoDenegado" element={<Acceso />} />
-          <Route path="/CambiarClave" element={<CambiarContrasena />} />
-          <Route path="/OlvidarClave" element={<OlvidarContrasena />} />
-          <Route path="/MantUser" element={<MantUser />} />
-          <Route path="/GruposAcademico" element={<GruposAcademico />} />
-          <Route path="/ListaEstudiantes" element={<ListaEstudiantes />} />
-          <Route path="/MantMaterias" element={<MantMaterias />} />
-          <Route path="/MantGrupos" element={<MantGrupos />} />
-          <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
-          <Route path="/CrearActualizarUsuario" element={<CrearActualizarUsuario />} />
-          <Route path="/CrearActuProyectos" element={<CrearActuProyectos />} />
-          <Route path="/CrearActuCreacionGrupos" element={<CrearActuCreacionGrupos/>} />
-          <Route path="/VistaHorasEstudiantes" element={<VistaHorasEstudiantes />} />
-          <Route path="/RechazoHoras" element={<RechazoHoras />} />
-          <Route path="/CrearoActualizarHoras" element={<CrearoActualizarHoras />} />
-        </Routes>
+       {/* <CustomScrollbars style={{ height: 'calc(100vh - 60px)' }}>*/}
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/Home" element={<Inicio />} />
+            <Route path="/AccesoDenegado" element={<Acceso />} />
+            <Route path="/CambiarClave" element={<CambiarContrasena />} />
+            <Route path="/OlvidarClave" element={<OlvidarContrasena />} />
+            <Route path="/MantUser" element={<MantUser />} />
+            <Route path="/GruposAcademico" element={<GruposAcademico />} />
+            <Route path="/ListaEstudiantes" element={<ListaEstudiantes />} />
+            <Route path="/MantMaterias" element={<MantMaterias />} />
+            <Route path="/MantGrupos" element={<MantGrupos />} />
+            <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
+            <Route path="/CrearActualizarUsuario" element={<CrearActualizarUsuario />} />
+            <Route path="/CrearActuProyectos" element={<CrearActuProyectos />} />
+            <Route path="/CrearActuCreacionGrupos" element={<CrearActuCreacionGrupos />} />
+            <Route path="/VistaHorasEstudiantes" element={<VistaHorasEstudiantes />} />
+            <Route path="/RechazoHoras" element={<RechazoHoras />} />
+            <Route path="/CrearoActualizarHoras" element={<CrearoActualizarHoras />} />
+            <Route path="/SocioComunitarios" element={<SocioComunitarios/>}/>
+            <Route path="/CrearActuSocioComunitarios" element={<CrearActuSocioComunitarios/>}/>
+          </Routes>
+        </div>
+        {/*</CustomScrollbars>*/}
         <Footer />
       </div>
     </Router>

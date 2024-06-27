@@ -18,29 +18,36 @@
   background-color: #fff;
 }
 
-.title {
+.cambic-title {
   font-family: "Century Gothic", sans-serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 35px !important;
 }
 
-.Title-linea {
+.cambic-linea {
+  width: 100px;
   height: 2px;
-  background-color: #ff6600 !important;
-  width: 125px;
+  background: #ff6600;
   margin: 0 auto 20px auto;
-  border: none;
  
 }
+.icon-cambic{
+  position: absolute !important;
+  left: 10px !important;
+  top: 10px !important;
+  color: #f66226 !important;
+  font-size: 24px !important;
+  z-index: 1000;
+}
 
-.input-wrapper {
+.input-wrapper-cambic  {
   margin-bottom: 20px;
   width: 100%;
   text-align: left;
 }
 
-.input-label {
+.input-label-cambic  {
   font-family: "Century Gothic", sans-serif;
   color: #012c6a;
   font-size: 1rem;
@@ -48,12 +55,12 @@
   display: block;
 }
 
-.input-container {
+.input-container-cambic  {
   position: relative;
   width: 100%;
 }
 
-.icon2 {
+.icon2-cambic  {
   position: absolute;
   right: 7.5%; /* Position the icon to the right of the text field */
   top: 45%;
@@ -63,31 +70,23 @@
   cursor: pointer;
 }
 
-input[type="text"],
-input[type="password"] {
-  width: 55%;
-  padding: 10px 35px 10px 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  align-items: center;
-  font-family: "Century Gothic", sans-serif;
-}
+
 
 button.cambiar-button {
-  width: 45%;
+  width: 65%;
   padding: 10px;
-  background-color: #0daace; /* Background color */
+  background-color: #002b69; /* Background color */
   color: #fff; /* Text color */
   border: none;
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   font-family: "Century Gothic", sans-serif; /* Button font */
-  transition: 5s;
+  transition: 2s;
 }
 
 button.cambiar-button:hover {
   background-color: #e55620; /* Darker shade for hover effect */
-  transition: 5s;
+  transition: 2s;
 }
 
 button.cambiar-button:disabled {
@@ -102,7 +101,7 @@ button.cambiar-button:disabled {
     width: 70%;
   }
 
-  .title {
+  .cambic-title  {
     font-size: 28px !important;
   }
 }
@@ -113,11 +112,11 @@ button.cambiar-button:disabled {
     width: 80%;
   }
 
-  .title {
+  .cambic-title  {
     font-size: 24px !important;
   }
 
-  .input-label {
+  .input-label-cambic  {
     font-size: 0.9rem;
   }
 
@@ -126,7 +125,7 @@ button.cambiar-button:disabled {
     width: 60%;
   }
 
-  .icon2 {
+  .icon2-cambic  {
     right: 10%;
   }
 }
@@ -140,11 +139,11 @@ button.cambiar-button:disabled {
     width: 90%;
   }
 
-  .title {
+  .cambic-title {
     font-size: 22px !important;
   }
 
-  .input-label {
+  .input-label-cambic  {
     font-size: 0.85rem;
   }
 
@@ -153,7 +152,7 @@ button.cambiar-button:disabled {
     width: 65%;
   }
 
-  .icon2 {
+  .icon2-cambic  {
     right: 12%;
   }
 }
@@ -167,11 +166,11 @@ button.cambiar-button:disabled {
     width: 100%;
   }
 
-  .title {
+  .cambic-title  {
     font-size: 20px !important;
   }
 
-  .input-label {
+  .input-label-cambic  {
     font-size: 0.8rem;
   }
 
@@ -180,7 +179,7 @@ button.cambiar-button:disabled {
     width: 70%;
   }
 
-  .icon2 {
+  .icon2-cambic  {
     right: 15%;
   }
 

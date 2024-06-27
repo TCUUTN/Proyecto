@@ -313,7 +313,7 @@ function MantenimientoUs() {
               Agregar Usuario <IoMdAddCircle className="icon-add" />
             </button>
           </div>
-          <hr className="user-divider" />
+          <div className="user-divider" />
           {/*Parte de las carga masiva*/}
           <div className="bulk-upload-section">
             <h2 className="title-user">Carga masiva</h2>
@@ -347,6 +347,14 @@ function MantenimientoUs() {
                   accept=".xlsx"
                   style={{ display: "none" }}
                   onChange={(e) => handleFileUpload(e, "Académico")}
+                />
+                  <label htmlFor="file-upload-academico" className="upload-label">
+                  <FaFileUpload className="icon-other" /> Cargar Carreras
+                </label>
+                <input
+
+                  style={{ display: "none" }}
+
                 />
               </div>
             </div>

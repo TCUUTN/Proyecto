@@ -203,7 +203,7 @@ function MantMaterias() {
               Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
-          <hr className="mater-divider" />
+          <div className="mater-divider" />
           <div className="bulk-upload-section">
             <h2 className="title-mater">Carga masiva</h2>
 

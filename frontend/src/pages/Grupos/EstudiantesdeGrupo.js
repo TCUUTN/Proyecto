@@ -127,7 +127,7 @@ function ListaEstudiantes() {
               Regresar
             </button>
           </div>
-          <hr className="estt-divider" />
+          <div className="estt-divider" />
              {/*Filtros*/}
              <div className="filter-group-est">
             <label className="filter-label-est" htmlFor="Nombre-Busqueda">

@@ -5,6 +5,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { BiSolidCommentCheck } from "react-icons/bi";
 import "./VistaHorasEstudiante.modulo.css";
 
 function VistaHorasEstudiante() {
@@ -12,13 +13,9 @@ function VistaHorasEstudiante() {
   const [materias, setMaterias] = useState([]);
   const [filteredApprovedMaterias, setFilteredApprovedMaterias] = useState([]);
   const [filteredRejectedMaterias, setFilteredRejectedMaterias] = useState([]);
-  const [descripcionActividadFilter, setDescripcionActividadFilter] =
-    useState("");
+  const [descripcionActividadFilter, setDescripcionActividadFilter] =useState("");
   const [tipoFilter, setTipoFilter] = useState("");
-  const [
-    descripcionActividadFilterRejected,
-    setDescripcionActividadFilterRejected,
-  ] = useState("");
+  const [descripcionActividadFilterRejected, setDescripcionActividadFilterRejected,] = useState("");
   const [tipoFilterRejected, setTipoFilterRejected] = useState("");
   const [fechaFilter, setFechaFilter] = useState("");
   const [fechaFilterRejected, setFechaFilterRejected] = useState("");
@@ -90,7 +87,7 @@ function VistaHorasEstudiante() {
   
   
   
-
+ // Función para obtener las horas del estudiante
   const fetchHoras = async () => {
     try {
       const grupoId = await fetchGrupoId(identificacion);
@@ -100,6 +97,10 @@ function VistaHorasEstudiante() {
         );
         if (response.ok) {
           const data = await response.json();
+
+            // Ordenar las materias de manera que las más recientes aparezcan primero
+          data.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha)); 
+
           setMaterias(data);
           setFilteredApprovedMaterias(
             data.filter((m) => m.EstadoHoras === "Aprobado")
@@ -299,7 +300,7 @@ function VistaHorasEstudiante() {
             {/* */}
             <div className="container-tableapro">
               <h2 className="apro-titl">Actividades Aprobadas</h2>
-              <hr className="apro-divider"></hr>
+              <div className="apro-divider"></div>
               {/* Filtros*/}
               <div className="filter-apro">
                 {/* Fecha*/}
@@ -370,8 +371,7 @@ function VistaHorasEstudiante() {
                           <td>
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
-                              <a
-                                href="#"
+                              <button
                                 onClick={() =>
                                   handleDescargaArchivo(
                                     materia.BitacoraId,
@@ -380,7 +380,7 @@ function VistaHorasEstudiante() {
                                 }
                               >
                                 {materia.NombreEvidencia}
-                              </a>
+                              </button>
                             ) : (
                               "No se presentó ninguna evidencia"
                             )}
@@ -393,7 +393,7 @@ function VistaHorasEstudiante() {
                                   handleEditClick(materia.BitacoraId)
                                 }
                               >
-                                <FaEdit />
+                                <BiSolidCommentCheck />
                               </button>
                             </td>
                           )}
@@ -438,7 +438,7 @@ function VistaHorasEstudiante() {
 
             <div className="container-tablerecha">
               <h2 className="apro-titl">Actividades Rechazadas</h2>
-              <hr className="apro-divider"></hr>
+              <div className="apro-divider"></div>
               {/* Filtros*/}
               <div className="filter-apro">
                 {/* Fecha*/}
@@ -473,7 +473,7 @@ function VistaHorasEstudiante() {
                     Tipo de Actividad:
                   </label>
                   <select
-                    className="filter-select-acad"
+                    className="filter-select-apro"
                     value={tipoFilterRejected}
                     onChange={handleTipoFilterRejectedChange}
                   >
