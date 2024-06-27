@@ -348,6 +348,8 @@ function MantenimientoUs() {
                   style={{ display: "none" }}
                   onChange={(e) => handleFileUpload(e, "Académico")}
                 />
+              </div>
+              <div className="upload-option">
                   <label htmlFor="file-upload-academico" className="upload-label">
                   <FaFileUpload className="icon-other" /> Cargar Carreras
                 </label>

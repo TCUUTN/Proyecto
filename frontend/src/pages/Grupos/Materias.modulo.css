@@ -1,14 +1,6 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  font-family: "Century Gothic", sans-serif;
-  overflow: auto;
-  /* overflow: hidden; :Evita el scroll */
-}
+
+
 /* cARGA */
 .loading-overlay {
   position: absolute;

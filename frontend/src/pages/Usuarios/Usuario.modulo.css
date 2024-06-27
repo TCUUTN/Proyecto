@@ -1,13 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  font-family: "Century Gothic", sans-serif;
-  overflow: auto; /* overflow: hidden; :Evita el scroll */
-}
 /* cARGA */
 .loading-screen {
   position: fixed;
@@ -99,7 +90,7 @@ body {
   width: 2px;
   height: 65px;
   background: #ff6600;
-  margin: auto 0 auto 20px;
+  margin: auto 20px;
 
  
 }
@@ -108,8 +99,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 10%;
-  margin-left: 10%;
+  margin: 0 10%; 
 }
 
 .title-user {
@@ -124,6 +114,7 @@ body {
 .bulk-upload {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .upload-option {
@@ -160,9 +151,9 @@ main {
   border-radius: 5px;
   width: 80%;
   margin: 20px auto;
- 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap; /* Añadir esta línea */
 }
 
 .filter-group-user {
@@ -337,7 +328,7 @@ tbody td {
   }
 
   .add-user {
-    font-size: 18px;
+    font-size: 25px;
   }
 
   .icon-add {
@@ -345,7 +336,10 @@ tbody td {
   }
 
   .user-divider {
-    display: none;
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0; /* Ajustar el margen para pantallas pequeñas */
   }
 
   .upload-option {

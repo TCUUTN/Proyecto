@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { FaChevronLeft } from "react-icons/fa6";
 import 'react-toastify/dist/ReactToastify.css';
-import styles from "./CrearActuUsuario.module.css";
+import "./CrearActuUsuario.modulo.css";
 
 
 const CrearActualizarUsuario = () => {
@@ -211,69 +211,89 @@ const CrearActualizarUsuario = () => {
   };
 
   return (
-    <div className={styles["creaediUsu-container"]}>
+    <div className="creaediUsu-container">
       <ToastContainer position="bottom-right" />
-      <h2 className={styles["creaediUsu-titulo"]}>
+      <h2 className="creaediUsu-titulo">
         {identificacionUsuario ? "Editar Usuario" : "Crear Usuario"}
       </h2>
-      <div className={styles["creaediUsu-line"]}></div> {/* Línea bajo el título */}
+      <div className="creaediUsu-line"></div> {/* Línea bajo el título */}
       <form
         onSubmit={handleSubmit}
-        className={styles["creaediUsu-formUserEdit"]}
+        className="creaediUsu-formUserEdit"
       >
         {/* Identificacion */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <input
             type="text"
             id="identificacion"
             name="identificacion"
             value={formData.identificacion}
             onChange={handleChange}
-            className={styles["creaediUsu-input"]}
+            className="creaediUsu-input"
             placeholder="Identificación"
             disabled={!!identificacionUsuario}
           />
+          {errors.identificacion && (
+        <div className={`${"creaediUsu-error"} ${errors.identificacion && 'active'}`}>
+          {errors.identificacion}
+        </div>
+      )}
         </div>
         {/* Nombre */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <input
             type="text"
             id="nombre"
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            className={styles["creaediUsu-input"]}
+            className="creaediUsu-input"
             placeholder="Nombre"
           />
+          {errors.nombre && (
+        <div className={`${"creaediUsu-error"} ${errors.nombre && 'active'}`}>
+          {errors.nombre}
+        </div>
+      )}
         </div>
         {/* Primer Apellido */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <input
             type="text"
             id="primerApellido"
             name="primerApellido"
             value={formData.primerApellido}
             onChange={handleChange}
-            className={styles["creaediUsu-input"]}
+            className="creaediUsu-input"
             placeholder="Primer Apellido"
           />
+          {errors.primerApellido && (
+        <div className={`${"creaediUsu-error"} ${errors.primerApellido && 'active'}`}>
+          {errors.primerApellido}
+        </div>
+      )}
         </div>
         {/* Segundo Apellido */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <input
             type="text"
             id="segundoApellido"
             name="segundoApellido"
             value={formData.segundoApellido}
             onChange={handleChange}
-            className={styles["creaediUsu-input"]}
+            className="creaediUsu-input"
             placeholder="Segundo Apellido"
           />
+          {errors.primerApellido && (
+        <div className={`${"creaediUsu-error"} ${errors.primerApellido && 'active'}`}>
+          {errors.primerApellido}
+        </div>
+      )}
         </div>
         {/* Roles */}
-        <div className={styles["creaediUsu-formGroupRoles"]}>
+        <div className="creaediUsu-formGroupRoles">
           <span>Roles:</span>
-          <div className={styles["creaediUsu-roles"]}>
+          <div className="creaediUsu-roles">
             <label>
               <input
               className="creaediUsu-check"
@@ -310,25 +330,30 @@ const CrearActualizarUsuario = () => {
           </div>
         </div>
         {/* Correo */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <input
             type="email"
             id="correo"
             name="correo"
             value={formData.correo}
             onChange={handleChange}
-            className={styles["creaediUsu-input"]}
+            className="creaediUsu-input"
             placeholder="Correo electrónico"
           />
+               {errors.correo && (
+        <div className={`${"creaediUsu-error"} ${errors.correo && 'active'}`}>
+          {errors.correo}
+        </div>
+      )}
         </div>
         {/* Sedes */}
-        <div className={styles["creaediUsu-formGroup"]}>
+        <div className="creaediUsu-formGroup">
           <select
             id="sede"
             name="sede"
             value={formData.sede}
             onChange={handleChange}
-            className={styles["creaediUsu-select"]}
+            className="creaediUsu-select"
           >
             <option value="">Sedes</option>
             <option value="Central">Central</option>
@@ -339,74 +364,84 @@ const CrearActualizarUsuario = () => {
             <option value="C. F. P. T. E.">C. F. P. T. E.</option>
             <option value="Todas">Todas</option>
           </select>
+          {errors.sede && (
+        <div className={`${"creaediUsu-error"} ${errors.sede && 'active'}`}>
+          {errors.sede}
+        </div>
+      )}
         </div>
         {/* Div contiene genero, estado y carrera */}
         {identificacionUsuario && (
-          <div className={styles["creaediUsu-otros"]}>
-            <div className={styles["creaediUsu-genero-estado"]}>
+          <div className="creaediUsu-otros">
+            <div className="creaediUsu-genero-estado">
               {/* Genero */}
-              <div className={styles["creaediUsu-formGroup"]}>
+              <div className="creaediUsu-formGroup">
                 <select
                   id="genero"
                   name="genero"
                   value={formData.genero}
                   onChange={handleChange}
-                  className={styles["creaediUsu-select"]}
+                  className="creaediUsu-select"
                 >
                   <option value="">Género</option>
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
                   <option value="Prefiero no Especificar">Prefiero no Especificar</option>
                 </select>
+                {errors.genero && (
+              <div className={`${"creaediUsu-error"} ${errors.genero && 'active'}`}>
+                {errors.genero}
+              </div>
+            )}
               </div>
               {/* Estado */}
-              <div className={styles["creaediUsu-formGroup"]}>
+              <div className="creaediUsu-formGroup">
                 <select
                   id="estado"
                   name="estado"
                   value={formData.estado}
                   onChange={handleChange}
-                  className={styles["creaediUsu-select"]}
+                  className="creaediUsu-select"
                 >
                   <option value="1">Activo</option>
                   <option value="0">Inactivo</option>
                 </select>
+
+                {errors.estado && (
+              <div className={`${"creaediUsu-error"} ${errors.estado && 'active'}`}>
+                {errors.estado}
+              </div>
+            )}
               </div>
             </div>
             {/* Carrera */}
             {formData.roles.includes(3) && (
-              <div className={styles["creaediUsu-formGroup"]}>
+              <div className="creaediUsu-formGroup">
                 <input
                   type="text"
                   id="carrera"
                   name="carrera"
                   value={formData.carrera}
                   onChange={handleChange}
-                  className={styles["creaediUsu-input"]}
+                  className="creaediUsu-input"
                   placeholder="Carrera"
                 />
+                {errors.carrera && (
+              <div className={`${"creaediUsu-error"} ${errors.carrera && 'active'}`}>
+                {errors.carrera}
+              </div>
+            )}
               </div>
             )}
           </div>
         )}
 
-        {/* Mensajes de error al final */}
-        {Object.keys(errors).length > 0 && (
-          <div className={styles["creaediUsu-errors"]}>
-            <ul className={styles["creaediUsu-error-list"]}>
-              {Object.values(errors).map((error, index) => (
-                <li key={index} className={styles["creaediUsu-error"]}>
-                  {error}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+       
         {/* Botones */}
-        <div className={styles["creaediUsu-formButtons"]}>
+        <div className="creaediUsu-formButtons">
           <button
             type="button"
-            className={styles["creaediUsu-btnRegresar"]}
+            className="creaediUsu-btnRegresar"
             onClick={handleRegresar}
           >
               <FaChevronLeft />
@@ -414,7 +449,7 @@ const CrearActualizarUsuario = () => {
           </button>
           <button
             type="submit"
-            className={styles["creaediUsu-btnGuardar"]}
+            className="creaediUsu-btnGuardar"
             disabled={!isFormValid}
           >
             {identificacionUsuario ? "Actualizar" : "Guardar"}

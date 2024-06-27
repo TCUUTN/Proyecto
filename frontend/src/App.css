@@ -17,6 +17,7 @@
 body, html {
   padding: 0;
   margin: 0;
+  font-family: "Century Gothic", sans-serif;
 }
 
 .App {

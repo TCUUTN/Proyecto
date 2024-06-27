@@ -1,14 +1,4 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
-body {
-    font-family: "Century Gothic", sans-serif;
-    overflow: auto;
-    background-color: #f9f9f9;
-}
 
 /* */
 .container-projcreaed {
