@@ -1,13 +1,14 @@
 .footer {
-    width: 100%;
-    text-align: center;
-    background-color:#002B5C;
-    position: fixed;
-    bottom: 0;
-    color: rgb(255, 255, 255);
-  }
+  width: 100%;
+  text-align: center;
+  background-color: #002B5C;
+  position: relative; /* Cambiado de fixed a relative */
+  color: rgb(255, 255, 255);
+  padding: 1em 0; /* Añadido padding para darle espacio al contenido */
+  margin-top: 6.1%;
+ 
+}
 
-  .p{
-    margin: 0;
-  }
-  
+.p {
+  margin: 0;
+}

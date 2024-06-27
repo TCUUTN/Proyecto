@@ -120,11 +120,10 @@ body {
 }
 
 .apro-divider {
+  width: 100px;
   height: 2px;
-  background-color: #ff6600 !important;
-  width: 125px;
+  background: #ff6600;
   margin: 0 auto 20px auto;
-  border: none;
 }
 /* Filtros de aprobar  y rechazar*/
 .filter-apro {
@@ -163,6 +162,7 @@ body {
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
+
 
 /* Tabla */
 .apro-table {
@@ -223,7 +223,8 @@ body {
 .no-data-message {
   text-align: center;
   color: #002b69;
-  font-size: 18px;
+  font-size: 20px;
+  padding: 3%;
 }
 
 /* Main */

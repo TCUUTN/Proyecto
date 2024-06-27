@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh;
-  background-color: #f7f7f7;
+  height: 65vh;
+
 }
 
 .olvidar-form {
@@ -13,66 +13,102 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 550px;
   text-align: center;
 }
 
-.title {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
+.olvidar-title {
+  font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a !important;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
 }
 
-.Title-linea {
-  border: none;
-  height: 1px;
-  background-color: #eaeaea;
+.olvidar-Title-linea{
+  width: 250px;
+  height: 2px;
+  background: #ff6600;
+  margin: 0 auto 20px auto;
+}
+
+.olvidar-input-wrapper {
   margin-bottom: 20px;
 }
 
-.input-wrapper {
-  margin-bottom: 20px;
-}
-
-.input-label {
+.olvidar-input-label {
   display: block;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 18px;
   color: #666;
+  margin-bottom: 25px;
 }
 
-.input-container {
+.olvidar-input-container {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.icon {
+.icon-olvidar {
   position: absolute;
   left: 10px;
-  color: #888;
+  color: #f66226 !important;
+  font-size: 25px !important;
+  margin-bottom: 25px;
 }
 
-input[type="text"] {
+.olvidar-input[type="text"] {
   width: 100%;
   padding: 10px 10px 10px 40px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 25px;
+  margin-bottom: 25px;
+  text-align: center;
+  /* Chrome, Safari, Opera */
+  -webkit-text-align: center;
+  /* Firefox */
+  -moz-text-align: center;
+  /* IE */
+  -ms-text-align: center;
 }
 
+.olvidar-input:focus {
+  border-color: #ff6600 !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+
+
+.olvi-button{
+  grid-column: span 2;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+
 .olvidar-button {
-  width: 100%;
+  background-color: #002b69;
   padding: 10px;
-  background-color: #f66226;
   border: none;
-  border-radius: 4px;
-  color: white;
-  font-size: 16px;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: 2.5s;
+  color: white;
+  width: 40%;
+
+}
+
+.olvidar-button:hover{
+  background-color: #ff4500;
+  transition: 2.5s;
 }
 
 .olvidar-button:disabled {
-  background-color: #f66226;
+  background-color: #b6b1af;
   cursor: not-allowed;
 }
 

@@ -116,35 +116,35 @@ function CambiarClave() {
   return (
     <div className="cambio-container">
       <div className="cambio-form">
-        <h1 className="title">Restablecer contraseña</h1>
-        <hr className="Title-linea" />
+        <h1 className="cambic-title ">Restablecer contraseña</h1>
+        <div className="cambic-linea" />
         <form onSubmit={handleSubmit}>
-          <div className="input-wrapper">
-            <label htmlFor="currentPassword" className="input-label">
+          <div className="input-wrapper-cambic ">
+            <label htmlFor="currentPassword" className="input-label-cambic ">
               Introduzca su contraseña temporal:
             </label>
-            <div className="input-container">
-              <RiLockPasswordFill className="icon" />
+            <div className="input-container-cambic ">
+              <RiLockPasswordFill className="icon-cambic" />
               <input
                 type={showCurrentPassword ? "text" : "password"}
                 id="currentPassword"
                 name="currentPassword"
                 placeholder="Contraseña actual"
-                className="inputs"
+                className="inputs-cambic "
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
               />
-              <span className="icon2" onClick={toggleShowCurrentPassword}>
+              <span className="icon2-cambic " onClick={toggleShowCurrentPassword}>
                 {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
-          <div className="input-wrapper">
-            <label htmlFor="newPassword" className="input-label">
+          <div className="input-wrapper-cambic ">
+            <label htmlFor="newPassword" className="input-label-cambic ">
               Introduzca su nueva contraseña:
             </label>
-            <div className="input-container">
-              <RiLockPasswordFill className="icon" />
+            <div className="input-container-cambic ">
+              <RiLockPasswordFill className="icon-cambic" />
               <input
                 type={showNewPassword ? "text" : "password"}
                 id="newPassword"
@@ -153,7 +153,7 @@ function CambiarClave() {
                 value={newPassword}
                 onChange={handleNewPasswordChange}
               />
-              <span className="icon2" onClick={toggleShowNewPassword}>
+              <span className="icon2-cambic " onClick={toggleShowNewPassword}>
                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -165,12 +165,12 @@ function CambiarClave() {
               </ul>
             )}
           </div>
-          <div className="input-wrapper">
-            <label htmlFor="confirmPassword" className="input-label">
+          <div className="input-wrapper-cambic ">
+            <label htmlFor="confirmPassword" className="input-label-cambic ">
               Confirmar contraseña:
             </label>
-            <div className="input-container">
-              <RiLockPasswordFill className="icon" />
+            <div className="input-container-cambic ">
+              <RiLockPasswordFill className="icon-cambic" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
@@ -179,7 +179,7 @@ function CambiarClave() {
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
-              <span className="icon2" onClick={toggleShowConfirmPassword}>
+              <span className="icon2-cambic " onClick={toggleShowConfirmPassword}>
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -188,7 +188,7 @@ function CambiarClave() {
             )}
           </div>
 
-          <button type="submit" className="login-button" disabled={!isFormValid}>
+          <button type="submit" className="cambiar-button" disabled={!isFormValid}>
             Guardar cambios
           </button>
         </form>

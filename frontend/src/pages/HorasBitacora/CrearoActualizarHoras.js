@@ -238,7 +238,7 @@ function CrearoActualizarHoras() {
     <div className="crehoras-container">
       <div className="crehoras-content">
         <h1 className="crehoras-title">Registro de Horas</h1>
-        <hr className="crehoras-divider" />
+        <div className="crehoras-divider" />
         <form onSubmit={handleSubmit}>
           <input
             type="hidden"
@@ -252,7 +252,8 @@ function CrearoActualizarHoras() {
             name="GrupoId"
             value={formData.GrupoId}
           />
-          <div className="perfil-input-container">
+          {/* */}
+          <div className="crehoras-input-container">
             <input
               type="date"
               id="Fecha"
@@ -289,6 +290,7 @@ function CrearoActualizarHoras() {
             </select>
           </div>
           <div className="crehoras-input-container">
+        
             <TimePicker
               id="HoraInicio"
               name="HoraInicio"
@@ -296,9 +298,11 @@ function CrearoActualizarHoras() {
               onChange={(value) => handleChange("HoraInicio", formatTime(value))}
               className="crehoras-input-time"
               disableClock={true}
+              placeholder ="Hora de Inicio"
             />
           </div>
           <div className="crehoras-input-container">
+          
             <TimePicker
               id="HoraFinal"
               name="HoraFinal"
@@ -308,25 +312,30 @@ function CrearoActualizarHoras() {
               disableClock={true}
               minTime={horaFinalLimits.min}
               maxTime={horaFinalLimits.max}
+              placeholder ="Hora Final"
             />
           </div>
           <div className="crehoras-input-container">
-            <input
+          <div className="custom-file-upload">
+          <input
               type="file"
               id="Evidencias"
               name="Evidencias"
               onChange={(e) => handleChange(e.target.name, e.target.files[0])}
               className="crehoras-file"
+              placeholder="Evidencias"
             />
             {formData.NombreEvidencia && formData.NombreEvidencia !== "-" && (
               <div className="file-name">Archivo seleccionado: {formData.NombreEvidencia}</div>
             )}
+          </div>
           </div>
           <div className="crehoras-input-container">
             <button onClick={handleBackClick} className="crehoras-button">
               <FaChevronLeft />
               Regresar
             </button>
+            &nbsp;&nbsp;&nbsp;
             <button
               type="submit"
               className="crehoras-button"

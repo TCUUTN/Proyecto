@@ -309,7 +309,7 @@ function MantGrupos() {
               Agregar Grupos <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
-          <hr className="mater-divider" />
+          <div className="mater-divider" />
           {/*Parte de las carga masiva*/}
           <div className="bulk-upload-section">
             <h2 className="title-mater">Carga masiva</h2>

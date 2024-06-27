@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { FaChevronLeft } from "react-icons/fa6";
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./CrearActuUsuario.module.css";
 
@@ -408,6 +409,7 @@ const CrearActualizarUsuario = () => {
             className={styles["creaediUsu-btnRegresar"]}
             onClick={handleRegresar}
           >
+              <FaChevronLeft />
             Regresar
           </button>
           <button

@@ -73,7 +73,9 @@ body {
 .user-action {
   display: flex;
   align-items: center;
-  margin-left: 20%;
+  justify-content: center;
+  flex: 1; 
+  margin-left: 10%;
 }
 
 .add-user {
@@ -85,6 +87,7 @@ body {
   border: none;
   background: none;
   cursor: pointer;
+  padding: 0 10px;
 }
 
 .icon-add {
@@ -96,14 +99,17 @@ body {
   width: 2px;
   height: 65px;
   background: #ff6600;
-  margin: 0 20px;
+  margin: auto 0 auto 20px;
+
+ 
 }
 
 .bulk-upload-section {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 15%;
+  margin-right: 10%;
+  margin-left: 10%;
 }
 
 .title-user {
@@ -124,7 +130,7 @@ body {
   display: flex;
   align-items: center;
   color: #002b69;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
 }
 

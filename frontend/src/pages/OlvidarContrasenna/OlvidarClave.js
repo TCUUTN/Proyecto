@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEmail } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { FaChevronLeft } from "react-icons/fa6";
 import "./Olvidar.modulo.css";
 
 function OlvidarClave() {
   const [CorreoElectronico, setCorreoElectronico] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const showNotificationAfterRedirect = () => {
@@ -22,6 +25,13 @@ function OlvidarClave() {
 
     showNotificationAfterRedirect();
   }, []);
+
+  const handleRegresar = () => {
+    sessionStorage.removeItem("IdentificacionUsuario");
+    navigate("/");
+  };
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,16 +67,16 @@ function OlvidarClave() {
         </div>
       )}
       <div className="olvidar-form">
-        <h1 className="title">¿Olvidaste tu contraseña?</h1>
-        <hr className="Title-linea" />
+        <h1 className="olvidar-title">¿Olvidaste tu contraseña?</h1>
+        <div className="olvidar-Title-linea" />
         <form onSubmit={handleSubmit}>
-          <div className="input-wrapper">
-            <label htmlFor="currentPassword" className="input-label">
+          <div className="olvidar-input-wrapper">
+            <label htmlFor="currentPassword" className="olvidar-input-label">
               Por favor, ingresa tu dirección de correo electrónico y te
               enviaremos instrucciones para restablecer tu contraseña.
             </label>
-            <div className="input-container">
-              <MdEmail className="icon" />
+            <div className="olvidar-input-container">
+              <MdEmail className="icon-olvidar" />
               <input
                 type="text"
                 id="email"
@@ -74,12 +84,27 @@ function OlvidarClave() {
                 placeholder="Correo electrónico"
                 value={CorreoElectronico}
                 onChange={(e) => setCorreoElectronico(e.target.value)}
+                className="olvidar-input"
               />
             </div>
           </div>
+          <div className="olvi-button"> 
+          <button
+            type="button"
+            className="olvidar-button" 
+            onClick={handleRegresar}
+          >
+              <FaChevronLeft />
+            Regresar
+          </button>
           <button type="submit" className="olvidar-button" disabled={loading}>
             Enviar
           </button>
+          </div>
+          
+
+
+
         </form>
         {error && <p className="error-message">{error}</p>}
         <ToastContainer position="bottom-right" />
