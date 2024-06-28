@@ -202,20 +202,20 @@ main {
   padding: 10px; 
 }
 
-table {
+.user-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-thead th {
+.user-thead th {
   background-color: #002B69;
   color: white;
   padding: 10px;
   text-align: center; /* Alinear texto en el centro */
 }
 
-tbody td {
+.user-tbody td {
   padding: 10px;
   border: 1px solid #ddd; /* Bordes internos de las celdas */
   text-align: center; /* Alinear texto en el centro */
@@ -231,14 +231,14 @@ tbody td {
 }
 
 /*Paginacion*/
-.pagination {
+.pagination-user {
   display: flex; /* Usar flexbox para alinear elementos */
   justify-content: center; /* Centrar elementos horizontalmente */
   align-items: center; /* Centrar elementos verticalmente */
   margin-bottom: 20px;
 }
 
-.pagination button {
+.pagination-user button {
   background-color: #002B69;
   color: white;
   border: none;
@@ -249,7 +249,7 @@ tbody td {
   font-size: 1em;
 }
 
-.pagination span {
+.pagination-user span {
   font-size: 1em;
   margin: 0 10px;
   color: #002B69;
@@ -311,7 +311,7 @@ tbody td {
     width: 100%;
   }
 
-  table {
+  .user-table {
     font-size: 14px;
   }
 
@@ -343,11 +343,11 @@ tbody td {
   }
 
   .upload-option {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .icon-other {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .filters-user {
@@ -360,15 +360,15 @@ tbody td {
     width: 100%;
   }
 
-  table {
+  .user-table {
     display: block;
     width: 100%;
     overflow-x: auto; /* Permite desplazamiento horizontal */
     font-size: 12px;
   }
 
-  table th,
-  table td {
+  .user-thead th,
+  .user-tbody td {
     white-space: nowrap; /* Evita que el texto se ajuste a la línea */
   }
 
@@ -376,12 +376,12 @@ tbody td {
     font-size: 1.2em;
   }
 
-  .pagination {
+  .pagination-user {
     flex-direction: column;
     gap: 10px;
   }
 
-  .pagination button {
+  .pagination-user button {
     padding: 8px 15px;
     margin: 5px 0;
   }

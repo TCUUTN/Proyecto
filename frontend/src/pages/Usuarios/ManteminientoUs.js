@@ -431,8 +431,8 @@ function MantenimientoUs() {
 
         {/*Tabla*/}
         <div className="table-container">
-          <table>
-            <thead>
+          <table className="user-table">
+            <thead className="user-thead">
               <tr>
                 <th>Identificación</th>
                 <th>Nombre Completo</th>
@@ -441,7 +441,7 @@ function MantenimientoUs() {
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="user-tbody">
               {currentUsuarios.map((usuario) => (
                 <tr key={usuario.Identificacion}>
                   <td>{usuario.Identificacion}</td>
@@ -468,7 +468,7 @@ function MantenimientoUs() {
             </tbody>
           </table>
           {/* La paginacion */}
-          <div className="pagination">
+          <div className="pagination-user">
             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
               Anterior
             </button>
