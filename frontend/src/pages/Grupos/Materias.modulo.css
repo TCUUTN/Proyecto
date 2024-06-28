@@ -95,6 +95,7 @@
   margin-bottom: 10px;
   align-items: center;
   font-family: "Brush-TipTerrence", cursive;
+  justify-content: center;
   margin-left: 35%;
 }
 
@@ -108,7 +109,7 @@
   display: flex;
   align-items: center;
   color: #002b69;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
 }
 

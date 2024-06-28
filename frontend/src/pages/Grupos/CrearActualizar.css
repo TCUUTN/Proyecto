@@ -42,9 +42,16 @@
 .sele-projcreaed {
   width: 80%; /* Utilizamos vw para hacerlo responsivo */
   padding: 9px;
-  border: 1px solid #002B69;
-  border-radius: 8px;
+  border: 2px solid #1c3b70;
+  border-radius: 25px;
   margin-bottom: 15px;
+  text-align: center;
+  /* Chrome, Safari, Opera */
+  -webkit-text-align: center;
+  /* Firefox */
+  -moz-text-align: center;
+  /* IE */
+  -ms-text-align: center;
 }
 
 .imput-projcreaed:focus,
@@ -52,6 +59,12 @@
   border-color: #ff6600;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+.imput-projcreaed::placeholder,
+.sele-projcreaed::placeholder,
+.option-projcreaed {
+  color: #303031;
+  opacity: 0.6;
 }
 
 /* Botones */
@@ -77,6 +90,16 @@
 .button-projcreaed:hover {
   background-color: #f66226;
   transition: 0.3s;
+}
+.button-projcreaed:disabled {
+  background-color: #999999;
+  cursor: not-allowed;
+}
+
+/* error */
+.error-projcreaed {
+  color: red;
+  font-size: 0.8em;
 }
 
 /* Media queries para hacer ajustes específicos para tamaños de pantalla más pequeños */
@@ -106,6 +129,12 @@
       width: 90%; /* Ajuste del ancho de inputs y selects para celulares */
   }
 }
+
+
+
+
+
+
 /* Pagina de crear y editar la creacion de grupos */
 
 .creagrup-container {
@@ -155,6 +184,13 @@
   box-sizing: border-box;
   text-align: center;
   margin-bottom: 10px;
+  text-align: center;
+  /* Chrome, Safari, Opera */
+  -webkit-text-align: center;
+  /* Firefox */
+  -moz-text-align: center;
+  /* IE */
+  -ms-text-align: center;
 }
 
 .creagrup-inputfield::placeholder,

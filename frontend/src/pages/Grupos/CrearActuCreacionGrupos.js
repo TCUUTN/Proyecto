@@ -385,7 +385,7 @@ function CrearActuCreacionGrupos() {
             className="creagrup-button"
             disabled={!isFormValid}
           >
-            Guardar
+           {GrupoId ? "Actualizar" : "Guardar"}
           </button>
         </div>
       </form>

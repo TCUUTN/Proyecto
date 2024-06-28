@@ -341,7 +341,7 @@ function CrearoActualizarHoras() {
               className="crehoras-button"
               disabled={isSubmitDisabled}
             >
-              Guardar
+              {bitacoraId ? "Actualizar" : "Guardar"}
             </button>
           </div>
           {error && <div className="error-message">{error}</div>}

@@ -64,9 +64,7 @@
 .user-action {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 1; 
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .add-user {
@@ -78,19 +76,19 @@
   border: none;
   background: none;
   cursor: pointer;
-  padding: 0 10px;
+
 }
 
 .icon-add {
   margin-left: 10px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 .user-divider {
   width: 2px;
   height: 65px;
   background: #ff6600;
-  margin: auto 20px;
+  margin: auto 0 auto 20px;
 
  
 }
@@ -107,6 +105,7 @@
   font-size: 20px;
   margin-bottom: 10px;
   align-items: center;
+  justify-content: center;
   font-family: "Brush-TipTerrence", cursive;
   margin-left: 35%;
 }
@@ -286,7 +285,7 @@ main {
   }
 
   .icon-add {
-    font-size: 25px;
+    font-size: 30px;
   }
 
   .user-divider {
