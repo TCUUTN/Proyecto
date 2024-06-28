@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { FaEdit, FaInfoCircle } from "react-icons/fa";
+import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
+import { SlEnvolopeLetter } from "react-icons/sl";
 import "./SocioCom.css";
 
 function SocioComunitarios() {
@@ -23,7 +24,6 @@ function SocioComunitarios() {
 
   return (
     <div className="sociocomunitario-container">
-      {/**/}
       <main>
         {/*Agregar usuario y el titulo*/}
         <div className="sociocomu-sidebar">
@@ -31,93 +31,174 @@ function SocioComunitarios() {
             <button className="add-sociocomu" onClick={handleAddUser}>
               Agregar <IoMdAddCircle className="icon-socio" />
             </button>
-            {/*linea*/}
             <div className="socio-divider" />
-            {/*Titulo*/}
-            <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
+            <h1 className="sociocomu-titulo">Socios Comunitario</h1>
           </div>
         </div>
-        {/*Filtros*/}
-        <div className="filters-sociocomu">
-          {/*Nombre Institución*/}
-          <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" htmlFor="institucion">
-              Buscar Nombre Institución
-            </label>
-            <input
-              type="text"
-              id="institucion"
-              placeholder="Nombre Institución"
-              className="filter-input-sociocomu"
-            />
+
+        {/* Solicitud Pendientes */}
+        <div className="solicitud-section">
+          <h2 className="solicitud-title">Solicitud Pendientes</h2>
+          <div className="socios-divider" />
+          <div className="filters-sociocomu">
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Buscar Nombre Institución
+             </label>
+              <input
+                type="text"
+                id="institucion-pendientes"
+                placeholder="Nombre Institución"
+                className="filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Buscar Contacto
+             </label>
+              <input
+                type="text"
+                id="contacto-pendientes"
+                placeholder="Nombre Completo"
+                className="filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Tipo de Institución
+             </label>
+              <input
+                type="text"
+                id="tipo-pendientes"
+                placeholder="Tipo de Institución"
+                className="filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+             Estado
+             </label>
+              <select id="estado-pendientes" 
+              className="filter-control-sociocomu filter-select-sociocomu">
+                <option value="">Todos</option>
+                <option value="">Todos</option>
+              <option value="1">Activos</option>
+              <option value="0">Inactivos</option>
+              </select>
+            </div>
           </div>
-          {/*Buscar Contacto*/}
-          <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" htmlFor="contacto">
-              Buscar Contacto
-            </label>
-            <input
-              type="text"
-              id="contacto"
-              placeholder="Nombre Completo"
-              className="filter-input-sociocomu"
-            />
-          </div>
-          {/*Tipo de Institución*/}
-          <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" htmlFor="tipo">
-              Tipo de Institución
-            </label>
-            <select
-              id="tipo"
-              className="filter-select-sociocomu"
-              placeholder="Tipo de Institución"
-            >
-              <option value="">Tipo de Institución</option>
-            </select>
-          </div>
-        </div>
-        {/*Tabla*/}
-        <div className="table-container-sociocomu">
-          <table className="table-sociocomu">
-            <thead className="thead-sociocomu">
-              <tr>
-                <th>Nombre Institución</th>
-                <th>Nombre Contacto</th>
-                <th>Tipo de Institución</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="tbody-sociocomu">
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+          <div className="table-container-sociocomu">
+            <table className="table-sociocomu">
+              <thead className="thead-sociocomu">
+                <tr>
+                  <th>Socio</th>
+                  <th>Estudiante</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="tbody-sociocomu">
+              <td></td>
                 <td></td>
                 <td>
                   <button className="icon-btn--sociocomu">
-                    <FaEdit />
+                  <RiEdit2Fill />
                   </button>
                   <button className="icon-btn--sociocomu">
-                    <FaInfoCircle />
+                  <SlEnvolopeLetter />
                   </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          {/* La paginacion */}
-          <div className="pagination">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Anterior
-            </button>
-            <span>Página {currentPage}</span>
-            <button onClick={handleNextPage}>Siguiente</button>
+                  </td>
+              </tbody>
+            </table>
+            <div className="pagination-sociocomu">
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Anterior
+              </button>
+              <span>Página {currentPage}</span>
+              <button onClick={handleNextPage}>Siguiente</button>
+            </div>
           </div>
         </div>
-        {/**/}
+
+        {/* Solicitud Completadas */}
+        <div className="solicitud-section">
+          <h2 className="solicitud-title">Solicitud Completadas</h2>
+          <div className="socios-divider" />
+          <div className="filters-sociocomu">
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Buscar Nombre Institución
+            </label>
+              <input
+                type="text"
+                id="institucion-completadas"
+                placeholder="Nombre Institución"
+                className=" filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Buscar Contacto
+             </label>
+              <input
+                type="text"
+                id="contacto-completadas"
+                placeholder="Nombre Completo"
+                className=" filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+            Tipo de Institución
+             </label>
+              <input
+                type="text"
+                id="tipo-completadas"
+                placeholder="Tipo de Institución"
+                className="filter-control-sociocomu filter-input-sociocomu"
+              />
+            </div>
+            <div className="filter-group-sociocomu">
+            <label className="filter-label-sociocomu" >
+             Estado
+             </label>
+              <select id="estado-completadas" 
+              className=" filter-control-sociocomu filter-select-sociocomu">
+                <option value="">Todos</option>
+                <option value="">Todos</option>
+              <option value="1">Activos</option>
+              <option value="0">Inactivos</option>
+              </select>
+            </div>
+          </div>
+          <div className="table-container-sociocomu">
+            <table className="table-sociocomu">
+              <thead className="thead-sociocomu">
+                <tr>
+                  <th>Socio</th>
+                  <th>Estudiante</th>
+                  <th>Carta</th>
+                
+                </tr>
+              </thead>
+              <tbody className="tbody-sociocomu">
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+           
+              </tr>
+              </tbody>
+            </table>
+            <div className="pagination-sociocomu">
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Anterior
+              </button>
+              <span>Página {currentPage}</span>
+              <button onClick={handleNextPage}>Siguiente</button>
+            </div>
+          </div>
+        </div>
       </main>
-      {/**/}
     </div>
   );
 }

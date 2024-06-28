@@ -186,10 +186,26 @@ function Navbar() {
                 )}
                 {(selectedRole === "Académico" ||
                   selectedRole === "Administrativo") && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/SocioComunitarios">
+                  <li className="nav-item dropdown">
+                    <Link className="nav-link dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
                       Socios Comunitarios
                     </Link>
+                    <ul className="dropdown-menu bg-blue">
+                    <li>
+                      <Link className="dropdown-item dropdown-style" to="/SocioComunitarios">
+                        Lista de Socios 
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item dropdown-style" to="/SolicitudCartas">
+                        Solicitud de carta
+                      </Link>
+                    </li>
+                    
+                  </ul>
                   </li>
                 )}
                 <li className="nav-item dropdown">

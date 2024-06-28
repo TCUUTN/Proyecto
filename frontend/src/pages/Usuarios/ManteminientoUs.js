@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaEdit,
-  FaInfoCircle,
   FaFileDownload,
   FaFileUpload,
 } from "react-icons/fa";
@@ -11,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { TbUserEdit } from "react-icons/tb";
 
 function MantenimientoUs() {
   const [usuarios, setUsuarios] = useState([]);
@@ -457,10 +456,7 @@ function MantenimientoUs() {
                       className="icon-btn-user"
                       onClick={() => handleEditUser(usuario.Identificacion)}
                     >
-                      <FaEdit />
-                    </button>
-                    <button className="icon-btn-user">
-                      <FaInfoCircle />
+                     <TbUserEdit />
                     </button>
                   </td>
                 </tr>

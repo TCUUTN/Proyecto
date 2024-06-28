@@ -1,0 +1,228 @@
+/* Pagina Creacion de la solicitud de la carta */
+.solici-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 70px 20px;
+    gap: 20px;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 85%;
+    margin: 2% auto;
+  }
+  
+  /* Titulo */
+  .solici-title {
+    font-family: "Brush-TipTerrence", cursive;
+    color: #012c6a;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  
+  /* Linea debajo del titulo */
+  .solici-divider {
+    width: 175px;
+    height: 2px;
+    background: #ff6600;
+    margin: 0 auto 20px auto;
+  }
+  
+  /* Contenido principal */
+  .solici-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Columna izquierda */
+  .solici-left {
+    width: 45%;
+  }
+  
+  /* Selectores y filtros */
+  .solici-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #002b69;
+    border: 2px solid #002b69;
+    border-radius: 25px;
+    /* Chrome, Safari, Opera */
+   -webkit-text-align: center;
+   /* Firefox */
+   -moz-text-align: center;
+   /* IE */
+   -ms-text-align: center;
+  }
+  
+  .solici-select:focus {
+    border-color: #ff6600;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+  }
+  
+  .solici-filtros {
+    margin-bottom: 20px;
+  }
+  
+  .titulesolici-filt {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #012c6a;
+    text-align: left;
+  }
+  
+  /* Botón Añadir Estudiantes */
+  .solici-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #002b69;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .solici-button:hover {
+    background-color: #ff4500;
+  }
+  
+  /* Línea divisoria vertical */
+  .solici-divider-vertical {
+    width: 2px;
+    background: #ff6600;
+    height: auto;
+    margin: 0 20px;
+  }
+  
+  /* Columna derecha */
+  .solicitud-right {
+    width: 45%;
+  }
+
+  .medTitule-solici{
+    color: #012c6a;
+  }
+  
+  .solicitud-socio-seleccionado {
+    font-size: 18px;
+    margin-bottom: 35px;
+  }
+  
+  .subtitule-solici {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #012c6a;
+    text-align: center;
+  }
+  
+  /* Tabla */
+  .solici-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    padding-top: 2%;
+  }
+  
+  .solici-thead th {
+    background-color: #002b69;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .solici-tbody td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  /* Botón de remover estudiante */
+  .icon-removeEst-button {
+    color: #ff6600;
+    font-size: 1.8em;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  
+  .icon-removeEst-button:hover {
+    color: #002b69;
+  }
+  
+  /* Paginación */
+  .pagination-solici {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0 35px 0;
+  }
+  
+  .pagination-solici button {
+    background-color: #002b69;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+  }
+  
+  .pagination-solici span {
+    font-size: 1rem;
+    margin: 0 10px;
+    color: #002b69;
+  }
+  
+  /* Botones */
+  .solicitud-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .solicitud-button {
+    width: 45%;
+    padding: 10px;
+    background-color: #002b69;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: 0.3s;
+  }
+  
+  .solicitud-button:hover,
+  .solici-button:hover {
+    background-color: #ff4500;
+    transition: 0.3s;
+  }
+  
+  .solicitud-button:disabled,
+  .solici-button:disabled {
+    background-color: #999999;
+    cursor: not-allowed;
+    transition: none;
+  }
+  
+  .solici-button {
+    width: 65%;
+    padding: 10px;
+    background-color: #002b69;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px 0 45px;
+    transition: 0.3s;
+  }
+  

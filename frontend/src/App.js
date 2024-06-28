@@ -17,7 +17,9 @@ import GruposAcademico from './pages/Grupos/GruposAcademico.js';
 import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
 import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
 import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
-import SocioComunitarios from './pages/SociosComunitarios/ListSocioCom.js'
+import SocioComunitarios from './pages/SociosComunitarios/ListSocioCom.js';
+import SolicitudCartas from "./pages/SociosComunitarios/SolicitudCartas.js";
+
 
 //
 import CrearActualizarUsuario from './pages/Usuarios/CrearActualizarUsuario.js';
@@ -76,6 +78,7 @@ function App() {
             <Route path="/CrearoActualizarHoras" element={<CrearoActualizarHoras />} />
             <Route path="/SocioComunitarios" element={<SocioComunitarios/>}/>
             <Route path="/CrearActuSocioComunitarios" element={<CrearActuSocioComunitarios/>}/>
+            <Route path="/SolicitudCartas" element={<SolicitudCartas/>}/>
           </Routes>
         </div>
         {/*</CustomScrollbars>*/}

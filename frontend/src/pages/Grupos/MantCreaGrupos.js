@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaEdit,
-  FaInfoCircle,
   FaFileDownload,
   FaFileUpload,
 } from "react-icons/fa";
@@ -10,6 +8,7 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
+import { GrEdit } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 function MantGrupos() {
@@ -438,11 +437,9 @@ function MantGrupos() {
                       className="icon-btn-mat"
                       onClick={() => handleClick(grupo.GrupoId)}
                     >
-                      <FaEdit />
+                          <GrEdit />
                     </button>
-                    <button className="icon-btn-mat">
-                      <FaInfoCircle />
-                    </button>
+                   
                   </td>
                 </tr>
               ))}

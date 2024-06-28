@@ -180,7 +180,7 @@ main {
 }
 
 .filter-input-user::placeholder,
-.filter-select-user {
+.filter-select-user::placeholder {
   color: #575656;
 }
 
@@ -226,7 +226,11 @@ main {
   cursor: pointer;
   color: #ff6600;
   font-size: 1.8em;
-  padding: 5px; /* Añadir relleno para que los iconos no se vean pegados */
+  padding: 5px; 
+}
+
+.icon-btn-user:hover {
+  color: #002b69;
 }
 
 /*Paginacion*/

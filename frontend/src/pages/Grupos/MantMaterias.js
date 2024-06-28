@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaEdit,
-  FaInfoCircle,
   FaFileDownload,
   FaFileUpload,
 } from "react-icons/fa";
@@ -10,6 +8,8 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Materias.modulo.css";
+
+import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 function MantMaterias() {
@@ -298,11 +298,9 @@ function MantMaterias() {
                         navigate("/CrearActuProyectos");
                       }}
                     >
-                      <FaEdit />
+               <LuFileEdit />
                     </button>
-                    <button className="icon-btn-mat">
-                      <FaInfoCircle />
-                    </button>
+                   
                   </td>
                 </tr>
               ))}
