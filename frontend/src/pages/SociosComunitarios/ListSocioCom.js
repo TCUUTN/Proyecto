@@ -41,7 +41,7 @@ function SocioComunitarios() {
           <div className="filters-sociocomu">
             <div className="filter-group-sociocomu">
             <label className="filter-label-sociocomu" >
-            Buscar Nombre Institución
+            Buscar Nombre Socio
              </label>
               <input
                 type="text"
