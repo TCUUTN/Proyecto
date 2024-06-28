@@ -87,7 +87,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 15%;
+  margin: 0 10%; 
 }
 .title-mater {
   color: #002b69;
@@ -101,6 +101,7 @@
 .bulk-upload-mater {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .upload-option-mater {
@@ -133,20 +134,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 20px;
   border-radius: 5px;
   width: 80%;
   margin: 20px auto;
- 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  gap: 20px;
 }
 
 .filter-group-mat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 10px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .filter-input-mat,
@@ -155,13 +158,13 @@
   font-size: 18px;
   border: 2px solid #002b69;
   border-radius: 20px;
-  width: 250px;
+  width: 100%;
   text-align: center;
   color: #002b69;
 }
 
 .filter-input-mat::placeholder,
-.filter-select-mat {
+.filter-select-mat::placeholder {
   color: #575656;
 }
 .filter-input-mat:focus,
@@ -310,17 +313,19 @@
   .icon-addMater {
     font-size: 28px;
   }
-
   .mater-divider {
-    display: none;
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0; /* Ajustar el margen para pantallas pequeñas */
   }
-
+  
   .upload-option-mater {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .icon-othermat {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .filters-mat {
@@ -348,7 +353,6 @@
   .icon-btn-mat {
     font-size: 1.2em;
   }
-
 
   .pagination-mat {
     flex-direction: column;
@@ -687,6 +691,7 @@
     font-size: 0.85em; /* Reduce el tamaño del texto */
     padding: 5px 15px; /* Ajusta el padding */
   }
+  
 }
 
 /* */

@@ -141,7 +141,6 @@ function CrearActuCreacionGrupos() {
     requiredFields.forEach((field) => {
       if (!formValues[field]) {
         validationErrors[field] = `Por favor, complete el campo: ${field}`;
-   
       }
     });
 
@@ -229,6 +228,8 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
+        </div>
+        <div className="creagrup-formrow">
           {/* Numero de grupo */}
           <input
             type="text"
@@ -236,7 +237,7 @@ function CrearActuCreacionGrupos() {
             value={formValues.NumeroGrupo}
             onChange={handleInputChange}
             placeholder="Número de Grupos"
-            className="creagrup-inputfield creagrup-input-small"
+            className="creagrup-inputfield"
           />
         </div>
         <div className="creagrup-formrow">
@@ -249,42 +250,50 @@ function CrearActuCreacionGrupos() {
           >
             <option value="">Seleccionar Académico</option>
             {usuarios.map((usuario) => (
-               <option key={usuario.Identificacion} value={usuario.Identificacion}>
-               {usuario.Nombre.charAt(0).toUpperCase() + 
-               usuario.Nombre.slice(1)} {usuario.Apellido1.charAt(0).toUpperCase() + 
-               usuario.Apellido1.slice(1)} {usuario.Apellido2.charAt(0).toUpperCase() + 
-               usuario.Apellido2.slice(1)} {usuario.Sede === "Todas" && "(Multisede)"}
-           </option>
+              <option
+                key={usuario.Identificacion}
+                value={usuario.Identificacion}
+              >
+                {usuario.Nombre.charAt(0).toUpperCase() +
+                  usuario.Nombre.slice(1)}{" "}
+                {usuario.Apellido1.charAt(0).toUpperCase() +
+                  usuario.Apellido1.slice(1)}{" "}
+                {usuario.Apellido2.charAt(0).toUpperCase() +
+                  usuario.Apellido2.slice(1)}{" "}
+                {usuario.Sede === "Todas" && "(Multisede)"}
+              </option>
             ))}
           </select>
-              {/* Aula */}
+        </div>
+        <div className="creagrup-formrow">
+          {/* Aula */}
           <input
             type="text"
             name="Aula"
             value={formValues.Aula}
             onChange={handleInputChange}
             placeholder="Aula"
-            className="creagrup-inputfield creagrup-input-small"
+            className="creagrup-inputfield"
           />
         </div>
-         {/* Horario, Cuatrimestre, Año */}
-        <div className="creagrup-formrow creagrup-formrow-inline">
-             {/* Horario */}
+        <div className="creagrup-formrow ">
+          {/* Horario */}
           <input
             type="text"
             name="Horario"
             value={formValues.Horario}
             onChange={handleInputChange}
             placeholder="Horario"
-            className="creagrup-inputfield-inline"
+            className="creagrup-inputfield"
           />
-          &nbsp;&nbsp;&nbsp;
-            {/* Cuatrimestre */}
+        </div>
+        <div className="creagrup-formrow">
+          {/* Cuatrimestre */}
           <select
             name="Cuatrimestre"
             value={formValues.Cuatrimestre}
             onChange={handleInputChange}
-            className="creagrup-select-inline creagrup-select-wide"
+            className="creagrup-select"
           >
             <option value="">Cuatrimestre</option>
             {cuatrimestres.map((cuatrimestre) => (
@@ -293,12 +302,14 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
-             {/* Año */}
+        </div>
+        <div className="creagrup-formrow">
+          {/* Año */}
           <select
             name="Anno"
             value={formValues.Anno}
             onChange={handleInputChange}
-            className="creagrup-select-inline"
+            className="creagrup-select"
           >
             <option value="">Año</option>
             {annos.map((anno) => (
@@ -308,6 +319,7 @@ function CrearActuCreacionGrupos() {
             ))}
           </select>
         </div>
+
         <div className="creagrup-formrow">
           {/* Sede */}
           {sedeSession === "Todas" && (
@@ -325,7 +337,8 @@ function CrearActuCreacionGrupos() {
               ))}
             </select>
           )}
-
+        </div>
+        <div className="creagrup-formrow">
           {/* Estado */}
           {localStorage.getItem("GrupoIdUpdate") ? (
             <select
@@ -363,12 +376,15 @@ function CrearActuCreacionGrupos() {
             className="creagrup-button"
             onClick={handleRegresar}
           >
-             <FaChevronLeft />
+            <FaChevronLeft />
             Regresar
           </button>
           &nbsp;&nbsp;&nbsp;
-          <button type="submit" className="creagrup-button"
-          disabled={!isFormValid}>
+          <button
+            type="submit"
+            className="creagrup-button"
+            disabled={!isFormValid}
+          >
             Guardar
           </button>
         </div>
