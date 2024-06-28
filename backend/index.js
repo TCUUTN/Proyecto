@@ -24,6 +24,10 @@ const horasRoute = require('./routes/horasRoute');
 app.use('/horas', horasRoute);
 // Rutas para el modulo de Horas
 
+const sociosRoute = require('./routes/sociosRoute');
+app.use('/socios', sociosRoute);
+// Rutas para el modulo de Horas
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
