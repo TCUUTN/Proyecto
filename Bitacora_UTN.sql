@@ -194,6 +194,7 @@ SET SQL_SAFE_UPDATES = 0;
 Drop table Socios_SolicitudCarta;
 Drop table Socios_EstudiantesCarta;
 Drop table Socios_RegistroSocios;
+SET SQL_SAFE_UPDATES = 1;
 
 /*Inserts y Updates
 
