@@ -12,7 +12,7 @@ function SolicitudCartas() {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate("/SocioComunitarios");
+    navigate("/SolicitudCartas");
   };
 
   const handleNextPage = () => {

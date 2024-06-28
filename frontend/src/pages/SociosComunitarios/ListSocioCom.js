@@ -32,14 +32,12 @@ function SocioComunitarios() {
               Agregar <IoMdAddCircle className="icon-socio" />
             </button>
             <div className="socio-divider" />
-            <h1 className="sociocomu-titulo">Socios Comunitario</h1>
+            <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
           </div>
         </div>
 
-        {/* Solicitud Pendientes */}
+        {/* Lista de Socios */}
         <div className="solicitud-section">
-          <h2 className="solicitud-title">Solicitud Pendientes</h2>
-          <div className="socios-divider" />
           <div className="filters-sociocomu">
             <div className="filter-group-sociocomu">
             <label className="filter-label-sociocomu" >
@@ -81,7 +79,6 @@ function SocioComunitarios() {
               <select id="estado-pendientes" 
               className="filter-control-sociocomu filter-select-sociocomu">
                 <option value="">Todos</option>
-                <option value="">Todos</option>
               <option value="1">Activos</option>
               <option value="0">Inactivos</option>
               </select>
@@ -91,20 +88,25 @@ function SocioComunitarios() {
             <table className="table-sociocomu">
               <thead className="thead-sociocomu">
                 <tr>
-                  <th>Socio</th>
-                  <th>Estudiante</th>
+                  <th>Nombre del Socio</th>
+                  <th>Informacion del Socio</th>
+                  <th>Direccion</th>
+                  <th>Tipo de Institucion</th>
+                  <th>Nombre del Contacto</th>
+                  <th>Informacion del Contacto</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody className="tbody-sociocomu">
               <td></td>
                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                   <button className="icon-btn--sociocomu">
                   <RiEdit2Fill />
-                  </button>
-                  <button className="icon-btn--sociocomu">
-                  <SlEnvolopeLetter />
                   </button>
                   </td>
               </tbody>
@@ -119,85 +121,7 @@ function SocioComunitarios() {
           </div>
         </div>
 
-        {/* Solicitud Completadas */}
-        <div className="solicitud-section">
-          <h2 className="solicitud-title">Solicitud Completadas</h2>
-          <div className="socios-divider" />
-          <div className="filters-sociocomu">
-            <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" >
-            Buscar Nombre Institución
-            </label>
-              <input
-                type="text"
-                id="institucion-completadas"
-                placeholder="Nombre Institución"
-                className=" filter-control-sociocomu filter-input-sociocomu"
-              />
-            </div>
-            <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" >
-            Buscar Contacto
-             </label>
-              <input
-                type="text"
-                id="contacto-completadas"
-                placeholder="Nombre Completo"
-                className=" filter-control-sociocomu filter-input-sociocomu"
-              />
-            </div>
-            <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" >
-            Tipo de Institución
-             </label>
-              <input
-                type="text"
-                id="tipo-completadas"
-                placeholder="Tipo de Institución"
-                className="filter-control-sociocomu filter-input-sociocomu"
-              />
-            </div>
-            <div className="filter-group-sociocomu">
-            <label className="filter-label-sociocomu" >
-             Estado
-             </label>
-              <select id="estado-completadas" 
-              className=" filter-control-sociocomu filter-select-sociocomu">
-                <option value="">Todos</option>
-                <option value="">Todos</option>
-              <option value="1">Activos</option>
-              <option value="0">Inactivos</option>
-              </select>
-            </div>
-          </div>
-          <div className="table-container-sociocomu">
-            <table className="table-sociocomu">
-              <thead className="thead-sociocomu">
-                <tr>
-                  <th>Socio</th>
-                  <th>Estudiante</th>
-                  <th>Carta</th>
-                
-                </tr>
-              </thead>
-              <tbody className="tbody-sociocomu">
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-           
-              </tr>
-              </tbody>
-            </table>
-            <div className="pagination-sociocomu">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Anterior
-              </button>
-              <span>Página {currentPage}</span>
-              <button onClick={handleNextPage}>Siguiente</button>
-            </div>
-          </div>
-        </div>
+       
       </main>
     </div>
   );

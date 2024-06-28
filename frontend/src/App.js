@@ -18,7 +18,7 @@ import ListaEstudiantes from './pages/Grupos/EstudiantesdeGrupo.js';
 import VistaHorasEstudiantes from './pages/HorasBitacora/VistaHorasEstudiante.js';
 import RechazoHoras from './pages/HorasBitacora/RechazoHoras.js';
 import SocioComunitarios from './pages/SociosComunitarios/ListSocioCom.js';
-import SolicitudCartas from "./pages/SociosComunitarios/SolicitudCartas.js";
+import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 
 
 //
@@ -27,6 +27,7 @@ import CrearActuProyectos from './pages/Grupos/CrearActuProyectos.js';
 import CrearActuCreacionGrupos from './pages/Grupos/CrearActuCreacionGrupos.js';
 import CrearoActualizarHoras from './pages/HorasBitacora/CrearoActualizarHoras.js';
 import CrearActuSocioComunitarios from './pages/SociosComunitarios/CrearActualizar.js'
+import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
 //
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa el archivo JavaScript de Bootstrap
@@ -79,6 +80,7 @@ function App() {
             <Route path="/SocioComunitarios" element={<SocioComunitarios/>}/>
             <Route path="/CrearActuSocioComunitarios" element={<CrearActuSocioComunitarios/>}/>
             <Route path="/SolicitudCartas" element={<SolicitudCartas/>}/>
+            <Route path="/CrearActualizarSolicitudesCartas" element={<CrearActualizarSolicitudCartas/>}/>
           </Routes>
         </div>
         {/*</CustomScrollbars>*/}
