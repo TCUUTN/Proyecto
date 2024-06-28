@@ -240,31 +240,7 @@ function CrearActuCreacionGrupos() {
             className="creagrup-inputfield"
           />
         </div>
-        <div className="creagrup-formrow">
-          {/* Seleccionar Académico */}
-          <select
-            name="Identificacion"
-            value={formValues.Identificacion}
-            onChange={handleInputChange}
-            className="creagrup-select creagrup-select-large"
-          >
-            <option value="">Seleccionar Académico</option>
-            {usuarios.map((usuario) => (
-              <option
-                key={usuario.Identificacion}
-                value={usuario.Identificacion}
-              >
-                {usuario.Nombre.charAt(0).toUpperCase() +
-                  usuario.Nombre.slice(1)}{" "}
-                {usuario.Apellido1.charAt(0).toUpperCase() +
-                  usuario.Apellido1.slice(1)}{" "}
-                {usuario.Apellido2.charAt(0).toUpperCase() +
-                  usuario.Apellido2.slice(1)}{" "}
-                {usuario.Sede === "Todas" && "(Multisede)"}
-              </option>
-            ))}
-          </select>
-        </div>
+       
         <div className="creagrup-formrow">
           {/* Aula */}
           <input
@@ -337,6 +313,31 @@ function CrearActuCreacionGrupos() {
               ))}
             </select>
           )}
+        </div>
+        <div className="creagrup-formrow">
+          {/* Seleccionar Académico */}
+          <select
+            name="Identificacion"
+            value={formValues.Identificacion}
+            onChange={handleInputChange}
+            className="creagrup-select creagrup-select-large"
+          >
+            <option value="">Seleccionar Académico</option>
+            {usuarios.map((usuario) => (
+              <option
+                key={usuario.Identificacion}
+                value={usuario.Identificacion}
+              >
+                {usuario.Nombre.charAt(0).toUpperCase() +
+                  usuario.Nombre.slice(1)}{" "}
+                {usuario.Apellido1.charAt(0).toUpperCase() +
+                  usuario.Apellido1.slice(1)}{" "}
+                {usuario.Apellido2.charAt(0).toUpperCase() +
+                  usuario.Apellido2.slice(1)}{" "}
+                {usuario.Sede === "Todas" && "(Multisede)"}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="creagrup-formrow">
           {/* Estado */}
