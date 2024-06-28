@@ -1,24 +1,16 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  font-family: "Century Gothic", sans-serif;
-  background-color: #f7f7f7;
-}
+
 
 /* Centro del contenedor principal */
 .creaediUsu-container {
   background: #fff;
-  padding: 20px 40px;
+  padding: 20px;
   border-radius: 8px;
   width: 100%;
   max-width: 515px;
-  margin: 40px auto; /* Centro en la página */
+  margin: 40px auto;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Centrar el contenido */
+  text-align: center;
 }
 
 .creaediUsu-titulo {
@@ -36,8 +28,6 @@ body {
 }
 
 .creaediUsu-formUserEdit {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   text-align: left; /* Alinea texto a la izquierda en inputs */
   margin-bottom: 25px;
@@ -52,6 +42,7 @@ body {
   grid-column: span 2; /* Ajuste para que ocupe toda la fila */
   display: flex;
   align-items: center;
+  margin-bottom: 5%;
 }
 
 .creaediUsu-input {
@@ -63,6 +54,13 @@ body {
   box-sizing: border-box;
   text-align: center;
   color: #1c3b70;
+  text-align: center;
+  /* Chrome, Safari, Opera */
+  -webkit-text-align: center;
+  /* Firefox */
+  -moz-text-align: center;
+  /* IE */
+  -ms-text-align: center;
 }
 
 .creaediUsu-input::placeholder {
@@ -76,6 +74,13 @@ body {
   border: 2px solid #002B69 !important;
   border-radius: 25px !important;
   align-items: center;
+  text-align: center;
+  /* Chrome, Safari, Opera */
+  -webkit-text-align: center;
+  /* Firefox */
+  -moz-text-align: center;
+  /* IE */
+  -ms-text-align: center;
 }
 
 .creaediUsu-input:focus,
@@ -88,6 +93,7 @@ body {
 
 .creaediUsu-check {
   margin-right: 5px; /* Ajuste de margen para checkboxes */
+  accent-color: #002b69;
 }
 
 .creaediUsu-roles {
@@ -110,7 +116,7 @@ body {
 
 .creaediUsu-btnGuardar,
 .creaediUsu-btnRegresar {
-  background-color: #002b69; /* Color celeste */
+  background-color: #002b69 !important; /* Color celeste */
   color: white;
   padding: 10px;
   border: none;
@@ -138,7 +144,7 @@ body {
 
 .creaediUsu-genero-estado {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 15px;
   text-align: left; /* Alinea texto a la izquierda en inputs */
   margin-bottom: 25px;
@@ -153,4 +159,45 @@ body {
 .creaediUsu-error {
   color: #ff0000;
   font-size: 0.9rem;
+  display: none;
+}
+.creaediUsu-error.active {
+  display: block; /* Mostrar solo si está activo */
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .creaediUsu-formUserEdit {
+    grid-template-columns: 1fr;
+  }
+
+  .creaediUsu-formGroup,
+  .creaediUsu-formGroupRoles,
+  .creaediUsu-otros {
+    grid-column: span 1;
+  }
+
+  .creaediUsu-genero-estado {
+    grid-template-columns: 1fr;
+  }
+
+  .creaediUsu-btnGuardar,
+  .creaediUsu-btnRegresar {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .creaediUsu-titulo {
+    font-size: 2rem;
+  }
+
+  .creaediUsu-container {
+    padding: 10px;
+  }
+
+  .creaediUsu-line {
+    margin-bottom: 15px;
+  }
 }

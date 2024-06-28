@@ -288,6 +288,7 @@ function MantGrupos() {
   };
 
   return (
+    
     <div className="materia-container">
       {/*Para la carga */}
       {loading && (

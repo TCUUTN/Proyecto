@@ -1,13 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  font-family: "Century Gothic", sans-serif;
-  overflow: auto; /* overflow: hidden; :Evita el scroll */
-}
 /* cARGA */
 .loading-screen {
   position: fixed;
@@ -73,9 +64,7 @@ body {
 .user-action {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 1; 
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .add-user {
@@ -87,12 +76,12 @@ body {
   border: none;
   background: none;
   cursor: pointer;
-  padding: 0 10px;
+
 }
 
 .icon-add {
   margin-left: 10px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 .user-divider {
@@ -108,8 +97,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 10%;
-  margin-left: 10%;
+  margin: 0 10%; 
 }
 
 .title-user {
@@ -117,6 +105,7 @@ body {
   font-size: 20px;
   margin-bottom: 10px;
   align-items: center;
+  justify-content: center;
   font-family: "Brush-TipTerrence", cursive;
   margin-left: 35%;
 }
@@ -124,6 +113,7 @@ body {
 .bulk-upload {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .upload-option {
@@ -160,9 +150,9 @@ main {
   border-radius: 5px;
   width: 80%;
   margin: 20px auto;
- 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap; /* Añadir esta línea */
 }
 
 .filter-group-user {
@@ -211,20 +201,20 @@ main {
   padding: 10px; 
 }
 
-table {
+.user-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-thead th {
+.user-thead th {
   background-color: #002B69;
   color: white;
   padding: 10px;
   text-align: center; /* Alinear texto en el centro */
 }
 
-tbody td {
+.user-tbody td {
   padding: 10px;
   border: 1px solid #ddd; /* Bordes internos de las celdas */
   text-align: center; /* Alinear texto en el centro */
@@ -240,14 +230,14 @@ tbody td {
 }
 
 /*Paginacion*/
-.pagination {
+.pagination-user {
   display: flex; /* Usar flexbox para alinear elementos */
   justify-content: center; /* Centrar elementos horizontalmente */
   align-items: center; /* Centrar elementos verticalmente */
   margin-bottom: 20px;
 }
 
-.pagination button {
+.pagination-user button {
   background-color: #002B69;
   color: white;
   border: none;
@@ -258,7 +248,7 @@ tbody td {
   font-size: 1em;
 }
 
-.pagination span {
+.pagination-user span {
   font-size: 1em;
   margin: 0 10px;
   color: #002B69;
@@ -295,7 +285,7 @@ tbody td {
   }
 
   .icon-add {
-    font-size: 25px;
+    font-size: 30px;
   }
 
   .user-divider {
@@ -320,7 +310,7 @@ tbody td {
     width: 100%;
   }
 
-  table {
+  .user-table {
     font-size: 14px;
   }
 
@@ -337,7 +327,7 @@ tbody td {
   }
 
   .add-user {
-    font-size: 18px;
+    font-size: 25px;
   }
 
   .icon-add {
@@ -345,15 +335,18 @@ tbody td {
   }
 
   .user-divider {
-    display: none;
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0; /* Ajustar el margen para pantallas pequeñas */
   }
 
   .upload-option {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .icon-other {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .filters-user {
@@ -366,15 +359,15 @@ tbody td {
     width: 100%;
   }
 
-  table {
+  .user-table {
     display: block;
     width: 100%;
     overflow-x: auto; /* Permite desplazamiento horizontal */
     font-size: 12px;
   }
 
-  table th,
-  table td {
+  .user-thead th,
+  .user-tbody td {
     white-space: nowrap; /* Evita que el texto se ajuste a la línea */
   }
 
@@ -382,12 +375,12 @@ tbody td {
     font-size: 1.2em;
   }
 
-  .pagination {
+  .pagination-user {
     flex-direction: column;
     gap: 10px;
   }
 
-  .pagination button {
+  .pagination-user button {
     padding: 8px 15px;
     margin: 5px 0;
   }
