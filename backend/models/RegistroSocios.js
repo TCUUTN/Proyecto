@@ -70,18 +70,6 @@ const RegistroSocios = sequelize.define('Socios_RegistroSocios', {
     defaultValue: '-',
     comment: 'Telefono del Socio'
   },
-  Sede: {
-    type: DataTypes.ENUM('Central', 'Atenas', 'Guanacaste','Pacífico','San Carlos', 'C.F.P.T.E.', 'Todas'),
-    allowNull: false,
-    defaultValue: 'Central',
-    comment: 'Sede del Usuario'
-  },
-  Identificacion: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    defaultValue: '-',
-    comment: 'Identificacion del academico'
-  },
   Estado: {
     type: DataTypes.TINYINT(1),
     allowNull: false,
@@ -110,13 +98,6 @@ const RegistroSocios = sequelize.define('Socios_RegistroSocios', {
 }, {
   tableName: 'Socios_RegistroSocios', // Nombre de la tabla en la base de datos
   timestamps: false // Indica que Sequelize no manejará automáticamente las columnas de timestamps
-});
-
-// Relaciones
-RegistroSocios.belongsTo(Usuario, {
-  foreignKey: 'Identificacion',
-  targetKey: 'Identificacion',
-  onDelete: 'CASCADE'
 });
 
 // Exportar el modelo para poder utilizarlo en otras partes de la aplicación

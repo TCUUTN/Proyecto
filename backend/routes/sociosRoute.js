@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const horasController = require('../controllers/horasController');
+const sociosController = require('../controllers/sociosController');
 const multer = require('multer');
 const path = require('path');
 
@@ -16,24 +16,23 @@ const diskStorage = multer.diskStorage({
 
 const fileUpload = multer({
     storage:diskStorage
-}).single('Evidencias')
+}).single('Carta')
 
 
 
-router.get('/', horasController.getAllHoras);
-router.get('/descargarAdjunto/:BitacoraId',horasController.descargarArchivo);
-router.get('/Estudiante/:Identificacion/:GrupoId', horasController.getHorasPorIdentificacionyGrupoId);
-router.get('/:BitacoraId', horasController.getHorasPorBitacoraId);
-router.post('/crearOActualizarHoras', horasController.crearOActualizarHoras);
-router.post('/subirAdjunto', fileUpload, horasController.subirArchivo);
-router.post('/rechazarHoras', horasController.rechazarHoras);
-
+router.get('/', sociosController.getAllSocios);
+router.get('/Activos', sociosController.getAllSociosActivos);
+router.get('/Solicitudes', sociosController.getAllSolicitudes);
+router.get('/EstudiantesCarta', sociosController.getAllEstudiantesCarta);
+router.get('/descargarCarta/:SolicitudId',sociosController.descargarCarta);
+router.get('/SolicitudesPorAcademico/:Identificacion', sociosController.getAllSolicitudesPorAcademico);
+router.get('/SolicitudesPorSede/:Sede', sociosController.getAllSolicitudesPorSede);
+router.get('/Solicitudes/:SolicitudId', sociosController.getSolicitudPorSolicitudId);
+router.get('/:SocioId', sociosController.getSocioPorSocioId);
+router.post('/crearOActualizarSocio', sociosController.crearOActualizarSocio);
+router.post('/crearOActualizarSolicitudCarta', sociosController.crearOActualizarSolicitudCarta);
+router.post('/GuardaryEnviarCarta', fileUpload, sociosController.GuardaryEnviarCarta);
 // Ruta para eliminar el archivo adjunto
-router.delete('/eliminarAdjunto/:fileName', horasController.eliminarArchivo);
-
-router.get('/test', (req, res) => {
-    res.send('Hello from exampleRoute!');
-});
-
+router.delete('/eliminarCarta/:fileName', sociosController.eliminarCarta);
 
 module.exports = router;

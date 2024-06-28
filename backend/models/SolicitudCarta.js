@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); 
-const RegistroSocios = require('./RegistroSocios'); // Asegúrate de ajustar la ruta según la ubicación de tu modelo RegistroSocios
+const RegistroSocios = require('./RegistroSocios'); 
+const Usuario = require('./Usuario');
 
 // Definir el modelo de Socios_SolicitudCarta
 const SolicitudCarta = sequelize.define('Socios_SolicitudCarta', {
@@ -25,6 +26,18 @@ const SolicitudCarta = sequelize.define('Socios_SolicitudCarta', {
     allowNull: false,
     defaultValue: '-',
     comment: 'Nombre de la Carta'
+  },
+  Sede: {
+    type: DataTypes.ENUM('Central', 'Atenas', 'Guanacaste','Pacífico','San Carlos', 'C.F.P.T.E.', 'Todas'),
+    allowNull: false,
+    defaultValue: 'Central',
+    comment: 'Sede del Usuario'
+  },
+  Identificacion: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Identificacion del academico'
   },
   UniversalUniqueIdentifier: {
     type: DataTypes.CHAR(36),
@@ -56,6 +69,12 @@ SolicitudCarta.belongsTo(RegistroSocios, {
   targetKey: 'SocioId',
   onDelete: 'CASCADE'
 });
+
+SolicitudCarta.belongsTo(Usuario, {
+    foreignKey: 'Identificacion',
+    targetKey: 'Identificacion',
+    onDelete: 'CASCADE'
+  });
 
 // Exportar el modelo para poder utilizarlo en otras partes de la aplicación
 module.exports = SolicitudCarta;

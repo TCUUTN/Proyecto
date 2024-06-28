@@ -125,13 +125,11 @@ CREATE TABLE Socios_RegistroSocios (
 `Puesto` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Puesto del contacto',
 `CorreoElectronicoContacto` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Correo electrónico Contacto',
 `TelefonoContacto` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Telefono del Socio',
-`Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion del academico',
 `Estado` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado del Socio',
 `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
-PRIMARY KEY (`SocioId`),
-CONSTRAINT `Usuarios_Socios_RegistroSocios` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
+PRIMARY KEY (`SocioId`)
 );
 
 CREATE TABLE Socios_SolicitudCarta (
@@ -140,10 +138,12 @@ CREATE TABLE Socios_SolicitudCarta (
 `Carta` longblob NULL COMMENT 'Archivo de la carta',
 `NombreCarta` VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre de la Carta',
 `Sede` ENUM('Central', 'Atenas', 'Guanacaste','Pacífico','San Carlos', 'C.F.P.T.E.', 'Todas') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Central' COMMENT 'Sede del Usuario',
+`Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion del academico',
 `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
 PRIMARY KEY (`SolicitudId`),
+CONSTRAINT `Usuarios_Socios_SolicitudCarta_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`),
 CONSTRAINT `Socios_RegistroSocios_Socios_SolicitudCarta_SocioId` FOREIGN KEY (`SocioId`) REFERENCES `bitacora_TCU`.`Socios_RegistroSocios` (`SocioId`)
 );
 
@@ -189,13 +189,13 @@ PRIMARY KEY (`InformacionId`),
 CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
-/*
+
 SET SQL_SAFE_UPDATES = 0;
 Drop table Socios_EstudiantesCarta;
 Drop table Socios_SolicitudCarta;
 Drop table Socios_RegistroSocios;
 SET SQL_SAFE_UPDATES = 1;
-*/
+
 
 /*Inserts y Updates
 
