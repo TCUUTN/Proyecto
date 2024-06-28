@@ -58,6 +58,10 @@ function CrearActuCreacionGrupos() {
     filterUsuariosBySede(formValues.Sede);
   }, [formValues.Sede]);
 
+  useEffect(() => {
+    validateForm();
+  }, [formValues]);
+
   const fetchCodigosMateria = async () => {
     try {
       const response = await fetch("/grupos/tipos");
@@ -123,7 +127,6 @@ function CrearActuCreacionGrupos() {
     if (name === "Sede") {
       filterUsuariosBySede(value);
     }
-    validateForm();
   };
 
   const validateForm = () => {
@@ -236,7 +239,7 @@ function CrearActuCreacionGrupos() {
             name="NumeroGrupo"
             value={formValues.NumeroGrupo}
             onChange={handleInputChange}
-            placeholder="Número de Grupos"
+            placeholder="Número de Grupo"
             className="creagrup-inputfield"
           />
         </div>

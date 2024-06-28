@@ -47,6 +47,11 @@ function CrearActuProyectos() {
     setErrors(newErrors);
   };
 
+  const handleRegresar = () => {
+    navigate("/MantMaterias");
+    sessionStorage.removeItem("CodigoProyecto");
+  }
+
   const handleGuardar = () => {
     if (TipoCurso === "todos") {
       toast.error("Por favor, seleccione un tipo de curso válido.");
@@ -126,7 +131,7 @@ function CrearActuProyectos() {
       <div className="buttongroup-projcreaed">
         <button
           className="button-projcreaed"
-          onClick={() => navigate("/MantMaterias")}
+          onClick={handleRegresar}
         >
           <FaChevronLeft />
           Regresar
