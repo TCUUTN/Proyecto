@@ -115,23 +115,31 @@ CREATE TABLE Horas_Bitacora (
 
 CREATE TABLE Socios_RegistroSocios (
 `SocioId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-`Nombre` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre',
-`Apellido1` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Primer apellido',
-`Apellido2` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Segundo apellido',
-`Puesto` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Puesto del Socio',
+`NombreSocio` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre del socio Comunitario o Institucion',
 `CorreoElectronicoSocio` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Correo electrónico Socio',
-`CorreoElectronicoPersona` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Correo electrónico Persona',
-`Telefono` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Telefono del Socio',
+`TelefonoSocio` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Telefono del Socio',
 `TipoInstitucion` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Tipo de Institucion',
+`DireccionSocio` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Direccion del socio Comunitario o Institucion',
+`Ubicacion GPS` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Coordenadas del socio Comunitario o Institucion',
+`NombreCompletoContacto` VARCHAR(150) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre completo del contacto',
+`Puesto` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Puesto del contacto',
+`CorreoElectronicoContacto` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Correo electrónico Contacto',
+`TelefonoContacto` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Telefono del Socio',
+`Sede` ENUM('Central', 'Atenas', 'Guanacaste','Pacífico','San Carlos', 'C.F.P.T.E.', 'Todas') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Central' COMMENT 'Sede del Usuario',
+`Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion del academico',
+`Estado` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado del Socio',
 `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
-PRIMARY KEY (`SocioId`)
+PRIMARY KEY (`SocioId`),
+CONSTRAINT `Usuarios_Socios_RegistroSocios` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
 CREATE TABLE Socios_SolicitudCarta (
 `SolicitudId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 `SocioId` MEDIUMINT UNSIGNED NOT NULL,
+`Carta` longblob NULL COMMENT 'Archivo de la carta',
+`NombreCarta` VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre de la Carta',
 `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
@@ -181,6 +189,11 @@ PRIMARY KEY (`InformacionId`),
 CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
+
+SET SQL_SAFE_UPDATES = 0;
+Drop table Socios_SolicitudCarta;
+Drop table Socios_EstudiantesCarta;
+Drop table Socios_RegistroSocios;
 
 /*Inserts y Updates
 
@@ -252,7 +265,7 @@ VALUES ('MAT123', 1, 'Lunes 9-11', 'Aula 101', 'Central', 1, 2024, '117960190', 
 INSERT INTO Grupos_Estudiantes_Grupo (Identificacion, GrupoId, Estado)
 VALUES ('123456789', 1, 1);
 
-SET SQL_SAFE_UPDATES = 0;
+
 DELETE FROM Grupos_Estudiantes_Grupo
 WHERE GrupoId = '6';
 
