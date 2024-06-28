@@ -120,8 +120,8 @@ button.cambiar-button:disabled {
     font-size: 0.9rem;
   }
 
-  input[type="text"],
-  input[type="password"] {
+  .inputs-cambic[type="text"],
+  .inputs-cambic[type="password"] {
     width: 60%;
   }
 
@@ -147,8 +147,8 @@ button.cambiar-button:disabled {
     font-size: 0.85rem;
   }
 
-  input[type="text"],
-  input[type="password"] {
+  .inputs-cambic[type="text"],
+  .inputs-cambic[type="password"] {
     width: 65%;
   }
 
@@ -174,8 +174,8 @@ button.cambiar-button:disabled {
     font-size: 0.8rem;
   }
 
-  input[type="text"],
-  input[type="password"] {
+  .inputs-cambic[type="text"],
+  .inputs-cambic[type="password"] {
     width: 70%;
   }
 
