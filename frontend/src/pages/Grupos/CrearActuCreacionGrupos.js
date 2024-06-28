@@ -164,7 +164,7 @@ function CrearActuCreacionGrupos() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!isFormValid) {
       return;
     }
 
