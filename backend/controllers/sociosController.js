@@ -220,6 +220,20 @@ const getSolicitudPorSolicitudId = async (req, res) => {
       return res.status(404).json({ error: "Solicitud no encontrada" });
     }
 
+    const estudiantesCarta = await EstudiantesCarta.findAll({
+      where: {
+        SolicitudId: SolicitudId,
+      },
+      attributes: [],
+      include: {
+        model: Usuario,
+        attributes: ['Identificacion','Nombre', 'Apellido1', 'Apellido2'], // Ajusta los atributos según sea necesario
+      },
+    });
+
+    // Añadir los registros de EstudiantesCarta al objeto solicitud
+    solicitud.dataValues.estudiantesCarta = estudiantesCarta;
+
     res.status(200).json(solicitud);
   } catch (error) {
     res.status(500).json({ error: error.message });
