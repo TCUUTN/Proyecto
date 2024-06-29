@@ -1,114 +1,246 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import { FaChevronLeft } from "react-icons/fa6";
-import { TiUserDelete } from "react-icons/ti";
+import { TiUserDelete, TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
-import { TiUserAdd } from "react-icons/ti";
-
 import "./SolicitudCarta.css";
 
 function SolicitudCartas() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [socios, setSocios] = useState([]);
+  const [grupos, setGrupos] = useState([]);
+  const [IdentificacionAcademico] = useState(sessionStorage.getItem("Identificacion"));
+  const [SedeAcademico] = useState(sessionStorage.getItem("Sede"));
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [selectedSocio, setSelectedSocio] = useState(null);
+  const [selectedGrupo, setSelectedGrupo] = useState(null);
+  const [selectedEstudiante, setSelectedEstudiante] = useState(null);
+  const [selectedEstudiantes, setSelectedEstudiantes] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch("/socios/Activos")
+      .then((response) => response.json())
+      .then((data) => setSocios(data));
+    const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
+    fetch(`/grupos/Academicos/${IdentificacionAcademico}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setGrupos(Array.isArray(data) ? data : []);
+        setSelectedGrupo(null);
+        setEstudiantes([]);
+      });
+    fetch("/socios/Activos")
+      .then((response) => response.json())
+      .then((data) => setSocios(data));
+    if (solicitudId) {
+      fetch(`/socios/Solicitudes/${solicitudId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSelectedSocio(data.SocioId);
+          setSelectedEstudiantes(
+            data.estudiantesCarta.map((est) => ({
+              id: est.Usuario.Identificacion,
+              name: `${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`,
+            }))
+          );
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedGrupo) {
+      fetch(`/grupos/ListaEstudiantes/${selectedGrupo}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setEstudiantes(data);
+          setSelectedEstudiante(null); // Reset the third dropdown to the empty value
+        });
+    }
+  }, [selectedGrupo]);
+
   const handleBackClick = () => {
+    localStorage.removeItem("SolicitudIdSeleccionada");
     navigate("/SolicitudCartas");
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const handleAddEstudiante = () => {
+    const estudianteId = selectedEstudiante.Usuario.Identificacion;
+    if (selectedEstudiantes.some((est) => est.id === estudianteId)) {
+      toast.error("El estudiante ya se encuentra añadido en la solicitud.");
+    } else {
+      console.log(estudianteId)
+      setSelectedEstudiantes((prev) => [
+        ...prev,
+        {
+          id: selectedEstudiante.Usuario.Identificacion,
+          name: `${selectedEstudiante.Usuario.Nombre} ${selectedEstudiante.Usuario.Apellido1} ${selectedEstudiante.Usuario.Apellido2}`,
+        },
+      ]);
+    }
+    setSelectedGrupo(null);
+    setSelectedEstudiante(null);
+    setEstudiantes([]);
   };
 
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
+  const handleRemoveEstudiante = (id) => {
+    setSelectedEstudiantes((prev) =>
+      prev.filter((est) => est.id !== id)
+    );
   };
+
+  const handleGuardar = () => {
+    const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
+    const data = {
+      SocioId: selectedSocio,
+      Sede: SedeAcademico,
+      Identificacion: IdentificacionAcademico,
+      IdentificacionesEstudiantes: selectedEstudiantes.map((est) => est.id),
+    };
+    if (solicitudId) {
+      data.SolicitudId = solicitudId;
+    }
+    fetch("/socios/crearOActualizarSolicitudCarta", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        localStorage.removeItem("SolicitudIdSeleccionada");
+        localStorage.setItem("SolicitudGuardada", true);
+        navigate("/SolicitudCartas");
+      });
+  };
+
+  useEffect(() => {
+    const socioId = parseInt(selectedSocio); // Convertir selectedSocio a número si es necesario
+    const socioSeleccionado = socios.find(s => s.SocioId === socioId);
+    const nombreSocio = socioSeleccionado ? socioSeleccionado.NombreSocio : "";
+    const element = document.getElementById("NombreSocioSeleccionado");
+    if (element) {
+      element.textContent = selectedSocio ? `${nombreSocio}` : "";
+    }
+  }, [selectedSocio, socios]);
 
   return (
     <div className="solici-container">
-    <div className="solici-title">Creación de Solicitud</div>
-    <div className="solici-divider" />
-    <div className="solici-content">
-        {/* Filtros */}
+      <div className="solici-title">Creación de Solicitud</div>
+      <div className="solici-divider" />
+      <div className="solici-content">
         <div className="solici-left">
-            <select className="solici-select">
-                <option value="">Socios</option>
-                {/* Opciones de socios */}
+          <select
+            className="solici-select"
+            onChange={(e) => setSelectedSocio(e.target.value)}
+            value={selectedSocio || ""}
+          >
+            <option value="">Socios</option>
+            {socios.map((socio) => (
+              <option key={socio.SocioId} value={socio.SocioId}>
+                {socio.NombreSocio}
+              </option>
+            ))}
+          </select>
+          <div className="solici-filtros">
+            <h3 className="titulesolici-filt">Filtros:</h3>
+            <select
+              className="solici-select"
+              onChange={(e) => setSelectedGrupo(e.target.value)}
+              value={selectedGrupo || ""}
+              disabled={!selectedSocio}
+            >
+              <option value="">Grupos del Académicos</option>
+              {grupos.map((grupo) => (
+                <option key={grupo.GrupoId} value={grupo.GrupoId}>
+                  {`${grupo.Grupos_TipoGrupo.NombreProyecto} - ${grupo.NumeroGrupo}`}
+                </option>
+              ))}
             </select>
-            <div className="solici-filtros">
-                {/* Titulo de filtros pero no centrado */}
-                <h3 className="titulesolici-filt">Filtros:</h3>
-                {/* Grupos del Académicos */}
-                <select className="solici-select">
-                    <option value="">Grupos del Académicos</option>
-                    {/* Opciones de grupos */}
-                </select>
-                {/*Lista de Estudiantes */}
-                <select className="solici-select">
-                    <option value="">Lista de Estudiantes</option>
-                    {/* Opciones de estudiantes */}
-                </select>
-            </div>
-            {/*Boton de Añadir Estudiantes */}
-            <button className="solici-button">
-                <TiUserAdd /> Añadir Estudiantes
-            </button>
+            <select
+              className="solici-select"
+              onChange={(e) =>
+                setSelectedEstudiante(
+                  estudiantes.find((est) => est.Usuario.Identificacion === e.target.value)
+                )
+              }
+              value={selectedEstudiante?.Usuario.Identificacion || ""}
+              disabled={!selectedGrupo}
+            >
+              <option value="">Lista de Estudiantes</option>
+              {estudiantes.map((est) => (
+                <option key={est.Usuario.Identificacion} value={est.Usuario.Identificacion}>
+                  {`${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            className="solici-button"
+            onClick={handleAddEstudiante}
+            disabled={!selectedSocio || !selectedGrupo || !selectedEstudiante}
+          >
+            <TiUserAdd /> Añadir Estudiantes
+          </button>
         </div>
-
-        {/* Línea divisoria central */}
         <div className="solici-divider-vertical"></div>
-
         <div className="solicitud-right">
-            {/*Titulo de socio seleccionado */}
-            <div className="solicitud-socio-seleccionado">
-                <h3 className="medTitule-solici">Socio Seleccionado:</h3>
-            </div>
-            {/**/}
-            <div className="solicitud-estudiantes-seleccionados">
-                {/*Titulo de seleccionar estudiante */}
-                <h3 className="subtitule-solici">Estudiantes Seleccionados</h3>
-
-                {/*Tabla */}
-                <table className="solici-table">
-                    <thead className="solici-thead">
-                        <tr>
-                            <th>Nombre Completo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody className="solici-tbody">
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button className="icon-removeEst-button">
-                                    <TiUserDelete />
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                {/*Paginacion */}
-                <div className="pagination-solici">
-                    <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                        Anterior
-                    </button>
-                    <span>Página {currentPage}</span>
-                    <button onClick={handleNextPage}>Siguiente</button>
-                </div>
-            </div>
-            {/*Botones */}
-            <div className="solicitud-buttons">
-                <button
-                    type="button"
-                    className="solicitud-button"
-                    onClick={handleBackClick}
-                >
-                    <FaChevronLeft /> Regresar
-                </button>
-                <button className="solicitud-button">Enviar</button>
-            </div>
+          <div className="solicitud-socio-seleccionado">
+            <h3 className="medTitule-solici">
+              Socio Seleccionado:
+            </h3>
+            <h3 className="medTitule-solici" id="NombreSocioSeleccionado">
+            </h3>
+          </div>
+          <div className="solicitud-estudiantes-seleccionados">
+            <h3 className="subtitule-solici">Estudiantes Seleccionados</h3>
+            <table className="solici-table">
+              <thead className="solici-thead">
+                <tr>
+                  <th>Nombre Completo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="solici-tbody">
+                {selectedEstudiantes.map((est) => (
+                  <tr key={est.id}>
+                    <td>{est.name}</td>
+                    <td>
+                      <button
+                        className="icon-removeEst-button"
+                        onClick={() => handleRemoveEstudiante(est.id)}
+                      >
+                        <TiUserDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+          </div>
+          <div className="solicitud-buttons">
+            <button
+              type="button"
+              className="solicitud-button"
+              onClick={handleBackClick}
+            >
+              <FaChevronLeft /> Regresar
+            </button>
+            <button
+              className="solicitud-button"
+              onClick={handleGuardar}
+              disabled={!selectedSocio || selectedEstudiantes.length === 0}
+            >
+              Enviar
+            </button>
+          </div>
         </div>
+        <ToastContainer position="bottom-right" />
+      </div>
     </div>
-</div>
   );
 }
 

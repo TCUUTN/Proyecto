@@ -5,6 +5,7 @@ const GruposEstudiantes = require("../models/GruposEstudiantes");
 const Usuario = require('../models/Usuario');
 
 
+
 const getAllGrupos = async (req, res) => {
   try {
     const grupos = await Grupo.findAll({

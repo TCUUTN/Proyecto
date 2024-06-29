@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
@@ -6,26 +6,159 @@ import { IoMdAddCircle } from "react-icons/io";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import "./SocioCom.css";
 
-function SocioComunitarios() {
-  const [currentPage, setCurrentPage] = useState(1);
+function SolicitudesCarta() {
+  const [currentPagePending, setCurrentPagePending] = useState(1);
+  const [currentPageCompleted, setCurrentPageCompleted] = useState(1);
+  const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
+  const [solicitudesCompletadas, setSolicitudesCompletadas] = useState([]);
+  const [searchSocioPendientes, setSearchSocioPendientes] = useState("");
+  const [searchEstudiantePendientes, setSearchEstudiantePendientes] =
+    useState("");
+  const [searchSocioCompletadas, setSearchSocioCompletadas] = useState("");
+  const [searchEstudianteCompletadas, setSearchEstudianteCompletadas] =
+    useState("");
+  const [searchCartaCompletadas, setSearchCartaCompletadas] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const role = sessionStorage.getItem("SelectedRole");
+      let url = "";
+      if (role === "Académico") {
+        const identificacion = sessionStorage.getItem("Identificacion");
+        url = `/socios/SolicitudesPorAcademico/${identificacion}`;
+      } else if (role === "Administrativo") {
+        const sede = sessionStorage.getItem("Sede");
+        if (sede === "Todas") {
+          url = `/socios/Solicitudes`;
+        } else {
+          url = `/socios/SolicitudesPorSede/${sede}`;
+        }
+      }
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+        const pendientes = data.filter((item) => item.NombreCarta === "-");
+        console.log(pendientes);
+        const completadas = data.filter((item) => item.NombreCarta !== "-");
+        console.log(completadas);
+        setSolicitudesPendientes(pendientes);
+        setSolicitudesCompletadas(completadas);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddSolicitud = () => {
     navigate("/CrearActualizarSolicitudesCartas");
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const handleNextPagePending = () => {
+    setCurrentPagePending((prevPage) => prevPage + 1);
   };
 
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
+  const handlePreviousPagePending = () => {
+    setCurrentPagePending((prevPage) =>
+      prevPage > 1 ? prevPage - 1 : prevPage
+    );
   };
+
+  const handleNextPageCompleted = () => {
+    setCurrentPageCompleted((prevPage) => prevPage + 1);
+  };
+
+  const handlePreviousPageCompleted = () => {
+    setCurrentPageCompleted((prevPage) =>
+      prevPage > 1 ? prevPage - 1 : prevPage
+    );
+  };
+
+  const filteredPendientes = solicitudesPendientes.filter(
+    (item) =>
+      item.Socios_RegistroSocio.NombreSocio &&
+      item.Socios_RegistroSocio.NombreSocio.toLowerCase().includes(
+        searchSocioPendientes.toLowerCase()
+      ) &&
+      (item.EstudiantesCarta.length === 0 ||
+        item.EstudiantesCarta.some((estudiante) =>
+          `${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`
+            .toLowerCase()
+            .includes(searchEstudiantePendientes.toLowerCase())
+        ))
+  );
+
+  const filteredCompletadas = solicitudesCompletadas.filter(
+    (item) =>
+      item.Socios_RegistroSocio.NombreSocio &&
+      item.Socios_RegistroSocio.NombreSocio.toLowerCase().includes(
+        searchSocioCompletadas.toLowerCase()
+      ) &&
+      item.EstudiantesCarta.some((estudiante) =>
+        `${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`
+          .toLowerCase()
+          .includes(searchEstudianteCompletadas.toLowerCase())
+      ) &&
+      item.NombreCarta &&
+      item.NombreCarta.toLowerCase().includes(
+        searchCartaCompletadas.toLowerCase()
+      )
+  );
+
+  const handleDescargaCarta = async (SolicitudId) => {
+    try {
+      const response = await fetch(`/socios/descargarCarta/${SolicitudId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const fileName = encodeURIComponent(data);
+
+        const fileResponse = await fetch(`/${fileName}`);
+        if (fileResponse.ok) {
+          const blob = await fileResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = data;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            fetch(`/socios/eliminarCarta/${fileName}`, {
+              method: "DELETE",
+            });
+          }, 100);
+        } else {
+          console.log("Fallo al descargar el archivo");
+        }
+      } else {
+        console.log("Fallo al extraer imagen");
+      }
+    } catch (error) {
+      console.error("Error al manejar la descarga del archivo:", error);
+    }
+  };
+
+  const handleEditSolicitud = (SolicitudId) => {
+    localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
+    navigate("/CrearActualizarSolicitudesCartas");
+  };
+
+  const handleSendLetter = (SolicitudId) => {
+    localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
+    navigate("/CrearActualizarSolicitudesCartas");
+  };
+
+  const role = sessionStorage.getItem("SelectedRole");
 
   return (
     <div className="sociocomunitario-container">
       <main>
-        {/*Agregar usuario y el titulo*/}
         <div className="sociocomu-sidebar">
           <div className="action-sociocomu">
             <button className="add-sociocomu" onClick={handleAddSolicitud}>
@@ -36,134 +169,191 @@ function SocioComunitarios() {
           </div>
         </div>
 
-        {/* Solicitud Pendientes */}
         <div className="solicitud-section">
-          <h2 className="solicitud-title">Solicitud Pendientes</h2>
+          <h2 className="solicitud-title">Solicitudes Pendientes</h2>
           <div className="socios-divider" />
           <div className="filters-sociocomu">
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Busqueda por Nombre de Socio
+                Búsqueda por Nombre de Socio
               </label>
               <input
                 type="text"
-                id="institucion-pendientes"
                 placeholder="Nombre del Socio"
                 className="filter-control-sociocomu filter-input-sociocomu"
+                value={searchSocioPendientes}
+                onChange={(e) => setSearchSocioPendientes(e.target.value)}
               />
             </div>
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Busqueda por Nombre del Estudiante
+                Búsqueda por Nombre del Estudiante
               </label>
               <input
                 type="text"
-                id="contacto-pendientes"
                 placeholder="Nombre Completo"
                 className="filter-control-sociocomu filter-input-sociocomu"
+                value={searchEstudiantePendientes}
+                onChange={(e) => setSearchEstudiantePendientes(e.target.value)}
               />
             </div>
           </div>
-          <div className="table-container-sociocomu">
-            <table className="table-sociocomu">
-              <thead className="thead-sociocomu">
-                <tr>
-                  <th>Socio</th>
-                  <th>Estudiante</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="tbody-sociocomu">
-                <td></td>
-                <td></td>
-                <td>
-                  <button className="icon-btn--sociocomu">
-                    <RiEdit2Fill />
-                  </button>
-                  <button className="icon-btn--sociocomu">
-                    <SlEnvolopeLetter />
-                  </button>
-                </td>
-              </tbody>
-            </table>
-            <div className="pagination-sociocomu">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Anterior
-              </button>
-              <span>Página {currentPage}</span>
-              <button onClick={handleNextPage}>Siguiente</button>
+          {filteredPendientes.length > 0 ? (
+            <div className="table-container-sociocomu">
+              <table className="table-sociocomu">
+                <thead className="thead-sociocomu">
+                  <tr>
+                    <th>Socio</th>
+                    <th>Estudiante</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody className="tbody-sociocomu">
+                  {filteredPendientes.map((solicitud, index) => (
+                    <tr key={index}>
+                      <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
+                      <td>
+                        {solicitud.EstudiantesCarta.map((estudiante) => (
+                          <div key={estudiante.Usuario.Nombre}>
+                            {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
+                          </div>
+                        ))}
+                      </td>
+                      <td>
+                        {role === "Académico" && (
+                          <button
+                            className="icon-btn--sociocomu"
+                            onClick={() =>
+                              handleEditSolicitud(solicitud.SolicitudId)
+                            }
+                          >
+                            <RiEdit2Fill />
+                          </button>
+                        )}
+                        {role === "Administrativo" && (
+                          <button
+                            className="icon-btn--sociocomu"
+                            onClick={() =>
+                              handleSendLetter(solicitud.SolicitudId)
+                            }
+                          >
+                            <SlEnvolopeLetter />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="pagination-sociocomu">
+                <button
+                  onClick={handlePreviousPagePending}
+                  disabled={currentPagePending === 1}
+                >
+                  Anterior
+                </button>
+                <span>Página {currentPagePending}</span>
+                <button onClick={handleNextPagePending}>Siguiente</button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>No hay solicitudes pendientes</p>
+          )}
         </div>
 
-        {/* Solicitud Completadas */}
         <div className="solicitud-section">
-          <h2 className="solicitud-title">Solicitud Completadas</h2>
+          <h2 className="solicitud-title">Solicitudes Completadas</h2>
           <div className="socios-divider" />
           <div className="filters-sociocomu">
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Busqueda por Nombre de Socio
+                Búsqueda por Nombre de Socio
               </label>
               <input
                 type="text"
-                id="institucion-pendientes"
                 placeholder="Nombre del Socio"
                 className="filter-control-sociocomu filter-input-sociocomu"
+                value={searchSocioCompletadas}
+                onChange={(e) => setSearchSocioCompletadas(e.target.value)}
               />
             </div>
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Busqueda por Nombre del Estudiante
+                Búsqueda por Nombre del Estudiante
               </label>
               <input
                 type="text"
-                id="contacto-pendientes"
                 placeholder="Nombre Completo"
                 className="filter-control-sociocomu filter-input-sociocomu"
+                value={searchEstudianteCompletadas}
+                onChange={(e) => setSearchEstudianteCompletadas(e.target.value)}
               />
             </div>
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Busqueda por Nombre de la Carta
+                Búsqueda por Nombre de la Carta
               </label>
               <input
                 type="text"
-                id="contacto-pendientes"
                 placeholder="Nombre del Archivo"
                 className="filter-control-sociocomu filter-input-sociocomu"
+                value={searchCartaCompletadas}
+                onChange={(e) => setSearchCartaCompletadas(e.target.value)}
               />
             </div>
           </div>
-          <div className="table-container-sociocomu">
-            <table className="table-sociocomu">
-              <thead className="thead-sociocomu">
-                <tr>
-                  <th>Socio</th>
-                  <th>Estudiante</th>
-                  <th>Carta</th>
-                </tr>
-              </thead>
-              <tbody className="tbody-sociocomu">
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-            <div className="pagination-sociocomu">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Anterior
-              </button>
-              <span>Página {currentPage}</span>
-              <button onClick={handleNextPage}>Siguiente</button>
+          {filteredCompletadas.length > 0 ? (
+            <div className="table-container-sociocomu">
+              <table className="table-sociocomu">
+                <thead className="thead-sociocomu">
+                  <tr>
+                    <th>Socio</th>
+                    <th>Estudiante</th>
+                    <th>Carta</th>
+                  </tr>
+                </thead>
+                <tbody className="tbody-sociocomu">
+                  {filteredCompletadas.map((solicitud, index) => (
+                    <tr key={index}>
+                      <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
+                      <td>
+                        {solicitud.EstudiantesCarta.map((estudiante) => (
+                          <div key={estudiante.Usuario.Nombre}>
+                            {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
+                          </div>
+                        ))}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() =>
+                            handleDescargaCarta(solicitud.SolicitudId)
+                          }
+                        >
+                          {solicitud.NombreCarta}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="pagination-sociocomu">
+                <button
+                  onClick={handlePreviousPageCompleted}
+                  disabled={currentPageCompleted === 1}
+                >
+                  Anterior
+                </button>
+                <span>Página {currentPageCompleted}</span>
+                <button onClick={handleNextPageCompleted}>Siguiente</button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>No hay solicitudes completadas</p>
+          )}
         </div>
       </main>
     </div>
   );
 }
 
-export default SocioComunitarios;
+export default SolicitudesCarta;
