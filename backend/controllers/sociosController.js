@@ -6,6 +6,7 @@ const { enviarCorreoConAdjunto  } = require("../helpers/CorreoHelper"); // Impor
 const fs = require("fs");
 const path = require("path");
 const iconv = require("iconv-lite");
+const Sequelize = require('sequelize');
 
 const getAllSocios = async (req, res) => {
   try {
@@ -31,7 +32,8 @@ const getAllSociosActivos = async (req, res) => {
 
 const getAllSolicitudes = async (req, res) => {
   try {
-    const Solucitudes = await SolicitudCarta.findAll({
+    // Obtener todas las solicitudes con RegistroSocios
+    const solicitudes = await SolicitudCarta.findAll({
       attributes: [
         "SolicitudId",
         "SocioId",
@@ -39,12 +41,40 @@ const getAllSolicitudes = async (req, res) => {
         "Identificacion",
         "Sede",
       ],
+      include: [
+        {
+          model: RegistroSocios,
+          attributes: ["NombreSocio"],
+        }
+      ]
     });
-    res.json(Solucitudes);
+
+    // Para cada solicitud, obtener los EstudiantesCarta y Usuarios correspondientes
+    const solicitudesConEstudiantes = await Promise.all(solicitudes.map(async solicitud => {
+      const estudiantesCarta = await EstudiantesCarta.findAll({
+        where: { SolicitudId: solicitud.SolicitudId },
+        attributes: [],
+        include: [
+          {
+            model: Usuario,
+            attributes: ["Nombre", "Apellido1", "Apellido2"],
+            
+          }
+        ]
+      });
+
+      // Agregar los estudiantesCarta a la solicitud
+      solicitud.dataValues.EstudiantesCarta = estudiantesCarta;
+      return solicitud;
+    }));
+
+    res.json(solicitudesConEstudiantes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 const getAllEstudiantesCarta = async (req, res) => {
   try {
@@ -58,7 +88,7 @@ const getAllEstudiantesCarta = async (req, res) => {
 const getAllSolicitudesPorAcademico = async (req, res) => {
   try {
     const { Identificacion } = req.params;
-    const Solucitudes = await SolicitudCarta.findAll({
+    const solicitudes = await SolicitudCarta.findAll({
       where: {
         Identificacion: Identificacion,
       },
@@ -69,8 +99,34 @@ const getAllSolicitudesPorAcademico = async (req, res) => {
         "Sede",
         "Identificacion",
       ],
+      include: [
+        {
+          model: RegistroSocios,
+          attributes: ["NombreSocio"],
+        }
+      ]
     });
-    res.json(Solucitudes);
+    // Para cada solicitud, obtener los EstudiantesCarta y Usuarios correspondientes
+    const solicitudesConEstudiantes = await Promise.all(solicitudes.map(async solicitud => {
+      const estudiantesCarta = await EstudiantesCarta.findAll({
+        where: { SolicitudId: solicitud.SolicitudId },
+        attributes: [],
+        include: [
+          {
+            model: Usuario,
+            attributes: ["Nombre", "Apellido1", "Apellido2"],
+            
+          }
+        ]
+      });
+
+      // Agregar los estudiantesCarta a la solicitud
+      solicitud.dataValues.EstudiantesCarta = estudiantesCarta;
+      return solicitud;
+    }));
+
+    res.json(solicitudesConEstudiantes);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -79,7 +135,7 @@ const getAllSolicitudesPorAcademico = async (req, res) => {
 const getAllSolicitudesPorSede = async (req, res) => {
   try {
     const { Sede } = req.params;
-    const Solucitudes = await SolicitudCarta.findAll({
+    const solicitudes = await SolicitudCarta.findAll({
       where: {
         Sede: Sede,
       },
@@ -90,8 +146,34 @@ const getAllSolicitudesPorSede = async (req, res) => {
         "Sede",
         "Identificacion",
       ],
+      include: [
+        {
+          model: RegistroSocios,
+          attributes: ["NombreSocio"],
+        }
+      ]
     });
-    res.json(Solucitudes);
+
+     // Para cada solicitud, obtener los EstudiantesCarta y Usuarios correspondientes
+     const solicitudesConEstudiantes = await Promise.all(solicitudes.map(async solicitud => {
+      const estudiantesCarta = await EstudiantesCarta.findAll({
+        where: { SolicitudId: solicitud.SolicitudId },
+        attributes: [],
+        include: [
+          {
+            model: Usuario,
+            attributes: ["Nombre", "Apellido1", "Apellido2"],
+            
+          }
+        ]
+      });
+
+      // Agregar los estudiantesCarta a la solicitud
+      solicitud.dataValues.EstudiantesCarta = estudiantesCarta;
+      return solicitud;
+    }));
+
+    res.json(solicitudesConEstudiantes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
