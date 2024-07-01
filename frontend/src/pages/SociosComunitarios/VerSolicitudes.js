@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 function VerSolicitudes (){
     return (
         <div>
-
+            
         </div>
     )
 

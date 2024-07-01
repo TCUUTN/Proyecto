@@ -151,7 +151,7 @@ function SolicitudesCarta() {
 
   const handleSendLetter = (SolicitudId) => {
     localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
-    navigate("/CrearActualizarSolicitudesCartas");
+    navigate("/VerSolicitudes");
   };
 
   const role = sessionStorage.getItem("SelectedRole");
