@@ -193,7 +193,7 @@ function App() {
               path="/VerSolicitudes"
               element={
               
-              <ProtectedRoute allowedRoles={["Académico"]}>
+              <ProtectedRoute allowedRoles={["Administrativo"]}>
                   <VerSolicitudes />
                 </ProtectedRoute>
             }

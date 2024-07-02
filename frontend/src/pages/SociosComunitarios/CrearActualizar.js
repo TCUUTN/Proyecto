@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import "./SocioCom.css";
+import "./CrearActuSocioCom.css";
 
 function CrearActuSocioComunitarios() {
   const navigate = useNavigate();
@@ -20,13 +20,13 @@ function CrearActuSocioComunitarios() {
   });
   const [formErrors, setFormErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
-  const [title, setTitle] = useState("Crear socio");
+  const [title, setTitle] = useState("Crear Socio Comunitario");
   const [isCreating, setIsCreating] = useState(true);
 
   useEffect(() => {
     const socioIdSeleccionado = localStorage.getItem("SocioIdSeleccionado");
     if (socioIdSeleccionado) {
-      setTitle("Editar Socio");
+      setTitle("Editar Socio Comunitario");
       setIsCreating(false);
       fetch(`/socios/${socioIdSeleccionado}`)
         .then((response) => response.json())
@@ -163,8 +163,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.NombreSocio}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.NombreSocio && (
-                <span className="error">{formErrors.NombreSocio}</span>
+                <span className="error-creaedsocio">{formErrors.NombreSocio}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -177,8 +178,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.CorreoElectronicoSocio}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.CorreoElectronicoSocio && (
-                <span className="error">{formErrors.CorreoElectronicoSocio}</span>
+                <span className="error-creaedsocio">{formErrors.CorreoElectronicoSocio}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -191,8 +193,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.TipoInstitucion}
                 onChange={handleChange}
               />
+             <br></br>
               {formErrors.TipoInstitucion && (
-                <span className="error">{formErrors.TipoInstitucion}</span>
+                <span className="error-creaedsocio">{formErrors.TipoInstitucion}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -205,8 +208,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.TelefonoSocio}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.TelefonoSocio && (
-                <span className="error">{formErrors.TelefonoSocio}</span>
+                <span className="error-creaedsocio">{formErrors.TelefonoSocio}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -219,8 +223,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.DireccionSocio}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.DireccionSocio && (
-                <span className="error">{formErrors.DireccionSocio}</span>
+                <span className="error-creaedsocio">{formErrors.DireccionSocio}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -233,8 +238,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.UbicacionGPS}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.UbicacionGPS && (
-                <span className="error">{formErrors.UbicacionGPS}</span>
+                <span className="error-creaedsocio">{formErrors.UbicacionGPS}</span>
               )}
             </div>
           </div>
@@ -251,8 +257,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.NombreCompletoContacto}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.NombreCompletoContacto && (
-                <span className="error">{formErrors.NombreCompletoContacto}</span>
+                <span className="error-creaedsocio">{formErrors.NombreCompletoContacto}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -265,8 +272,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.Puesto}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.Puesto && (
-                <span className="error">{formErrors.Puesto}</span>
+                <span className="error-creaedsocio">{formErrors.Puesto}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -279,8 +287,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.CorreoElectronicoContacto}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.CorreoElectronicoContacto && (
-                <span className="error">{formErrors.CorreoElectronicoContacto}</span>
+                <span className="error-creaedsocio">{formErrors.CorreoElectronicoContacto}</span>
               )}
             </div>
             <div className="creaedsocio-group">
@@ -293,8 +302,9 @@ function CrearActuSocioComunitarios() {
                 value={formData.TelefonoContacto}
                 onChange={handleChange}
               />
+                 <br></br>
               {formErrors.TelefonoContacto && (
-                <span className="error">{formErrors.TelefonoContacto}</span>
+                <span className="error-creaedsocio">{formErrors.TelefonoContacto}</span>
               )}
             </div>
           </div>
@@ -314,8 +324,9 @@ function CrearActuSocioComunitarios() {
                   <option value="1">Activo</option>
                   <option value="0">Inactivo</option>
                 </select>
+                <br></br>
                 {formErrors.Estado && (
-                  <span className="error">{formErrors.Estado}</span>
+                  <span className="error-creaedsocio">{formErrors.Estado}</span>
                 )}
               </div>
             </div>

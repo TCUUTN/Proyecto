@@ -1,0 +1,122 @@
+.versolicart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 20px 70px 20px;
+  gap: 20px;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  width: 85%;
+  margin: 2% auto;
+}
+/* Titulo */
+.title-versolicart {
+  font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+/* Linea debajo del titulo */
+.versolicart-divider {
+  width: 175px;
+  height: 2px;
+  background: #ff6600;
+  margin: 0 auto 20px auto;
+}
+
+.versolicart-divider-vertical {
+  width: 2px;
+  background: #ff6600;
+  height: auto;
+  margin: 0 20px;
+}
+
+/* Contenido principal */
+.content-versolicart {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/* Columna izquierda */
+.left-versolicart {
+  width: 45%;
+}
+
+.subtitle-versolicart {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #012c6a;
+  text-align: center;
+}
+
+/*Tabla*/
+
+.table-versolicart {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  padding-top: 2%;
+}
+
+.thead-versolicart th {
+  background-color: #002b69;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.tbody-versolicart td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* Columna derecha */
+.right-versolicart {
+  width: 45%;
+}
+
+.file-input {
+  display: block;
+  margin: 10px 0;
+  border: 25px !important;
+  border-radius: 2px solid #002b69 !important;
+}
+
+/* Botones */
+
+.buttons-versolicart {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.back-button-versolicart,
+.submit-button-versolicart {
+  width: 45%;
+  padding: 10px;
+  background-color: #002b69;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: 0.3s;
+}
+
+.back-button-versolicart:hover,
+.submit-button-versolicart:hover {
+  background-color: #ff4500;
+  transition: 0.3s;
+}
+
+.back-button-versolicart:disabled,
+.submit-button-versolicart:disabled {
+  background-color: #999999;
+  cursor: not-allowed;
+  transition: none;
+}

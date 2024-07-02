@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
-import "./SocioCom.css";
+import "./ListaSocios.css";
 
 function SocioComunitarios() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,8 +24,10 @@ function SocioComunitarios() {
       .then(response => response.json())
       .then(data => {
         setSocios(data);
+     
         setFilteredSocios(data);
       });
+      console.log(filteredSocios);
   }, []);
 
   const handleAddUser = () => {
@@ -150,9 +152,9 @@ function SocioComunitarios() {
             </div>
           </div>
 
-          <div className="table-container-sociocomu">
-            <table className="table-sociocomu">
-              <thead className="thead-sociocomu">
+          <div className="table-container-socioc">
+            <table className="table-socioc">
+              <thead className="thead-socioc">
                 <tr>
                   <th>Nombre del Socio</th>
                   <th>Informacion del Socio</th>
@@ -163,7 +165,7 @@ function SocioComunitarios() {
                   <th>Acciones</th>
                 </tr>
               </thead>
-              <tbody className="tbody-sociocomu">
+              <tbody className="tbody-socioc">
                 {filteredSocios.slice((currentPage - 1) * 10, currentPage * 10).map((socio) => (
                   <tr key={socio.SocioId}>
                     <td>{socio.NombreSocio}</td>

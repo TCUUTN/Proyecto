@@ -58,7 +58,7 @@
 
 .crehoras-content {
   background-color: #fff;
-  border: 1px solid #012c6a;
+  border: 2px solid #012c6a;
   padding: 20px;
   border-radius: 8px;
   border: 2px solid rgba(0, 44, 105, 0.212);
@@ -180,9 +180,10 @@
 }
 
 /* Error Message */
-.error-message {
+.error {
   color: red;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 /* Boton de regresar */
