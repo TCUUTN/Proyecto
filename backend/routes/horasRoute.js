@@ -23,6 +23,7 @@ const fileUpload = multer({
 router.get('/', horasController.getAllHoras);
 router.get('/descargarAdjunto/:BitacoraId',horasController.descargarArchivo);
 router.get('/Estudiante/:Identificacion/:GrupoId', horasController.getHorasPorIdentificacionyGrupoId);
+router.get('/EstudianteAprobado/:Identificacion/:GrupoId', horasController.getHorasPorIdentificacionyGrupoIdAprobadas);
 router.get('/:BitacoraId', horasController.getHorasPorBitacoraId);
 router.post('/crearOActualizarHoras', horasController.crearOActualizarHoras);
 router.post('/subirAdjunto', fileUpload, horasController.subirArchivo);

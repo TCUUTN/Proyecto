@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./ProtectedRoute.js";
-
 import Login from "./pages/Login/Login.js";
 import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio/Home.js";
@@ -21,19 +20,14 @@ import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
-
-//
 import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
 import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
 import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
 import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.js";
 import CrearActuSocioComunitarios from "./pages/SociosComunitarios/CrearActualizar.js";
 import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
-//
 import "bootstrap/dist/css/bootstrap.min.css"; // Importa los estilos de Bootstrap
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importa el archivo JavaScript de Bootstrap
-
-//import CustomScrollbars from './CustomScrollbars';
 
 function App() {
   useEffect(() => {
@@ -41,15 +35,12 @@ function App() {
     const storedGenero = sessionStorage.getItem("Genero");
     const currentPath = window.location.pathname;
 
-    // Si no hay información en el sessionStorage o el género es "Indefinido"
-    // y la ruta no es '/' ni '/AccesoDenegado' ni '/CompletarPerfil'
     if (
       (!storedCorreo || storedGenero === "Indefinido") &&
       currentPath !== "/" &&
       currentPath !== "/AccesoDenegado" &&
       currentPath !== "/CompletarPerfil"
     ) {
-      // Redirigir a la página de acceso denegado
       window.location.href = "/AccesoDenegado";
     }
   }, []);
@@ -58,7 +49,6 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        {/* <CustomScrollbars style={{ height: 'calc(100vh - 60px)' }}>*/}
         <div className="content">
           <Routes>
             <Route path="/" element={<Login />} />
@@ -156,12 +146,12 @@ function App() {
               }
             />
             <Route 
-            path="/SocioComunitarios" 
-            element={
-              <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
+              path="/SocioComunitarios" 
+              element={
+                <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
                   <SocioComunitarios />
                 </ProtectedRoute>
-            } 
+              } 
             />
             <Route
               path="/CrearActuSocioComunitarios"
@@ -169,38 +159,34 @@ function App() {
                 <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
                   <CrearActuSocioComunitarios />
                 </ProtectedRoute>
-              
-            }
+              }
             />
             <Route 
-            path="/SolicitudCartas" 
-            element={
-              <ProtectedRoute allowedRoles={["Administrativo","Académico"]}>
+              path="/SolicitudCartas" 
+              element={
+                <ProtectedRoute allowedRoles={["Administrativo","Académico"]}>
                   <SolicitudCartas />
                 </ProtectedRoute>
-            } 
+              } 
             />
             <Route
               path="/CrearActualizarSolicitudesCartas"
               element={
-              
-              <ProtectedRoute allowedRoles={["Académico"]}>
+                <ProtectedRoute allowedRoles={["Académico"]}>
                   <CrearActualizarSolicitudCartas />
                 </ProtectedRoute>
-            }
+              }
             />
-              <Route
+            <Route
               path="/VerSolicitudes"
               element={
-              
-              <ProtectedRoute allowedRoles={["Administrativo"]}>
+                <ProtectedRoute allowedRoles={["Administrativo"]}>
                   <VerSolicitudes />
                 </ProtectedRoute>
-            }
+              }
             />
           </Routes>
         </div>
-        {/*</CustomScrollbars>*/}
         <Footer />
       </div>
     </Router>

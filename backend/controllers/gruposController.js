@@ -46,6 +46,10 @@ const getGrupoPorGrupoId = async (req, res) => {
       where: {
         GrupoId: GrupoId,
       },
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2','CorreoElectronico'] }
+      ],
     });
 
     if (!grupo) {
