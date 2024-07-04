@@ -180,6 +180,7 @@ function App() {
             <Route
               path="/VerSolicitudes"
               element={
+
                 <ProtectedRoute allowedRoles={["Administrativo"]}>
                   <VerSolicitudes />
                 </ProtectedRoute>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { SlEnvolopeLetter } from "react-icons/sl";
-import "./SocioCom.css";
+import "./ListaSocios.css";
 
 function SolicitudesCarta() {
   const [currentPagePending, setCurrentPagePending] = useState(1);
