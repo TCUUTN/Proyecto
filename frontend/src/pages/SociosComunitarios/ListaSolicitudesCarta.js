@@ -156,6 +156,14 @@ function SolicitudesCarta() {
 
   const role = sessionStorage.getItem("SelectedRole");
 
+  const ITEMS_PER_PAGE = 10;
+
+  const pendingPages = Math.ceil(filteredPendientes.length / ITEMS_PER_PAGE);
+  const completedPages = Math.ceil(filteredCompletadas.length / ITEMS_PER_PAGE);
+
+  const pendingStartIndex = (currentPagePending - 1) * ITEMS_PER_PAGE;
+  const completedStartIndex = (currentPageCompleted - 1) * ITEMS_PER_PAGE;
+
   return (
     <div className="sociocomunitario-container">
       <main>
@@ -209,40 +217,45 @@ function SolicitudesCarta() {
                   </tr>
                 </thead>
                 <tbody className="tbody-sociocomu">
-                  {filteredPendientes.map((solicitud, index) => (
-                    <tr key={index}>
-                      <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
-                      <td>
-                        {solicitud.EstudiantesCarta.map((estudiante) => (
-                          <div key={estudiante.Usuario.Nombre}>
-                            {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
-                          </div>
-                        ))}
-                      </td>
-                      <td>
-                        {role === "Académico" && (
-                          <button
-                            className="icon-btn--sociocomu"
-                            onClick={() =>
-                              handleEditSolicitud(solicitud.SolicitudId)
-                            }
-                          >
-                            <RiEdit2Fill />
-                          </button>
-                        )}
-                        {role === "Administrativo" && (
-                          <button
-                            className="icon-btn--sociocomu"
-                            onClick={() =>
-                              handleSendLetter(solicitud.SolicitudId)
-                            }
-                          >
-                            <SlEnvolopeLetter />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredPendientes
+                    .slice(
+                      pendingStartIndex,
+                      pendingStartIndex + ITEMS_PER_PAGE
+                    )
+                    .map((solicitud, index) => (
+                      <tr key={index}>
+                        <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
+                        <td>
+                          {solicitud.EstudiantesCarta.map((estudiante) => (
+                            <div key={estudiante.Usuario.Nombre}>
+                              {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
+                            </div>
+                          ))}
+                        </td>
+                        <td>
+                          {role === "Académico" && (
+                            <button
+                              className="icon-btn--sociocomu"
+                              onClick={() =>
+                                handleEditSolicitud(solicitud.SolicitudId)
+                              }
+                            >
+                              <RiEdit2Fill />
+                            </button>
+                          )}
+                          {role === "Administrativo" && (
+                            <button
+                              className="icon-btn--sociocomu"
+                              onClick={() =>
+                                handleSendLetter(solicitud.SolicitudId)
+                              }
+                            >
+                              <SlEnvolopeLetter />
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
               <div className="pagination-sociocomu">
@@ -252,8 +265,15 @@ function SolicitudesCarta() {
                 >
                   Anterior
                 </button>
-                <span>Página {currentPagePending}</span>
-                <button onClick={handleNextPagePending}>Siguiente</button>
+                <span>
+                  Página {currentPagePending} de {pendingPages}
+                </span>
+                <button
+                  onClick={handleNextPagePending}
+                  disabled={currentPagePending === pendingPages}
+                >
+                  Siguiente
+                </button>
               </div>
             </div>
           ) : (
@@ -313,27 +333,32 @@ function SolicitudesCarta() {
                   </tr>
                 </thead>
                 <tbody className="tbody-sociocomu">
-                  {filteredCompletadas.map((solicitud, index) => (
-                    <tr key={index}>
-                      <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
-                      <td>
-                        {solicitud.EstudiantesCarta.map((estudiante) => (
-                          <div key={estudiante.Usuario.Nombre}>
-                            {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
-                          </div>
-                        ))}
-                      </td>
-                      <td>
-                        <button
-                          onClick={() =>
-                            handleDescargaCarta(solicitud.SolicitudId)
-                          }
-                        >
-                          {solicitud.NombreCarta}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredCompletadas
+                    .slice(
+                      completedStartIndex,
+                      completedStartIndex + ITEMS_PER_PAGE
+                    )
+                    .map((solicitud, index) => (
+                      <tr key={index}>
+                        <td>{solicitud.Socios_RegistroSocio.NombreSocio}</td>
+                        <td>
+                          {solicitud.EstudiantesCarta.map((estudiante) => (
+                            <div key={estudiante.Usuario.Nombre}>
+                              {`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}
+                            </div>
+                          ))}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() =>
+                              handleDescargaCarta(solicitud.SolicitudId)
+                            }
+                          >
+                            {solicitud.NombreCarta}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
               <div className="pagination-sociocomu">
@@ -343,8 +368,15 @@ function SolicitudesCarta() {
                 >
                   Anterior
                 </button>
-                <span>Página {currentPageCompleted}</span>
-                <button onClick={handleNextPageCompleted}>Siguiente</button>
+                <span>
+                  Página {currentPageCompleted} de {completedPages}
+                </span>
+                <button
+                  onClick={handleNextPageCompleted}
+                  disabled={currentPageCompleted === completedPages}
+                >
+                  Siguiente
+                </button>
               </div>
             </div>
           ) : (

@@ -21,6 +21,7 @@ function CrearActuSocioComunitarios() {
   const [formErrors, setFormErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [title, setTitle] = useState("Crear Socio Comunitario");
+  const [loading, setLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(true);
 
   useEffect(() => {
@@ -108,6 +109,7 @@ function CrearActuSocioComunitarios() {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true); // Show loading screen
     e.preventDefault();
     if (!isFormValid) {
       return;
@@ -131,6 +133,7 @@ function CrearActuSocioComunitarios() {
         if (response.ok) {
           localStorage.removeItem("SocioIdSeleccionado");
           localStorage.setItem("SocioGuardado", "true");
+          setLoading(false); // Show loading screen
           navigate("/SocioComunitarios");
         } else {
           return response.text().then((text) => {
@@ -141,11 +144,13 @@ function CrearActuSocioComunitarios() {
       .catch((error) => {
         console.error("Error saving socio:", error);
         // Show toast notification here
+        setLoading(false); // Show loading screen
       });
   };
 
   return (
     <div className="creaedsocio-container">
+      {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
       <div className="creaedsocio-content">
         <h1 className="creaedsocio-title">{title}</h1>
         <div className="creaedsocio-divider" />

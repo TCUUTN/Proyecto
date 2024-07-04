@@ -9,9 +9,12 @@ import "./SolicitudCarta.css";
 
 function SolicitudCartas() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [socios, setSocios] = useState([]);
   const [grupos, setGrupos] = useState([]);
-  const [IdentificacionAcademico] = useState(sessionStorage.getItem("Identificacion"));
+  const [IdentificacionAcademico] = useState(
+    sessionStorage.getItem("Identificacion")
+  );
   const [SedeAcademico] = useState(sessionStorage.getItem("Sede"));
   const [estudiantes, setEstudiantes] = useState([]);
   const [selectedSocio, setSelectedSocio] = useState(null);
@@ -24,6 +27,7 @@ function SolicitudCartas() {
     fetch("/socios/Activos")
       .then((response) => response.json())
       .then((data) => setSocios(data));
+
     const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
     fetch(`/grupos/Academicos/${IdentificacionAcademico}`)
       .then((response) => response.json())
@@ -32,20 +36,20 @@ function SolicitudCartas() {
         setSelectedGrupo(null);
         setEstudiantes([]);
       });
-    fetch("/socios/Activos")
-      .then((response) => response.json())
-      .then((data) => setSocios(data));
+
     if (solicitudId) {
       fetch(`/socios/Solicitudes/${solicitudId}`)
         .then((response) => response.json())
         .then((data) => {
-          setSelectedSocio(data.SocioId);
-          setSelectedEstudiantes(
-            data.estudiantesCarta.map((est) => ({
-              id: est.Usuario.Identificacion,
-              name: `${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`,
-            }))
-          );
+          if (data && data.estudiantesCarta) {
+            setSelectedSocio(data.SocioId);
+            setSelectedEstudiantes(
+              data.estudiantesCarta.map((est) => ({
+                id: est.Usuario.Identificacion,
+                name: `${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`,
+              }))
+            );
+          }
         });
     }
   }, []);
@@ -67,11 +71,11 @@ function SolicitudCartas() {
   };
 
   const handleAddEstudiante = () => {
+    setLoading(true); // Show loading screen
     const estudianteId = selectedEstudiante.Usuario.Identificacion;
     if (selectedEstudiantes.some((est) => est.id === estudianteId)) {
       toast.error("El estudiante ya se encuentra añadido en la solicitud.");
     } else {
-      console.log(estudianteId)
       setSelectedEstudiantes((prev) => [
         ...prev,
         {
@@ -83,15 +87,15 @@ function SolicitudCartas() {
     setSelectedGrupo(null);
     setSelectedEstudiante(null);
     setEstudiantes([]);
+    setLoading(false); // Show loading screen
   };
 
   const handleRemoveEstudiante = (id) => {
-    setSelectedEstudiantes((prev) =>
-      prev.filter((est) => est.id !== id)
-    );
+    setSelectedEstudiantes((prev) => prev.filter((est) => est.id !== id));
   };
 
   const handleGuardar = () => {
+    setLoading(true); // Show loading screen
     const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
     const data = {
       SocioId: selectedSocio,
@@ -113,13 +117,14 @@ function SolicitudCartas() {
       .then(() => {
         localStorage.removeItem("SolicitudIdSeleccionada");
         localStorage.setItem("SolicitudGuardada", true);
+        setLoading(false); // Show loading screen
         navigate("/SolicitudCartas");
       });
   };
 
   useEffect(() => {
     const socioId = parseInt(selectedSocio); // Convertir selectedSocio a número si es necesario
-    const socioSeleccionado = socios.find(s => s.SocioId === socioId);
+    const socioSeleccionado = socios.find((s) => s.SocioId === socioId);
     const nombreSocio = socioSeleccionado ? socioSeleccionado.NombreSocio : "";
     const element = document.getElementById("NombreSocioSeleccionado");
     if (element) {
@@ -129,6 +134,7 @@ function SolicitudCartas() {
 
   return (
     <div className="solici-container">
+      {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
       <div className="solici-title">Creación de Solicitud</div>
       <div className="solici-divider" />
       <div className="solici-content">
@@ -164,7 +170,9 @@ function SolicitudCartas() {
               className="solici-select"
               onChange={(e) =>
                 setSelectedEstudiante(
-                  estudiantes.find((est) => est.Usuario.Identificacion === e.target.value)
+                  estudiantes.find(
+                    (est) => est.Usuario.Identificacion === e.target.value
+                  )
                 )
               }
               value={selectedEstudiante?.Usuario.Identificacion || ""}
@@ -172,7 +180,10 @@ function SolicitudCartas() {
             >
               <option value="">Lista de Estudiantes</option>
               {estudiantes.map((est) => (
-                <option key={est.Usuario.Identificacion} value={est.Usuario.Identificacion}>
+                <option
+                  key={est.Usuario.Identificacion}
+                  value={est.Usuario.Identificacion}
+                >
                   {`${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`}
                 </option>
               ))}
@@ -189,11 +200,8 @@ function SolicitudCartas() {
         <div className="solici-divider-vertical"></div>
         <div className="solicitud-right">
           <div className="solicitud-socio-seleccionado">
-            <h3 className="medTitule-solici">
-              Socio Seleccionado:
-            </h3>
-            <h3 className="medTitule-solici" id="NombreSocioSeleccionado">
-            </h3>
+            <h3 className="medTitule-solici">Socio Seleccionado:</h3>
+            <h3 className="medTitule-solici" id="NombreSocioSeleccionado"></h3>
           </div>
           <div className="solicitud-estudiantes-seleccionados">
             <h3 className="subtitule-solici">Estudiantes Seleccionados</h3>
@@ -220,7 +228,6 @@ function SolicitudCartas() {
                 ))}
               </tbody>
             </table>
-            
           </div>
           <div className="solicitud-buttons">
             <button
@@ -235,7 +242,7 @@ function SolicitudCartas() {
               onClick={handleGuardar}
               disabled={!selectedSocio || selectedEstudiantes.length === 0}
             >
-              Enviar  &nbsp; <BsFillSendPlusFill />
+              Enviar &nbsp; <BsFillSendPlusFill />
             </button>
           </div>
         </div>

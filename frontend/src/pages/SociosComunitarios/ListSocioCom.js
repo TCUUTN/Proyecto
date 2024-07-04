@@ -196,7 +196,7 @@ function SocioComunitarios() {
               <button onClick={handlePreviousPage} disabled={currentPage === 1}>
                 Anterior
               </button>
-              <span>Página {currentPage}</span>
+              <span>Página {currentPage} de{" "} {Math.ceil(filteredSocios.length / 10)}</span>
               <button onClick={handleNextPage} disabled={filteredSocios.length <= currentPage * 10}>
                 Siguiente
               </button>
