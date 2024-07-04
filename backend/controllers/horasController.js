@@ -98,6 +98,29 @@ const getHorasPorBitacoraId = async (req, res) => {
   }
 };
 
+const getHorasPorFecha = async (req, res) => {
+  try {
+    const { Fecha } = req.body;
+    console.log(Fecha)
+    const horas = await HorasBitacora.findOne({
+      where: {
+        Fecha: Fecha,
+      },
+      attributes: [
+        'Fecha',
+    ]
+    });
+
+    if (!horas) {
+      return res.status(200).json({ message: "No hay horas en este dia" });
+    }else{
+      return res.status(400).json({ error: "Este dia ya posee horas" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getHorasPorIdentificacionyGrupoIdAprobadas = async (req, res) => {
   try {
     const { Identificacion, GrupoId } = req.params;
@@ -333,5 +356,6 @@ module.exports = {
   rechazarHoras,
   subirArchivo, 
   descargarArchivo,
-  eliminarArchivo
+  eliminarArchivo,
+  getHorasPorFecha
 };

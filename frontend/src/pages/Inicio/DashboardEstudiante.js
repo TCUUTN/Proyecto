@@ -83,6 +83,21 @@ function DashboardEstudiante() {
         setHorasGiraTotal(totalHorasGira);
         setHorasPlanificacion(planificacion);
         setHorasGira(gira);
+
+        // Calculate the maximum values
+        const minHorasPlanificacion = 10;
+        const maxHorasPlanificacion = Math.min(
+          30,
+          Math.max(minHorasPlanificacion, totalHorasPlanificacion)
+        );
+        const maxHorasTotal = 150;
+        const maxHorasEjecucion = maxHorasTotal - maxHorasPlanificacion;
+
+        // Store values in localStorage
+        localStorage.setItem('horasPlanificacionTotal', totalHorasPlanificacion);
+        localStorage.setItem('horasGiraTotal', totalHorasGira);
+        localStorage.setItem('maxHorasPlanificacion', maxHorasPlanificacion);
+        localStorage.setItem('maxHorasEjecucion', maxHorasEjecucion);
       })
       .catch((error) => {
         toast.error("Error al buscar las horas del estudiante");
@@ -90,14 +105,6 @@ function DashboardEstudiante() {
   };
 
   const calculateProgress = (total, max) => (total / max) * 100;
-
-  const minHorasPlanificacion = 10;
-  const maxHorasPlanificacion = Math.min(
-    30,
-    Math.max(minHorasPlanificacion, horasPlanificacionTotal)
-  );
-  const maxHorasTotal = 150;
-  const maxHorasEjecucion = maxHorasTotal - maxHorasPlanificacion;
 
   return (
     <div className="mainDash-container">
@@ -127,11 +134,11 @@ function DashboardEstudiante() {
         <h3 className="dashEstudiante-title">Cantidad total de horas</h3>
         <div className="dashEstudiante-divider"></div>
         <ProgressBar
-          now={calculateProgress(horasTotal, maxHorasTotal)}
-          label={`${calculateProgress(horasTotal, maxHorasTotal).toFixed(2)}%`}
+          now={calculateProgress(horasTotal, 150)}
+          label={`${calculateProgress(horasTotal, 150).toFixed(2)}%`}
           className="custom-progress-bar"
         />
-        <p className="dashEstudiante-horas">{`${horasTotal.toFixed(0)} horas completadas de ${maxHorasTotal} horas`}</p>
+        <p className="dashEstudiante-horas">{`${horasTotal.toFixed(0)} horas completadas de 150 horas`}</p>
       </div>
 
       <div className="progress-sections">
@@ -141,30 +148,30 @@ function DashboardEstudiante() {
           <ProgressBar
             now={calculateProgress(
               horasPlanificacionTotal,
-              maxHorasPlanificacion
+              Math.min(30, Math.max(10, horasPlanificacionTotal))
             )}
             label={`${calculateProgress(
               horasPlanificacionTotal,
-              maxHorasPlanificacion
+              Math.min(30, Math.max(10, horasPlanificacionTotal))
             ).toFixed(2)}%`}
             className="custom-progress-bar"
           />
           <p className="dashEstudiante-horas">{`${horasPlanificacionTotal.toFixed(
             0
-          )} horas completadas de ${maxHorasPlanificacion} horas`}</p>
+          )} horas completadas de ${Math.min(30, Math.max(10, horasPlanificacionTotal))} horas`}</p>
         </div>
 
         <div className="dashboard-container">
           <h3 className="dashEstudiante-title">Total de horas de ejecución</h3>
           <div className="dashEstudiante-divider"></div>
           <ProgressBar
-            now={calculateProgress(horasGiraTotal, maxHorasEjecucion)}
-            label={`${calculateProgress(horasGiraTotal, maxHorasEjecucion).toFixed(
+            now={calculateProgress(horasGiraTotal, 150 - Math.min(30, Math.max(10, horasPlanificacionTotal)))}
+            label={`${calculateProgress(horasGiraTotal, 150 - Math.min(30, Math.max(10, horasPlanificacionTotal))).toFixed(
               2
             )}%`}
             className="custom-progress-bar"
           />
-          <p className="dashEstudiante-horas">{`${horasGiraTotal.toFixed(0)} horas completadas de ${maxHorasEjecucion} horas`}</p>
+          <p className="dashEstudiante-horas">{`${horasGiraTotal.toFixed(0)} horas completadas de ${150 - Math.min(30, Math.max(10, horasPlanificacionTotal))} horas`}</p>
         </div>
       </div>
 
