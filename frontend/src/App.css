@@ -1,59 +1,28 @@
-* { 
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-:root {
-  --color-principal: #002B69;
-  --color-anaranjado: #F66226;
-  --color-celeste: #6FBADF;
-  --color-azulMedio: #81A1AD;
-  --color-gris:#CAC7C8;
-  --color-fondo: #FAFAFA;
-  --color-celesteclaro:#6FBADF;
-
-}
-
 body, html {
   padding: 0;
   margin: 0;
   font-family: "Century Gothic", sans-serif;
+  height: 100%;
 }
 
 .App {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh; /* Mínimo 100% de la altura de la ventana */
 }
 
 .content {
-  flex: 2;
- 
+  flex: 1; /* El contenido ocupa todo el espacio disponible */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.footer {
+  width: 100%;
+  text-align: center;
+  background-color: #002B5C;
+  color: #ffffff;
+  margin-top: auto; /* Empuja el footer al fondo */
 }
 
-
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
+.p {
+  margin: 0;
 }

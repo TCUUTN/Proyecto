@@ -24,10 +24,9 @@ function SocioComunitarios() {
       .then(response => response.json())
       .then(data => {
         setSocios(data);
-     
         setFilteredSocios(data);
+        
       });
-      console.log(filteredSocios);
   }, []);
 
   const handleAddUser = () => {
@@ -165,8 +164,10 @@ function SocioComunitarios() {
                   <th>Acciones</th>
                 </tr>
               </thead>
+
               <tbody className="tbody-socioc">
                 {filteredSocios.slice((currentPage - 1) * 10, currentPage * 10).map((socio) => (
+
                   <tr key={socio.SocioId}>
                     <td>{socio.NombreSocio}</td>
                     <td>

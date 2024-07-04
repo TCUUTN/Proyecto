@@ -4,7 +4,21 @@ const path = require('path')
 const iconv = require('iconv-lite');
 const getAllHoras = async (req, res) => {
   try {
-    const Horas = await HorasBitacora.findAll();
+    const Horas = await HorasBitacora.findAll(
+      {attributes: [
+        'BitacoraId',
+        'Identificacion',
+        'Fecha',
+        'GrupoId',
+        'DescripcionActividad',
+        'TipoActividad',
+        'HoraInicio',
+        'HoraFinal',
+        'NombreEvidencia',
+        'ComentariosRechazo',
+        'EstadoHoras'
+      ]}
+    );
     res.json(Horas);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -84,40 +98,64 @@ const getHorasPorBitacoraId = async (req, res) => {
   }
 };
 
-module.exports = getHorasPorBitacoraId;
+const getHorasPorIdentificacionyGrupoIdAprobadas = async (req, res) => {
+  try {
+    const { Identificacion, GrupoId } = req.params;
 
+    const horas = await HorasBitacora.findAll({
+      where: {
+        Identificacion: Identificacion,
+        GrupoId: GrupoId,
+        EstadoHoras: 'Aprobado'
+      },
+      attributes: [
+        'TipoActividad',
+        'HoraInicio',
+        'HoraFinal',
+      ]
+    });
 
-  const getHorasPorIdentificacionyGrupoId = async (req, res) => {
-    try {
-      const { Identificacion, GrupoId } = req.params;
-  
-      const horas = await HorasBitacora.findAll({
-        where: {
-          Identificacion: Identificacion,
-          GrupoId: GrupoId
-        },
-        attributes: [
-          'BitacoraId',
-          'Fecha',
-          'DescripcionActividad',
-          'TipoActividad',
-          'HoraInicio',
-          'HoraFinal',
-          'NombreEvidencia',
-          'ComentariosRechazo',
-          'EstadoHoras'
-        ]
-      });
-  
-      if (!horas || horas.length === 0) {
-        return res.status(404).json({ error: "Registro no encontrado" });
-      }
-  
-      res.status(200).json(horas);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    if (!horas || horas.length === 0) {
+      return res.status(404).json({ error: "Registro no encontrado" });
     }
-  };
+
+    res.status(200).json(horas);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};  
+
+const getHorasPorIdentificacionyGrupoId = async (req, res) => {
+  try {
+    const { Identificacion, GrupoId } = req.params;
+
+    const horas = await HorasBitacora.findAll({
+      where: {
+        Identificacion: Identificacion,
+        GrupoId: GrupoId
+      },
+      attributes: [
+        'BitacoraId',
+        'Fecha',
+        'DescripcionActividad',
+        'TipoActividad',
+        'HoraInicio',
+        'HoraFinal',
+        'NombreEvidencia',
+        'ComentariosRechazo',
+        'EstadoHoras'
+      ]
+    });
+
+    if (!horas || horas.length === 0) {
+      return res.status(404).json({ error: "Registro no encontrado" });
+    }
+
+    res.status(200).json(horas);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
   const crearOActualizarHoras = async (req, res) => {
     try {
@@ -290,6 +328,7 @@ module.exports = {
   getAllHoras,
   getHorasPorBitacoraId,
   getHorasPorIdentificacionyGrupoId,
+  getHorasPorIdentificacionyGrupoIdAprobadas,
   crearOActualizarHoras,
   rechazarHoras,
   subirArchivo, 

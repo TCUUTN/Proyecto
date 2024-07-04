@@ -8,6 +8,7 @@ import "./VerSolicitud.css";
 function VerSolicitudes() {
   const navigate = useNavigate();
 
+
   const handleBackClick = () => {
     localStorage.removeItem("SolicitudIdSeleccionada");
     navigate("/SolicitudCartas");
