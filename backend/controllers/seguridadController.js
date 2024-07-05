@@ -1,4 +1,3 @@
-const pool = require("../config/db");
 const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/Usuario");
@@ -580,7 +579,7 @@ const cargarUsuario = async (req, res) => {
           await GruposEstudiantes.create({
             Identificacion: userData.Identificacion,
             GrupoId: grupoId,
-            Estado: true,
+            Estado: "En Curso",
           });
         }
       }

@@ -1,0 +1,265 @@
+
+
+
+/* cARGA */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*Contiene todo */
+.horasi-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+/* Boton de agregar actividades  */
+.horasi-botton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  border-radius: 5px;
+  width: 35%;
+  margin: 20px auto;
+  margin-right: 55%;
+}
+.add-horasi {
+  display: flex;
+  align-items: center;
+  color: #002b69;
+  font-size: 25px;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.icon-horasi {
+  margin-left: 10px;
+  font-size: 35px;
+  color: #ff6600; /* Color anaranjado para el icono */
+}
+/* Boton de regresar para academico  */
+.add-horasiRegresar {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #002b69;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.icon-horasiRegresar {
+  margin-left: 10px;
+  font-size: 35px;
+}
+
+.add-horasiRegresar:hover {
+  background-color: #f66226;
+  transition: 0.3s;
+}
+
+/* Contiene los filtros y la tabla de aprobados y rechazar */
+.container-tableapro, .container-tablerecha {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: white;
+}
+.container-tablerecha{
+  margin-top: 3%;
+}
+/* Titulo y la linea */
+.apro-titl {
+  font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a;
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.apro-divider {
+  width: 100px;
+  height: 2px;
+  background: #ff6600;
+  margin: 0 auto 20px auto;
+}
+/* Filtros de aprobar  y rechazar*/
+.filter-apro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.filter-group-apro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.filter-label-apro {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.filter-input-apro,
+.filter-select-apro {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 20px !important;
+  text-align: center;
+  color: #002b69;
+  border: 2px solid #002b69 !important;
+}
+.filter-input-apro:focus,
+.filter-select-apro:focus {
+  border-color: #ff6600 !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+
+/* Tabla */
+.apro-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.apro-thead th {
+  background-color: #002b69;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.apro-tbody td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+/* Boton del academico */
+.icon-btn-acade {
+  border: none;
+  cursor: pointer;
+  color: #ff6600;
+  font-size: 1.8em;
+  padding: 5px;
+}
+
+.icon-btn-acade:hover {
+  color: #ff6600;
+}
+/*Paginacion*/
+.pagination-apro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pagination-apro button {
+  background-color: #002b69;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1em;
+}
+
+.pagination-apro span {
+  font-size: 1em;
+  margin: 0 10px;
+  color: #002b69;
+}
+/* Mensaje */
+.no-data-message {
+  text-align: center;
+  color: #002b69;
+  font-size: 20px;
+  padding: 3%;
+}
+
+/* Main */
+.main {
+  width: 100%;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  /* Estilos específicos para pantallas menores a 768px */
+  .horasi-botton {
+    width: 80%;
+    margin-right: 10%;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 95%;
+  }
+
+  .apro-titl {
+    font-size: 28px;
+  }
+
+  .apro-divider {
+    width: 100px;
+  }
+
+  .filter-apro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group-apro {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: 100%;
+  }
+
+  .pagination-apro button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+}

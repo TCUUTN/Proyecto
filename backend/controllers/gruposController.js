@@ -137,7 +137,7 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
     const estudianteGrupo = await GruposEstudiantes.findOne({
       where: {
         Identificacion: Identificacion,
-        Estado: 1,
+        Estado: "En Curso",
       },
     });
 
