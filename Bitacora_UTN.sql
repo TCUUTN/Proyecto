@@ -84,8 +84,10 @@ CREATE TABLE Grupos_Grupo (
 CREATE TABLE Grupos_Estudiantes_Grupo (
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Llave primaria de la tabla',
     `GrupoId` MEDIUMINT UNSIGNED NOT NULL,
-	`Estado` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado de Estudiante en el grupo',
-	`UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+	`Estado` ENUM('En Curso', 'Aprobado', 'Rechazado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo',
+    `Progreso` ENUM('Nuevo', 'Continuidad', 'Prórroga') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Nuevo' COMMENT 'Progreso del Estudiante en el grupo',
+	`ComentariosReprobado` Varchar(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Comentarios de Reprobado',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 	`LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 	`LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
     CONSTRAINT `Usuarios_Grupos_Estudiantes_Grupo_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`),
@@ -120,7 +122,7 @@ CREATE TABLE Socios_RegistroSocios (
 `TelefonoSocio` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Telefono del Socio',
 `TipoInstitucion` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Tipo de Institucion',
 `DireccionSocio` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Direccion del socio Comunitario o Institucion',
-`Ubicacion GPS` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Coordenadas del socio Comunitario o Institucion',
+`UbicacionGPS` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Coordenadas del socio Comunitario o Institucion',
 `NombreCompletoContacto` VARCHAR(150) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre completo del contacto',
 `Puesto` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Puesto del contacto',
 `CorreoElectronicoContacto` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Correo electrónico Contacto',
@@ -161,6 +163,7 @@ CONSTRAINT `Usuarios_Socios_EstudiantesCarta_Identificacion` FOREIGN KEY (`Ident
 CREATE TABLE Conclusion_Boleta (
 `ConclusionId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion del estudiante que completa el formulario',
+`GrupoId` MEDIUMINT UNSIGNED NOT NULL,
 `Labor1` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Labor 1',
 `Labor2` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Labor 2',
 `Labor3` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Labor 3',
@@ -168,10 +171,13 @@ CREATE TABLE Conclusion_Boleta (
 `Labor5` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Labor 5',
 `Labor6` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Labor 6',
 `Comentarios` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Comentarios',
+`EstadoBoleta` ENUM('En Proceso', 'Aprobado', 'Rechazado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Proceso' COMMENT 'Estado de la Boleta del Estudiante',
+`MotivoRechazo` Varchar(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Comentarios de Reprobado',
 `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
 `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
 `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
 PRIMARY KEY (`ConclusionId`),
+CONSTRAINT `Conclusion_Boleta_Grupos_Grupo_GrupoId` FOREIGN KEY (`GrupoId`) REFERENCES `bitacora_TCU`.`Grupos_Grupo` (`GrupoId`),
 CONSTRAINT `Usuarios_Conclusion_Boleta_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
@@ -191,10 +197,15 @@ CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) 
 
 
 SET SQL_SAFE_UPDATES = 0;
-Drop table Socios_EstudiantesCarta;
-Drop table Socios_SolicitudCarta;
+Drop table Grupos_Estudiantes_Grupo;
+Drop table Conclusion_Boleta;
 Drop table Socios_RegistroSocios;
-SET SQL_SAFE_UPDATES = 1;
+DELETE FROM Horas_Bitacora where BitacoraId > 20;
+DELETE FROM Socios_SolicitudCarta;
+DELETE FROM Socios_RegistroSocios;
+SET SQL_SAFE_UPDAtES = 1;
+
+select * from Grupos_Estudiantes_Grupo
 
 
 /*Inserts y Updates
