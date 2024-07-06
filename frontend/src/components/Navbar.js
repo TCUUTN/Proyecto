@@ -12,6 +12,7 @@ function Navbar() {
   const [genero, setGenero] = useState("");
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
+  const [showBoletaConclusion, setShowBoletaConclusion] = useState(false);
 
   useEffect(() => {
     const storedNombre = sessionStorage.getItem("Nombre");
@@ -69,6 +70,38 @@ function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchHorasTotales = async () => {
+      if (selectedRole === "Estudiante" && identificacion) {
+        try {
+          const grupoResponse = await fetch(`/grupos/GrupoEstudiante/${identificacion}`);
+          const grupoData = await grupoResponse.json();
+          const { GrupoId } = grupoData;
+
+          const horasResponse = await fetch(`/horas/EstudianteAprobado/${identificacion}/${GrupoId}`);
+          const horasData = await horasResponse.json();
+
+          const horasTotales = horasData.reduce((total, hora) => {
+            const horaInicio = new Date(`1970-01-01T${hora.horaInicio}`);
+            const horaFinal = new Date(`1970-01-01T${hora.horaFinal}`);
+            const diff = (horaFinal - horaInicio) / (1000 * 60 * 60); // Diferencia en horas
+            return total + diff;
+          }, 0);
+
+          if (horasTotales >= 150) {
+            setShowBoletaConclusion(true);
+          }
+        } catch (error) {
+          console.error("Error fetching horas totales:", error);
+        }
+      } else if (selectedRole === "Académico" || selectedRole === "Administrativo") {
+        setShowBoletaConclusion(true);
+      }
+    };
+
+    fetchHorasTotales();
+  }, [selectedRole, identificacion]);
+
   const handleLogout = () => {
     sessionStorage.clear();
     setIsAuthenticated(false);
@@ -80,11 +113,6 @@ function Navbar() {
     setSelectedRole(newRole);
     sessionStorage.setItem("SelectedRole", newRole);
     window.location.href = "/Home";
-  };
-
-  const setIdentificacionInLocalStorage = () => {
-    // Guardar identificacion en el almacenamiento local
-    localStorage.setItem("IdentificacionHoras", identificacion);
   };
 
   return (
@@ -175,11 +203,7 @@ function Navbar() {
                 )}
                 {selectedRole === "Estudiante" && (
                   <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      to="/VistaHorasEstudiantes"
-                      onClick={() => setIdentificacionInLocalStorage()}
-                    >
+                    <Link className="nav-link" to="/VistaHorasEstudiantes">
                       Ingresar horas
                     </Link>
                   </li>
@@ -235,6 +259,20 @@ function Navbar() {
                     </li>
                   </ul>
                 </li>
+                {showBoletaConclusion && (
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to={
+                        selectedRole === "Estudiante"
+                          ? "/CrearoActualizarConclusiones"
+                          : "/GruposConclusiones"
+                      }
+                    >
+                      Boleta de Conclusión
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" aria-disabled="true">
                     Información
@@ -242,17 +280,23 @@ function Navbar() {
                 </li>
               </ul>
               <div className="navbar-link">
-                <select
-                  className="navbar-select"
-                  value={selectedRole}
-                  onChange={handleRoleChange}
-                >
-                  {roles.map((role, index) => (
-                    <option key={index} value={role}>
-                      {nombre}: {role}
-                    </option>
-                  ))}
-                </select>
+                {roles.length > 1 ? (
+                  <select
+                    className="navbar-select"
+                    value={selectedRole}
+                    onChange={handleRoleChange}
+                  >
+                    {roles.map((role, index) => (
+                      <option key={index} value={role}>
+                        {nombre}: {role}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <span className="navbar-select">
+                    {nombre}: {roles[0]}
+                  </span>
+                )}
               </div>
               <ul className="nav-item dropdown">
                 <Link

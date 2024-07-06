@@ -9,6 +9,7 @@ router.get('/GruposEstudiantes/:Identificacion/:GrupoId', gruposController.getEs
 router.get('/tipos/:CodigoProyecto', gruposController.getTipoGrupoPorCodigoMateria);
 router.get('/GrupoEstudiante/:Identificacion', gruposController.getGrupoEstudianteporIdentificacion);
 router.get('/Academicos/:Identificacion', gruposController.getGrupoPorIdentificacion);
+router.get('/Conclusiones/:Identificacion', gruposController.getGrupoPorIdentificacionParaConclusion);
 router.get('/ListaEstudiantes/:GrupoId', gruposController.getListaEstudiantes);
 router.get('/:GrupoId', gruposController.getGrupoPorGrupoId);
 router.post('/crearOActualizarTipoGrupo', gruposController.crearOActualizarTipoGrupo);

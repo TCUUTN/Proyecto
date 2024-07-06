@@ -14,9 +14,10 @@ import MantMaterias from "./pages/Grupos/MantMaterias.js";
 import MantGrupos from "./pages/Grupos/MantCreaGrupos.js";
 import CompletarPerfil from "./pages/Login/CompletarPerfil.js";
 import GruposAcademico from "./pages/Grupos/GruposAcademico.js";
+import GruposConclusiones from "./pages/Conclusiones/GruposConclusiones.js";
 import ListaEstudiantes from "./pages/Grupos/EstudiantesdeGrupo.js";
 import VistaHorasEstudiantes from "./pages/HorasBitacora/VistaHorasEstudiante.js";
-import VistaConclusionesEstudiantes from "./pages/Conclusiones/VistaConclusionesEstudiante.js";
+import VistaConclusionesGrupo from "./pages/Conclusiones/VistaConclusionesGrupo.js";
 import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
@@ -132,10 +133,18 @@ function App() {
               }
             />
             <Route
-              path="/VistaConclusionesEstudiantes"
+              path="/VistaConclusionesGrupo"
               element={
-                <ProtectedRoute allowedRoles={["Estudiante", "Académico"]}>
-                  <VistaConclusionesEstudiantes />
+                <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
+                  <VistaConclusionesGrupo/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/GruposConclusiones"
+              element={
+                <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
+                  <GruposConclusiones/>
                 </ProtectedRoute>
               }
             />

@@ -3,7 +3,8 @@ const Grupo = require("../models/Grupo");
 const TipoGrupo = require("../models/TipoGrupo");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
 const Usuario = require('../models/Usuario');
-
+const BoletaConclusion = require('../models/ConclusionBoleta');
+const { Op } = require('sequelize');
 
 
 const getAllGrupos = async (req, res) => {
@@ -408,6 +409,48 @@ const EstadoGrupo = async (req, res) => {
   }
 };
 
+const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    const grupos = await Grupo.findAll({
+      where: {
+        Identificacion: Identificacion,
+      },
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+      ],
+    });
+
+    if (grupos.length === 0) {
+      return res.status(404).json({ error: "El Académico no tiene grupos a cargo" });
+    }
+
+    const grupoIds = grupos.map(grupo => grupo.GrupoId);
+
+    const boletas = await BoletaConclusion.findAll({
+      where: {
+        GrupoId: {
+          [Op.in]: grupoIds,
+        },
+      },
+      attributes: ['GrupoId'],
+    });
+
+    const grupoIdsConBoleta = boletas.map(boleta => boleta.GrupoId);
+
+    const gruposConBoleta = grupos.filter(grupo => grupoIdsConBoleta.includes(grupo.GrupoId));
+
+    if (gruposConBoleta.length === 0) {
+      return res.status(404).json({ error: "El Académico no tiene grupos a cargo con boletas de conclusión" });
+    }
+
+    res.status(200).json(gruposConBoleta);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getAllGrupos,
@@ -424,5 +467,6 @@ module.exports = {
   getGrupoPorIdentificacion,
   cargarTipoGrupos,
   getListaEstudiantes,
-  getGrupoEstudianteporIdentificacion
+  getGrupoEstudianteporIdentificacion,
+  getGrupoPorIdentificacionParaConclusion
 };

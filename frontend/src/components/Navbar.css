@@ -168,7 +168,7 @@
   transition: 0.5s;
 }
 
-.navbar-select:hover {
+.navbar-select option:hover {
   color: #f66226;
   transition: 0.5s;
 }

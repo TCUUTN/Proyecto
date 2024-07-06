@@ -1,5 +1,6 @@
 const BoletaConclusion = require("../models/ConclusionBoleta");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
+const Usuario = require('../models/Usuario');
 const getAllConclusiones = async (req, res) => {
   try {
     const Conclusiones = await BoletaConclusion.findAll({
@@ -103,16 +104,10 @@ const getConclusionPorGrupoId = async (req, res) => {
       attributes: [
         `ConclusionId`,
         `Identificacion`,
-        `GrupoId`,
-        `Labor1`,
-        `Labor2`,
-        `Labor3`,
-        `Labor4`,
-        `Labor5`,
-        `Labor6`,
-        `Comentarios`,
         `EstadoBoleta`,
-        `MotivoRechazo`
+      ],
+      include: [
+        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2'] }
       ],
     });
 
@@ -138,16 +133,10 @@ const getConclusionAprobadasPorGrupoId = async (req, res) => {
       attributes: [
         `ConclusionId`,
         `Identificacion`,
-        `GrupoId`,
-        `Labor1`,
-        `Labor2`,
-        `Labor3`,
-        `Labor4`,
-        `Labor5`,
-        `Labor6`,
-        `Comentarios`,
         `EstadoBoleta`,
-        `MotivoRechazo`
+      ],
+      include: [
+        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2'] }
       ],
     });
 

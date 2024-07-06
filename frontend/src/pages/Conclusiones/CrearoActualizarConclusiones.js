@@ -27,7 +27,7 @@ function CrearoActualizarConclusiones() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedConclusionId = sessionStorage.getItem("ConclusionId");
+    const storedConclusionId = localStorage.getItem("ConclusionIdSeleccionado");
     setConclusionId(storedConclusionId);
     if (storedConclusionId) {
       fetch(`conclusiones/${storedConclusionId}`)
@@ -143,8 +143,8 @@ function CrearoActualizarConclusiones() {
 
       if (response.ok) {
         toast.success("La conclusión se ha registrado correctamente");
-        sessionStorage.removeItem("ConclusionId");
-        navigate("/VistaConclusionesEstudiantes");
+        sessionStorage.removeItem("ConclusionIdSeleccionado");
+        navigate("/VistaConclusionesGrupo");
       } else {
         setError("Error al registrar la conclusión. Por favor, inténtelo de nuevo.");
       }
@@ -154,8 +154,8 @@ function CrearoActualizarConclusiones() {
   };
 
   const handleBackClick = () => {
-    sessionStorage.removeItem("ConclusionId");
-    navigate("/VistaConclusionesEstudiantes");
+    sessionStorage.removeItem("ConclusionIdSeleccionado");
+    navigate("/VistaConclusionesGrupo");
   };
 
   return (
