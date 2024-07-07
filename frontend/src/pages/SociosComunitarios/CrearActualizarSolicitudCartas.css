@@ -231,4 +231,32 @@
 
 
 
+  @media (max-width: 768px) {
+    .solici-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .solici-left,
+    .solicitud-right {
+      width: 100%;
+    }
+  
+    .solici-divider-vertical {
+      width: 100%;
+      height: 2px;
+      margin: 20px 0;
+    }
+  
+    .solicitud-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .solicitud-button,
+    .solici-button {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
   

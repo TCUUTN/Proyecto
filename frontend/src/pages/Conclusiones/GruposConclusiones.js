@@ -139,7 +139,7 @@ function GruposAcademico() {
   };
 
   return (
-    <div className="materia-container">
+    <div className="materia-container-conclu">
       {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
@@ -150,10 +150,10 @@ function GruposAcademico() {
       {/**/}
       <main>
         {/* Filtros */}
-        <div className="filters-acad">
-          <div className="filter-group-acad">
+        <div className="filters-acad-conclu">
+          <div className="filter-group-acad-conclu">
             <label
-              className="filter-label-acad"
+              className="filter-label-acad-conclu"
               htmlFor="CodigoMateria-Busqueda"
             >
               Buscar por Código de Materia
@@ -162,15 +162,15 @@ function GruposAcademico() {
               id="CodigoMateria-Busqueda"
               type="text"
               placeholder="Código de Materia"
-              className="filter-input-acad"
+              className="filter-input-acad-conclu"
               value={codigoMateriaFilter}
               onChange={handleCodigoMateriaFilterChange}
             />
           </div>
 
-          <div className="filter-group-acad">
+          <div className="filter-group-acad-conclu">
             <label
-              className="filter-label-acad"
+              className="filter-label-acad-conclu"
               htmlFor="NombreProyecto-Busqueda"
             >
               Buscar por Nombre de Proyecto
@@ -179,22 +179,22 @@ function GruposAcademico() {
               id="NombreProyecto-Busqueda"
               type="text"
               placeholder="Nombre de Proyecto"
-              className="filter-input-acad"
+              className="filter-input-acad-conclu"
               value={nombreProyectoFilter}
               onChange={handleNombreProyectoFilterChange}
             />
           </div>
 
-          <div className="filter-group-acad">
+          <div className="filter-group-acad-conclu">
             <label
-              className="filter-label-acad"
+              className="filter-label-acad-conclu"
               htmlFor="Cuatrimestre-Busqueda"
             >
               Cuatrimestre
             </label>
             <select
               id="Cuatrimestre-Busqueda"
-              className="filter-select-acad"
+              className="filter-select-acad-conclu"
               value={cuatrimestreFilter}
               onChange={handleCuatrimestreFilterChange}
             >
@@ -205,13 +205,13 @@ function GruposAcademico() {
             </select>
           </div>
 
-          <div className="filter-group-acad">
-            <label className="filter-label-acad" htmlFor="Anno-Busqueda">
+          <div className="filter-group-acad-conclu">
+            <label className="filter-label-acad-conclu" htmlFor="Anno-Busqueda">
               Año
             </label>
             <select
               id="Anno-Busqueda"
-              className="filter-select-acad"
+              className="filter-select-acad-conclu"
               value={annoFilter}
               onChange={handleAnnoFilterChange}
             >
@@ -225,14 +225,14 @@ function GruposAcademico() {
           </div>
         </div>
         {/*Tarjetitas */}
-        <div className="card-container">
+        <div className="card-container-conclu">
           {currentGrupos.map((grupo) => (
-            <div className="card" key={grupo.GrupoId}>
-              <div className="card-header">{grupo.CodigoMateria}</div>
-              <div className="card-title">
+            <div className="card-conclu" key={grupo.GrupoId}>
+              <div className="card-header-conclu">{grupo.CodigoMateria}</div>
+              <div className="card-title-conclu">
                 {grupo.Grupos_TipoGrupo.NombreProyecto}
               </div>
-              <div className="card-content">
+              <div className="card-content-conclu">
                 <p>
                   <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
                 </p>
@@ -248,9 +248,9 @@ function GruposAcademico() {
                   {grupo.Aula}
                 </p>
               </div>
-              <div className="card-footer">
+              <div className="card-footer-conclu">
                 <button
-                  className="btn-view-group"
+                  className="btn-view-group-conclu"
                   onClick={() => handleLista(grupo.GrupoId)}
                 >
                   Ver Grupo
@@ -261,7 +261,7 @@ function GruposAcademico() {
         </div>
 
         {/* La paginacion */}
-        <div className="pagination-acad">
+        <div className="pagination-acad-conclu">
           <button onClick={handlePreviousPage}>Anterior</button>
           <span>
             Página {currentPage} de {totalPages}

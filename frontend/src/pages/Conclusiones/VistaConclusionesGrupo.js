@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./VistaConclusionesGrupo.css";
+import { FaChevronLeft } from "react-icons/fa6";
 
 function VistaConclusionesGrupo() {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ function VistaConclusionesGrupo() {
       if (response.ok) {
         const data = await response.json();
         if (data.length === 0) {
-          toast.info("Este grupo aún no tiene estudiantes que hayan subido una boleta de conclusión");
+          toast.info(
+            "Este grupo aún no tiene estudiantes que hayan subido una boleta de conclusión"
+          );
         } else {
           setConclusiones(data);
           setFilteredConclusiones(data);
@@ -70,7 +73,9 @@ function VistaConclusionesGrupo() {
 
     if (identificacion) {
       filtered = filtered.filter((conclusion) =>
-        conclusion.Identificacion.toLowerCase().includes(identificacion.toLowerCase())
+        conclusion.Identificacion.toLowerCase().includes(
+          identificacion.toLowerCase()
+        )
       );
     }
 
@@ -83,7 +88,9 @@ function VistaConclusionesGrupo() {
     }
 
     if (selectedRole === "Académico" && estado) {
-      filtered = filtered.filter((conclusion) => conclusion.EstadoBoleta === estado);
+      filtered = filtered.filter(
+        (conclusion) => conclusion.EstadoBoleta === estado
+      );
     }
 
     setFilteredConclusiones(filtered);
@@ -92,10 +99,15 @@ function VistaConclusionesGrupo() {
 
   const indexOfLastConclusion = currentPage * conclusionesPerPage;
   const indexOfFirstConclusion = indexOfLastConclusion - conclusionesPerPage;
-  const currentConclusiones = filteredConclusiones.slice(indexOfFirstConclusion, indexOfLastConclusion);
+  const currentConclusiones = filteredConclusiones.slice(
+    indexOfFirstConclusion,
+    indexOfLastConclusion
+  );
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredConclusiones.length / conclusionesPerPage)) {
+    if (
+      currentPage < Math.ceil(filteredConclusiones.length / conclusionesPerPage)
+    ) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -112,43 +124,63 @@ function VistaConclusionesGrupo() {
   };
 
   return (
-    <div className="horasi-container">
+    <div className="vistconclgrup-container ">
       <ToastContainer position="bottom-right" />
-      <main className="main">
+      <main className="vistconclgrup-main">
         {conclusiones.length === 0 ? (
-          <div className="no-data-message">
-            Este grupo aún no tiene estudiantes que hayan subido una boleta de conclusión.
+          <div className="vistconclgrup-no-data-message">
+            Este grupo aún no tiene estudiantes que hayan subido una boleta de
+            conclusión.
           </div>
         ) : (
           <>
-            <div className="filter-apro">
-              <div className="filter-group-apro">
-                <label className="filter-label-apro">Identificación</label>
+      {/* Filtros y boton de regreso*/}
+
+            <div className="vistconclgrup-filter">
+              {/* Boton de regresar */}
+              <div className="regred-vistconclgrup">
+                <button className="back-button-vistconclgrup">
+                  <FaChevronLeft />
+                  Regresar
+                </button>
+              </div>
+              {/*linea*/}
+              <div className="vistconclgrup-divider" />
+              {/*Filtros*/}
+              <div className="vistconclgrup-filter-group">
+                <label
+                  className="filter-label-vistconclgrup"
+                  htmlFor="Identificacion-Busqueda"
+                >
+                  Buscar por Identificación
+                </label>
                 <input
                   type="text"
                   value={identificacionFilter}
                   onChange={handleIdentificacionFilterChange}
                   placeholder="Buscar por identificación"
-                  className="filter-input-apro"
+                  className="vistconclgrup-filter-input"
                 />
               </div>
-              <div className="filter-group-apro">
-                <label className="filter-label-apro">Nombre Completo</label>
+              <div className="vistconclgrup-filter-group">
+                <label className="filter-label-vistconclgrup">Nombre Completo</label>
                 <input
                   type="text"
                   value={nombreFilter}
                   onChange={handleNombreFilterChange}
                   placeholder="Buscar por nombre completo"
-                  className="filter-input-apro"
+                  className="vistconclgrup-filter-input"
                 />
               </div>
               {selectedRole === "Académico" && (
-                <div className="filter-group-apro">
-                  <label className="filter-label-apro">Estado de la Boleta</label>
+                <div className="vistconclgrup-filter-group">
+                  <label className="filter-label-vistconclgrup">
+                    Estado de la Boleta
+                  </label>
                   <select
                     value={estadoFilter}
                     onChange={handleEstadoFilterChange}
-                    className="filter-select-apro"
+                    className="vistconclgrup-filter-select"
                   >
                     <option value="">Todos</option>
                     <option value="En Proceso">En Proceso</option>
@@ -158,26 +190,34 @@ function VistaConclusionesGrupo() {
                 </div>
               )}
             </div>
-            <div className="container-tableapro">
-              <table className="apro-table">
-                <thead className="apro-thead">
+            
+     {/* Tabla */}
+            <div className="table-container-mat">
+              <table className="mat-table">
+                <thead className="mat-thead">
                   <tr>
                     <th>Identificación</th>
                     <th>Nombre Completo</th>
-                    {selectedRole === "Académico" && <th>Estado de la Boleta</th>}
+                    {selectedRole === "Académico" && (
+                      <th>Estado de la Boleta</th>
+                    )}
                     <th>Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="apro-tbody">
+                <tbody className="mat-tbody">
                   {currentConclusiones.map((conclusion) => (
                     <tr key={conclusion.ConclusionId}>
                       <td>{conclusion.Identificacion}</td>
                       <td>{`${conclusion.Usuario.Nombre} ${conclusion.Usuario.Apellido1} ${conclusion.Usuario.Apellido2}`}</td>
-                      {selectedRole === "Académico" && <td>{conclusion.EstadoBoleta}</td>}
+                      {selectedRole === "Académico" && (
+                        <td>{conclusion.EstadoBoleta}</td>
+                      )}
                       <td>
                         <button
-                          className="icon-btn-acade"
-                          onClick={() => handleEditClick(conclusion.ConclusionId)}
+                          className="icon-btn-mat"
+                          onClick={() =>
+                            handleEditClick(conclusion.ConclusionId)
+                          }
                         >
                           <FaEdit />
                         </button>
@@ -186,16 +226,23 @@ function VistaConclusionesGrupo() {
                   ))}
                 </tbody>
               </table>
-              <div className="pagination-apro">
-                <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <div className="pagination-mat">
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
                   Anterior
                 </button>
                 <span>
-                  Página {currentPage} de {Math.ceil(filteredConclusiones.length / conclusionesPerPage)}
+                  Página {currentPage} de{" "}
+                  {Math.ceil(filteredConclusiones.length / conclusionesPerPage)}
                 </span>
                 <button
                   onClick={handleNextPage}
-                  disabled={currentPage === Math.ceil(filteredConclusiones.length / conclusionesPerPage)}
+                  disabled={
+                    currentPage ===
+                    Math.ceil(filteredConclusiones.length / conclusionesPerPage)
+                  }
                 >
                   Siguiente
                 </button>
@@ -209,4 +256,3 @@ function VistaConclusionesGrupo() {
 }
 
 export default VistaConclusionesGrupo;
-
