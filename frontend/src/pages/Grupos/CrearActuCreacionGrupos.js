@@ -151,8 +151,8 @@ function CrearActuCreacionGrupos() {
       if (!formValues.Sede) {
         validationErrors["Sede"] = "Por favor, complete el campo: Sede";
       }
+      
     }
-
     if (!localStorage.getItem("GrupoIdUpdate")) {
       if (!formValues.Estado) {
         validationErrors["Estado"] = "Por favor, complete el campo: Estado";
@@ -231,6 +231,9 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
+          {errors.CodigoMateria && (
+            <div className="creagrup-error">{errors.CodigoMateria}</div>
+          )}
         </div>
         <div className="creagrup-formrow">
           {/* Numero de grupo */}
@@ -242,6 +245,10 @@ function CrearActuCreacionGrupos() {
             placeholder="Número de Grupo"
             className="creagrup-inputfield"
           />
+           {errors.NumeroGrupo && (
+            <div className="creagrup-error">{errors.NumeroGrupo}</div>
+          )}
+
         </div>
        
         <div className="creagrup-formrow">
@@ -254,6 +261,7 @@ function CrearActuCreacionGrupos() {
             placeholder="Aula"
             className="creagrup-inputfield"
           />
+           {errors.Aula && <div className="creagrup-error">{errors.Aula}</div>}
         </div>
         <div className="creagrup-formrow ">
           {/* Horario */}
@@ -265,6 +273,9 @@ function CrearActuCreacionGrupos() {
             placeholder="Horario"
             className="creagrup-inputfield"
           />
+           {errors.Horario && (
+            <div className="creagrup-error">{errors.Horario}</div>
+          )}
         </div>
         <div className="creagrup-formrow">
           {/* Cuatrimestre */}
@@ -281,6 +292,9 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
+          {errors.Cuatrimestre && (
+            <div className="creagrup-error">{errors.Cuatrimestre}</div>
+          )}
         </div>
         <div className="creagrup-formrow">
           {/* Año */}
@@ -297,6 +311,7 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
+     
         </div>
 
         <div className="creagrup-formrow">
@@ -315,8 +330,10 @@ function CrearActuCreacionGrupos() {
                 </option>
               ))}
             </select>
-          )}
+        )}
+         {errors.Sede && <div className="creagrup-error">{errors.Sede}</div>}
         </div>
+        
         <div className="creagrup-formrow">
           {/* Seleccionar Académico */}
           <select
@@ -341,6 +358,7 @@ function CrearActuCreacionGrupos() {
               </option>
             ))}
           </select>
+      
         </div>
         <div className="creagrup-formrow">
           {/* Estado */}
@@ -358,22 +376,12 @@ function CrearActuCreacionGrupos() {
           ) : (
             <input type="hidden" name="Estado" value="1" />
           )}
+            {errors.Estado && (
+              <div className="creagrup-error">{errors.Estado}</div>
+            )}
         </div>
         {/*  */}
-        <div className="">
-          {/* Mensajes de error al final */}
-          {Object.keys(errors).length > 0 && (
-            <div className="creagrup-errors">
-              <ul className="creagrup-error-list">
-                {Object.values(errors).map((error, index) => (
-                  <li key={index} className="creagrup-error">
-                    {error}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+    
         <div className="creagrup-buttonrow">
           <button
             type="button"

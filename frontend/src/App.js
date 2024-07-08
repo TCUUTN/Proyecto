@@ -14,8 +14,10 @@ import MantMaterias from "./pages/Grupos/MantMaterias.js";
 import MantGrupos from "./pages/Grupos/MantCreaGrupos.js";
 import CompletarPerfil from "./pages/Login/CompletarPerfil.js";
 import GruposAcademico from "./pages/Grupos/GruposAcademico.js";
+import GruposConclusiones from "./pages/Conclusiones/GruposConclusiones.js";
 import ListaEstudiantes from "./pages/Grupos/EstudiantesdeGrupo.js";
 import VistaHorasEstudiantes from "./pages/HorasBitacora/VistaHorasEstudiante.js";
+import VistaConclusionesGrupo from "./pages/Conclusiones/VistaConclusionesGrupo.js";
 import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
@@ -26,6 +28,7 @@ import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
 import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.js";
 import CrearActuSocioComunitarios from "./pages/SociosComunitarios/CrearActualizar.js";
 import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
+import CrearActualizarConclusiones from "./pages/Conclusiones/CrearoActualizarConclusiones.js";
 import "bootstrap/dist/css/bootstrap.min.css"; // Importa los estilos de Bootstrap
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importa el archivo JavaScript de Bootstrap
 
@@ -130,6 +133,22 @@ function App() {
               }
             />
             <Route
+              path="/VistaConclusionesGrupo"
+              element={
+                <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
+                  <VistaConclusionesGrupo/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/GruposConclusiones"
+              element={
+                <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
+                  <GruposConclusiones/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/RechazoHoras"
               element={
                 <ProtectedRoute allowedRoles={["Académico"]}>
@@ -183,6 +202,15 @@ function App() {
 
                 <ProtectedRoute allowedRoles={["Administrativo"]}>
                   <VerSolicitudes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/CrearActualizarConclusiones"
+              element={
+
+                <ProtectedRoute allowedRoles={["Administrativo","Académico","Estudiante"]}>
+                  <CrearActualizarConclusiones />
                 </ProtectedRoute>
               }
             />

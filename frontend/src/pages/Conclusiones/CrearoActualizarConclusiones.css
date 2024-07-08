@@ -31,32 +31,31 @@
 }
 
 /* Titles */
-.crehoras-title {
+.creconclusiones-title {
   font-family: "Brush-TipTerrence", cursive;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
 }
 
-.crehoras-divider {
+.creconclusiones-divider {
   width: 100px;
   height: 2px;
   background: #ff6600;
   margin: 0 auto 20px auto;
 }
 
-
-
-/*Resgistrar horas */
-.crehoras-container {
+/*Registrar conclusiones */
+.creconclusiones-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh;
   background-color: #f7f7f7;
+  min-height: 100vh; 
+  padding-top: 65vh;
+  padding-bottom: 65vh;
 }
-
-.crehoras-content {
+.creconclusiones-content {
   background-color: #fff;
   border: 2px solid #012c6a;
   padding: 20px;
@@ -67,68 +66,66 @@
   width: 30%;
 }
 
-.crehoras-input-container {
+.creconclusiones-input-container {
   margin: 20px 0;
 }
 
-.crehoras-input-time,
-.crehoras-textarea,
-.crehoras-input-date,
-.crehoras-dropdown {
+.creconclusiones-input-time,
+.creconclusiones-textarea,
+.creconclusiones-input-date,
+.creconclusiones-dropdown {
   width: 90%;
   padding: 10px;
-  border: 2px solid #002B69 !important;
-  border-radius: 25px  !important;
+  border: 2px solid #002b69 !important;
+  border-radius: 25px !important;
   font-size: 16px;
   color: #2b3945;
 }
 
-.crehoras-input-time:focus,
-.crehoras-input-date:focus,
-.crehoras-textarea:focus,
-.crehoras-file:focus,
-.crehoras-dropdown:focus {
+.creconclusiones-input-time:focus,
+.creconclusiones-input-date:focus,
+.creconclusiones-textarea:focus,
+.creconclusiones-file:focus,
+.creconclusiones-dropdown:focus {
   border-color: #ff6600 !important;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-
-
-.crehoras-dropdown {
+.creconclusiones-dropdown {
   width: 85%;
-  border: 2px solid #002B69 !important;
+  border: 2px solid #002b69 !important;
   border-radius: 25px !important;
   align-items: center;
 }
 
-.crehoras-textarea {
+.creconclusiones-textarea {
   resize: auto;
   height: 100px;
 }
-/* Evidencias */
 
+/* Evidencias */
 .custom-file-upload {
   position: relative;
   display: inline-block;
   width: 100%;
 }
 
-.crehoras-file {
+.creconclusiones-file {
   align-items: center;
   width: 85%;
-  border: 2px solid #002B69 !important;
-  border-radius: 25px  !important;
+  border: 2px solid #002b69 !important;
+  border-radius: 25px !important;
   padding: 10px;
   font-size: 16px;
   position: relative;
 }
 
-.crehoras-file input[type="file"] {
+.creconclusiones-file input[type="file"] {
   display: none;
 }
 
-.crehoras-file label {
+.creconclusiones-file label {
   background-color: #002b69;
   color: white;
   padding: 10px 20px;
@@ -138,22 +135,19 @@
   display: none;
 }
 
-.crehoras-file label:hover {
+.creconclusiones-file label:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   transition: 0.3s;
 }
 
-.crehoras-file span {
+.creconclusiones-file span {
   margin-left: 10px;
   vertical-align: middle;
 }
 
-
-
-
 /* Boton */
-.crehoras-button {
+.creconclusiones-button {
   width: 40%;
   padding: 10px;
   background-color: #002b69 !important;
@@ -166,21 +160,21 @@
   transition: 0.3s;
 }
 
-.crehoras-button:hover {
+.creconclusiones-button:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   transition: 0.3s;
 }
 
 /* Añadir estilos para el botón deshabilitado */
-.crehoras-button:disabled {
+.creconclusiones-button:disabled {
   background-color: #999999 !important;
   cursor: not-allowed;
   transition: none;
 }
 
 /* Error Message */
-.error {
+.error-message {
   color: red;
   font-size: 12px;
   margin-top: 5px;
@@ -205,13 +199,13 @@
 }
 
 /* Textarea */
-.crehoras-textarea,
-.crehoras-input-date,
-.crehoras-input-time {
+.creconclusiones-textarea,
+.creconclusiones-input-date,
+.creconclusiones-input-time {
   width: 85%;
   padding: 10px;
   border: 1px solid #dee2e6;
-  border-radius: 25px;
+  border-radius: 20px;
   font-size: 16px;
   color: #2b3945;
   font-family: "Century Gothic", sans-serif;
@@ -219,7 +213,7 @@
   display: block;
 }
 
-.crehoras-textarea {
+.creconclusiones-textarea {
   resize: vertical;
   height: auto;
   border-radius: 20px;
@@ -230,68 +224,90 @@
 }
 
 /* Inputs Time and Date */
-.crehoras-input-date,
-.crehoras-input-time {
+.creconclusiones-input-date,
+.creconclusiones-input-time {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
 
-.crehoras-input-date::-webkit-inner-spin-button,
-.crehoras-input-time::-webkit-inner-spin-button {
+.creconclusiones-input-date::-webkit-inner-spin-button,
+.creconclusiones-input-time::-webkit-inner-spin-button {
   display: none;
 }
 
-.crehoras-input-date::-webkit-calendar-picker-indicator,
-.crehoras-input-time::-webkit-calendar-picker-indicator {
+.creconclusiones-input-date::-webkit-calendar-picker-indicator,
+.creconclusiones-input-time::-webkit-calendar-picker-indicator {
   color: #2b3945;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
-  .crehoras-content {
+  .creconclusiones-content {
     width: 40%;
   }
 }
 
 @media (max-width: 992px) {
-  .crehoras-content {
+  .creconclusiones-content {
     width: 50%;
   }
 }
 
 @media (max-width: 768px) {
-  .crehoras-content {
+  .creconclusiones-content {
     width: 70%;
   }
 
-  .crehoras-input,
-  .crehoras-textarea,
-  .crehoras-file,
-  .crehoras-dropdown,
-  .crehoras-button {
+  .creconclusiones-input,
+  .creconclusiones-textarea,
+  .creconclusiones-file,
+  .creconclusiones-dropdown,
+  .creconclusiones-button {
     width: 90%;
   }
 
-  .crehoras-divider {
+  .creconclusiones-divider {
     width: 60%;
   }
 }
 
 @media (max-width: 576px) {
-  .crehoras-content {
+  .creconclusiones-content {
     width: 90%;
   }
 
-  .crehoras-input,
-  .crehoras-textarea,
-  .crehoras-file,
-  .crehoras-dropdown,
-  .crehoras-button {
+  .creconclusiones-input,
+  .creconclusiones-textarea,
+  .creconclusiones-file,
+  .creconclusiones-dropdown,
+  .creconclusiones-button {
     width: 90%;
   }
 
-  .crehoras-divider {
+  .creconclusiones-divider {
     width: 70%;
   }
+}
+
+
+/*Animaciones para renderizar el rechazo*/
+
+.fade-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+.fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }

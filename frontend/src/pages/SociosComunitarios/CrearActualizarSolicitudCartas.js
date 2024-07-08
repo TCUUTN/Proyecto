@@ -5,7 +5,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { TiUserDelete, TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { BsFillSendPlusFill } from "react-icons/bs";
-import "./SolicitudCarta.css";
+import "./CrearActualizarSolicitudCartas.css";
 
 function SolicitudCartas() {
   const [currentPage, setCurrentPage] = useState(1);

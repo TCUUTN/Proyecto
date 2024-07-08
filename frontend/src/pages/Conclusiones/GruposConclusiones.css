@@ -1,0 +1,240 @@
+
+
+
+/* cARGA */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*Contiene todo */
+.materia-container-conclu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  padding-bottom: 70px;
+  gap: 20px;
+  color: #002b69;
+}
+
+
+/* Diseño para la pagina de la card de lista de grupos. Academicos */
+
+/* Filtros */
+.filters-acad-conclu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px; /* Ajusta el padding según sea necesario */
+  border-radius: 5px;
+  width: 80%; /* Ajusta el ancho según sea necesario */
+  margin: 20px auto;
+  border: 2px solid rgba(0, 44, 105, 0.212); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.filter-group-acad-conclu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.filter-input-acad-conclu,
+.filter-select-acad-conclu {
+  padding: 10px 20px; /* Ajusta el padding según sea necesario */
+  font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
+  border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
+  border-radius: 20px;
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  text-align: center;
+  color: #002b69;
+}
+
+.filter-input-acad-conclu::placeholder,
+.filter-select-acad-conclu {
+  color: #575656;
+}
+
+.filter-input-acad-conclu:focus,
+.filter-select-acad-conclu:focus {
+  border-color: #ff6600;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+/* Cards */
+
+.card-container-conclu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 20px auto;
+  width: 80%;
+  padding: 20px;
+  border: 2px solid rgba(0, 44, 105, 0.212); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-conclu {
+  background-color: white;
+  border: 1px solid rgba(0, 44, 105, 0.212);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 10px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header-conclu {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #002b69;
+  text-align: left;
+  border-bottom: 2px solid #ff6600 !important;
+  background-color: white !important;
+}
+
+.card-title-conclu {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #ff6600;
+  margin-top: 5px; 
+  padding-bottom: 5px;
+  text-align: center;
+
+}
+
+.card-content-conclu {
+  flex-grow: 1;
+}
+
+.card-content-conclu p {
+  margin: 5px 0;
+  font-size: 0.95em;
+  color: #575656;
+  text-align: left;
+}
+
+.card-footer-conclu {
+  background-color: white !important;
+  text-align: center;
+  border-top: none !important;
+}
+
+.card-footer-conclu p {
+  display: flex;
+  justify-content: space-between;
+  border-top: none;
+}
+
+.btn-view-group-conclu {
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: block;
+  margin: 10px auto 0;
+  cursor: pointer;
+  font-family: "Century Gothic", sans-serif;
+  transition: 0.3s;
+}
+
+.btn-view-group-conclu:hover {
+  background-color: #ff4500;
+  transition: 0.3s;
+}
+
+/*Paginacion*/
+
+.pagination-acad-conclu  {
+  display: flex; /* Usar flexbox para alinear elementos */
+  justify-content: center; /* Centrar elementos horizontalmente */
+  align-items: center; /* Centrar elementos verticalmente */
+  margin-bottom: 20px;
+}
+
+.pagination-acad-conclu  button {
+  background-color: #002B69;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1em;
+}
+.pagination-acad-conclu  span {
+  font-size: 1em;
+  margin: 0 10px;
+  color: #002B69;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+  .filters-acad-conclu {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .filter-group-acad-conclu {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .filter-input-acad-conclu,
+  .filter-select-acad-conclu {
+    width: 100%;
+  }
+
+  .card-container-conclu {
+    width: 100%;
+  }
+
+  .card-conclu {
+    width: 100%;
+  }
+
+  .pagination-acad-conclu button {
+    padding: 5px 10px;
+  }
+
+  .pagination-acad-conclu span {
+    font-size: 0.9em;
+  }
+}
+

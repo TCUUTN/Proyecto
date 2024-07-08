@@ -94,9 +94,11 @@
   align-items: center;
 }
 
-.user-icon {
+.user-icon-nav {
   color: #f66226;
   font-size: 24px;
+  vertical-align: middle; 
+  margin-top: -4px;
 }
 
 .navbar-toggle {
@@ -168,7 +170,7 @@
   transition: 0.5s;
 }
 
-.navbar-select:hover {
+.navbar-select option:hover {
   color: #f66226;
   transition: 0.5s;
 }

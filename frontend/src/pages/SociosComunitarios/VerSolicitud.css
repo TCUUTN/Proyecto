@@ -120,3 +120,33 @@
   cursor: not-allowed;
   transition: none;
 }
+
+/* Media query para responsividad */
+@media (max-width: 768px) {
+  .content-versolicart {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .versolicart-divider-vertical {
+    width: 100%;
+    height: 2px;
+    margin: 20px 0;
+  }
+
+  .left-versolicart,
+  .right-versolicart {
+    width: 100%;
+  }
+
+  .buttons-versolicart {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .back-button-versolicart,
+  .submit-button-versolicart {
+    width: 100%;
+    margin: 10px 0;
+  }
+}

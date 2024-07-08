@@ -3,13 +3,19 @@ const sequelize = require('../config/db'); // Ajusta la ruta según tu configura
 const Grupo = require('./Grupo');
 const Usuario = require('./Usuario'); // Asegúrate de tener este modelo definido
 
-const Grupos_Estudiantes_Grupo = sequelize.define('Grupos_Estudiantes_Grupo', {
+const Conclusion_Boleta = sequelize.define('Conclusion_Boleta', {
+  ConclusionId: {
+    type: DataTypes.MEDIUMINT.UNSIGNED,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    comment: 'Llave primaria de la tabla'
+  },
   Identificacion: {
     type: DataTypes.STRING(20),
     allowNull: false,
     defaultValue: '-',
-    primaryKey: true,
-    comment: 'Llave primaria de la tabla',
+    comment: 'Identificacion del estudiante que completa el formulario',
     references: {
       model: Usuario,
       key: 'Identificacion'
@@ -18,26 +24,61 @@ const Grupos_Estudiantes_Grupo = sequelize.define('Grupos_Estudiantes_Grupo', {
   GrupoId: {
     type: DataTypes.MEDIUMINT.UNSIGNED,
     allowNull: false,
-    primaryKey: true,
     comment: 'Identificador del Grupo',
     references: {
       model: Grupo,
       key: 'GrupoId'
     }
   },
-  Estado: {
-    type: DataTypes.ENUM('En Curso', 'Aprobado', 'Rechazado'),
+  Labor1: {
+    type: DataTypes.STRING(500),
     allowNull: false,
-    defaultValue: 'En Curso',
-    comment: 'Estado de Estudiante en el grupo'
+    defaultValue: '-',
+    comment: 'Labor 1'
   },
-  Progreso: {
-    type: DataTypes.ENUM('Nuevo', 'Continuidad', 'Prórroga'),
+  Labor2: {
+    type: DataTypes.STRING(500),
     allowNull: false,
-    defaultValue: 'Nuevo',
-    comment: 'Progreso del Estudiante en el grupo'
+    defaultValue: '-',
+    comment: 'Labor 2'
   },
-  ComentariosReprobado: {
+  Labor3: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Labor 3'
+  },
+  Labor4: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Labor 4'
+  },
+  Labor5: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Labor 5'
+  },
+  Labor6: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Labor 6'
+  },
+  Comentarios: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+    defaultValue: '-',
+    comment: 'Comentarios'
+  },
+  EstadoBoleta: {
+    type: DataTypes.ENUM('En Proceso', 'Aprobado', 'Rechazado'),
+    allowNull: false,
+    defaultValue: 'En Proceso',
+    comment: 'Estado de la Boleta del Estudiante'
+  },
+  MotivoRechazo: {
     type: DataTypes.STRING(250),
     allowNull: false,
     defaultValue: '-',
@@ -63,21 +104,21 @@ const Grupos_Estudiantes_Grupo = sequelize.define('Grupos_Estudiantes_Grupo', {
     comment: 'Último usuario que modificó la fila'
   }
 }, {
-  tableName: 'Grupos_Estudiantes_Grupo',
+  tableName: 'Conclusion_Boleta',
   timestamps: false
 });
 
 // Relaciones
-Grupos_Estudiantes_Grupo.belongsTo(Grupo, {
+Conclusion_Boleta.belongsTo(Grupo, {
   foreignKey: 'GrupoId',
   targetKey: 'GrupoId',
   onDelete: 'CASCADE'
 });
 
-Grupos_Estudiantes_Grupo.belongsTo(Usuario, {
+Conclusion_Boleta.belongsTo(Usuario, {
   foreignKey: 'Identificacion',
   targetKey: 'Identificacion',
   onDelete: 'CASCADE'
 });
 
-module.exports = Grupos_Estudiantes_Grupo;
+module.exports = Conclusion_Boleta;
