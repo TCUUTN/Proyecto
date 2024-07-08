@@ -173,7 +173,8 @@ function GruposAcademico() {
   };
 
   return (
-    <div className="materia-container">
+    <div className="materia-container-conclu">
+      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
@@ -181,6 +182,7 @@ function GruposAcademico() {
       )}
       <ToastContainer position="bottom-right" />
       <main>
+
         <div className="filters-acad">
           {selectedRole === "Administrativo" && (
             <>
@@ -303,7 +305,6 @@ function GruposAcademico() {
             ))}
           </div>
         )}
-
         {(selectedRole === "Académico" ||
           (selectedRole === "Administrativo" && grupos.length > 0)) && (
           <div className="pagination-acad">

@@ -3,7 +3,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import "./Materias.modulo.css";
+import "./GruposAcademico.css";
 
 function GruposAcademico() {
   const navigate = useNavigate();
@@ -139,7 +139,7 @@ function GruposAcademico() {
   };
 
   return (
-    <div className="materia-container">
+    <div className="materia-container-card">
       {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">

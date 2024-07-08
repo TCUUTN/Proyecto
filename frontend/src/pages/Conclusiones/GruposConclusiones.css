@@ -33,7 +33,7 @@
   }
 }
 /*Contiene todo */
-.materia-container {
+.materia-container-conclu {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,340 +42,12 @@
   gap: 20px;
   color: #002b69;
 }
-/* agreagr  y la carga */
-.sidebar-mater {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  width: 80%;
-  margin: 20px auto;
 
-}
-.mater-action {
-  display: flex;
-  align-items: center;
-  margin-left: 20%;
-}
-.add-mater {
-  display: flex;
-  align-items: center;
-  color: #002b69;
-  font-size: 25px;
-  text-decoration: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.icon-addMater {
-  margin-left: 10px;
-  font-size: 35px;
-}
-
-.mater-divider {
-  width: 2px;
-  height: 65px;
-  background: #ff6600;
-  margin: auto 0 auto 20px;
-}
-
-.bulk-upload-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0 10%; 
-}
-.title-mater {
-  color: #002b69;
-  font-size: 20px;
-  margin-bottom: 10px;
-  align-items: center;
-  font-family: "Brush-TipTerrence", cursive;
-  justify-content: center;
-  margin-left: 35%;
-}
-
-.bulk-upload-mater {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.upload-option-mater {
-  display: flex;
-  align-items: center;
-  color: #002b69;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.icon-othermat {
-  margin-right: 10px;
-  font-size: 20px;
-  color: #ff6600;
-}
-
-/*Main*/
-
-.main {
-  width: 100%;
-}
-.main-title {
-  color: #002b69;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/*Filtros*/
-.filters-mat {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  margin: 20px auto;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  gap: 20px;
-}
-
-.filter-group-mat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  min-width: 200px;
-}
-
-.filter-input-mat,
-.filter-select-mat {
-  padding: 10px 20px;
-  font-size: 18px;
-  border: 2px solid #002b69;
-  border-radius: 25px;
-  width: 100%;
-  text-align: center;
-  color: #002b69;
-}
-
-.filter-input-mat::placeholder,
-.filter-select-mat::placeholder {
-  color: #575656;
-}
-.filter-input-mat:focus,
-.filter-select-mat:focus {
-  border-color: #ff6600;
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
-}
-/* Tabla */
-.table-container-mat {
-  width: 80%;
-  margin: 10px auto; 
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px; 
-  padding: 10px; 
-}
-.mat-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.mat-thead th {
-  background-color: #002B69;
-  color: white;
-  padding: 10px;
-  text-align: center;
-}
-
-.mat-tbody td {
-  padding: 10px;
-  border: 1px solid #ddd; /* Bordes internos de las celdas */
-  text-align: center; 
-}
-
-.icon-btn-mat {
-  border: none;
-  cursor: pointer;
-  color: #ff6600;
-  font-size: 1.8em;
-  background-color: none;
-}
-
-.icon-btn-mat:hover {
-  color: #002b69;
-}
-
-
-/*Paginacion*/
-
-.pagination-mat {
-  display: flex; /* Usar flexbox para alinear elementos */
-  justify-content: center; /* Centrar elementos horizontalmente */
-  align-items: center; /* Centrar elementos verticalmente */
-  margin-bottom: 20px;
-}
-
-.pagination-mat button {
-  background-color: #002B69;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 5px;
-  font-size: 1em;
-}
-.pagination-mat  span {
-  font-size: 1em;
-  margin: 0 10px;
-  color: #002B69;
-}
-
-
-/* Media Queries para Responsividad */
-@media (max-width: 1024px) {
-  .sidebar-mater,
-  .filters-mat,
-  .table-container-mat {
-    width: 90%;
-  }
-
-  .mater-action {
-    margin-left: 0;
-    flex-direction: column;
-  }
-
-  .title-mater {
-    margin-left: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar-mater,
-  .filters-mat,
-  .table-container-mat {
-    width: 100%;
-    margin: 20px auto;
-  }
-
-  .add-mater {
-    font-size: 20px;
-  }
-
-  .icon-addMater {
-    font-size: 30px;
-  }
-
-  .mater-divider {
-    height: 50px;
-  }
-
-  .upload-option-mater {
-    font-size: 16px;
-  }
-
-  .icon-othermat {
-    font-size: 18px;
-  }
-
-  .filters-mat {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .filter-input-mat,
-  .filter-select-mat {
-    width: 100%;
-  }
-
-  .mat-table {
-    font-size: 14px;
-  }
-
-  .icon-btn-mat {
-    font-size: 1.5em;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar-mater {
-    width: 100%;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .add-mater {
-    font-size: 25px;
-  }
-
-  .icon-addMater {
-    font-size: 24px;
-  }
-  .mater-divider {
-    display: block; /* Asegúrate de que la línea sea visible */
-    width: 65%;
-    height: 2px;
-    margin: 20px 0; /* Ajustar el margen para pantallas pequeñas */
-  }
-  
-  .upload-option-mater {
-    font-size: 16px;
-  }
-
-  .icon-othermat {
-    font-size: 18px;
-  }
-
-  .filters-mat {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .filter-input-mat,
-  .filter-select-mat {
-    width: 100%;
-  }
-
-  .mat-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto; /* Permite desplazamiento horizontal */
-    font-size: 12px;
-  }
-
-  .mat-table th,
-  .mat-table td {
-    white-space: nowrap; /* Evita que el texto se ajuste a la línea */
-  }
-
-  .icon-btn-mat {
-    font-size: 1.2em;
-  }
-
-  .pagination-mat {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .pagination-mat button {
-    padding: 8px 15px;
-    margin: 5px 0;
-  }
-}
 
 /* Diseño para la pagina de la card de lista de grupos. Academicos */
 
 /* Filtros */
-.filters-acad {
+.filters-acad-conclu {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -388,15 +60,15 @@
   flex-wrap: wrap;
 }
 
-.filter-group-acad {
+.filter-group-acad-conclu {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 10px;
 }
 
-.filter-input-acad,
-.filter-select-acad {
+.filter-input-acad-conclu,
+.filter-select-acad-conclu {
   padding: 10px 20px; /* Ajusta el padding según sea necesario */
   font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
   border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
@@ -406,13 +78,13 @@
   color: #002b69;
 }
 
-.filter-input-acad::placeholder,
-.filter-select-acad {
+.filter-input-acad-conclu::placeholder,
+.filter-select-acad-conclu {
   color: #575656;
 }
 
-.filter-input-acad:focus,
-.filter-select-acad:focus {
+.filter-input-acad-conclu:focus,
+.filter-select-acad-conclu:focus {
   border-color: #ff6600;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
@@ -420,7 +92,7 @@
 
 /* Cards */
 
-.card-container {
+.card-container-conclu {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -431,7 +103,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.card {
+.card-conclu {
   background-color: white;
   border: 1px solid rgba(0, 44, 105, 0.212);
   border-radius: 5px;
@@ -444,7 +116,7 @@
   justify-content: space-between;
 }
 
-.card-header {
+.card-header-conclu {
   font-weight: bold;
   font-size: 1.1em;
   color: #002b69;
@@ -453,7 +125,7 @@
   background-color: white !important;
 }
 
-.card-title {
+.card-title-conclu {
   font-weight: bold;
   font-size: 1.1em;
   color: #ff6600;
@@ -463,30 +135,30 @@
 
 }
 
-.card-content {
+.card-content-conclu {
   flex-grow: 1;
 }
 
-.card-content p {
+.card-content-conclu p {
   margin: 5px 0;
   font-size: 0.95em;
   color: #575656;
   text-align: left;
 }
 
-.card-footer {
+.card-footer-conclu {
   background-color: white !important;
   text-align: center;
   border-top: none !important;
 }
 
-.card-footer p {
+.card-footer-conclu p {
   display: flex;
   justify-content: space-between;
   border-top: none;
 }
 
-.btn-view-group {
+.btn-view-group-conclu {
   background-color: #00bfff;
   color: white;
   border: none;
@@ -498,25 +170,24 @@
   margin: 10px auto 0;
   cursor: pointer;
   font-family: "Century Gothic", sans-serif;
-  transition: 2s;
+  transition: 0.3s;
 }
 
-.btn-view-group:hover {
+.btn-view-group-conclu:hover {
   background-color: #ff4500;
-  background-image: linear-gradient(to right, #ff8c00, #ff4500);
-  transition: 2s;
+  transition: 0.3s;
 }
 
 /*Paginacion*/
 
-.pagination-acad  {
+.pagination-acad-conclu  {
   display: flex; /* Usar flexbox para alinear elementos */
   justify-content: center; /* Centrar elementos horizontalmente */
   align-items: center; /* Centrar elementos verticalmente */
   margin-bottom: 20px;
 }
 
-.pagination-acad  button {
+.pagination-acad-conclu  button {
   background-color: #002B69;
   color: white;
   border: none;
@@ -526,7 +197,7 @@
   margin: 0 5px;
   font-size: 1em;
 }
-.pagination-acad  span {
+.pagination-acad-conclu  span {
   font-size: 1em;
   margin: 0 10px;
   color: #002B69;
@@ -534,171 +205,36 @@
 
 /* Estilos Responsivos */
 @media (max-width: 768px) {
-  .filters-acad {
+  .filters-acad-conclu {
     flex-direction: column;
     align-items: stretch;
+    width: 100%;
   }
 
-  .filter-group-acad {
+  .filter-group-acad-conclu {
     width: 100%;
     margin-bottom: 10px;
   }
 
-  .filter-input-acad,
-  .filter-select-acad {
+  .filter-input-acad-conclu,
+  .filter-select-acad-conclu {
     width: 100%;
   }
 
-  .card-container {
+  .card-container-conclu {
     width: 100%;
   }
 
-  .card {
+  .card-conclu {
     width: 100%;
   }
 
-  .pagination-acad button {
+  .pagination-acad-conclu button {
     padding: 5px 10px;
   }
 
-  .pagination-acad span {
+  .pagination-acad-conclu span {
     font-size: 0.9em;
   }
 }
 
-/*Diseño para la pagina de la lista de estudiantes. Academicos*/
-
-/* Filtros */
-.filters-est {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px; /* Ajusta el padding según sea necesario */
-  border-radius: 5px;
-  width: 80%; /* Ajusta el ancho según sea necesario */
-  margin: 20px auto;
-  border: 2px solid rgba(0, 44, 105, 0.212); 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.regred-action {
-  display: flex;
-  align-items: center;
-  margin-left: 20%;
-}
-
-/* Boton de regresar*/
-.back-button {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: #002b69;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.back-button:hover {
-  background-color: #f66226;
-  transition: 0.3s;
-}
-
-/* Linea */
-.estt-divider{
-  width: 2px;
-  height: 65px;
-  background: #ff6600;
-  margin: auto 0 auto 20px;
-}
-/* Filtros */
-
-.filter-group-est {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 10px;
-}
-
-.filter-input-est,
-.filter-select-est {
-  padding: 10px 20px; /* Ajusta el padding según sea necesario */
-  font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
-  border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
-  border-radius: 20px;
-  width: 250px; /* Ajusta el ancho según sea necesario */
-  text-align: center;
-  color: #002b69;
-}
-
-.filter-input-est::placeholder,
-.filter-select-est {
-  color: #575656;
-}
-
-.filter-input-est:focus,
-.filter-select-est:focus {
-  border-color: #ff6600;
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
-}
-
-/* Responsividad */
-
-/* Pantallas medianas y más pequeñas */
-@media (max-width: 768px) {
-  .filters-est {
-    flex-direction: column;
-    align-items: stretch;
-    width: 90%; /* Ajusta el ancho para pantallas medianas */
-  }
-  
-  .filter-group-est {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .filter-input-est,
-  .filter-select-est {
-    width: 100%;
-    max-width: 400px; /* Ajusta el ancho máximo para pantallas medianas */
-    margin: 5px 0; /* Añade margen entre los filtros */
-  }
-  
-  .estt-divider {
-    width: 100%;
-    height: 2px;
-    border-left: none;
-    border-top: 2px solid #ff6600; /* Cambia la línea a horizontal */
-    margin: 10px 0;
-  }
-  
-  .regred-action {
-    margin-left: 0;
-    margin-top: 20px;
-    justify-content: center; /* Centra el botón de regreso en pantallas medianas */
-  }
-}
-
-/* Pantallas pequeñas */
-@media (max-width: 480px) {
-  .filters-est {
-    width: 100%; /* Ajusta el ancho para pantallas pequeñas */
-    padding: 10px; /* Reduce el padding */
-  }
-  
-  .filter-input-est,
-  .filter-select-est {
-    font-size: 16px; /* Reduce el tamaño de la fuente */
-    padding: 8px 15px; /* Ajusta el padding */
-  }
-  
-  .back-button {
-    font-size: 0.85em; /* Reduce el tamaño del texto */
-    padding: 5px 15px; /* Ajusta el padding */
-  }
-  
-}
-
-/* */

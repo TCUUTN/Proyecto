@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Materias.modulo.css";
+import "./EstudiantesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
 
 function ListaEstudiantes() {
@@ -157,8 +157,8 @@ function ListaEstudiantes() {
   const selectedRole = sessionStorage.getItem("SelectedRole");
 
   return (
-    <div className="materia-container">
-      {/* Para la carga */}
+    <div className="materia-container-est">
+      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
