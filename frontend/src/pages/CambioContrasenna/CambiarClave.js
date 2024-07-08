@@ -78,10 +78,10 @@ function CambiarClave() {
   };
 
   const validateForm = (passwordErrors, newPassword, confirmPassword) => {
-    const isValid = 
-      passwordErrors.length === 0 && 
+    const isValid =
+      passwordErrors.length === 0 &&
       newPassword === confirmPassword &&
-      newPassword !== "" && 
+      newPassword !== "" &&
       confirmPassword !== "";
     setIsFormValid(isValid);
   };
@@ -106,7 +106,9 @@ function CambiarClave() {
       if (response.ok) {
         window.location.href = "/Home?cambioExitoso=true";
       } else {
-        setError("Error al cambiar la contraseña, por favor verificar los datos");
+        setError(
+          "Error al cambiar la contraseña, por favor verificar los datos"
+        );
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
@@ -134,7 +136,10 @@ function CambiarClave() {
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
               />
-              <span className="icon2-cambic " onClick={toggleShowCurrentPassword}>
+              <span
+                className="icon2-cambic "
+                onClick={toggleShowCurrentPassword}
+              >
                 {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -149,6 +154,7 @@ function CambiarClave() {
                 type={showNewPassword ? "text" : "password"}
                 id="newPassword"
                 name="newPassword"
+                className="inputs-cambic "
                 placeholder="Contraseña nueva"
                 value={newPassword}
                 onChange={handleNewPasswordChange}
@@ -160,7 +166,9 @@ function CambiarClave() {
             {passwordErrors.length > 0 && (
               <ul className="error-list">
                 {passwordErrors.map((error, index) => (
-                  <li key={index} className="error-message">{error}</li>
+                  <li key={index} className="error-message">
+                    {error}
+                  </li>
                 ))}
               </ul>
             )}
@@ -177,9 +185,13 @@ function CambiarClave() {
                 name="confirmPassword"
                 placeholder="Confirmar contraseña"
                 value={confirmPassword}
+                className="inputs-cambic "
                 onChange={handleConfirmPasswordChange}
               />
-              <span className="icon2-cambic " onClick={toggleShowConfirmPassword}>
+              <span
+                className="icon2-cambic "
+                onClick={toggleShowConfirmPassword}
+              >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -188,7 +200,11 @@ function CambiarClave() {
             )}
           </div>
 
-          <button type="submit" className="cambiar-button" disabled={!isFormValid}>
+          <button
+            type="submit"
+            className="cambiar-button"
+            disabled={!isFormValid}
+          >
             Guardar cambios
           </button>
         </form>
