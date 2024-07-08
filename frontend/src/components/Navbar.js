@@ -88,6 +88,9 @@ function Navbar() {
             return total + diff;
           }, 0);
 
+        // Guarda horasTotales en localStorage
+        localStorage.setItem('horasTotalesEstudiante', horasTotales);
+
           if (horasTotales >= 150) {
             setShowBoletaConclusion(true);
           }

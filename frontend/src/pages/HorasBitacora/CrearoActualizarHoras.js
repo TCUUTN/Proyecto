@@ -159,7 +159,7 @@ function CrearoActualizarHoras() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const requiredFields = [
       "Fecha",
       "DescripcionActividad",
@@ -167,7 +167,7 @@ function CrearoActualizarHoras() {
       "HoraInicio",
       "HoraFinal",
     ];
-
+  
     for (let field of requiredFields) {
       if (!formData[field]) {
         setError(`Por favor, ingrese ${field}.`);
@@ -175,7 +175,7 @@ function CrearoActualizarHoras() {
         return;
       }
     }
-
+  
     try {
       const fechaCheckResponse = await fetch("horas/horasporFecha", {
         method: "POST",
@@ -184,7 +184,7 @@ function CrearoActualizarHoras() {
         },
         body: JSON.stringify({ Fecha: formData.Fecha }),
       });
-
+  
       if (!fechaCheckResponse.ok) {
         toast.error(
           "Error al guardar horas debido a que ya se han registrado horas en la fecha seleccionada. Por favor, seleccione otra fecha."
@@ -195,27 +195,29 @@ function CrearoActualizarHoras() {
       setError("Error al verificar la fecha. Por favor, inténtelo de nuevo.");
       return;
     }
-
+  
     const horasPlanificacionTotal =
       parseFloat(localStorage.getItem("horasPlanificacionTotal")) || 0;
     const horasGiraTotal =
-      parseFloat(localStorage.getItem("maxHorasEjecucion")) || 0;
+      parseFloat(localStorage.getItem("horasGiraTotal")) || 0;
     const maxHorasPlanificacion =
       parseFloat(localStorage.getItem("maxHorasPlanificacion")) || 30;
     const maxHorasEjecucion =
       parseFloat(localStorage.getItem("maxHorasEjecucion")) || 120;
-
+  
     const { HoraInicio, HoraFinal, TipoActividad } = formData;
     const start = moment.tz(HoraInicio, "HH:mm", "America/Costa_Rica");
     const end = moment.tz(HoraFinal, "HH:mm", "America/Costa_Rica");
     const horasIngresadas = end.diff(start, "hours", true);
-
+  
     let newHorasPlanificacionTotal = horasPlanificacionTotal;
     let newHorasGiraTotal = horasGiraTotal;
-
+    let horasTotalesEstudiante =
+      parseFloat(localStorage.getItem("horasTotalesEstudiante")) || 0;
+  
     if (TipoActividad === "Planificacion") {
       newHorasPlanificacionTotal += horasIngresadas;
-
+  
       if (newHorasPlanificacionTotal <= 10) {
         localStorage.setItem(
           "horasPlanificacionTotal",
@@ -244,9 +246,11 @@ function CrearoActualizarHoras() {
         );
         return;
       }
+      horasTotalesEstudiante += horasIngresadas;
+      localStorage.setItem("horasTotalesEstudiante", horasTotalesEstudiante);
     } else {
       newHorasGiraTotal += horasIngresadas;
-
+  
       if (newHorasGiraTotal <= maxHorasEjecucion) {
         localStorage.setItem("horasGiraTotal", newHorasGiraTotal);
       } else {
@@ -259,10 +263,12 @@ function CrearoActualizarHoras() {
         );
         return;
       }
+      horasTotalesEstudiante += horasIngresadas;
+      localStorage.setItem("horasTotalesEstudiante", horasTotalesEstudiante);
     }
-
+  
     const dataToSend = { ...formData, BitacoraId: bitacoraId };
-
+  
     try {
       const response = await fetch("horas/crearOActualizarHoras", {
         method: "POST",
@@ -271,21 +277,21 @@ function CrearoActualizarHoras() {
         },
         body: JSON.stringify(dataToSend),
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
         const { BitacoraId: newBitacoraId } = responseData;
-
+  
         if (formData.Evidencias) {
           const formDataToSend = new FormData();
           formDataToSend.append("BitacoraId", newBitacoraId);
           formDataToSend.append("Evidencias", formData.Evidencias);
-
+  
           const evidenceResponse = await fetch("horas/subirAdjunto", {
             method: "POST",
             body: formDataToSend,
           });
-
+  
           if (!evidenceResponse.ok) {
             setError(
               "Error al subir las evidencias. Por favor, inténtelo de nuevo."
@@ -293,7 +299,7 @@ function CrearoActualizarHoras() {
             return;
           }
         }
-
+  
         toast.success("La actividad se ha registrado correctamente");
         sessionStorage.removeItem("BitacoraId");
         navigate("/VistaHorasEstudiantes");
@@ -306,6 +312,7 @@ function CrearoActualizarHoras() {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
+  
 
   const handleBackClick = () => {
     sessionStorage.removeItem("BitacoraId");

@@ -108,7 +108,7 @@ function VistaConclusionesGrupo() {
 
   const handleEditClick = (conclusionId) => {
     localStorage.setItem("ConclusionIdSeleccionado", conclusionId);
-    navigate("/CrearoActualizarConclusiones");
+    navigate("/CrearActualizarConclusiones");
   };
 
   return (
@@ -175,6 +175,7 @@ function VistaConclusionesGrupo() {
                       <td>{`${conclusion.Usuario.Nombre} ${conclusion.Usuario.Apellido1} ${conclusion.Usuario.Apellido2}`}</td>
                       {selectedRole === "Académico" && <td>{conclusion.EstadoBoleta}</td>}
                       <td>
+                        
                         <button
                           className="icon-btn-acade"
                           onClick={() => handleEditClick(conclusion.ConclusionId)}

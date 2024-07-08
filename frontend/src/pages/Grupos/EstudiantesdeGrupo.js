@@ -8,12 +8,13 @@ import { FaChevronLeft } from "react-icons/fa6";
 
 function ListaEstudiantes() {
   const navigate = useNavigate();
-  const  grupoId  = localStorage.getItem("GrupoSeleccionado");
-
+  const grupoId = localStorage.getItem("GrupoSeleccionado");
   const [estudiantes, setEstudiantes] = useState([]);
   const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
   const [nombreFilter, setNombreFilter] = useState("");
   const [identificacionFilter, setIdentificacionFilter] = useState("");
+  const [estadoFilter, setEstadoFilter] = useState("Todos");
+  const [progresoFilter, setProgresoFilter] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false); // Estado de carga
   const estudiantesPerPage = 10;
@@ -49,16 +50,28 @@ function ListaEstudiantes() {
   const handleNombreFilterChange = (e) => {
     const value = e.target.value;
     setNombreFilter(value);
-    applyFilters(value, identificacionFilter);
+    applyFilters(value, identificacionFilter, estadoFilter, progresoFilter);
   };
 
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
     setIdentificacionFilter(value);
-    applyFilters(nombreFilter, value);
+    applyFilters(nombreFilter, value, estadoFilter, progresoFilter);
   };
 
-  const applyFilters = (nombre, identificacion) => {
+  const handleEstadoFilterChange = (e) => {
+    const value = e.target.value;
+    setEstadoFilter(value);
+    applyFilters(nombreFilter, identificacionFilter, value, progresoFilter);
+  };
+
+  const handleProgresoFilterChange = (e) => {
+    const value = e.target.value;
+    setProgresoFilter(value);
+    applyFilters(nombreFilter, identificacionFilter, estadoFilter, value);
+  };
+
+  const applyFilters = (nombre, identificacion, estado, progreso) => {
     let filtered = estudiantes;
 
     if (nombre) {
@@ -74,6 +87,16 @@ function ListaEstudiantes() {
         estudiante.Usuario.Identificacion.toLowerCase().includes(
           identificacion.toLowerCase()
         )
+      );
+    }
+
+    if (estado !== "Todos") {
+      filtered = filtered.filter((estudiante) => estudiante.Estado === estado);
+    }
+
+    if (progreso !== "Todos") {
+      filtered = filtered.filter(
+        (estudiante) => estudiante.Progreso === progreso
       );
     }
 
@@ -101,35 +124,71 @@ function ListaEstudiantes() {
     }
   };
 
-  const handleViewDetails = (identificacion) => {
+  const handleViewDetails = (identificacion, estado) => {
     localStorage.setItem("IdentificacionHoras", identificacion);
+    localStorage.setItem("EstadoHoras", estado);
     navigate("/VistaHorasEstudiantes");
   };
 
+  const handleFinalizarCuatrimestre = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/grupos/FinalizarCuatrimestre/${grupoId}`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        toast.success(
+          "El cuatrimestre ha cerrado correctamente y los estados de los estudiantes han sido ajustados de acuerdo a lo establecido por el reglamento de TCU."
+        );
+        fetchEstudiantes(); // Refresh the list
+        setLoading(false);
+      } else {
+        toast.error("Error al finalizar el cuatrimestre", response);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error al finalizar el cuatrimestre:", error);
+      toast.error("Error al finalizar el cuatrimestre");
+      setLoading(false);
+    }
+  };
+
+  const selectedRole = sessionStorage.getItem("SelectedRole");
+
   return (
     <div className="materia-container">
-      {/*Para la carga */}
+      {/* Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
-      {/**/}
+      {/* Filtros y botón */}
       <main>
-        {/* Filtros y boton */}
         <div className="filters-est">
-          {/* Boton de regresar */}
+          {/* Botón de regresar */}
           <div className="regred-action">
-            <button onClick={() => navigate("/GruposAcademico")}
-              className="back-button" >
+            <button
+              onClick={() => navigate("/GruposAcademico")}
+              className="back-button"
+            >
               <FaChevronLeft />
               Regresar
             </button>
+            {selectedRole === "Académico" && (
+              <button
+                onClick={handleFinalizarCuatrimestre}
+                className="back-button"
+              >
+                Finalizar Cuatrimestre
+              </button>
+            )}
           </div>
           <div className="estt-divider" />
-             {/*Filtros*/}
-             <div className="filter-group-est">
+          {/* Filtros */}
+          <div className="filter-group-est">
             <label className="filter-label-est" htmlFor="Nombre-Busqueda">
               Buscar por Nombre Completo
             </label>
@@ -159,46 +218,91 @@ function ListaEstudiantes() {
               onChange={handleIdentificacionFilterChange}
             />
           </div>
+
+          <div className="filter-group-est">
+            <label className="filter-label-est" htmlFor="Estado-Filtro">
+              Filtrar por Estado
+            </label>
+            <select
+              id="Estado-Filtro"
+              className="filter-input-est"
+              value={estadoFilter}
+              onChange={handleEstadoFilterChange}
+            >
+              <option value="Todos">Todos</option>
+              <option value="En Curso">En Curso</option>
+              <option value="Aprobado">Aprobado</option>
+              <option value="Reprobado">Reprobado</option>
+            </select>
+          </div>
+
+          <div className="filter-group-est">
+            <label className="filter-label-est" htmlFor="Progreso-Filtro">
+              Filtrar por Progreso
+            </label>
+            <select
+              id="Progreso-Filtro"
+              className="filter-input-est"
+              value={progresoFilter}
+              onChange={handleProgresoFilterChange}
+            >
+              <option value="Todos">Todos</option>
+              <option value="Nuevo">Nuevo</option>
+              <option value="Continuidad">Continuidad</option>
+              <option value="Prórroga">Prórroga</option>
+            </select>
+          </div>
         </div>
 
         {/* Tabla */}
         <div className="table-container-mat">
-        <table className="mat-table">
-          <thead className="mat-thead">
-            <tr>
-              <th>Nombre Completo</th>
-              <th>Correo Electrónico</th>
-              <th>Identificación</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="mat-tbody">
-            {currentEstudiantes.map((estudiante, index) => (
-              <tr key={index}>
-                <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
-                <td>{estudiante.Usuario.CorreoElectronico}</td>
-                <td>{estudiante.Usuario.Identificacion}</td>
-                <td>
-                  <button 
-                    className="icon-btn-mat"
-                    onClick={() => handleViewDetails(estudiante.Usuario.Identificacion)}>
-                    <FaInfoCircle />
-                  </button>
-                </td>
+          <table className="mat-table">
+            <thead className="mat-thead">
+              <tr>
+                <th>Nombre Completo</th>
+                <th>Correo Electrónico</th>
+                <th>Identificación</th>
+                <th>Estado del Estudiante</th>
+                <th>Progreso del Estudiante</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* La paginacion */}
-        <div className="pagination-mat">
-          <button onClick={handlePreviousPage}>Anterior</button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button onClick={handleNextPage}>Siguiente</button>
+            </thead>
+            <tbody className="mat-tbody">
+              {currentEstudiantes.map((estudiante, index) => (
+                <tr key={index}>
+                  <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
+                  <td>{estudiante.Usuario.CorreoElectronico}</td>
+                  <td>{estudiante.Usuario.Identificacion}</td>
+                  <td>{estudiante.Estado}</td>
+                  <td>{estudiante.Progreso}</td>
+                  <td>
+                    {estudiante.Estado !== "Reprobado" ? (
+                      <button
+                        className="icon-btn-mat"
+                        onClick={() =>
+                          handleViewDetails(
+                            estudiante.Usuario.Identificacion,
+                            estudiante.Estado
+                          )
+                        }
+                      >
+                        <FaInfoCircle />
+                      </button>
+                    ) : null}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* La paginación */}
+          <div className="pagination-mat">
+            <button onClick={handlePreviousPage}>Anterior</button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button onClick={handleNextPage}>Siguiente</button>
+          </div>
         </div>
-        </div>
-         {/**/}
       </main>
     </div>
   );

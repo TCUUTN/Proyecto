@@ -13,9 +13,13 @@ function VistaHorasEstudiante() {
   const [materias, setMaterias] = useState([]);
   const [filteredApprovedMaterias, setFilteredApprovedMaterias] = useState([]);
   const [filteredRejectedMaterias, setFilteredRejectedMaterias] = useState([]);
-  const [descripcionActividadFilter, setDescripcionActividadFilter] =useState("");
+  const [descripcionActividadFilter, setDescripcionActividadFilter] =
+    useState("");
   const [tipoFilter, setTipoFilter] = useState("");
-  const [descripcionActividadFilterRejected, setDescripcionActividadFilterRejected,] = useState("");
+  const [
+    descripcionActividadFilterRejected,
+    setDescripcionActividadFilterRejected,
+  ] = useState("");
   const [tipoFilterRejected, setTipoFilterRejected] = useState("");
   const [fechaFilter, setFechaFilter] = useState("");
   const [fechaFilterRejected, setFechaFilterRejected] = useState("");
@@ -23,6 +27,7 @@ function VistaHorasEstudiante() {
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
   const identificacion = localStorage.getItem("IdentificacionHoras");
+  const estado = localStorage.getItem("EstadoHoras");
   const selectedRole = sessionStorage.getItem("SelectedRole");
   useEffect(() => {
     if (identificacion) {
@@ -48,30 +53,30 @@ function VistaHorasEstudiante() {
       if (response.ok) {
         const data = await response.json();
         const fileName = encodeURIComponent(data);
-        
+
         // Obtener el contenido del archivo
         const fileResponse = await fetch(`/${fileName}`);
         if (fileResponse.ok) {
           const blob = await fileResponse.blob();
           const url = window.URL.createObjectURL(blob);
-          
+
           // Crear un enlace temporal para la descarga del archivo
           const a = document.createElement("a");
           a.href = url;
           a.download = data;
-  
+
           // Agregar el enlace al DOM y hacer clic en él
           document.body.appendChild(a);
           a.click();
-  
+
           // Eliminar el enlace del DOM y revocar el objeto URL
           setTimeout(() => {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
-  
+
             // Solicitar la eliminación del archivo del servidor
             fetch(`/horas/eliminarAdjunto/${fileName}`, {
-              method: "DELETE"
+              method: "DELETE",
             });
           }, 100); // 100 milisegundos de retraso para asegurar que la descarga haya comenzado
         } else {
@@ -84,10 +89,8 @@ function VistaHorasEstudiante() {
       console.error("Error al manejar la descarga del archivo:", error);
     }
   };
-  
-  
-  
- // Función para obtener las horas del estudiante
+
+  // Función para obtener las horas del estudiante
   const fetchHoras = async () => {
     try {
       const grupoId = await fetchGrupoId(identificacion);
@@ -98,8 +101,8 @@ function VistaHorasEstudiante() {
         if (response.ok) {
           const data = await response.json();
 
-            // Ordenar las materias de manera que las más recientes aparezcan primero
-          data.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha)); 
+          // Ordenar las materias de manera que las más recientes aparezcan primero
+          data.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
 
           setMaterias(data);
           setFilteredApprovedMaterias(
@@ -248,6 +251,8 @@ function VistaHorasEstudiante() {
   };
 
   const handleViewDetails = () => {
+    localStorage.removeItem("EstadoHoras");
+    localStorage.removeItem("IdentificacionHoras");
     navigate("/ListaEstudiantes");
   };
 
@@ -283,7 +288,7 @@ function VistaHorasEstudiante() {
               <FaChevronLeft className="icon-horasiRegresar" /> Regresar
             </button>
           )}
-          {selectedRole === "Estudiante" && (
+          {selectedRole === "Estudiante" && estado !== "Aprobado" && (
             <button className="add-horasi" onClick={handleButtonClick}>
               Agregar Actividades <IoMdAddCircle className="icon-horasi" />
             </button>
@@ -357,7 +362,8 @@ function VistaHorasEstudiante() {
                         <th>Hora de Inicio</th>
                         <th>Hora Final</th>
                         <th>Evidencia</th>
-                        {selectedRole === "Académico" && <th>Acciones</th>}
+                        {selectedRole === "Académico" &&
+                          estado !== "Aprobado" && <th>Rechazar Horas</th>}
                       </tr>
                     </thead>
                     <tbody className="apro-tbody">
@@ -385,18 +391,19 @@ function VistaHorasEstudiante() {
                               "No se presentó ninguna evidencia"
                             )}
                           </td>
-                          {selectedRole === "Académico" && (
-                            <td>
-                              <button
-                                className="icon-btn-acade"
-                                onClick={() =>
-                                  handleEditClick(materia.BitacoraId)
-                                }
-                              >
-                                <BiSolidCommentCheck />
-                              </button>
-                            </td>
-                          )}
+                          {selectedRole === "Académico" &&
+                            estado !== "Aprobado" && (
+                              <td>
+                                <button
+                                  className="icon-btn-acade"
+                                  onClick={() =>
+                                    handleEditClick(materia.BitacoraId)
+                                  }
+                                >
+                                  <BiSolidCommentCheck />
+                                </button>
+                              </td>
+                            )}
                         </tr>
                       ))}
                     </tbody>
@@ -495,7 +502,8 @@ function VistaHorasEstudiante() {
                         <th>Descripción de la Actividad</th>
                         <th>Tipo de Actividad</th>
                         <th>Comentarios de Rechazo</th>
-                        {selectedRole === "Estudiante" && <th>Acciones</th>}
+                        {selectedRole === "Estudiante" &&
+                          estado !== "Aprobado" && <th>Modificar</th>}
                       </tr>
                     </thead>
                     <tbody className="apro-tbody">
@@ -505,18 +513,19 @@ function VistaHorasEstudiante() {
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
                           <td>{materia.ComentariosRechazo}</td>
-                          {selectedRole === "Estudiante" && (
-                            <td>
-                              <button
-                                className="icon-btn-acade"
-                                onClick={() =>
-                                  handleEditClick2(materia.BitacoraId)
-                                }
-                              >
-                                <FaEdit />
-                              </button>
-                            </td>
-                          )}
+                          {selectedRole === "Estudiante" &&
+                            estado !== "Aprobado" && (
+                              <td>
+                                <button
+                                  className="icon-btn-acade"
+                                  onClick={() =>
+                                    handleEditClick2(materia.BitacoraId)
+                                  }
+                                >
+                                  <FaEdit />
+                                </button>
+                              </td>
+                            )}
                         </tr>
                       ))}
                     </tbody>
