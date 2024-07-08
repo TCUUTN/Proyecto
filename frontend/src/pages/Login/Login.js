@@ -107,7 +107,7 @@ function Login() {
               id="username"
               name="username"
                className="login-input"
-              placeholder="Nombre de usuario"
+              placeholder="Correo Institucional"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />

@@ -209,7 +209,7 @@ function App() {
               path="/CrearActualizarConclusiones"
               element={
 
-                <ProtectedRoute allowedRoles={["Estudiante"]}>
+                <ProtectedRoute allowedRoles={["Administrativo","Académico","Estudiante"]}>
                   <CrearActualizarConclusiones />
                 </ProtectedRoute>
               }

@@ -120,7 +120,7 @@ function VistaConclusionesGrupo() {
 
   const handleEditClick = (conclusionId) => {
     localStorage.setItem("ConclusionIdSeleccionado", conclusionId);
-    navigate("/CrearoActualizarConclusiones");
+    navigate("/CrearActualizarConclusiones");
   };
 
   return (
@@ -213,6 +213,7 @@ function VistaConclusionesGrupo() {
                         <td>{conclusion.EstadoBoleta}</td>
                       )}
                       <td>
+                        
                         <button
                           className="icon-btn-mat"
                           onClick={() =>

@@ -181,6 +181,8 @@ const CrearActualizarUsuario = () => {
     console.log("Form Data to be submitted:", payload);
 
     try {
+
+      console.log(JSON.stringify(payload))
       const response = await fetch("/usuarios/crearOActualizarUsuario", {
         method: "POST",
         headers: {

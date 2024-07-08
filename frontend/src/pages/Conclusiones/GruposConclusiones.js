@@ -14,14 +14,27 @@ function GruposAcademico() {
   const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
   const [annoFilter, setAnnoFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false); // Estado de carga
+  const [loading, setLoading] = useState(false);
   const gruposPerPage = 10;
-  const [uniqueYears, setUniqueYears] = useState([]);
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
   const identificacion = sessionStorage.getItem("Identificacion");
+  const selectedRole = sessionStorage.getItem("SelectedRole");
+  const currentYear = new Date().getFullYear();
+  const yearsOptions = [currentYear - 1, currentYear, currentYear + 1];
+  let currentGrupos = filteredGrupos.slice(
+    (currentPage - 1) * gruposPerPage,
+    currentPage * gruposPerPage
+  );
 
   useEffect(() => {
-    fetchGrupos();
+    console.log(selectedRole);
+    if (selectedRole === "Administrativo") {
+      // Aquí puedes hacer lo necesario para configurar la búsqueda específica del administrativo
+      // Por ejemplo, limpiar otros filtros y no cargar grupos automáticamente
+      // O esperar a que el usuario haga clic en un botón de búsqueda
+    } else {
+      fetchGrupos();
+    }
   }, []);
 
   const fetchGrupos = async () => {
@@ -38,8 +51,6 @@ function GruposAcademico() {
 
         setGrupos(filteredData);
         setFilteredGrupos(filteredData);
-        const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
-        setUniqueYears(years.sort((a, b) => a - b));
       } else if (response.status === 404) {
         console.error("El Académico no tiene grupos a cargo");
         toast.error("El Académico no tiene grupos a cargo");
@@ -113,15 +124,8 @@ function GruposAcademico() {
     setCurrentPage(1); // Reset to first page on filter change
   };
 
-  const indexOfLastGrupo = currentPage * gruposPerPage;
-  const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage;
-  const currentGrupos = filteredGrupos.slice(
-    indexOfFirstGrupo,
-    indexOfLastGrupo
-  );
-  const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
-
   const handleNextPage = () => {
+    const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
@@ -138,6 +142,36 @@ function GruposAcademico() {
     navigate("/VistaConclusionesGrupo");
   };
 
+  const handleBuscarClick = async () => {
+    try {
+      const requestBody = JSON.stringify({
+        Anno: annoFilter,
+        Cuatrimestre: cuatrimestreFilter,
+        Sede: sedeFilter,
+      });
+
+      const response = await fetch("/grupos/ConclusionesPorBusqueda", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: requestBody,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGrupos(data);
+        setFilteredGrupos(data);
+      } else {
+        console.error("Error al buscar grupos:", response.statusText);
+        toast.error("Error al buscar grupos");
+      }
+    } catch (error) {
+      console.error("Error al buscar grupos:", error);
+      toast.error("Error al buscar grupos");
+    }
+  };
+
   return (
     <div className="materia-container-conclu">
       {/*Para la carga */}
@@ -147,128 +181,141 @@ function GruposAcademico() {
         </div>
       )}
       <ToastContainer position="bottom-right" />
-      {/**/}
       <main>
-        {/* Filtros */}
-        <div className="filters-acad-conclu">
-          <div className="filter-group-acad-conclu">
-            <label
-              className="filter-label-acad-conclu"
-              htmlFor="CodigoMateria-Busqueda"
-            >
-              Buscar por Código de Materia
-            </label>
-            <input
-              id="CodigoMateria-Busqueda"
-              type="text"
-              placeholder="Código de Materia"
-              className="filter-input-acad-conclu"
-              value={codigoMateriaFilter}
-              onChange={handleCodigoMateriaFilterChange}
-            />
-          </div>
 
-          <div className="filter-group-acad-conclu">
-            <label
-              className="filter-label-acad-conclu"
-              htmlFor="NombreProyecto-Busqueda"
-            >
-              Buscar por Nombre de Proyecto
-            </label>
-            <input
-              id="NombreProyecto-Busqueda"
-              type="text"
-              placeholder="Nombre de Proyecto"
-              className="filter-input-acad-conclu"
-              value={nombreProyectoFilter}
-              onChange={handleNombreProyectoFilterChange}
-            />
-          </div>
-
-          <div className="filter-group-acad-conclu">
-            <label
-              className="filter-label-acad-conclu"
-              htmlFor="Cuatrimestre-Busqueda"
-            >
-              Cuatrimestre
-            </label>
-            <select
-              id="Cuatrimestre-Busqueda"
-              className="filter-select-acad-conclu"
-              value={cuatrimestreFilter}
-              onChange={handleCuatrimestreFilterChange}
-            >
-              <option value="">Cuatrimestre</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-
-          <div className="filter-group-acad-conclu">
-            <label className="filter-label-acad-conclu" htmlFor="Anno-Busqueda">
-              Año
-            </label>
-            <select
-              id="Anno-Busqueda"
-              className="filter-select-acad-conclu"
-              value={annoFilter}
-              onChange={handleAnnoFilterChange}
-            >
-              <option value="">Año</option>
-              {uniqueYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/*Tarjetitas */}
-        <div className="card-container-conclu">
-          {currentGrupos.map((grupo) => (
-            <div className="card-conclu" key={grupo.GrupoId}>
-              <div className="card-header-conclu">{grupo.CodigoMateria}</div>
-              <div className="card-title-conclu">
-                {grupo.Grupos_TipoGrupo.NombreProyecto}
-              </div>
-              <div className="card-content-conclu">
-                <p>
-                  <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
-                </p>
-                <p>
-                  <strong>Grupo:</strong> {grupo.NumeroGrupo}
-                </p>
-                <p>
-                  <strong>Horario:</strong> {grupo.Horario}
-                </p>
-                <p>
-                  <strong>Sede: </strong>
-                  {grupo.Sede} &nbsp;&nbsp;&nbsp; <strong>Aula: </strong>
-                  {grupo.Aula}
-                </p>
-              </div>
-              <div className="card-footer-conclu">
-                <button
-                  className="btn-view-group-conclu"
-                  onClick={() => handleLista(grupo.GrupoId)}
+        <div className="filters-acad">
+          {selectedRole === "Administrativo" && (
+            <>
+              <div className="filter-group-acad">
+                <label className="filter-label-acad" htmlFor="Anno-Busqueda">
+                  Año
+                </label>
+                <select
+                  id="Anno-Busqueda"
+                  className="filter-select-acad"
+                  value={annoFilter}
+                  onChange={handleAnnoFilterChange}
                 >
-                  Ver Grupo
-                </button>
+                  <option value="">Año</option>
+                  {yearsOptions.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-          ))}
+
+              <div className="filter-group-acad">
+                <label
+                  className="filter-label-acad"
+                  htmlFor="Cuatrimestre-Busqueda"
+                >
+                  Cuatrimestre
+                </label>
+                <select
+                  id="Cuatrimestre-Busqueda"
+                  className="filter-select-acad"
+                  value={cuatrimestreFilter}
+                  onChange={handleCuatrimestreFilterChange}
+                >
+                  <option value="">Cuatrimestre</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+
+              <button className="btn-buscar" onClick={handleBuscarClick}>
+                Buscar
+              </button>
+            </>
+          )}
         </div>
 
-        {/* La paginacion */}
-        <div className="pagination-acad-conclu">
-          <button onClick={handlePreviousPage}>Anterior</button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button onClick={handleNextPage}>Siguiente</button>
-        </div>
-        {/**/}
+        {selectedRole === "Académico" && (
+          <div className="card-container">
+            {currentGrupos.map((grupo) => (
+              <div className="card" key={grupo.GrupoId}>
+                <div className="card-header">{grupo.CodigoMateria}</div>
+                <div className="card-title">
+                  {grupo.Grupos_TipoGrupo.NombreProyecto}
+                </div>
+                <div className="card-content">
+                  <p>
+                    <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
+                  </p>
+                  <p>
+                    <strong>Grupo:</strong> {grupo.NumeroGrupo}
+                  </p>
+                  <p>
+                    <strong>Horario:</strong> {grupo.Horario}
+                  </p>
+                  <p>
+                    <strong>Sede: </strong>
+                    {grupo.Sede} &nbsp;&nbsp;&nbsp; <strong>Aula: </strong>
+                    {grupo.Aula}
+                  </p>
+                </div>
+                <div className="card-footer">
+                  <button
+                    className="btn-view-group"
+                    onClick={() => handleLista(grupo.GrupoId)}
+                  >
+                    Ver Grupo
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {selectedRole === "Administrativo" && grupos.length > 0 && (
+          <div className="card-container">
+            {currentGrupos.map((grupo) => (
+              <div className="card" key={grupo.GrupoId}>
+                <div className="card-header">{grupo.CodigoMateria}</div>
+                <div className="card-title">
+                  {grupo.Grupos_TipoGrupo.NombreProyecto}
+                </div>
+                <div className="card-content">
+                  <p>
+                    <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
+                  </p>
+                  <p>
+                    <strong>Grupo:</strong> {grupo.NumeroGrupo}
+                  </p>
+                  <p>
+                    <strong>Horario:</strong> {grupo.Horario}
+                  </p>
+                  <p>
+                    {sedeFilter === "Todas" && <strong>Sede: </strong>}
+                    {grupo.Sede} &nbsp;&nbsp;&nbsp; <strong>Aula: </strong>
+                    {grupo.Aula}
+                  </p>
+                </div>
+                <div className="card-footer">
+                  <button
+                    className="btn-view-group"
+                    onClick={() => handleLista(grupo.GrupoId)}
+                  >
+                    Ver Grupo
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {(selectedRole === "Académico" ||
+          (selectedRole === "Administrativo" && grupos.length > 0)) && (
+          <div className="pagination-acad">
+            <button onClick={handlePreviousPage}>Anterior</button>
+            <span>
+              Página {currentPage} de{" "}
+              {Math.ceil(filteredGrupos.length / gruposPerPage)}
+            </span>
+            <button onClick={handleNextPage}>Siguiente</button>
+          </div>
+        )}
       </main>
     </div>
   );

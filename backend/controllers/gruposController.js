@@ -2,6 +2,7 @@ const pool = require("../config/db");
 const Grupo = require("../models/Grupo");
 const TipoGrupo = require("../models/TipoGrupo");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
+const Horas = require("../models/HorasBitacora")
 const Usuario = require('../models/Usuario');
 const BoletaConclusion = require('../models/ConclusionBoleta');
 const { Op } = require('sequelize');
@@ -138,7 +139,9 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
     const estudianteGrupo = await GruposEstudiantes.findOne({
       where: {
         Identificacion: Identificacion,
-        Estado: "En Curso",
+        Estado: {
+          [Op.or]: ["En Curso", "Aprobado"],
+        },
       },
     });
 
@@ -160,7 +163,7 @@ const getListaEstudiantes = async (req, res) => {
       where: {
         GrupoId: GrupoId,
       },
-      attributes: [],
+      attributes: ['Estado','Progreso'],
       include: [
         { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2', 'CorreoElectronico', 'Identificacion'] },
       ],
@@ -451,6 +454,171 @@ const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
   }
 };
 
+const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
+  try {
+    const { Anno, Cuatrimestre, Sede } = req.body;
+    const whereClause = {
+      Anno: Anno,
+      Cuatrimestre: Cuatrimestre,
+    };
+
+    if (Sede !== 'Todas') {
+      whereClause.Sede = Sede;
+    }
+
+    const grupos = await Grupo.findAll({
+      where: whereClause,
+      include: [
+        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+      ],
+    });
+
+    if (grupos.length === 0) {
+      return res.status(404).json({ error: "No hay grupos para este periodo" });
+    }
+
+    const grupoIds = grupos.map(grupo => grupo.GrupoId);
+
+    const boletas = await BoletaConclusion.findAll({
+      where: {
+        EstadoBoleta: "Aprobado",
+        GrupoId: {
+          [Op.in]: grupoIds,
+        },
+      },
+      attributes: ['GrupoId'],
+    });
+
+    const grupoIdsConBoleta = boletas.map(boleta => boleta.GrupoId);
+
+    const gruposAprobadosConBoleta = grupos.filter(grupo =>
+      grupoIdsConBoleta.includes(grupo.GrupoId)
+    );
+
+    if (gruposAprobadosConBoleta.length === 0) {
+      return res.status(404).json({ error: "No hay Boletas de conclusion para este periodo" });
+    }
+
+    res.status(200).json(gruposAprobadosConBoleta);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+const FinalizarCuatrimestre = async (req, res) => {
+  try {
+    const { GrupoId } = req.params;
+
+    // Traer todos los GruposEstudiantes relacionados a ese grupo
+    const estudiantesGrupo = await GruposEstudiantes.findAll({
+      where: { GrupoId: GrupoId }
+    });
+
+    if (!estudiantesGrupo || estudiantesGrupo.length === 0) {
+      return res.status(404).json({ error: "No se encontraron estudiantes en el grupo" });
+    }
+
+    for (const estudiante of estudiantesGrupo) {
+      if (estudiante.Estado === "En Curso") {
+        const horasAprobadas = await Horas.findAll({
+          where: {
+            Identificacion: estudiante.Identificacion,
+            EstadoHoras: "Aprobado"
+          },
+          attributes: [
+            'TipoActividad',
+            'HoraInicio',
+            'HoraFinal',
+          ]
+        });
+
+        // Si no hay registros de horas, marcar como reprobado
+        if (!horasAprobadas || horasAprobadas.length === 0) {
+          await estudiante.update({
+            Estado: "Reprobado",
+            ComentariosReprobado: "El estudiante no subió registro alguno de actividades, por lo tanto no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad"
+          });
+          continue;
+        }
+
+        const totalHoras = horasAprobadas.reduce((total, hora) => {
+          const horaInicio = new Date(`1970-01-01T${hora.dataValues.HoraInicio}`);
+          const horaFinal = new Date(`1970-01-01T${hora.dataValues.HoraFinal}`);
+          const diff = (horaFinal - horaInicio) / (1000 * 60 * 60); // Diferencia en horas
+          return total + diff;
+        }, 0);
+
+        let estadoFinal = "Aprobado";
+        let comentarioReprobado = "";
+        switch (estudiante.Progreso) {
+          case "Nuevo":
+            if (totalHoras < 40) {
+              estadoFinal = "Reprobado";
+              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad";
+            } else {
+              await estudiante.update({
+                Progreso: "Continuidad"
+              });
+            }
+            break;
+          case "Continuidad":
+            if (totalHoras < 80) {
+              estadoFinal = "Reprobado";
+              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Prórroga";
+            } else {
+              await estudiante.update({
+                Progreso: "Prórroga"
+              });
+            }
+            break;
+          case "Prórroga":
+            if (totalHoras < 150) {
+              estadoFinal = "Reprobado";
+              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas durante el tiempo máximo para realizar el TCU";
+            } else {
+              await estudiante.update({
+                Estado: "Aprobado"
+              });
+            }
+            break;
+          default:
+            break;
+        }
+
+        if (estadoFinal === "Reprobado") {
+          await estudiante.update({
+            Estado: estadoFinal,
+            ComentariosReprobado: comentarioReprobado
+          });
+        }
+      }
+    }
+
+    // Verificar si algún estudiante sigue en curso
+    const estudiantesEnCurso = await GruposEstudiantes.findAll({
+      where: {
+        GrupoId: GrupoId,
+        Estado: "En Curso"
+      }
+    });
+
+    if (estudiantesEnCurso.length === 0) {
+      const grupo = await Grupo.findOne({
+        where: { GrupoId: GrupoId }
+      });
+
+      if (grupo) {
+        await grupo.update({ Estado: 1 });
+      }
+    }
+
+    res.status(200).json({ message: "Solicitud realizada con éxito" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getAllGrupos,
@@ -468,5 +636,7 @@ module.exports = {
   cargarTipoGrupos,
   getListaEstudiantes,
   getGrupoEstudianteporIdentificacion,
-  getGrupoPorIdentificacionParaConclusion
+  getGrupoPorIdentificacionParaConclusion,
+  getGrupoPorAnnoyCuatrimestreParaConclusion,
+  FinalizarCuatrimestre
 };

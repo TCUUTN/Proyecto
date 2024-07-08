@@ -9,6 +9,7 @@ router.get('/:Identificacion/:GrupoId', conclusionesController.getConclusionPorI
 router.get('/:ConclusionId', conclusionesController.getConclusionPorConclusionId);
 router.post('/crearOActualizarConclusiones', conclusionesController.crearOActualizarConclusiones);
 router.post('/rechazarConclusion', conclusionesController.rechazarConclusion);
-router.post('/aprobarConclusion/:ConclusionId', conclusionesController.rechazarConclusion);
+router.post('/aprobarConclusion/:ConclusionId', conclusionesController.aprobarConclusion);
+
 
 module.exports = router;
