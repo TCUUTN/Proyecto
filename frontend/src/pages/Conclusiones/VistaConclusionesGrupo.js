@@ -123,6 +123,11 @@ function VistaConclusionesGrupo() {
     navigate("/CrearActualizarConclusiones");
   };
 
+  const handlebackClick = (conclusionId) => {
+    localStorage.removeItem("GrupoSeleccionado");
+    navigate("/GruposConclusiones");
+  };
+
   return (
     <div className="vistconclgrup-container ">
       <ToastContainer position="bottom-right" />
@@ -139,7 +144,7 @@ function VistaConclusionesGrupo() {
             <div className="vistconclgrup-filter">
               {/* Boton de regresar */}
               <div className="regred-vistconclgrup">
-                <button className="back-button-vistconclgrup">
+                <button className="back-button-vistconclgrup" onClick={handlebackClick}>
                   <FaChevronLeft />
                   Regresar
                 </button>

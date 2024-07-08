@@ -172,6 +172,9 @@ function GruposAcademico() {
     }
   };
 
+  const isBuscarButtonDisabled =
+    cuatrimestreFilter === "" || annoFilter === "";
+
   return (
     <div className="materia-container-conclu">
       {/*Para la carga */}
@@ -182,7 +185,6 @@ function GruposAcademico() {
       )}
       <ToastContainer position="bottom-right" />
       <main>
-
         <div className="filters-acad">
           {selectedRole === "Administrativo" && (
             <>
@@ -225,7 +227,11 @@ function GruposAcademico() {
                 </select>
               </div>
 
-              <button className="btn-buscar" onClick={handleBuscarClick}>
+              <button
+                className="buscar-button-vistconclgrup"
+                onClick={handleBuscarClick}
+                disabled={isBuscarButtonDisabled}
+              >
                 Buscar
               </button>
             </>
