@@ -175,7 +175,7 @@ function DashboardEstudiante() {
         </div>
       </div>
 
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }

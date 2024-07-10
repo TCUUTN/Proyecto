@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import SessionMonitor from '../src/components/SessionMonitor.js'; 
 import ProtectedRoute from "./ProtectedRoute.js";
 import Login from "./pages/Login/Login.js";
 import Footer from "./components/Footer";
@@ -51,7 +50,6 @@ function App() {
 
   return (
     <Router>
-      <SessionMonitor />
       <div className="App">
         <Navbar />
         <div className="content">
@@ -81,7 +79,7 @@ function App() {
             <Route
               path="/ListaEstudiantes"
               element={
-                <ProtectedRoute allowedRoles={["Académico"]}>
+                <ProtectedRoute allowedRoles={["Académico","Administrativo"]}>
                   <ListaEstudiantes />
                 </ProtectedRoute>
               }

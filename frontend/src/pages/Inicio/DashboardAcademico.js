@@ -97,7 +97,7 @@ function DashboardAcademico() {
 
   return (
     <div className="dashAca-container">
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
       {!fetchError ? (
         <>
           <div className="carousel-container-wrapper">
@@ -108,13 +108,15 @@ function DashboardAcademico() {
               infiniteLoop
             >
               {chartData.map(({ grupo, data }, index) => (
-                <div key={index} className="chart-slide">
-                  <h2 className="chart-container-title">
-                    {`${grupo.CodigoMateria} - ${grupo.Grupos_TipoGrupo.NombreProyecto} - Grupo# ${grupo.NumeroGrupo} - Cuatrimestre ${grupo.Cuatrimestre} - ${grupo.Anno}`}
-                  </h2>
-                  <div className="dashAcademico-divider"></div>
-                  {data ? (
-                    <div className="chart-container">
+                <div key={index} className="chart-slide-Aca">
+                  <div className="chart-title-divider-container">
+                    <h2 className="chart-container-title">
+                      {`${grupo.CodigoMateria} - ${grupo.Grupos_TipoGrupo.NombreProyecto} - Grupo# ${grupo.NumeroGrupo} - Cuatrimestre ${grupo.Cuatrimestre} - ${grupo.Anno}`}
+                    </h2>
+                    <div className="dashAcademico-divider"></div>
+                  </div>
+                  <div className="chart-container-Aca">
+                    {data ? (
                       <Doughnut
                         data={data}
                         options={{
@@ -155,12 +157,12 @@ function DashboardAcademico() {
                           aspectRatio: 1, // Set to 1 for square aspect ratio
                         }}
                       />
-                    </div>
-                  ) : (
-                    <p className="dashboard-container">
-                      El grupo aún no posee estudiantes.
-                    </p>
-                  )}
+                    ) : (
+                      <p className="dashboard-container">
+                        El grupo aún no posee estudiantes.
+                      </p>
+                    )}
+                  </div>
                 </div>
               ))}
             </Carousel>
