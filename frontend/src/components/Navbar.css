@@ -175,6 +175,23 @@
   transition: 0.5s;
 }
 
+/* Estilos para el submenú */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: 0;
+  display: none;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
 @media only screen and (max-width: 1024px) {
   .navbar-links {
     display: none;
@@ -224,4 +241,3 @@
     margin-left: auto;
   }
 }
-

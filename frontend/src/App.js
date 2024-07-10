@@ -22,6 +22,8 @@ import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
+import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
+//
 import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
 import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
 import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
@@ -29,6 +31,7 @@ import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.j
 import CrearActuSocioComunitarios from "./pages/SociosComunitarios/CrearActualizar.js";
 import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
 import CrearActualizarConclusiones from "./pages/Conclusiones/CrearoActualizarConclusiones.js";
+//
 import "bootstrap/dist/css/bootstrap.min.css"; // Importa los estilos de Bootstrap
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importa el archivo JavaScript de Bootstrap
 
@@ -213,6 +216,14 @@ function App() {
                   <CrearActualizarConclusiones />
                 </ProtectedRoute>
               }
+            />
+            <Route 
+             path="/GuiaIniciarSesion"
+             element={
+              <ProtectedRoute allowedRoles={["Administrativo","Académico","Estudiante"]}>
+                <GuiaIniciarSesion />
+              </ProtectedRoute>  
+             }
             />
           </Routes>
         </div>
