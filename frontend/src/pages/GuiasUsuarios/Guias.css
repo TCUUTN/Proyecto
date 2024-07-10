@@ -3,7 +3,8 @@
   font-family: "Century Gothic", sans-serif;
   color: #0b2f6b;
   max-width: 800px;
-  margin: auto;
+ margin-top: 3% auto;
+ 
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
@@ -63,8 +64,6 @@
   text-align: center;
 }
 
-
-
 .section-portada p {
   font-size: 16px;
 }
@@ -72,8 +71,6 @@
 .section-texto {
   margin-bottom: 20px;
 }
-
-
 
 .section-texto ul {
   list-style-type: disc;
@@ -86,7 +83,8 @@
 .section-restablecer {
   margin-bottom: 20px;
   padding: 20px;
-  background: white;
+
+
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
