@@ -6,6 +6,7 @@ const Horas = require("../models/HorasBitacora")
 const Usuario = require('../models/Usuario');
 const BoletaConclusion = require('../models/ConclusionBoleta');
 const { Op } = require('sequelize');
+const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
 
 
 const getAllGrupos = async (req, res) => {
@@ -512,7 +513,28 @@ const FinalizarCuatrimestre = async (req, res) => {
 
     // Traer todos los GruposEstudiantes relacionados a ese grupo
     const estudiantesGrupo = await GruposEstudiantes.findAll({
-      where: { GrupoId: GrupoId }
+      where: { GrupoId: GrupoId },
+      include: [
+        {
+          model: Grupo,
+          attributes: ['CodigoMateria', 'Cuatrimestre', 'Anno'],
+          include: [
+            {
+              model: TipoGrupo, 
+              attributes: ['NombreProyecto'] 
+            },
+            {
+              model: Usuario, 
+              attributes: ['Nombre', 'Apellido1', 'Apellido2','CorreoElectronico']
+            }
+          ]
+        },
+        {
+          model: Usuario,
+          attributes: ['Nombre', 'Apellido1', 'Apellido2','CorreoElectronico']
+        }
+      ],
+      attributes: ['ComentariosReprobado', 'Estado', 'Progreso'],
     });
 
     if (!estudiantesGrupo || estudiantesGrupo.length === 0) {
@@ -539,6 +561,10 @@ const FinalizarCuatrimestre = async (req, res) => {
             Estado: "Reprobado",
             ComentariosReprobado: "El estudiante no subió registro alguno de actividades, por lo tanto no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad"
           });
+          // Enviar el correo electrónico con la nueva contraseña
+          const asunto = "Reprobación del TCU del Estudiante "+estudiante.Usuario.Nombre+" "+estudiante.Usuario.Apellido1+" "+estudiante.Usuario.Apellido2;
+          const mensajeHtml = generarMensajeHtml(estudiante);
+          await enviarCorreo(estudiante.Usuario.CorreoElectronico, asunto, mensajeHtml);
           continue;
         }
 
@@ -591,6 +617,9 @@ const FinalizarCuatrimestre = async (req, res) => {
             Estado: estadoFinal,
             ComentariosReprobado: comentarioReprobado
           });
+          const asunto = "Reprobación del TCU del Estudiante "+estudiante.Usuario.Nombre+" "+estudiante.Usuario.Apellido1+" "+estudiante.Usuario.Apellido2;
+          const mensajeHtml = generarMensajeHtml(estudiante);
+          await enviarCorreo(estudiante.Usuario.CorreoElectronico, asunto, mensajeHtml);
         }
       }
     }
@@ -617,6 +646,27 @@ const FinalizarCuatrimestre = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const generarReprobadoHtml = (estudiante) => {
+  const year = new Date().getFullYear();
+  const textColor = "#002c6b"; // Color de texto para el contenido principal
+  return `
+    <div style="font-family: 'Century Gothic', sans-serif; color: ${textColor};">
+      <header style="background-color: #002c6b; color: white; text-align: center; padding: 10px;">
+        <h1 style="margin: 0;">Reprobación del TCU UTN TCU UTN</h1>
+      </header>
+      <div style="padding: 20px;">
+        <p>Estimado(a): </p>
+        <p>Por favor no comparta su clave temporal con nadie más.</p> 
+        <p>La clave temporal es: <strong>${nuevaContrasenna}</strong></p>
+        <p>Por favor, cámbiala después de iniciar sesión.</p>
+      </div>
+      <footer style="background-color: #002c6b; color: white; text-align: center; padding: 10px; margin-top: 20px;">
+        <p>Bitácora TCU - Derechos Reservados © ${year}</p>
+      </footer>
+    </div>
+  `;
 };
 
 const getEstudianteAdministrativo = async (req, res) => {

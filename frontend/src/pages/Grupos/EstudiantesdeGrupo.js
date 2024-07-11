@@ -156,6 +156,18 @@ function ListaEstudiantes() {
 
   const selectedRole = sessionStorage.getItem("SelectedRole");
 
+  const handleBack = () => {
+    localStorage.removeItem("GrupoSeleccionado");
+
+    if (selectedRole==="Académico") {
+      navigate("/ListaEstudiantes");
+    } else {
+      navigate("/Home");
+    }
+    
+  };
+
+
   return (
     <div className="materia-container-est">
       {/*Para la carga */}
@@ -171,7 +183,7 @@ function ListaEstudiantes() {
           {/* Botón de regresar */}
           <div className="regred-action">
             <button
-              onClick={() => navigate("/GruposAcademico")}
+              onClick={handleBack}
               className="back-button"
             >
               <FaChevronLeft />
