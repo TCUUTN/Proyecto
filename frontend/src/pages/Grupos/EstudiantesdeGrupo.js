@@ -167,12 +167,12 @@ function ListaEstudiantes() {
       <ToastContainer position="bottom-right" />
       {/* Filtros y botón */}
       <main>
-        <div className="filters-est">
+        <div className="sliderlis-est">
           {/* Botón de regresar */}
-          <div className="regred-action">
+          <div className="regred-action-listest">
             <button
               onClick={() => navigate("/GruposAcademico")}
-              className="back-button"
+              className="back-button-listest"
             >
               <FaChevronLeft />
               Regresar
@@ -181,13 +181,17 @@ function ListaEstudiantes() {
             {selectedRole === "Académico" && (
               <button
                 onClick={handleFinalizarCuatrimestre}
-                className="back-button"
+                className="finalizar-button-listest"
               >
                 Finalizar Cuatrimestre
               </button>
             )}
+             <div className="estt-divider" />
+             <h1 className="estt-titulo"> Lista de Estudiantes</h1>
           </div>
-          <div className="estt-divider" />
+        </div>
+
+        <div className="filters-est">
           {/* Filtros */}
           <div className="filter-group-est">
             <label className="filter-label-est" htmlFor="Nombre-Busqueda">
@@ -253,7 +257,9 @@ function ListaEstudiantes() {
               <option value="Prórroga">Prórroga</option>
             </select>
           </div>
+
         </div>
+
 
         {/* Tabla */}
         <div className="table-container-mat">
