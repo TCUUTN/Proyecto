@@ -47,12 +47,13 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px; /* Ajusta el padding según sea necesario */
-    border-radius: 5px;
     width: 80%; /* Ajusta el ancho según sea necesario */
     margin: 20px auto;
-    border: 2px solid rgba(0, 44, 105, 0.212); 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
+    background-color: #fff;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
   }
   
   .filter-group-acad {
@@ -94,15 +95,13 @@
     margin: 20px auto;
     width: 80%;
     padding: 20px;
-    border: 2px solid rgba(0, 44, 105, 0.212); 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
   .card {
-    background-color: white;
-    border: 1px solid rgba(0, 44, 105, 0.212);
-    border-radius: 5px;
+    background-color: #fff;
+    border: 2px solid rgba(0, 44, 105, 0.212);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     margin: 10px;
     padding: 10px;
     width: 250px;

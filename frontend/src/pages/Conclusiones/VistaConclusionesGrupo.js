@@ -139,18 +139,23 @@ function VistaConclusionesGrupo() {
           </div>
         ) : (
           <>
-      {/* Filtros y boton de regreso*/}
+      {/* boton de regreso y titulo*/}
 
-            <div className="vistconclgrup-filter">
+            <div className="vistconclgrup-action">
               {/* Boton de regresar */}
               <div className="regred-vistconclgrup">
                 <button className="back-button-vistconclgrup" onClick={handlebackClick}>
                   <FaChevronLeft />
                   Regresar
                 </button>
-              </div>
-              {/*linea*/}
+                 {/*linea*/}
               <div className="vistconclgrup-divider" />
+              <h1 className="vistconclgrup-titulo"> Conclusión de Grupo</h1>
+              </div>
+            </div>
+
+
+            <div className="vistconclgrup-filter">
               {/*Filtros*/}
               <div className="vistconclgrup-filter-group">
                 <label

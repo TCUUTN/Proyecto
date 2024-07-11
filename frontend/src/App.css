@@ -3,13 +3,16 @@ body, html {
   margin: 0;
   font-family: "Century Gothic", sans-serif;
   height: 100%;
-  background: #f4f4f4;
+
 }
 
 .App {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Mínimo 100% de la altura de la ventana */
+
+  
+  background: #f3f3f3;
 }
 
 .content {

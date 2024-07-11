@@ -50,9 +50,10 @@
   padding: 20px;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  border-radius: 8px;
   width: 80%;
   margin: 20px auto;
+  background-color: #fff;
 
 }
 .mater-action {
@@ -137,12 +138,13 @@
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 80%;
   margin: 20px auto;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   gap: 20px;
+  background-color: #fff;
 }
 
 .filter-group-mat {
@@ -180,8 +182,9 @@
   margin: 10px auto; 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px; 
+  border-radius: 8px; 
   padding: 10px; 
+  background-color: #fff;
 }
 .mat-table {
   width: 100%;

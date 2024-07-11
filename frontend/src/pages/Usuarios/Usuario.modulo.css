@@ -53,9 +53,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  border-radius: 8px;
   width: 80%;
   margin: 20px auto;
 
@@ -147,12 +148,13 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  border-radius: 5px;
   width: 80%;
   margin: 20px auto;
+  flex-wrap: wrap; /* Añadir esta línea */
+  background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  flex-wrap: wrap; /* Añadir esta línea */
+  border-radius: 8px;
 }
 
 .filter-group-user {
@@ -195,10 +197,11 @@ main {
 .table-container {
   width: 80%;
   margin: 0 auto; 
+  padding: 10px; 
+  background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px; 
-  padding: 10px; 
+  border-radius: 8px;
 }
 
 .user-table {
