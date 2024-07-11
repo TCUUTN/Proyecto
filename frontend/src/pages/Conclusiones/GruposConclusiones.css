@@ -15,6 +15,42 @@
   z-index: 1000;
 }
 
+.buscar-button-vistconclgrup{
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #002b69;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.buscar-button-vistconclgrup:hover{
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #f66226;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.buscar-button-vistconclgrup:disabled{
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #777777;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
 .loading-spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #f66226;

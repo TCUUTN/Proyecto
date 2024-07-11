@@ -203,15 +203,17 @@
 }
 
 .icon-btn-mat {
+  background: none;
+  font-size: 1.8em;
+  transition:0.5s;
   border: none;
   cursor: pointer;
   color: #ff6600;
-  font-size: 1.8em;
-  background-color: none;
 }
 
 .icon-btn-mat:hover {
   color: #002b69;
+  transition:0.5s;
 }
 
 
