@@ -1,0 +1,170 @@
+.guiaIni-container {
+  padding: 20px;
+  font-family: "Century Gothic", sans-serif;
+  color: #0b2f6b;
+  max-width: 800px;
+ margin-top: 3% auto;
+
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  animation: slide-in 0.4s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Titulos */
+.titulos-guiaIn {
+    font-size: 35px;
+    font-family: "Brush-TipTerrence", cursive;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .titulo-Portada {
+    font-size: 24px;
+    font-family: "Brush-TipTerrence", cursive;
+    margin-bottom: 10px;
+  }
+  
+  /* Lineas */
+  .celes-divider,
+  .naranja-divider {
+    width: 25%;
+    margin-bottom: 20px;
+    margin-left: 38%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .celes-divider {
+    border: 2px solid #0daace;
+  }
+  
+  .naranja-divider {
+    border: 2px solid #f66226;
+  }
+  
+/**/
+.section-portada {
+  margin-bottom: 20px;
+  background: #0073e6;
+  color: white;
+  padding: 20px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.section-portada p {
+  font-size: 16px;
+}
+
+.section-texto {
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+.section-texto ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.section-contenido,
+.section-iniciarS,
+.section-olvidarC,
+.section-restablecer {
+  margin-bottom: 20px;
+  padding: 20px;
+
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-contenido ol,
+.section-iniciarS ol,
+.section-olvidarC ol,
+.section-restablecer ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.section-contenido p,
+.section-iniciarS p,
+.section-olvidarC p,
+.section-restablecer p {
+  font-size: 16px;
+}
+
+.alert {
+  border: 1px solid #e40d0d;
+  background-color: #f4652a;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  margin-top: 20px;
+}
+/* Section que contiene la imagen y el cuadro de consejos */
+
+.restablecer-container {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.ima-resta img {
+    max-width: 100%; /* Ajusta el ancho máximo para la imagen */
+    height: auto;
+}
+/* Cuadro de los consejos */
+.titu-res {
+    font-size: 20px;
+    font-family: "Brush-TipTerrence", cursive;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+.conse-puntos {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-left: 5%;
+    padding: 10px 0 10px 10px;
+  }
+.consejos {
+    border: 2px solid #98d4e1;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 50%; /* Ajusta el ancho máximo para el cuadro de consejos */
+    margin-left: 20px;
+    font-size: 1.3rem;
+}
+
+/* Imagenes */
+
+.centered {
+    display: block;
+    margin: 0 auto;
+    background-color: none;
+ 
+  }
+  
+  .small-image {
+    max-width: 350px;
+    background-color: none;
+
+  }
+  
+  .large-image {
+    max-width: 450px;
+    margin-top: 20px;
+    background-color: none;
+
+  }

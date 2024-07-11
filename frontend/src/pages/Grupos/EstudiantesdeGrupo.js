@@ -177,6 +177,7 @@ function ListaEstudiantes() {
               <FaChevronLeft />
               Regresar
             </button>
+            &nbsp; &nbsp;
             {selectedRole === "Académico" && (
               <button
                 onClick={handleFinalizarCuatrimestre}
