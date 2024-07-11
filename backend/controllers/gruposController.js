@@ -619,6 +619,70 @@ const FinalizarCuatrimestre = async (req, res) => {
   }
 };
 
+const getEstudianteAdministrativo = async (req, res) => {
+  try {
+    const { Sede } = req.params;
+
+    const options = {
+      where: {
+        Estado: "En Curso"
+      },
+      attributes: ['Progreso'],
+      include: {
+        model: Grupo,
+        attributes: [],
+        where: {
+          Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null }
+        }
+      }
+    };
+
+    const estudianteGrupo = await GruposEstudiantes.findAll(options);
+
+    if (estudianteGrupo.length === 0) {
+      const errorMsg = Sede && Sede !== "Todas" ? 
+        "No se encontraron estudiantes activos en la sede especificada" :
+        "No se encontraron estudiantes activos";
+      return res.status(404).json({ error: errorMsg });
+    }
+
+    return res.status(200).json(estudianteGrupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getGruposActivos = async (req, res) => {
+  try {
+    const { Sede } = req.params;
+
+    const options = {
+      where: {
+        Estado: 1,
+        Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null }
+      },
+      attributes: ['NumeroGrupo','Cuatrimestre','Anno','GrupoId'],
+      include: {
+        model: TipoGrupo,
+        attributes: ['NombreProyecto'],
+      }
+    };
+
+    const Grupos = await Grupo.findAll(options);
+
+    if (Grupos.length === 0) {
+      const errorMsg = Sede && Sede !== "Todas" ? 
+        "No se encontraron estudiantes activos en la sede especificada" :
+        "No se encontraron estudiantes activos";
+      return res.status(404).json({ error: errorMsg });
+    }
+
+    return res.status(200).json(Grupos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getAllGrupos,
@@ -638,5 +702,7 @@ module.exports = {
   getGrupoEstudianteporIdentificacion,
   getGrupoPorIdentificacionParaConclusion,
   getGrupoPorAnnoyCuatrimestreParaConclusion,
-  FinalizarCuatrimestre
+  FinalizarCuatrimestre,
+  getEstudianteAdministrativo,
+  getGruposActivos
 };

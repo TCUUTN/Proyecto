@@ -227,10 +227,12 @@ main {
   color: #ff6600;
   font-size: 1.8em;
   padding: 5px; 
+  transition: 0.5s;
 }
 
 .icon-btn-user:hover {
   color: #002b69;
+  transition: 0.5s;
 }
 
 /*Paginacion*/
