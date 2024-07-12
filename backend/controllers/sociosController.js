@@ -214,6 +214,10 @@ const getSolicitudPorSolicitudId = async (req, res) => {
         "Sede",
         "Identificacion",
       ],
+      include: {
+        model: RegistroSocios,
+        attributes: ['NombreSocio'], // Ajusta los atributos según sea necesario
+      },
     });
 
     if (!solicitud) {

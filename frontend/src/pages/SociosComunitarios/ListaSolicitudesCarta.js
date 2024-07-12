@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { SlEnvolopeLetter } from "react-icons/sl";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./ListaSocios.css";
 
 function SolicitudesCarta() {
@@ -39,17 +40,20 @@ function SolicitudesCarta() {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
         const pendientes = data.filter((item) => item.NombreCarta === "-");
-        console.log(pendientes);
         const completadas = data.filter((item) => item.NombreCarta !== "-");
-        console.log(completadas);
         setSolicitudesPendientes(pendientes);
         setSolicitudesCompletadas(completadas);
+        const banderaEnviado = sessionStorage.getItem("BanderaEnviado");
+        if (banderaEnviado==="true") {
+          toast.success("La carta se cargó al sistema y ha sido enviada con éxito");
+          sessionStorage.removeItem("BanderaEnviado");
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
+
 
     fetchData();
   }, []);
@@ -169,10 +173,14 @@ function SolicitudesCarta() {
       <main>
         <div className="sociocomu-sidebar">
           <div className="action-sociocomu">
-            <button className="add-sociocomu" onClick={handleAddSolicitud}>
-              Agregar <IoMdAddCircle className="icon-socio" />
-            </button>
-            <div className="socio-divider" />
+            {role === "Académico" && (
+              <button className="add-sociocomu" onClick={handleAddSolicitud}>
+                Agregar <IoMdAddCircle className="icon-socio" />
+              </button>
+            )}
+            {role === "Académico" && (
+              <div className="socio-divider" />
+            )}
             <h1 className="sociocomu-titulo">Solicitudes de Carta</h1>
           </div>
         </div>
@@ -207,16 +215,16 @@ function SolicitudesCarta() {
             </div>
           </div>
           {filteredPendientes.length > 0 ? (
-            <div className="table-container-sociocomu">
-              <table className="table-sociocomu">
-                <thead className="thead-sociocomu">
+            <div className="table-container-socioc">
+              <table className="table-socioc">
+                <thead className="thead-socioc">
                   <tr>
                     <th>Socio</th>
                     <th>Estudiante</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="tbody-sociocomu">
+                <tbody className="tbody-socioc">
                   {filteredPendientes
                     .slice(
                       pendingStartIndex,
@@ -258,27 +266,29 @@ function SolicitudesCarta() {
                     ))}
                 </tbody>
               </table>
-              <div className="pagination-sociocomu">
-                <button
-                  onClick={handlePreviousPagePending}
-                  disabled={currentPagePending === 1}
-                >
-                  Anterior
-                </button>
-                <span>
-                  Página {currentPagePending} de {pendingPages}
-                </span>
-                <button
-                  onClick={handleNextPagePending}
-                  disabled={currentPagePending === pendingPages}
-                >
-                  Siguiente
-                </button>
-              </div>
             </div>
           ) : (
-            <p>No hay solicitudes pendientes</p>
+            <p className="no-results-sociocomu">No se encontraron resultados</p>
           )}
+          <div className="pagination-sociocomu">
+            <button
+              className="pagination-button-sociocomu"
+              onClick={handlePreviousPagePending}
+              disabled={currentPagePending === 1}
+            >
+              Anterior
+            </button>
+            <span className="pagination-info-sociocomu">
+              Página {currentPagePending} de {pendingPages}
+            </span>
+            <button
+              className="pagination-button-sociocomu"
+              onClick={handleNextPagePending}
+              disabled={currentPagePending === pendingPages}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
 
         <div className="solicitud-section">
@@ -311,11 +321,11 @@ function SolicitudesCarta() {
             </div>
             <div className="filter-group-sociocomu">
               <label className="filter-label-sociocomu">
-                Búsqueda por Nombre de la Carta
+                Búsqueda por Nombre de Carta
               </label>
               <input
                 type="text"
-                placeholder="Nombre del Archivo"
+                placeholder="Nombre de la Carta"
                 className="filter-control-sociocomu filter-input-sociocomu"
                 value={searchCartaCompletadas}
                 onChange={(e) => setSearchCartaCompletadas(e.target.value)}
@@ -323,16 +333,16 @@ function SolicitudesCarta() {
             </div>
           </div>
           {filteredCompletadas.length > 0 ? (
-            <div className="table-container-sociocomu">
-              <table className="table-sociocomu">
-                <thead className="thead-sociocomu">
+            <div className="table-container-socioc">
+              <table className="table-socioc">
+                <thead className="thead-socioc">
                   <tr>
                     <th>Socio</th>
-                    <th>Estudiante</th>
+                    <th>Estudiantes</th>
                     <th>Carta</th>
                   </tr>
                 </thead>
-                <tbody className="tbody-sociocomu">
+                <tbody className="tbody-socioc">
                   {filteredCompletadas
                     .slice(
                       completedStartIndex,
@@ -350,6 +360,7 @@ function SolicitudesCarta() {
                         </td>
                         <td>
                           <button
+                            className="btn-link-carta"
                             onClick={() =>
                               handleDescargaCarta(solicitud.SolicitudId)
                             }
@@ -361,28 +372,31 @@ function SolicitudesCarta() {
                     ))}
                 </tbody>
               </table>
-              <div className="pagination-sociocomu">
-                <button
-                  onClick={handlePreviousPageCompleted}
-                  disabled={currentPageCompleted === 1}
-                >
-                  Anterior
-                </button>
-                <span>
-                  Página {currentPageCompleted} de {completedPages}
-                </span>
-                <button
-                  onClick={handleNextPageCompleted}
-                  disabled={currentPageCompleted === completedPages}
-                >
-                  Siguiente
-                </button>
-              </div>
             </div>
           ) : (
-            <p>No hay solicitudes completadas</p>
+            <p className="no-results-sociocomu">No se encontraron resultados</p>
           )}
+          <div className="pagination-sociocomu">
+            <button
+              className="pagination-button-sociocomu"
+              onClick={handlePreviousPageCompleted}
+              disabled={currentPageCompleted === 1}
+            >
+              Anterior
+            </button>
+            <span className="pagination-info-sociocomu">
+              Página {currentPageCompleted} de {completedPages}
+            </span>
+            <button
+              className="pagination-button-sociocomu"
+              onClick={handleNextPageCompleted}
+              disabled={currentPageCompleted === completedPages}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
+        <ToastContainer position="bottom-right" />
       </main>
     </div>
   );
