@@ -1,7 +1,4 @@
-
-
-
-/* cARGA */
+/* Carga */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -13,42 +10,6 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
-
-.buscar-button-vistconclgrup{
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: #002b69;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.buscar-button-vistconclgrup:hover{
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: #f66226;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.buscar-button-vistconclgrup:disabled{
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: #777777;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
 .loading-spinner {
@@ -68,81 +29,114 @@
     transform: rotate(360deg);
   }
 }
-/*Contiene todo */
-.materia-container-conclu {
+
+/* Contiene todo */
+.grupClu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  padding-bottom: 70px;
+  padding: 0px 20px;
   gap: 20px;
   color: #002b69;
 }
 
-
-/* Diseño para la pagina de la card de lista de grupos. Academicos */
-
 /* Filtros */
-.filters-acad-conclu {
+.filters-grupClu {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px; /* Ajusta el padding según sea necesario */
-  border-radius: 5px;
-  width: 80%; /* Ajusta el ancho según sea necesario */
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
   margin: 20px auto;
   border: 2px solid rgba(0, 44, 105, 0.212); 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  background-color: #fff;
 }
 
-.filter-group-acad-conclu {
+.filter-group-grupClu {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 10px;
+  flex: 1;
+  min-width: 100px; 
 }
 
-.filter-input-acad-conclu,
-.filter-select-acad-conclu {
-  padding: 10px 20px; /* Ajusta el padding según sea necesario */
-  font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
-  border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
-  border-radius: 20px;
-  width: 250px; /* Ajusta el ancho según sea necesario */
+.filter-select-grupClu {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: 2px solid #002b69;
+  border-radius: 25px;
+  width: 300px;
   text-align: center;
   color: #002b69;
 }
 
-.filter-input-acad-conclu::placeholder,
-.filter-select-acad-conclu {
+.filter-select-grupClu::placeholder{
   color: #575656;
 }
 
-.filter-input-acad-conclu:focus,
-.filter-select-acad-conclu:focus {
+.filter-select-grupClu:focus {
   border-color: #ff6600;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-/* Cards */
+/* Boton */
+.butBuscar-grupClu{
+  display: flex;
+  align-items: center;
+  margin-right: 30%;
+}
+.buscar-button-grupClu {
+  padding: 10px 40px;
+  background-color: #002b69;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+margin-top: 20px;
+  align-self: center; 
+  width: 100%;
+}
 
-.card-container-conclu {
+.buscar-button-grupClu:hover {
+  background-color: #f66226;
+}
+
+.buscar-button-grupClu:disabled {
+  background-color: #777777;
+  cursor: not-allowed;
+}
+/* Linea */
+.grupClu-divider {
+  width: 2px;
+  height: 65px; /* Ajusta el alto según sea necesario */
+  background: #ff6600;
+  margin: auto 20px;
+}
+
+/* Cards */
+.card-container-grupClu {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: 20px auto;
+  margin: 5px auto;
   width: 80%;
-  padding: 20px;
+  padding: 15px;
   border: 2px solid rgba(0, 44, 105, 0.212); 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
 }
 
-.card-conclu {
+.card-grupClu {
   background-color: white;
   border: 1px solid rgba(0, 44, 105, 0.212);
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 10px;
   padding: 10px;
@@ -152,7 +146,7 @@
   justify-content: space-between;
 }
 
-.card-header-conclu {
+.card-header-grupClu {
   font-weight: bold;
   font-size: 1.1em;
   color: #002b69;
@@ -161,116 +155,200 @@
   background-color: white !important;
 }
 
-.card-title-conclu {
+.card-title-grupClu {
   font-weight: bold;
   font-size: 1.1em;
   color: #ff6600;
   margin-top: 5px; 
   padding-bottom: 5px;
   text-align: center;
-
 }
 
-.card-content-conclu {
+.card-content-grupClu {
   flex-grow: 1;
 }
 
-.card-content-conclu p {
+.card-content-grupClu p {
   margin: 5px 0;
   font-size: 0.95em;
   color: #575656;
   text-align: left;
 }
 
-.card-footer-conclu {
+.card-footer-grupClu {
   background-color: white !important;
   text-align: center;
   border-top: none !important;
 }
 
-.card-footer-conclu p {
+.card-footer-grupClu p {
   display: flex;
-  justify-content: space-between;
-  border-top: none;
+  justify-content: center;
+  align-items: center;
+  color: #ff6600;
 }
 
-.btn-view-group-conclu {
-  background-color: #00bfff;
+.btn-view-group-grupClu {
+  background-color: #002b69;
   color: white;
+  padding: 10px;
   border: none;
-  padding: 5px 20px;
-  border-radius: 20px;
+  border-radius: 30px;
   cursor: pointer;
-  font-size: 0.9em;
-  display: block;
-  margin: 10px auto 0;
-  cursor: pointer;
-  font-family: "Century Gothic", sans-serif;
   transition: 0.3s;
 }
 
-.btn-view-group-conclu:hover {
-  background-color: #ff4500;
-  transition: 0.3s;
+.btn-view-group-grupClu:hover {
+  background-color: #f66226;
 }
 
-/*Paginacion*/
-
-.pagination-acad-conclu  {
-  display: flex; /* Usar flexbox para alinear elementos */
-  justify-content: center; /* Centrar elementos horizontalmente */
-  align-items: center; /* Centrar elementos verticalmente */
-  margin-bottom: 20px;
+.no-groups-message {
+  text-align: center;
+  font-size: 1.2em;
+  color: #002b69;
+  margin: 20px;
 }
 
-.pagination-acad-conclu  button {
-  background-color: #002B69;
+/* Paginación */
+.pagination-grupClu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination-grupClu button {
+  background-color: #002b69;
   color: white;
-  border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 0 5px;
-  font-size: 1em;
-}
-.pagination-acad-conclu  span {
-  font-size: 1em;
   margin: 0 10px;
-  color: #002B69;
+  transition: 0.3s;
 }
 
-/* Estilos Responsivos */
+.pagination-grupClu button:hover {
+  background-color: #f66226;
+}
+
+.pagination-grupClu span {
+  font-size: 1em;
+  color: #002b69;
+}
+/* Media Queries */
+@media (max-width: 1200px) {
+  .filters-grupClu {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 90%;
+    padding: 10px;
+  }
+
+  .filter-select-grupClu {
+    width: 80%;
+  }
+
+  .card-container-grupClu {
+    width: 90%;
+  }
+
+  .card-grupClu {
+    width: 45%;
+  }
+}
+
 @media (max-width: 768px) {
-  .filters-acad-conclu {
+  .filters-grupClu {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+  }
+
+  .filter-group-grupClu{
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 95%;
+  }
+  .filter-select-grupClu {
     width: 100%;
   }
 
-  .filter-group-acad-conclu {
-    width: 100%;
-    margin-bottom: 10px;
+  .card-grupClu {
+    width: 95%;
   }
 
-  .filter-input-acad-conclu,
-  .filter-select-acad-conclu {
+  .buscar-button-grupClu {
+    margin: 10px 0;
+    width: 50%;
+  }
+
+  .butBuscar-grupClu {
+    margin-right: 0;
+    width: 100%;
+    font-size: 18px;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .grupClu-divider {
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .filters-grupClu {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    padding: 10px;
+  }
+  .filter-group-grupClu{
+    width: 100%;
+    padding: 10px;
+  }
+
+  .filter-select-grupClu {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .buscar-button-grupClu {
+    margin: 10px 0;
+    width: 50%;
+  }
+
+  .butBuscar-grupClu {
+    margin-right: 0;
+    width: 100%;
+    font-size: 18px;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+.card-container-grupClu {
+  width: 100%;
+}
+  .card-grupClu {
     width: 100%;
   }
 
-  .card-container-conclu {
-    width: 100%;
+  .pagination-grupClu button {
+    padding: 5px 10px;
   }
-
-  .card-conclu {
-    width: 100%;
-  }
-
-  .pagination-acad-conclu button {
+  .pagination-grupClu span {
     padding: 5px 10px;
   }
 
-  .pagination-acad-conclu span {
-    font-size: 0.9em;
+  .grupClu-divider {
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0;
   }
 }
-

@@ -44,29 +44,29 @@
     gap: 20px;
     color: #002b69;
   }
+/* Botones y titulo */
+.sliderlis-est{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  width: 80%; /* Ajusta el ancho según sea necesario */
+  margin: 20px auto;
+  background-color: #fff;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
 
-
-/* Filtros */
-.filters-est {
+  .regred-action-listest {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 20px; /* Ajusta el padding según sea necesario */
-    width: 80%; /* Ajusta el ancho según sea necesario */
-    margin: 20px auto;
-    background-color: #fff;
-    border: 2px solid rgba(0, 44, 105, 0.212);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  .regred-action {
-    display: flex;
-    align-items: center;
-    margin-left: 20%;
+    margin-left: 15%;
   }
   
   /* Boton de regresar*/
-  .back-button {
+  .back-button-listest {
     display: flex;
     align-items: center;
     padding: 5px 10px;
@@ -78,10 +78,23 @@
     transition: 0.3s;
   }
   
-  .back-button:hover {
+  .back-button-listest:hover,
+  .finalizar-button-listest:hover {
     background-color: #f66226;
     transition: 0.3s;
   }
+  /* boton de finalizar */
+  .finalizar-button-listest {
+    background-color: #002b69;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 20px;
+    cursor: pointer;
+    border-radius: 50px;
+  }
+
+
   
   /* Linea */
   .estt-divider{
@@ -90,7 +103,31 @@
     background: #ff6600;
     margin: auto 0 auto 20px;
   }
-  /* Filtros */
+  /* Titulo */
+  .estt-titulo{
+    font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  margin-left: 135px;
+  text-align: center;
+  }
+
+/* Filtros */
+.filters-est {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px; /* Ajusta el padding según sea necesario */
+  width: 80%; /* Ajusta el ancho según sea necesario */
+  margin: 20px auto;
+  flex-wrap: wrap; /* Añadir esta línea */
+  background-color: #fff;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
   
   .filter-group-est {
     display: flex;
@@ -122,62 +159,73 @@
     box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
   }
   
-  /* Responsividad */
-  
-  /* Pantallas medianas y más pequeñas */
-  @media (max-width: 768px) {
-    .filters-est {
+/* Tablets */
+@media (max-width: 768px) {
+  .sliderlis-est,
+  .filters-est {
+      width: 90%; /* Ajusta el ancho según sea necesario */
       flex-direction: column;
-      align-items: stretch;
-      width: 90%; /* Ajusta el ancho para pantallas medianas */
-    }
-    
-    .filter-group-est {
-      flex-direction: row;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .filter-input-est,
-    .filter-select-est {
-      width: 100%;
-      max-width: 400px; /* Ajusta el ancho máximo para pantallas medianas */
-      margin: 5px 0; /* Añade margen entre los filtros */
-    }
-    
-    .estt-divider {
-      width: 100%;
-      height: 2px;
-      border-left: none;
-      border-top: 2px solid #ff6600; /* Cambia la línea a horizontal */
-      margin: 10px 0;
-    }
-    
-    .regred-action {
+      align-items: center;
+  }
+
+  .regred-action-listest {
       margin-left: 0;
-      margin-top: 20px;
-      justify-content: center; /* Centra el botón de regreso en pantallas medianas */
-    }
+      justify-content: center;
+      width: 100%;
   }
-  
-  /* Pantallas pequeñas */
-  @media (max-width: 480px) {
-    .filters-est {
-      width: 100%; /* Ajusta el ancho para pantallas pequeñas */
-      padding: 10px; /* Reduce el padding */
-    }
-    
-    .filter-input-est,
-    .filter-select-est {
-      font-size: 16px; /* Reduce el tamaño de la fuente */
-      padding: 8px 15px; /* Ajusta el padding */
-    }
-    
-    .back-button {
-      font-size: 1em; /* Reduce el tamaño del texto */
-      padding: 5px 15px; /* Ajusta el padding */
-    }
-    
+
+  .estt-titulo {
+      font-size: 2rem; /* Ajusta el tamaño de fuente según sea necesario */
+      margin-left: 0;
   }
-  
-  /* */
+
+  .filter-group-est {
+      width: 100%;
+      margin: 10px 0; /* Ajusta el margen según sea necesario */
+  }
+
+  .filter-input-est,
+  .filter-select-est {
+      width: 100%;
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .sliderlis-est,
+  .filters-est {
+      width: 100%; /* Ajusta el ancho según sea necesario */
+      padding: 10px; /* Ajusta el padding según sea necesario */
+  }
+
+  .back-button-listest {
+      padding: 5px 8px;
+  }
+
+  .finalizar-button-listest {
+      padding: 5px 8px;
+  }
+
+  .filter-input-est,
+  .filter-select-est {
+      width: 100%; /* Ajusta el ancho según sea necesario */
+      font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
+  }
+
+  .estt-titulo {
+      font-size: 1.5rem; /* Ajusta el tamaño de fuente según sea necesario */
+      margin-left: 0;
+  }
+
+  .regred-action-listest {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+  }
+  .estt-divider{
+    display: block; /* Asegúrate de que la línea sea visible */
+    width: 65%;
+    height: 2px;
+    margin: 20px 0;
+  }
+}

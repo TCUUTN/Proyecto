@@ -130,7 +130,7 @@ function App() {
             <Route
               path="/VistaHorasEstudiantes"
               element={
-                <ProtectedRoute allowedRoles={["Estudiante", "Académico"]}>
+                <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
                   <VistaHorasEstudiantes />
                 </ProtectedRoute>
               }

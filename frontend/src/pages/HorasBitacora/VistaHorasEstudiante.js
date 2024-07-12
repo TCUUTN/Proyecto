@@ -283,7 +283,7 @@ function VistaHorasEstudiante() {
       <main>
         {/* */}
         <div className="horasi-botton">
-          {selectedRole === "Académico" && (
+          {(selectedRole === "Académico"||selectedRole === "Administrativo") && (
             <button className="add-horasiRegresar" onClick={handleViewDetails}>
               <FaChevronLeft className="icon-horasiRegresar" /> Regresar
             </button>
@@ -378,6 +378,7 @@ function VistaHorasEstudiante() {
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
                               <button
+                                className="btn-link"
                                 onClick={() =>
                                   handleDescargaArchivo(
                                     materia.BitacoraId,

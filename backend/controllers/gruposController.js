@@ -2,18 +2,18 @@ const pool = require("../config/db");
 const Grupo = require("../models/Grupo");
 const TipoGrupo = require("../models/TipoGrupo");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
-const Horas = require("../models/HorasBitacora")
-const Usuario = require('../models/Usuario');
-const BoletaConclusion = require('../models/ConclusionBoleta');
-const { Op } = require('sequelize');
-
+const Horas = require("../models/HorasBitacora");
+const Usuario = require("../models/Usuario");
+const BoletaConclusion = require("../models/ConclusionBoleta");
+const { Op } = require("sequelize");
+const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
 
 const getAllGrupos = async (req, res) => {
   try {
     const grupos = await Grupo.findAll({
       include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
-        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2'] }
+        { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
+        { model: Usuario, attributes: ["Nombre", "Apellido1", "Apellido2"] },
       ],
     });
     res.json(grupos);
@@ -24,7 +24,7 @@ const getAllGrupos = async (req, res) => {
 
 const getAllTiposGrupos = async (req, res) => {
   try {
-    const tiposGrupos  = await TipoGrupo.findAll();
+    const tiposGrupos = await TipoGrupo.findAll();
     res.json(tiposGrupos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -49,8 +49,11 @@ const getGrupoPorGrupoId = async (req, res) => {
         GrupoId: GrupoId,
       },
       include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
-        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2','CorreoElectronico'] }
+        { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
+        {
+          model: Usuario,
+          attributes: ["Nombre", "Apellido1", "Apellido2", "CorreoElectronico"],
+        },
       ],
     });
 
@@ -71,15 +74,16 @@ const getGrupoPorIdentificacion = async (req, res) => {
     const grupo = await Grupo.findAll({
       where: {
         Identificacion: Identificacion,
-        
       },
       include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+        { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
       ],
     });
 
     if (grupo.length === 0) {
-      return res.status(404).json({ error: "El Académico no tiene grupos a cargo" });
+      return res
+        .status(404)
+        .json({ error: "El Académico no tiene grupos a cargo" });
     }
 
     res.status(200).json(grupo);
@@ -88,17 +92,15 @@ const getGrupoPorIdentificacion = async (req, res) => {
   }
 };
 
-
 const getTipoGrupoPorCodigoMateria = async (req, res) => {
   try {
-    const {CodigoProyecto} = req.params;
+    const { CodigoProyecto } = req.params;
 
     const tipoGrupo = await TipoGrupo.findOne({
       where: {
         CodigoMateria: CodigoProyecto,
       },
-      attributes: ['CodigoMateria','NombreProyecto', 'TipoCurso']
-
+      attributes: ["CodigoMateria", "NombreProyecto", "TipoCurso"],
     });
 
     if (!tipoGrupo) {
@@ -123,7 +125,9 @@ const getEstudiantePorGrupo = async (req, res) => {
     });
 
     if (!estudianteGrupo) {
-      return res.status(404).json({ error: "Estudiante en el Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ error: "Estudiante en el Grupo no encontrado" });
     }
 
     res.status(200).json(estudianteGrupo);
@@ -146,7 +150,9 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
     });
 
     if (!estudianteGrupo) {
-      return res.status(404).json({ error: "Estudiante en el Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ error: "Estudiante en el Grupo no encontrado" });
     }
 
     res.status(200).json(estudianteGrupo);
@@ -157,20 +163,31 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
 
 const getListaEstudiantes = async (req, res) => {
   try {
-    const {GrupoId } = req.params;
+    const { GrupoId } = req.params;
 
     const estudianteGrupo = await GruposEstudiantes.findAll({
       where: {
         GrupoId: GrupoId,
       },
-      attributes: ['Estado','Progreso'],
+      attributes: ["Estado", "Progreso"],
       include: [
-        { model: Usuario, attributes: ['Nombre', 'Apellido1', 'Apellido2', 'CorreoElectronico', 'Identificacion'] },
+        {
+          model: Usuario,
+          attributes: [
+            "Nombre",
+            "Apellido1",
+            "Apellido2",
+            "CorreoElectronico",
+            "Identificacion",
+          ],
+        },
       ],
     });
 
     if (!estudianteGrupo) {
-      return res.status(404).json({ error: "Estudiante en el Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ error: "Estudiante en el Grupo no encontrado" });
     }
 
     res.status(200).json(estudianteGrupo);
@@ -179,19 +196,19 @@ const getListaEstudiantes = async (req, res) => {
   }
 };
 
-
-
 // Crear o actualizar TipoGrupo
 const crearOActualizarTipoGrupo = async (req, res) => {
   try {
-    const { CodigoMateria, NombreProyecto, TipoCurso} = req.body;
+    const { CodigoMateria, NombreProyecto, TipoCurso } = req.body;
 
-    let tipoGrupoExistente = await TipoGrupo.findOne({ where: { CodigoMateria } });
+    let tipoGrupoExistente = await TipoGrupo.findOne({
+      where: { CodigoMateria },
+    });
 
     if (tipoGrupoExistente) {
       tipoGrupoExistente = await tipoGrupoExistente.update({
         NombreProyecto,
-        TipoCurso
+        TipoCurso,
       });
 
       return res.status(200).json(tipoGrupoExistente);
@@ -200,7 +217,7 @@ const crearOActualizarTipoGrupo = async (req, res) => {
     const nuevoTipoGrupo = await TipoGrupo.create({
       CodigoMateria,
       NombreProyecto,
-      TipoCurso
+      TipoCurso,
     });
 
     res.status(201).json(nuevoTipoGrupo);
@@ -211,7 +228,17 @@ const crearOActualizarTipoGrupo = async (req, res) => {
 
 const crearOActualizarGrupo = async (req, res) => {
   try {
-    const { GrupoId, CodigoMateria, NumeroGrupo, Horario, Aula, Cuatrimestre, Anno, Identificacion, Estado} = req.body;
+    const {
+      GrupoId,
+      CodigoMateria,
+      NumeroGrupo,
+      Horario,
+      Aula,
+      Cuatrimestre,
+      Anno,
+      Identificacion,
+      Estado,
+    } = req.body;
 
     if (!GrupoId) {
       // Si no se proporciona un GrupoId, crear un nuevo grupo
@@ -223,7 +250,7 @@ const crearOActualizarGrupo = async (req, res) => {
         Cuatrimestre,
         Anno,
         Identificacion,
-        Estado
+        Estado,
       });
 
       return res.status(201).json(nuevoGrupo);
@@ -243,7 +270,7 @@ const crearOActualizarGrupo = async (req, res) => {
         Cuatrimestre,
         Anno,
         Identificacion,
-        Estado
+        Estado,
       });
 
       return res.status(201).json(nuevoGrupo);
@@ -258,7 +285,7 @@ const crearOActualizarGrupo = async (req, res) => {
       Cuatrimestre,
       Anno,
       Identificacion,
-      Estado
+      Estado,
     });
 
     return res.status(200).json(grupoExistente);
@@ -267,13 +294,14 @@ const crearOActualizarGrupo = async (req, res) => {
   }
 };
 
-
 // Crear o actualizar Estudiante en Grupo
 const crearOActualizarGrupoEstudiante = async (req, res) => {
   try {
-    const { Identificacion, GrupoId, Estado} = req.body;
+    const { Identificacion, GrupoId, Estado } = req.body;
 
-    let estudianteGrupoExistente = await GruposEstudiantes.findOne({ where: { Identificacion, GrupoId } });
+    let estudianteGrupoExistente = await GruposEstudiantes.findOne({
+      where: { Identificacion, GrupoId },
+    });
 
     if (estudianteGrupoExistente) {
       estudianteGrupoExistente = await estudianteGrupoExistente.update({
@@ -286,7 +314,7 @@ const crearOActualizarGrupoEstudiante = async (req, res) => {
     const nuevoEstudianteGrupo = await GruposEstudiantes.create({
       Identificacion,
       GrupoId,
-      Estado
+      Estado,
     });
 
     res.status(201).json(nuevoEstudianteGrupo);
@@ -307,7 +335,7 @@ const cargarGrupos = async (req, res) => {
           Sede: grupoData.Sede,
           Cuatrimestre: grupoData.Cuatrimestre,
           NumeroGrupo: grupoData.NumeroGrupo,
-          CodigoMateria: grupoData.CodigoMateria
+          CodigoMateria: grupoData.CodigoMateria,
         },
       });
 
@@ -322,7 +350,7 @@ const cargarGrupos = async (req, res) => {
           Cuatrimestre: grupoData.Cuatrimestre,
           Anno: grupoData.Anno,
           Identificacion: grupoData.Identificacion,
-          Estado: grupoData.Estado
+          Estado: grupoData.Estado,
         });
       } else {
         // Si el grupo existe, actualizarlo
@@ -335,18 +363,17 @@ const cargarGrupos = async (req, res) => {
           Cuatrimestre: grupoData.Cuatrimestre,
           Anno: grupoData.Anno,
           Identificacion: grupoData.Identificacion,
-          Estado: grupoData.Estado
+          Estado: grupoData.Estado,
         });
       }
     }
 
-    res.status(200).send('Grupos cargados/actualizados exitosamente');
+    res.status(200).send("Grupos cargados/actualizados exitosamente");
   } catch (error) {
-    console.error('Error al cargar/actualizar los grupos:', error);
-    res.status(500).send('Error al cargar/actualizar los grupos');
+    console.error("Error al cargar/actualizar los grupos:", error);
+    res.status(500).send("Error al cargar/actualizar los grupos");
   }
 };
-
 
 const cargarTipoGrupos = async (req, res) => {
   const tipoGrupos = req.body;
@@ -365,25 +392,23 @@ const cargarTipoGrupos = async (req, res) => {
         await TipoGrupo.create({
           CodigoMateria: tipoGrupoData.CodigoMateria,
           NombreProyecto: tipoGrupoData.NombreProyecto,
-          TipoCurso: tipoGrupoData.TipoCurso
+          TipoCurso: tipoGrupoData.TipoCurso,
         });
       } else {
         // If it exists, update the existing TipoGrupo
         await tipoGrupoExistente.update({
           NombreProyecto: tipoGrupoData.NombreProyecto,
-          TipoCurso: tipoGrupoData.TipoCurso
+          TipoCurso: tipoGrupoData.TipoCurso,
         });
       }
     }
 
-    res.status(200).send('TipoGrupos cargados/actualizados exitosamente');
+    res.status(200).send("TipoGrupos cargados/actualizados exitosamente");
   } catch (error) {
-    console.error('Error al cargar/actualizar los TipoGrupos:', error);
-    res.status(500).send('Error al cargar/actualizar los TipoGrupos');
+    console.error("Error al cargar/actualizar los TipoGrupos:", error);
+    res.status(500).send("Error al cargar/actualizar los TipoGrupos");
   }
 };
-
-
 
 const EstadoGrupo = async (req, res) => {
   try {
@@ -421,15 +446,17 @@ const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
         Identificacion: Identificacion,
       },
       include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+        { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
       ],
     });
 
     if (grupos.length === 0) {
-      return res.status(404).json({ error: "El Académico no tiene grupos a cargo" });
+      return res
+        .status(404)
+        .json({ error: "El Académico no tiene grupos a cargo" });
     }
 
-    const grupoIds = grupos.map(grupo => grupo.GrupoId);
+    const grupoIds = grupos.map((grupo) => grupo.GrupoId);
 
     const boletas = await BoletaConclusion.findAll({
       where: {
@@ -437,15 +464,19 @@ const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
           [Op.in]: grupoIds,
         },
       },
-      attributes: ['GrupoId'],
+      attributes: ["GrupoId"],
     });
 
-    const grupoIdsConBoleta = boletas.map(boleta => boleta.GrupoId);
+    const grupoIdsConBoleta = boletas.map((boleta) => boleta.GrupoId);
 
-    const gruposConBoleta = grupos.filter(grupo => grupoIdsConBoleta.includes(grupo.GrupoId));
+    const gruposConBoleta = grupos.filter((grupo) =>
+      grupoIdsConBoleta.includes(grupo.GrupoId)
+    );
 
     if (gruposConBoleta.length === 0) {
-      return res.status(404).json({ error: "El Académico no tiene grupos a cargo con boletas de conclusión" });
+      return res.status(404).json({
+        error: "El Académico no tiene grupos a cargo con boletas de conclusión",
+      });
     }
 
     res.status(200).json(gruposConBoleta);
@@ -462,14 +493,14 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
       Cuatrimestre: Cuatrimestre,
     };
 
-    if (Sede !== 'Todas') {
+    if (Sede !== "Todas") {
       whereClause.Sede = Sede;
     }
 
     const grupos = await Grupo.findAll({
       where: whereClause,
       include: [
-        { model: TipoGrupo, attributes: ['NombreProyecto', 'TipoCurso'] },
+        { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
       ],
     });
 
@@ -477,7 +508,7 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
       return res.status(404).json({ error: "No hay grupos para este periodo" });
     }
 
-    const grupoIds = grupos.map(grupo => grupo.GrupoId);
+    const grupoIds = grupos.map((grupo) => grupo.GrupoId);
 
     const boletas = await BoletaConclusion.findAll({
       where: {
@@ -486,17 +517,19 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
           [Op.in]: grupoIds,
         },
       },
-      attributes: ['GrupoId'],
+      attributes: ["GrupoId"],
     });
 
-    const grupoIdsConBoleta = boletas.map(boleta => boleta.GrupoId);
+    const grupoIdsConBoleta = boletas.map((boleta) => boleta.GrupoId);
 
-    const gruposAprobadosConBoleta = grupos.filter(grupo =>
+    const gruposAprobadosConBoleta = grupos.filter((grupo) =>
       grupoIdsConBoleta.includes(grupo.GrupoId)
     );
 
     if (gruposAprobadosConBoleta.length === 0) {
-      return res.status(404).json({ error: "No hay Boletas de conclusion para este periodo" });
+      return res
+        .status(404)
+        .json({ error: "No hay Boletas de conclusion para este periodo" });
     }
 
     res.status(200).json(gruposAprobadosConBoleta);
@@ -505,6 +538,52 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
   }
 };
 
+const getprueba = async (req, res) => {
+  try {
+    const { GrupoId } = req.params;
+
+    // Traer todos los GruposEstudiantes relacionados a ese grupo
+    const estudiantesGrupo = await GruposEstudiantes.findAll({
+      where: { GrupoId: GrupoId },
+      include: [
+        {
+          model: Grupo,
+          attributes: ["CodigoMateria", "Cuatrimestre", "Anno"],
+          include: [
+            {
+              model: TipoGrupo,
+              attributes: ["NombreProyecto"],
+            },
+            {
+              model: Usuario,
+              attributes: [
+                "Nombre",
+                "Apellido1",
+                "Apellido2",
+                "CorreoElectronico",
+              ],
+            },
+          ],
+        },
+        {
+          model: Usuario,
+          attributes: ["Nombre", "Apellido1", "Apellido2", "CorreoElectronico"],
+        },
+      ],
+      attributes: ["ComentariosReprobado", "Estado", "Progreso"],
+    });
+
+    if (!estudiantesGrupo || estudiantesGrupo.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No se encontraron estudiantes en el grupo" });
+    }
+
+    res.status(200).json(estudiantesGrupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 const FinalizarCuatrimestre = async (req, res) => {
   try {
@@ -512,74 +591,147 @@ const FinalizarCuatrimestre = async (req, res) => {
 
     // Traer todos los GruposEstudiantes relacionados a ese grupo
     const estudiantesGrupo = await GruposEstudiantes.findAll({
-      where: { GrupoId: GrupoId }
+      where: { GrupoId: GrupoId },
+      include: [
+        {
+          model: Grupo,
+          attributes: ["CodigoMateria", "Cuatrimestre", "Anno", "NumeroGrupo"],
+          include: [
+            {
+              model: TipoGrupo,
+              attributes: ["NombreProyecto"],
+            },
+            {
+              model: Usuario,
+              attributes: [
+                "Nombre",
+                "Apellido1",
+                "Apellido2",
+                "CorreoElectronico",
+              ],
+            },
+          ],
+        },
+        {
+          model: Usuario,
+          attributes: ["Nombre", "Apellido1", "Apellido2", "CorreoElectronico"],
+        },
+      ],
+      attributes: [
+        "GrupoId",
+        "Identificacion",
+        "ComentariosReprobado",
+        "Estado",
+        "Progreso",
+      ],
     });
 
     if (!estudiantesGrupo || estudiantesGrupo.length === 0) {
-      return res.status(404).json({ error: "No se encontraron estudiantes en el grupo" });
+      return res
+        .status(404)
+        .json({ error: "No se encontraron estudiantes en el grupo" });
     }
 
-    for (const estudiante of estudiantesGrupo) {
+    estudiantesGrupo.forEach(async (estudiante) => {
+      let estudianteJson = estudiante.toJSON(); // Convertir a JSON
+      console.log(estudianteJson);
+
       if (estudiante.Estado === "En Curso") {
         const horasAprobadas = await Horas.findAll({
           where: {
             Identificacion: estudiante.Identificacion,
-            EstadoHoras: "Aprobado"
+            EstadoHoras: "Aprobado",
           },
-          attributes: [
-            'TipoActividad',
-            'HoraInicio',
-            'HoraFinal',
-          ]
+          attributes: ["TipoActividad", "HoraInicio", "HoraFinal"],
         });
 
         // Si no hay registros de horas, marcar como reprobado
         if (!horasAprobadas || horasAprobadas.length === 0) {
           await estudiante.update({
             Estado: "Reprobado",
-            ComentariosReprobado: "El estudiante no subió registro alguno de actividades, por lo tanto no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad"
+            ComentariosReprobado:
+              "El estudiante no subió registro alguno de actividades, por lo tanto no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad",
           });
-          continue;
+
+          // Actualizar estudianteJson
+          estudianteJson = estudiante.toJSON();
+
+          // Enviar el correo electrónico de notificación
+          const asunto =
+            "Reprobación del TCU del Estudiante " +
+            estudianteJson.Usuario.Nombre +
+            " " +
+            estudianteJson.Usuario.Apellido1 +
+            " " +
+            estudianteJson.Usuario.Apellido2;
+          const mensajeHtml = generarReprobadoHtml(estudianteJson);
+          await enviarCorreo(
+            estudianteJson.Usuario.CorreoElectronico,
+            asunto,
+            mensajeHtml
+          );
+          return;
         }
 
         const totalHoras = horasAprobadas.reduce((total, hora) => {
-          const horaInicio = new Date(`1970-01-01T${hora.dataValues.HoraInicio}`);
-          const horaFinal = new Date(`1970-01-01T${hora.dataValues.HoraFinal}`);
+          const horaInicio = new Date(`1970-01-01T${hora.HoraInicio}`);
+          const horaFinal = new Date(`1970-01-01T${hora.HoraFinal}`);
           const diff = (horaFinal - horaInicio) / (1000 * 60 * 60); // Diferencia en horas
           return total + diff;
         }, 0);
 
         let estadoFinal = "Aprobado";
         let comentarioReprobado = "";
+
         switch (estudiante.Progreso) {
           case "Nuevo":
             if (totalHoras < 40) {
               estadoFinal = "Reprobado";
-              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad";
+              comentarioReprobado =
+                "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Continuidad";
             } else {
               await estudiante.update({
-                Progreso: "Continuidad"
+                Progreso: "Continuidad",
               });
             }
             break;
           case "Continuidad":
             if (totalHoras < 80) {
               estadoFinal = "Reprobado";
-              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Prórroga";
+              comentarioReprobado =
+                "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas para poder optar por el cuatrimestre de Prórroga";
             } else {
               await estudiante.update({
-                Progreso: "Prórroga"
+                Progreso: "Prórroga",
               });
             }
             break;
           case "Prórroga":
             if (totalHoras < 150) {
               estadoFinal = "Reprobado";
-              comentarioReprobado = "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas durante el tiempo máximo para realizar el TCU";
+              comentarioReprobado =
+                "El estudiante no cumplió con los mínimos establecidos de horas completadas y aprobadas durante el tiempo máximo para realizar el TCU";
             } else {
               await estudiante.update({
-                Estado: "Aprobado"
+                Estado: "Aprobado",
               });
+
+              // Actualizar estudianteJson
+              estudianteJson = estudiante.toJSON();
+
+              const asunto =
+                "Aprobación del TCU del Estudiante " +
+                estudianteJson.Usuario.Nombre +
+                " " +
+                estudianteJson.Usuario.Apellido1 +
+                " " +
+                estudianteJson.Usuario.Apellido2;
+              const mensajeHtml = generarAprobadoHtml(estudianteJson);
+              await enviarCorreo(
+                estudianteJson.Usuario.CorreoElectronico,
+                asunto,
+                mensajeHtml
+              );
             }
             break;
           default:
@@ -589,27 +741,44 @@ const FinalizarCuatrimestre = async (req, res) => {
         if (estadoFinal === "Reprobado") {
           await estudiante.update({
             Estado: estadoFinal,
-            ComentariosReprobado: comentarioReprobado
+            ComentariosReprobado: comentarioReprobado,
           });
+
+          // Actualizar estudianteJson
+          estudianteJson = estudiante.toJSON();
+
+          const asunto =
+            "Reprobación del TCU del Estudiante " +
+            estudianteJson.Usuario.Nombre +
+            " " +
+            estudianteJson.Usuario.Apellido1 +
+            " " +
+            estudianteJson.Usuario.Apellido2;
+          const mensajeHtml = generarReprobadoHtml(estudianteJson);
+          await enviarCorreo(
+            estudianteJson.Usuario.CorreoElectronico,
+            asunto,
+            mensajeHtml
+          );
         }
       }
-    }
+    });
 
     // Verificar si algún estudiante sigue en curso
     const estudiantesEnCurso = await GruposEstudiantes.findAll({
       where: {
         GrupoId: GrupoId,
-        Estado: "En Curso"
-      }
+        Estado: "En Curso",
+      },
     });
 
     if (estudiantesEnCurso.length === 0) {
       const grupo = await Grupo.findOne({
-        where: { GrupoId: GrupoId }
+        where: { GrupoId: GrupoId },
       });
 
       if (grupo) {
-        await grupo.update({ Estado: 1 });
+        await grupo.update({ Estado: 0 });
       }
     }
 
@@ -619,30 +788,83 @@ const FinalizarCuatrimestre = async (req, res) => {
   }
 };
 
+const generarReprobadoHtml = (estudiante) => {
+  const year = new Date().getFullYear();
+  const textColor = "#002c6b"; // Color de texto para el contenido principal
+  return `
+    <div style="font-family: 'Century Gothic', sans-serif; color: ${textColor};">
+      <header style="background-color: #002c6b; color: white; text-align: center; padding: 10px;">
+        <h1 style="margin: 0;">Reprobación del TCU UTN</h1>
+      </header>
+      <div style="padding: 20px;">
+        <p>Estimado(a): ${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}</p>
+        <p>Le informamos por este medio que usted ha reprobado su TCU de ${estudiante.Grupo.CodigoMateria}-${estudiante.Grupo.Grupos_TipoGrupo.NombreProyecto}, Grupo# ${estudiante.Grupo.NumeroGrupo}, matriculado el cuatrimestre ${estudiante.Grupo.Cuatrimestre} del año ${estudiante.Grupo.Anno}, debido al siguiente motivo:</p> 
+        <p><strong>${estudiante.ComentariosReprobado}</strong></p>
+        <p>Por favor si usted considera que esto es un error, comunicarse con su Académico ${estudiante.Grupo.Usuario.Nombre} ${estudiante.Grupo.Usuario.Apellido1} ${estudiante.Grupo.Usuario.Apellido2}, al correo ${estudiante.Grupo.Usuario.CorreoElectronico}</p>
+        <p></p>
+        <p>Saludos Cordiales</p>
+        <p></p>
+        <p><strong>Departamento de Coordinación TCU</strong></p>
+      </div>
+      <footer style="background-color: #002c6b; color: white; text-align: center; padding: 10px; margin-top: 20px;">
+        <p>Bitácora TCU - Derechos Reservados © ${year}</p>
+      </footer>
+    </div>
+  `;
+};
+
+const generarAprobadoHtml = (estudiante) => {
+  const year = new Date().getFullYear();
+  const textColor = "#002c6b"; // Color de texto para el contenido principal
+  return `
+    <div style="font-family: 'Century Gothic', sans-serif; color: ${textColor};">
+      <header style="background-color: #002c6b; color: white; text-align: center; padding: 10px;">
+        <h1 style="margin: 0;">Aprobación del TCU UTN</h1>
+      </header>
+      <div style="padding: 20px;">
+        <p>Estimado(a): ${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}</p>
+        <p>Es de nuestro agrado informarle que  su TCU de ${estudiante.Grupo.CodigoMateria}-${estudiante.Grupo.Grupos_TipoGrupo.NombreProyecto}, Grupo# ${estudiante.Grupo.NumeroGrupo}, matriculado el cuatrimestre ${estudiante.Grupo.Cuatrimestre} del año ${estudiante.Grupo.Anno}, <strong>ha sido aprobado</strong>, al finalizar el cuatrimestre, esto se vera reflejado en el sistema de calificaciones</p> 
+        <p></p>
+        <p>Por favor Visitar dirijase a llenar la boleta de conclusión que ya se encuentra disponible dentro de su usuario en el sistema de Bitácora Virtual</p>
+        <p></p>
+        <p>Esperamos que tenga mucho éxito en la finalización de su carrera universitaria</p>
+        <p></p>
+        <p>Saludos Cordiales</p>
+        <p></p>
+        <p><strong>Departamento de Coordinación TCU</strong></p>
+        </div>
+        <footer style="background-color: #002c6b; color: white; text-align: center; padding: 10px; margin-top: 20px;">
+        <p>Bitácora TCU - Derechos Reservados © ${year}</p>
+      </footer>
+    </div>
+  `;
+};
+
 const getEstudianteAdministrativo = async (req, res) => {
   try {
     const { Sede } = req.params;
 
     const options = {
       where: {
-        Estado: "En Curso"
+        Estado: "En Curso",
       },
-      attributes: ['Progreso'],
+      attributes: ["Progreso"],
       include: {
         model: Grupo,
         attributes: [],
         where: {
-          Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null }
-        }
-      }
+          Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null },
+        },
+      },
     };
 
     const estudianteGrupo = await GruposEstudiantes.findAll(options);
 
     if (estudianteGrupo.length === 0) {
-      const errorMsg = Sede && Sede !== "Todas" ? 
-        "No se encontraron estudiantes activos en la sede especificada" :
-        "No se encontraron estudiantes activos";
+      const errorMsg =
+        Sede && Sede !== "Todas"
+          ? "No se encontraron estudiantes activos en la sede especificada"
+          : "No se encontraron estudiantes activos";
       return res.status(404).json({ error: errorMsg });
     }
 
@@ -659,21 +881,22 @@ const getGruposActivos = async (req, res) => {
     const options = {
       where: {
         Estado: 1,
-        Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null }
+        Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null },
       },
-      attributes: ['NumeroGrupo','Cuatrimestre','Anno','GrupoId'],
+      attributes: ["NumeroGrupo", "Cuatrimestre", "Anno", "GrupoId"],
       include: {
         model: TipoGrupo,
-        attributes: ['NombreProyecto'],
-      }
+        attributes: ["NombreProyecto"],
+      },
     };
 
     const Grupos = await Grupo.findAll(options);
 
     if (Grupos.length === 0) {
-      const errorMsg = Sede && Sede !== "Todas" ? 
-        "No se encontraron estudiantes activos en la sede especificada" :
-        "No se encontraron estudiantes activos";
+      const errorMsg =
+        Sede && Sede !== "Todas"
+          ? "No se encontraron estudiantes activos en la sede especificada"
+          : "No se encontraron estudiantes activos";
       return res.status(404).json({ error: errorMsg });
     }
 
@@ -682,7 +905,6 @@ const getGruposActivos = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAllGrupos,
@@ -704,5 +926,6 @@ module.exports = {
   getGrupoPorAnnoyCuatrimestreParaConclusion,
   FinalizarCuatrimestre,
   getEstudianteAdministrativo,
-  getGruposActivos
+  getGruposActivos,
+  getprueba,
 };

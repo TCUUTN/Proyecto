@@ -35,7 +35,7 @@
   font-family: "Brush-TipTerrence", cursive;
   color: #012c6a;
   margin-bottom: 10px;
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 .crehoras-divider {
@@ -45,15 +45,13 @@
   margin: 0 auto 20px auto;
 }
 
-
-
-/*Resgistrar horas */
+/* Registrar horas */
 .crehoras-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 85vh;
-  background-color: #f7f7f7;
+  margin: 5vh 0;
 }
 
 .crehoras-content {
@@ -78,7 +76,7 @@
   width: 90%;
   padding: 10px;
   border: 2px solid #002B69 !important;
-  border-radius: 25px  !important;
+  border-radius: 25px !important;
   font-size: 16px;
   color: #2b3945;
 }
@@ -93,8 +91,6 @@
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-
-
 .crehoras-dropdown {
   width: 85%;
   border: 2px solid #002B69 !important;
@@ -106,8 +102,8 @@
   resize: auto;
   height: 100px;
 }
-/* Evidencias */
 
+/* Evidencias */
 .custom-file-upload {
   position: relative;
   display: inline-block;
@@ -118,7 +114,7 @@
   align-items: center;
   width: 85%;
   border: 2px solid #002B69 !important;
-  border-radius: 25px  !important;
+  border-radius: 25px !important;
   padding: 10px;
   font-size: 16px;
   position: relative;
@@ -149,9 +145,6 @@
   vertical-align: middle;
 }
 
-
-
-
 /* Boton */
 .crehoras-button {
   width: 40%;
@@ -172,7 +165,7 @@
   transition: 0.3s;
 }
 
-/* Añadir estilos para el botón deshabilitado */
+/* Boton deshabilitado */
 .crehoras-button:disabled {
   background-color: #999999 !important;
   cursor: not-allowed;
@@ -254,15 +247,53 @@
   }
 }
 
+@media (min-height: 800px) {
+  .crehoras-container {
+    margin: 0;
+  }
+}
+
+@media (max-height: 800px) {
+  .crehoras-container {
+    height: auto;
+    min-height: 100vh; /* Ensure container is at least the height of the viewport */
+    margin: 10 px;
+  }
+
+  .crehoras-content {
+    padding: 10px;
+  }
+
+  .crehoras-input-time,
+  .crehoras-textarea,
+  .crehoras-input-date,
+  .crehoras-dropdown {
+    width: 100%;
+  }
+
+  .crehoras-file {
+    width: 100%;
+  }
+
+}
+
 @media (max-width: 992px) {
   .crehoras-content {
     width: 50%;
+  }
+
+  .crehoras-container {
+    margin: 0;
   }
 }
 
 @media (max-width: 768px) {
   .crehoras-content {
     width: 70%;
+  }
+
+  .crehoras-container {
+    margin: 0;
   }
 
   .crehoras-input,
@@ -281,6 +312,10 @@
 @media (max-width: 576px) {
   .crehoras-content {
     width: 90%;
+  }
+
+  .crehoras-container {
+    margin: 0;
   }
 
   .crehoras-input,

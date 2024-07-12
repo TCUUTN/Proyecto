@@ -180,7 +180,7 @@ function DashboardAdministrativo() {
                         <button
                           className="icon-btn-Dash"
                           onClick={() => {
-                            localStorage.setItem("GrupoIdSeleccionado", grupo.GrupoId);
+                            localStorage.setItem("GrupoSeleccionado", grupo.GrupoId);
                             window.location.href = "/ListaEstudiantes";
                           }}
                         >

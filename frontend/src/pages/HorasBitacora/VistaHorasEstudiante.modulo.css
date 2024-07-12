@@ -180,12 +180,26 @@
   border: none;
   cursor: pointer;
   color: #ff6600;
+  background: none;
   font-size: 1.8em;
+  transition:0.5s;
   padding: 5px;
 }
 
 .icon-btn-acade:hover {
-  color: #ff6600;
+  color: #002b69;
+  transition:0.5s;
+}
+
+/*Boton como link*/
+.btn-link {
+  background: none;
+  border: none;
+  color: blue; /* Usualmente el color de los enlaces es azul */
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit; /* Hereda las propiedades de fuente del padre */
 }
 /*Paginacion*/
 .pagination-apro {
