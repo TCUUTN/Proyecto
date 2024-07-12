@@ -15,7 +15,7 @@ function GruposAcademico() {
   const [annoFilter, setAnnoFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false); // Estado de carga
-  const gruposPerPage = 10;
+  const gruposPerPage = 4;
   const [uniqueYears, setUniqueYears] = useState([]);
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
   const identificacion = sessionStorage.getItem("Identificacion");
@@ -140,16 +140,13 @@ function GruposAcademico() {
 
   return (
     <div className="materia-container-card">
-      {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
       <ToastContainer position="bottom-right" />
-      {/**/}
       <main>
-        {/* Filtros */}
         <div className="filters-acad">
           <div className="filter-group-acad">
             <label
@@ -224,7 +221,6 @@ function GruposAcademico() {
             </select>
           </div>
         </div>
-        {/*Tarjetitas */}
         <div className="card-container">
           {currentGrupos.map((grupo) => (
             <div className="card" key={grupo.GrupoId}>
@@ -259,16 +255,13 @@ function GruposAcademico() {
             </div>
           ))}
         </div>
-
-        {/* La paginacion */}
         <div className="pagination-acad">
-          <button onClick={handlePreviousPage}>Anterior</button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button onClick={handleNextPage}>Siguiente</button>
-        </div>
-        {/**/}
+            <button onClick={handlePreviousPage}>Anterior</button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button onClick={handleNextPage}>Siguiente</button>
+          </div>
       </main>
     </div>
   );

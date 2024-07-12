@@ -35,8 +35,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    padding-bottom: 70px;
+    padding: 0px 20px;
     gap: 20px;
     color: #002b69;
   }
@@ -48,8 +47,8 @@
     justify-content: space-between;
     padding: 20px; /* Ajusta el padding según sea necesario */
     width: 80%; /* Ajusta el ancho según sea necesario */
-    margin: 20px auto;
     flex-wrap: wrap;
+    margin: 1px auto;
     background-color: #fff;
     border: 2px solid rgba(0, 44, 105, 0.212);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -60,7 +59,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 10px;
+    margin: 0 5px;
   }
   
   .filter-input-acad,
@@ -68,14 +67,14 @@
     padding: 10px 20px; /* Ajusta el padding según sea necesario */
     font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
     border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
-    border-radius: 20px;
+    border-radius: 25px;
     width: 250px; /* Ajusta el ancho según sea necesario */
     text-align: center;
     color: #002b69;
   }
   
   .filter-input-acad::placeholder,
-  .filter-select-acad {
+  .filter-select-acad::placeholder {
     color: #575656;
   }
   
@@ -92,9 +91,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    margin: 20px auto;
+    margin: 5px auto;
     width: 80%;
-    padding: 20px;
+    padding: 15px;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
   }
   
   .card {
@@ -171,63 +175,61 @@
     background-color: #ff4500;
     transition: 0.3s;
   }
-  
-  /*Paginacion*/
-  
-  .pagination-acad  {
-    display: flex; /* Usar flexbox para alinear elementos */
-    justify-content: center; /* Centrar elementos horizontalmente */
-    align-items: center; /* Centrar elementos verticalmente */
-    margin-bottom: 20px;
+  /* Paginación */
+  .pagination-acad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto;
   }
   
-  .pagination-acad  button {
+  .pagination-acad button {
     background-color: #002B69;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     margin: 0 5px;
     font-size: 1em;
   }
-  .pagination-acad  span {
+  
+  .pagination-acad span {
     font-size: 1em;
     margin: 0 10px;
     color: #002B69;
   }
-  
   /* Estilos Responsivos */
-  @media (max-width: 768px) {
-    .filters-acad {
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-    }
-  
-    .filter-group-acad {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  
-    .filter-input-acad,
-    .filter-select-acad {
-      width: 100%;
-    }
-  
-    .card-container {
-      width: 100%;
-    }
-  
-    .card {
-      width: 100%;
-    }
-  
-    .pagination-acad button {
-      padding: 5px 10px;
-    }
-  
-    .pagination-acad span {
-      font-size: 0.9em;
-    }
+@media (max-width: 768px) {
+  .filters-acad {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
   }
+
+  .filter-group-acad {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .filter-input-acad,
+  .filter-select-acad {
+    width: 100%;
+  }
+
+  .card-container {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .pagination-acad button {
+    padding: 5px 10px;
+  }
+
+  .pagination-acad span {
+    font-size: 0.9em;
+  }
+}
