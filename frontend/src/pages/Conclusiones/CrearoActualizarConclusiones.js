@@ -31,6 +31,7 @@ function CrearoActualizarConclusiones() {
   const [isMotivoRechazoValid, setIsMotivoRechazoValid] = useState(false);
   const [isRejectionVisible, setIsRejectionVisible] = useState(false);
   const [isApproveDisabled, setIsApproveDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
   const navigate = useNavigate();
   const nodeRef = useRef(null);
 
@@ -151,6 +152,7 @@ function CrearoActualizarConclusiones() {
   };
 
   const handleSubmit = async (event) => {
+    setIsLoading(true); // Mostrar pantalla de carga
     event.preventDefault();
 
     const requiredFields = [
@@ -188,6 +190,7 @@ function CrearoActualizarConclusiones() {
       if (response.ok) {
         toast.success("La conclusión se ha registrado correctamente");
         sessionStorage.removeItem("ConclusionIdSeleccionado");
+        setIsLoading(false); // Ocultar pantalla de carga
         navigate("/VistaConclusionesGrupo");
       } else {
         setError(
@@ -196,6 +199,7 @@ function CrearoActualizarConclusiones() {
       }
     } catch (error) {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
+      setIsLoading(false); // Ocultar pantalla de carga
     }
   };
 
@@ -206,6 +210,7 @@ function CrearoActualizarConclusiones() {
 
   const handleApprove = async () => {
     try {
+      setIsLoading(true); // Mostrar pantalla de carga
       const response = await fetch(
         `conclusiones/aprobarConclusion/${conclusionId}`,
         {
@@ -216,6 +221,7 @@ function CrearoActualizarConclusiones() {
       if (response.ok) {
         localStorage.removeItem("ConclusionIdSeleccionado");
         localStorage.setItem("BanderaAprobado", "true");
+        setIsLoading(false); // Ocultar pantalla de carga
         navigate("/VistaConclusionesGrupo");
       } else {
         setError(
@@ -224,11 +230,11 @@ function CrearoActualizarConclusiones() {
       }
     } catch (error) {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
+      setIsLoading(false); // Ocultar pantalla de carga
     }
   };
 
-
-  const handleCancelarRechazar =async()=>{
+  const handleCancelarRechazar = async () => {
     if (isRejectionVisible) {
       setIsRejectionVisible(false);
       setIsApproveDisabled(false);
@@ -238,14 +244,15 @@ function CrearoActualizarConclusiones() {
 
     setIsRejectionVisible(true);
     setIsApproveDisabled(true);
-  }
+  };
 
   const handleReject = async () => {
-    
-
+    setIsLoading(true); // Mostrar pantalla de carga
     if (!isMotivoRechazoValid) {
       setError("El motivo del rechazo debe tener al menos 5 palabras.");
+      setIsLoading(false); // Ocultar pantalla de carga
       return;
+
     }
 
     try {
@@ -263,6 +270,7 @@ function CrearoActualizarConclusiones() {
       if (response.ok) {
         localStorage.removeItem("ConclusionIdSeleccionado");
         localStorage.setItem("BanderaRechazado", "true");
+        setIsLoading(false); // Ocultar pantalla de carga
         navigate("/VistaConclusionesGrupo");
       } else {
         setError(
@@ -271,6 +279,7 @@ function CrearoActualizarConclusiones() {
       }
     } catch (error) {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
+      setIsLoading(false); // Ocultar pantalla de carga
     }
   };
 
@@ -283,6 +292,12 @@ function CrearoActualizarConclusiones() {
     if (horasTotalesEstudiante < 150) {
       return (
         <div className="creconclusiones-container">
+          {/*Para la carga */}
+          {isLoading && (
+            <div className="loading-overlay">
+              <div className="loading-spinner"></div>
+            </div>
+          )}
           <div className="creconclusiones-content">
             <h1 className="creconclusiones-title">Registro de Conclusiones</h1>
             <div className="creconclusiones-divider" />
@@ -369,24 +384,25 @@ function CrearoActualizarConclusiones() {
                 placeholder="Comentarios"
               />
             </div>
-            {selectedRole === "Académico" && formData.EstadoBoleta==="En Proceso"&&  (
-              <div className="creconclusiones-input-container">
-                <button
-                  onClick={handleApprove}
-                  className="creconclusiones-button"
-                  disabled={isApproveDisabled}
-                >
-                  Aprobar
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <button
-                  onClick={handleCancelarRechazar}
-                  className="creconclusiones-button"
-                >
-                  {isRejectionVisible ? "Cancelar" : "Rechazar"}
-                </button>
-              </div>
-            )}
+            {selectedRole === "Académico" &&
+              formData.EstadoBoleta === "En Proceso" && (
+                <div className="creconclusiones-input-container">
+                  <button
+                    onClick={handleApprove}
+                    className="creconclusiones-button"
+                    disabled={isApproveDisabled}
+                  >
+                    Aprobar
+                  </button>
+                  &nbsp;&nbsp;&nbsp;
+                  <button
+                    onClick={handleCancelarRechazar}
+                    className="creconclusiones-button"
+                  >
+                    {isRejectionVisible ? "Cancelar" : "Rechazar"}
+                  </button>
+                </div>
+              )}
             <CSSTransition
               in={isRejectionVisible}
               timeout={300}

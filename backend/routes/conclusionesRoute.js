@@ -3,6 +3,7 @@ const router = express.Router();
 const conclusionesController = require('../controllers/ConclusionesController');
 
 router.get('/', conclusionesController.getAllConclusiones);
+router.get('/Annos/:Rol', conclusionesController.getAllAnnosParaConclusion);
 router.get('/ConclusionesPorGrupo/:GrupoId', conclusionesController.getConclusionPorGrupoId);
 router.get('/ConclusionesAprobadas/:GrupoId', conclusionesController.getConclusionAprobadasPorGrupoId);
 router.get('/:Identificacion/:GrupoId', conclusionesController.getConclusionPorIdentificacionyGrupoId);

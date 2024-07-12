@@ -49,7 +49,7 @@ function OlvidarClave() {
       if (response.ok) {
         window.location.href = "/?mensajeExitoso=true";
       } else {
-        setError("El correo ingresado no es válido, favor verificar.");
+        setError("El correo ingresado no es válido o se encuentra desactivado, favor verificar.");
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
@@ -86,7 +86,8 @@ function OlvidarClave() {
                 onChange={(e) => setCorreoElectronico(e.target.value)}
                 className="olvidar-input"
               />
-            </div>
+              
+            </div>{error && <p className="error-message">{error}</p>}
           </div>
           <div className="olvi-button"> 
           <button
@@ -106,7 +107,7 @@ function OlvidarClave() {
 
 
         </form>
-        {error && <p className="error-message">{error}</p>}
+        
         <ToastContainer position="bottom-right" />
       </div>
     </div>
