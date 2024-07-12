@@ -378,6 +378,7 @@ function VistaHorasEstudiante() {
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
                               <button
+                                className="btn-link"
                                 onClick={() =>
                                   handleDescargaArchivo(
                                     materia.BitacoraId,

@@ -294,6 +294,7 @@ const olvidoContrasenna = async (req, res) => {
     const usuario = await Usuario.findOne({
       where: {
         CorreoElectronico: CorreoElectronico,
+        Estado:1,
       },
     });
 
@@ -315,7 +316,7 @@ const olvidoContrasenna = async (req, res) => {
       });
     } else {
       // Si no se encuentra ningún usuario que coincida, devolver un mensaje de error
-      res.status(404).json({ error: "Usuario no encontrado" });
+      res.status(404).json({ error: "Usuario no encontrado o desactivado" });
     }
   } catch (err) {
     // Manejo de errores

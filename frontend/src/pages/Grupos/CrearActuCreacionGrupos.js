@@ -25,7 +25,7 @@ function CrearActuCreacionGrupos() {
     NumeroGrupo: "",
     Horario: "",
     Aula: "",
-    Sede: sessionStorage.getItem("Sede") || "", // Default value from sessionStorage
+    Sede: sessionStorage.getItem("Sede") === "Todas" ? "" : sessionStorage.getItem("Sede") || "", // Ajuste aquí
     Cuatrimestre: "",
     Anno: "",
     Estado: "1", // Default to "Activo"
@@ -130,33 +130,32 @@ function CrearActuCreacionGrupos() {
   };
 
   const validateForm = () => {
-    const requiredFields = [
-      "CodigoMateria",
-      "NumeroGrupo",
-      "Horario",
-      "Aula",
-      "Cuatrimestre",
-      "Anno",
-      "Identificacion",
-    ];
+    const requiredFields = {
+      CodigoMateria: "Proyecto",
+      NumeroGrupo: "Número de Grupo",
+      Horario: "Horario",
+      Aula: "Aula",
+      Cuatrimestre: "Cuatrimestre",
+      Anno: "Año",
+      Identificacion: "Académico",
+      Sede: "Sede",
+      Estado: "Estado",
+    };
     let validationErrors = {};
 
-    requiredFields.forEach((field) => {
+    Object.keys(requiredFields).forEach((field) => {
       if (!formValues[field]) {
-        validationErrors[field] = `Por favor, complete el campo: ${field}`;
+        validationErrors[
+          field
+        ] = `Por favor, complete el campo: ${requiredFields[field]}`;
       }
     });
 
-    if (!sessionStorage.getItem("Sede")) {
-      if (!formValues.Sede) {
-        validationErrors["Sede"] = "Por favor, complete el campo: Sede";
-      }
-      
+    if (!sessionStorage.getItem("Sede") && !formValues.Sede) {
+      validationErrors["Sede"] = "Por favor, complete el campo: Sede";
     }
-    if (!localStorage.getItem("GrupoIdUpdate")) {
-      if (!formValues.Estado) {
-        validationErrors["Estado"] = "Por favor, complete el campo: Estado";
-      }
+    if (!localStorage.getItem("GrupoIdUpdate") && !formValues.Estado) {
+      validationErrors["Estado"] = "Por favor, complete el campo: Estado";
     }
 
     setErrors(validationErrors);
@@ -245,12 +244,10 @@ function CrearActuCreacionGrupos() {
             placeholder="Número de Grupo"
             className="creagrup-inputfield"
           />
-           {errors.NumeroGrupo && (
+          {errors.NumeroGrupo && (
             <div className="creagrup-error">{errors.NumeroGrupo}</div>
           )}
-
         </div>
-       
         <div className="creagrup-formrow">
           {/* Aula */}
           <input
@@ -261,7 +258,7 @@ function CrearActuCreacionGrupos() {
             placeholder="Aula"
             className="creagrup-inputfield"
           />
-           {errors.Aula && <div className="creagrup-error">{errors.Aula}</div>}
+          {errors.Aula && <div className="creagrup-error">{errors.Aula}</div>}
         </div>
         <div className="creagrup-formrow ">
           {/* Horario */}
@@ -273,7 +270,7 @@ function CrearActuCreacionGrupos() {
             placeholder="Horario"
             className="creagrup-inputfield"
           />
-           {errors.Horario && (
+          {errors.Horario && (
             <div className="creagrup-error">{errors.Horario}</div>
           )}
         </div>
@@ -304,16 +301,15 @@ function CrearActuCreacionGrupos() {
             onChange={handleInputChange}
             className="creagrup-select"
           >
-            <option value="">Año</option>
+            <option value="">Años</option>
             {annos.map((anno) => (
               <option key={anno} value={anno}>
                 {anno}
               </option>
             ))}
           </select>
-     
+          {errors.Anno && <div className="creagrup-error">{errors.Anno}</div>}
         </div>
-
         <div className="creagrup-formrow">
           {/* Sede */}
           {sedeSession === "Todas" && (
@@ -330,10 +326,9 @@ function CrearActuCreacionGrupos() {
                 </option>
               ))}
             </select>
-        )}
-         {errors.Sede && <div className="creagrup-error">{errors.Sede}</div>}
+          )}
+          {errors.Sede && <div className="creagrup-error">{errors.Sede}</div>}
         </div>
-        
         <div className="creagrup-formrow">
           {/* Seleccionar Académico */}
           <select
@@ -349,16 +344,18 @@ function CrearActuCreacionGrupos() {
                 value={usuario.Identificacion}
               >
                 {usuario.Nombre.charAt(0).toUpperCase() +
-                  usuario.Nombre.slice(1)}{" "}
+                  usuario.Nombre.slice(1).toLowerCase()}{" "}
                 {usuario.Apellido1.charAt(0).toUpperCase() +
-                  usuario.Apellido1.slice(1)}{" "}
+                  usuario.Apellido1.slice(1).toLowerCase()}{" "}
                 {usuario.Apellido2.charAt(0).toUpperCase() +
-                  usuario.Apellido2.slice(1)}{" "}
+                  usuario.Apellido2.slice(1).toLowerCase()}{" "}
                 {usuario.Sede === "Todas" && "(Multisede)"}
               </option>
             ))}
           </select>
-      
+          {errors.Identificacion && (
+            <div className="creagrup-error">{errors.Identificacion}</div>
+          )}
         </div>
         <div className="creagrup-formrow">
           {/* Estado */}
@@ -376,12 +373,10 @@ function CrearActuCreacionGrupos() {
           ) : (
             <input type="hidden" name="Estado" value="1" />
           )}
-            {errors.Estado && (
-              <div className="creagrup-error">{errors.Estado}</div>
-            )}
+          {errors.Estado && (
+            <div className="creagrup-error">{errors.Estado}</div>
+          )}
         </div>
-        {/*  */}
-    
         <div className="creagrup-buttonrow">
           <button
             type="button"
@@ -397,7 +392,7 @@ function CrearActuCreacionGrupos() {
             className="creagrup-button"
             disabled={!isFormValid}
           >
-           {GrupoId ? "Actualizar" : "Guardar"}
+            {GrupoId ? "Actualizar" : "Guardar"}
           </button>
         </div>
       </form>

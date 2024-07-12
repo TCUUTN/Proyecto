@@ -13,6 +13,7 @@ function GruposAcademico() {
   const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
   const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
   const [annoFilter, setAnnoFilter] = useState("");
+  const [yearsOptions, setYearsOptions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [noGroupsMessage, setNoGroupsMessage] = useState(false);
@@ -21,14 +22,13 @@ function GruposAcademico() {
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
   const identificacion = sessionStorage.getItem("Identificacion");
   const selectedRole = sessionStorage.getItem("SelectedRole");
-  const currentYear = new Date().getFullYear();
-  const yearsOptions = [currentYear - 1, currentYear, currentYear + 1];
   let currentGrupos = filteredGrupos.slice(
     (currentPage - 1) * gruposPerPage,
     currentPage * gruposPerPage
   );
 
   useEffect(() => {
+    fetchYearsOptions();
     if (selectedRole === "Administrativo") {
       // Para administrativo, solo buscar grupos al hacer clic en Buscar
     } else {
@@ -38,9 +38,33 @@ function GruposAcademico() {
 
   useEffect(() => {
     if (selectedRole !== "Administrativo") {
-      applyFilters(codigoMateriaFilter, nombreProyectoFilter, cuatrimestreFilter, annoFilter);
+      applyFilters(
+        codigoMateriaFilter,
+        nombreProyectoFilter,
+        cuatrimestreFilter,
+        annoFilter
+      );
     }
-  }, [codigoMateriaFilter, nombreProyectoFilter, cuatrimestreFilter, annoFilter]);
+  }, [
+    codigoMateriaFilter,
+    nombreProyectoFilter,
+    cuatrimestreFilter,
+    annoFilter,
+  ]);
+
+  const fetchYearsOptions = async () => {
+    try {
+      const response = await fetch(`/conclusiones/Annos/${selectedRole}`);
+      if (response.ok) {
+        const data = await response.json();
+        setYearsOptions(data);
+      } else {
+        toast.error("Error al obtener los años disponibles");
+      }
+    } catch (error) {
+      toast.error("Error al obtener los años disponibles");
+    }
+  };
 
   const fetchGrupos = async () => {
     try {
@@ -177,8 +201,7 @@ function GruposAcademico() {
     }
   };
 
-  const isBuscarButtonDisabled =
-    cuatrimestreFilter === "" || annoFilter === "";
+  const isBuscarButtonDisabled = cuatrimestreFilter === "" || annoFilter === "";
 
   return (
     <div className="materia-container-conclu">
@@ -287,8 +310,8 @@ function GruposAcademico() {
         <div className="card-container">
           {noGroupsMessage ? (
             <div className="no-groups-message">
-              Para ese periodo de tiempo no hay grupos que contengan
-              estudiantes con boletas de conclusión aprobadas.
+              Para ese periodo de tiempo no hay grupos que contengan estudiantes
+              con boletas de conclusión aprobadas.
             </div>
           ) : (
             currentGrupos.map((grupo) => (
