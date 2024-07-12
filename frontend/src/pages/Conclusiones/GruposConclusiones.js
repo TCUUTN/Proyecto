@@ -17,7 +17,7 @@ function GruposAcademico() {
   const [loading, setLoading] = useState(false);
   const [noGroupsMessage, setNoGroupsMessage] = useState(false);
 
-  const gruposPerPage = 10;
+  const gruposPerPage = 4;
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
   const identificacion = sessionStorage.getItem("Identificacion");
   const selectedRole = sessionStorage.getItem("SelectedRole");
@@ -38,9 +38,19 @@ function GruposAcademico() {
 
   useEffect(() => {
     if (selectedRole !== "Administrativo") {
-      applyFilters(codigoMateriaFilter, nombreProyectoFilter, cuatrimestreFilter, annoFilter);
+      applyFilters(
+        codigoMateriaFilter,
+        nombreProyectoFilter,
+        cuatrimestreFilter,
+        annoFilter
+      );
     }
-  }, [codigoMateriaFilter, nombreProyectoFilter, cuatrimestreFilter, annoFilter]);
+  }, [
+    codigoMateriaFilter,
+    nombreProyectoFilter,
+    cuatrimestreFilter,
+    annoFilter,
+  ]);
 
   const fetchGrupos = async () => {
     try {
@@ -177,11 +187,10 @@ function GruposAcademico() {
     }
   };
 
-  const isBuscarButtonDisabled =
-    cuatrimestreFilter === "" || annoFilter === "";
+  const isBuscarButtonDisabled = cuatrimestreFilter === "" || annoFilter === "";
 
   return (
-    <div className="materia-container-conclu">
+    <div className="grupClu-container">
       {/*Para la carga */}
       {loading && (
         <div className="loading-overlay">
@@ -190,16 +199,19 @@ function GruposAcademico() {
       )}
       <ToastContainer position="bottom-right" />
       <main>
-        <div className="filters-acad">
+        <div className="filters-grupClu">
           {selectedRole === "Administrativo" ? (
             <>
-              <div className="filter-group-acad">
-                <label className="filter-label-acad" htmlFor="Anno-Busqueda">
-                  Año
+              <div className="filter-group-grupClu">
+                <label
+                  className="filter-label-grupClu"
+                  htmlFor="Cuatrimestre-Busqueda"
+                >
+                  Buscar por año
                 </label>
                 <select
                   id="Anno-Busqueda"
-                  className="filter-select-acad"
+                  className="filter-select-grupClu"
                   value={annoFilter}
                   onChange={handleAnnoFilterChange}
                 >
@@ -212,16 +224,16 @@ function GruposAcademico() {
                 </select>
               </div>
 
-              <div className="filter-group-acad">
+              <div className="filter-group-grupClu">
                 <label
-                  className="filter-label-acad"
+                  className="filter-label-grupClu"
                   htmlFor="Cuatrimestre-Busqueda"
                 >
-                  Cuatrimestre
+                  Buscar por cuatrimestre
                 </label>
                 <select
                   id="Cuatrimestre-Busqueda"
-                  className="filter-select-acad"
+                  className="filter-select-grupClu"
                   value={cuatrimestreFilter}
                   onChange={handleCuatrimestreFilterChange}
                 >
@@ -231,24 +243,31 @@ function GruposAcademico() {
                   <option value="3">3</option>
                 </select>
               </div>
-
-              <button
-                className="buscar-button-vistconclgrup"
-                onClick={handleBuscarClick}
-                disabled={isBuscarButtonDisabled}
-              >
-                Buscar
-              </button>
+              <div className="filter-group-grupClu">
+                <div className="butBuscar-grupClu">
+                  <div className="grupClu-divider " />
+                  <button
+                    className="buscar-button-grupClu"
+                    onClick={handleBuscarClick}
+                    disabled={isBuscarButtonDisabled}
+                  >
+                    Buscar
+                  </button>
+                </div>
+              </div>
             </>
           ) : (
             <>
-              <div className="filter-group-acad">
-                <label className="filter-label-acad" htmlFor="Anno-Filtro">
-                  Año
+              <div className="filter-group-grupClu">
+                <label
+                  className="filter-label-grupClu"
+                  htmlFor="Cuatrimestre-Busqueda"
+                >
+                  Buscar por año
                 </label>
                 <select
                   id="Anno-Filtro"
-                  className="filter-select-acad"
+                  className="filter-select-grupClu"
                   value={annoFilter}
                   onChange={handleAnnoFilterChange}
                 >
@@ -261,16 +280,16 @@ function GruposAcademico() {
                 </select>
               </div>
 
-              <div className="filter-group-acad">
+              <div className="filter-group-grupClu">
                 <label
-                  className="filter-label-acad"
-                  htmlFor="Cuatrimestre-Filtro"
+                  className="filter-label-grupClu"
+                  htmlFor="Cuatrimestre-Busqueda"
                 >
-                  Cuatrimestre
+                  Buscar por cuatrimestre
                 </label>
                 <select
                   id="Cuatrimestre-Filtro"
-                  className="filter-select-acad"
+                  className="filter-select-grupClu"
                   value={cuatrimestreFilter}
                   onChange={handleCuatrimestreFilterChange}
                 >
@@ -284,22 +303,22 @@ function GruposAcademico() {
           )}
         </div>
 
-        <div className="card-container">
+        <div className="card-container-grupClu">
           {noGroupsMessage ? (
             <div className="no-groups-message">
-              Para ese periodo de tiempo no hay grupos que contengan
-              estudiantes con boletas de conclusión aprobadas.
+              Para ese periodo de tiempo no hay grupos que contengan estudiantes
+              con boletas de conclusión aprobadas.
             </div>
           ) : (
             currentGrupos.map((grupo) => (
-              <div className="card" key={grupo.GrupoId}>
-                <div className="card-header">{grupo.CodigoMateria}</div>
-                <div className="card-title">
+              <div className="card-grupClu" key={grupo.GrupoId}>
+                <div className="card-header-grupClu">{grupo.CodigoMateria}</div>
+                <div className="card-title-grupClu">
                   {grupo.Grupos_TipoGrupo.NombreProyecto}
                 </div>
-                <div className="card-content">
+                <div className="card-content-grupClu">
                   <p>
-                    <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}{" "}
+                    <strong>Tipo:</strong> {grupo.Grupos_TipoGrupo.TipoCurso}
                   </p>
                   <p>
                     <strong>Grupo:</strong> {grupo.NumeroGrupo}
@@ -308,14 +327,13 @@ function GruposAcademico() {
                     <strong>Horario:</strong> {grupo.Horario}
                   </p>
                   <p>
-                    <strong>Sede: </strong>
-                    {grupo.Sede} &nbsp;&nbsp;&nbsp; <strong>Aula: </strong>
-                    {grupo.Aula}
+                    <strong>Sede:</strong> {grupo.Sede} &nbsp;&nbsp;&nbsp;{" "}
+                    <strong>Aula:</strong> {grupo.Aula}
                   </p>
                 </div>
-                <div className="card-footer">
+                <div className="card-footer-grupClu">
                   <button
-                    className="btn-view-group"
+                    className="btn-view-group-grupClu"
                     onClick={() => handleLista(grupo.GrupoId)}
                   >
                     Ver Grupo
@@ -328,7 +346,7 @@ function GruposAcademico() {
 
         {(selectedRole === "Académico" ||
           (selectedRole === "Administrativo" && grupos.length > 0)) && (
-          <div className="pagination-acad">
+          <div className="pagination-grupClu">
             <button onClick={handlePreviousPage}>Anterior</button>
             <span>
               Página {currentPage} de{" "}
