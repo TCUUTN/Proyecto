@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaFileDownload,
-  FaFileUpload,
-} from "react-icons/fa";
+import { FaFileDownload, FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +28,7 @@ function MantenimientoUs() {
         const sede = sessionStorage.getItem("Sede");
         const UserSaved = sessionStorage.getItem("userSaved");
 
-        if (UserSaved==="true") {
+        if (UserSaved === "true") {
           toast.success("Usuario guardado con éxito");
           sessionStorage.removeItem("userSaved");
         }
@@ -106,10 +103,9 @@ function MantenimientoUs() {
       const estadoNum = estado === "1" ? 1 : 0;
       filtered = filtered.filter((usuario) => usuario.Estado === estadoNum);
     }
-    
 
     if (rol) {
-      filtered = filtered.filter((usuario) => 
+      filtered = filtered.filter((usuario) =>
         usuario.Usuarios_Roles.some((ur) => ur.Rol.NombreRol === rol)
       );
     }
@@ -145,9 +141,27 @@ function MantenimientoUs() {
   const handleEditUser = (Identificacion) => {
     sessionStorage.setItem("IdentificacionUsuario", Identificacion);
     navigate("/CrearActualizarUsuario");
-  }; 
+  };
 
- 
+  const headerMappings = {
+    Estudiante: {
+      "Código de Proyecto": "CodigoMateria",
+      "Grupo#": "Grupo",
+      "Cuatrimestre": "Cuatrimestre",
+      "Año": "Anno",
+      "Sede": "Sede",
+      "Identificación": "Identificacion",
+      "Nombre Completo": "NombreCompleto",
+      "Correo Electrónico": "CorreoElectronico",
+    },
+    Académico: {
+      "Sede": "Sede",
+      "Identificación": "Identificacion",
+      "Nombre Completo": "NombreCompleto",
+      "Correo Electrónico": "CorreoElectronico",
+    },
+  };
+  
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (
@@ -165,70 +179,75 @@ function MantenimientoUs() {
           workbook.Sheets[firstSheetName],
           { header: 1 }
         );
-
+  
+        const mapHeaders = (row, mappings) => {
+          return row.reduce((acc, value, index) => {
+            const header = worksheet[1][index]; // Usar la segunda fila como encabezados
+            const mappedHeader = mappings[header];
+            if (mappedHeader) {
+              acc[mappedHeader] = value;
+            }
+            return acc;
+          }, {});
+        };
+  
         if (role === "Académico") {
-          // eslint-disable-next-line no-unused-vars
-          const headers = worksheet[0];
-          const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
-
+          const dataRows = worksheet.slice(2); // Omitir las dos primeras filas
           const jsonData = dataRows.map((row) => {
-            const [Identificacion, NombreCompleto, CorreoElectronico, Sede] =
-              row;
-            const nombres = NombreCompleto.split(" ");
-            const Apellido1 = nombres[0];
+            const mappedRow = mapHeaders(row, headerMappings.Académico);
+            const nombres = mappedRow.NombreCompleto?.split(" ") || [];
+            const Apellido1 = nombres[0] || "";
             const Apellido2 = nombres[1] || "";
-            const Nombre = nombres.slice(2).join(" ");
-
+            const Nombre = nombres.slice(2).join(" ") || "";
+  
             return {
-              Identificacion,
+              Identificacion: mappedRow.Identificacion,
               Nombre,
               Apellido1,
               Apellido2,
               Genero: "Indefinido",
-              CorreoElectronico,
+              CorreoElectronico: mappedRow.CorreoElectronico,
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
               Estado: true,
-              Sede: Sede,
+              Sede: mappedRow.Sede,
             };
           });
-
+  
           uploadJsonData(jsonData, role);
         } else if (role === "Estudiante") {
           if (worksheet.length > 2) {
-            const firstRow = worksheet[0];
-            const defaultValues = {};
-            for (let i = 0; i < firstRow.length; i += 2) {
-              defaultValues[firstRow[i]] = firstRow[i + 1];
-            }
-
+            const generalData = worksheet[0].reduce((acc, value, index) => {
+              if (index % 2 === 0) {
+                const header = worksheet[0][index];
+                const mappedHeader = headerMappings.Estudiante[header];
+                if (mappedHeader) {
+                  acc[mappedHeader] = worksheet[0][index + 1];
+                }
+              }
+              return acc;
+            }, {});
+  
             const jsonData = worksheet.slice(2).map((row) => {
-              const [Identificacion, NombreCompleto, CorreoElectronico] = row;
-              const nombres = NombreCompleto.split(" ");
-              const Apellido1 = nombres[0];
+              const mappedRow = mapHeaders(row, headerMappings.Estudiante);
+              const nombres = mappedRow.NombreCompleto?.split(" ") || [];
+              const Apellido1 = nombres[0] || "";
               const Apellido2 = nombres[1] || "";
-              const Nombre = nombres.slice(2).join(" ");
-
+              const Nombre = nombres.slice(2).join(" ") || "";
+  
               const user = {
-                Identificacion,
+                Identificacion: mappedRow.Identificacion,
                 Nombre,
                 Apellido1,
                 Apellido2,
                 Genero: "Indefinido",
-                CorreoElectronico,
+                CorreoElectronico: mappedRow.CorreoElectronico,
                 RolUsuario: role,
                 Contrasenna: generateRandomPassword(),
                 Estado: true,
-                TipoIdentificacion: "Cedula",
+                ...generalData,
               };
-
-              for (let i = 0; i < firstRow.length; i += 2) {
-                const key = firstRow[i];
-                if (!user[key]) {
-                  user[key] = defaultValues[key];
-                }
-              }
-
+  
               return user;
             });
             console.log(jsonData);
@@ -241,6 +260,49 @@ function MantenimientoUs() {
           console.error("Rol de usuario no reconocido");
           toast.error("Rol de usuario no reconocido");
         }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      console.error("Por favor, suba un archivo Excel válido");
+      toast.error("Por favor, suba un archivo Excel válido");
+    }
+  };
+  
+  
+  
+
+
+
+  const handleCarrerasUplaod = (e) => {
+    const file = e.target.files[0];
+    if (
+      file &&
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setIsLoading(true); // Mostrar pantalla de carga
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = XLSX.utils.sheet_to_json(
+          workbook.Sheets[firstSheetName],
+          { header: 1 }
+        );
+  
+        // eslint-disable-next-line no-unused-vars
+        const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
+  
+        const jsonData = dataRows.map((row) => {
+          const [Identificación, Carrera] = row;
+  
+          return {
+            Identificacion: Identificación,
+            CarreraEstudiante: Carrera
+          };
+        });
+        uploadJsonDataSinRol(jsonData);
       };
       reader.readAsArrayBuffer(file);
     } else {
@@ -290,6 +352,32 @@ function MantenimientoUs() {
     } catch (error) {
       console.error("Error al cargar los usuarios:", error);
       toast.error("Error al cargar los usuarios");
+    } finally {
+      setIsLoading(false); // Ocultar pantalla de carga
+    }
+  };
+
+  const uploadJsonDataSinRol = async (data) => {
+    try {
+      const response = await fetch("/usuarios/cargaCarreras", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log("Carreras cargadas exitosamente");
+        toast.success(`Carreras cargadas exitosamente`);
+        fetchUsuarios();
+      } else {
+        console.error("Error al cargar las carreras");
+        toast.error("Error al cargar las carreras");
+      }
+    } catch (error) {
+      console.error("Error al cargar las carreras:", error);
+      toast.error("Error al cargar las carreras", error);
     } finally {
       setIsLoading(false); // Ocultar pantalla de carga
     }
@@ -349,13 +437,15 @@ function MantenimientoUs() {
                 />
               </div>
               <div className="upload-option">
-                  <label htmlFor="file-upload-academico" className="upload-label">
+                <label htmlFor="file-upload-carreras" className="upload-label">
                   <FaFileUpload className="icon-other" /> Cargar Carreras
                 </label>
                 <input
-
+                  id="file-upload-carreras"
+                  type="file"
+                  accept=".xlsx"
                   style={{ display: "none" }}
-
+                  onChange={(e) => handleCarrerasUplaod(e)}
                 />
               </div>
             </div>
@@ -456,7 +546,7 @@ function MantenimientoUs() {
                       className="icon-btn-user"
                       onClick={() => handleEditUser(usuario.Identificacion)}
                     >
-                     <TbUserEdit />
+                      <TbUserEdit />
                     </button>
                   </td>
                 </tr>
@@ -487,7 +577,6 @@ function MantenimientoUs() {
         {/**/}
       </main>
 
-     
       <ToastContainer position="bottom-right" />
     </div>
   );
