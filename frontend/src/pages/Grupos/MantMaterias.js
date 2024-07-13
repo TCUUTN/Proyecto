@@ -23,7 +23,6 @@ function MantMaterias() {
   const materiasPerPage = 10;
 
   const banderaProyecto = sessionStorage.getItem("proyectoGuardado")
-    console.log(banderaProyecto)
 
   const navigate = useNavigate();
 
@@ -119,32 +118,35 @@ function MantMaterias() {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (
-      file &&
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
+    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(
-          workbook.Sheets[firstSheetName],
-          { header: 1 }
-        );
-
-        if (
-          worksheet[0].join(",") === "CodigoMateria,NombreProyecto,TipoCurso"
-        ) {
+        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
+  
+        const expectedHeaders = [
+          "Código del Proyecto",
+          "Nombre del Proyecto",
+          "Modalidad del Proyecto"
+        ];
+  
+        if (worksheet[0].join(",") === expectedHeaders.join(",")) {
           const jsonData = worksheet.slice(1).map((row) => {
-            const [CodigoMateria, NombreProyecto, TipoCurso] = row;
+            const [
+              CodigoMateria, 
+              NombreProyecto, 
+              TipoCurso
+            ] = row;
+  
             return {
               CodigoMateria,
               NombreProyecto,
               TipoCurso,
             };
           });
+  
           uploadJsonData(jsonData);
         } else {
           console.error("Formato de archivo inválido");
@@ -157,6 +159,7 @@ function MantMaterias() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
+  
 
   const uploadJsonData = async (data) => {
     setLoading(true);
@@ -213,7 +216,7 @@ function MantMaterias() {
               </div>
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
-                  <FaFileUpload className="icon-othermat" /> Subir Plantilla
+                  <FaFileUpload className="icon-othermat" /> Cargar Proyectos
                 </label>
                 <input
                   id="file-upload"

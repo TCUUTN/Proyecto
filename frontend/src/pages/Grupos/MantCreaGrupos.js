@@ -188,8 +188,9 @@ function MantGrupos() {
       // Verificar encabezados en la segunda fila y aplicar las transformaciones
       let headers = worksheet[1];
       headers = headers.map((header) => {
-        if (header === "Codigo de Proyecto") return "CodigoMateria";
-        if (header === "Numero de Grupo") return "NumeroGrupo";
+        if (header === "Código de Proyecto") return "CodigoMateria";
+        if (header === "Número de Grupo") return "NumeroGrupo";
+        if (header === "Académico") return "Academico";
         return header;
       });
 
@@ -320,7 +321,7 @@ function MantGrupos() {
               </div>
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
-                  <FaFileUpload className="icon-othermat" /> Subir Plantilla
+                  <FaFileUpload className="icon-othermat" /> Cargar Grupos
                 </label>
                 <input
                   id="file-upload"

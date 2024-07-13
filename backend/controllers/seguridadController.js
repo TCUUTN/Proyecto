@@ -339,6 +339,7 @@ const crearOActualizarUsuario = async (req, res) => {
       CarreraEstudiante = "-",
       Sede,
       Usuarios_Roles,
+      GrupoId, // nuevo parámetro
     } = req.body;
 
     console.log('Datos recibidos:', req.body);
@@ -393,6 +394,24 @@ const crearOActualizarUsuario = async (req, res) => {
       // Actualizar roles de usuario
       await actualizarRolesUsuario(Identificacion, Usuarios_Roles);
 
+      // Verificar y actualizar el registro en GruposEstudiantes si GrupoId está presente
+      if (GrupoId) {
+        let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+          where: {
+            Identificacion: Identificacion,
+            GrupoId: GrupoId,
+          },
+        });
+
+        if (!grupoEstudianteExistente) {
+          await GruposEstudiantes.create({
+            Identificacion: Identificacion,
+            GrupoId: GrupoId,
+            Estado: "En Curso",
+          });
+        }
+      }
+
       return res.status(200).json(usuarioExistente);
     }
 
@@ -416,6 +435,24 @@ const crearOActualizarUsuario = async (req, res) => {
     // Agregar roles de usuario
     await agregarRolesUsuario(Identificacion, Usuarios_Roles);
 
+    // Verificar y crear el registro en GruposEstudiantes si GrupoId está presente
+    if (GrupoId) {
+      let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+        where: {
+          Identificacion: Identificacion,
+          GrupoId: GrupoId,
+        },
+      });
+
+      if (!grupoEstudianteExistente) {
+        await GruposEstudiantes.create({
+          Identificacion: Identificacion,
+          GrupoId: GrupoId,
+          Estado: "En Curso",
+        });
+      }
+    }
+
     console.log('Usuario creado:', nuevoUsuario);
     res.status(201).json(nuevoUsuario);
   } catch (error) {
@@ -423,6 +460,7 @@ const crearOActualizarUsuario = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 
@@ -589,9 +627,58 @@ const cargarUsuario = async (req, res) => {
     res.status(200).send("Usuarios cargados/actualizados exitosamente");
   } catch (error) {
     console.error("Error al cargar/actualizar los usuarios:", error);
+    res.status(500).send("Error al cargar/actualizar los usuarios", error);
+  }
+};
+
+const cargaCarreras = async (req, res) => {
+  const users = req.body;
+
+  try {
+    // Buscar todos los UsuarioRoles con RolId = 3 e incluir los Usuarios con CarreraEstudiante igual a "-"
+    const usuariosRoles = await UsuarioRoles.findAll({
+      where: {
+        RolId: 3,
+      },
+      include: [
+        {
+          model: Usuario,
+          where: {
+            CarreraEstudiante: "-",
+          },
+        },
+      ],
+    });
+
+    for (let usuarioRol of usuariosRoles) {
+      const identificacion = String(usuarioRol.Usuario.Identificacion);
+
+      // Buscar en const users si existe una línea que coincida con la Identificacion
+      const userData = users.find((user) => String(user.Identificacion) === identificacion);
+
+      if (userData) {
+        // Actualizar el campo CarreraEstudiante en la base de datos
+        await Usuario.update(
+          {
+            CarreraEstudiante: userData.CarreraEstudiante,
+          },
+          {
+            where: {
+              Identificacion: identificacion,
+            },
+          }
+        );
+      }
+    }
+
+    res.status(200).send("Se han añadido las carreras de los Usuarios encontrados");
+  } catch (error) {
+    console.error("Error al cargar/actualizar los usuarios:", error);
     res.status(500).send("Error al cargar/actualizar los usuarios");
   }
 };
+
+
 
 
 const EstadoUsuario = async (req, res) => {
@@ -662,4 +749,5 @@ module.exports = {
   getUsuarioPorIdentificacion,
   actualizarGenero,
   cargarUsuario,
+  cargaCarreras
 };

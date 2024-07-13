@@ -86,11 +86,11 @@
     transition: 0.5s;
 }
 
-.dashAcademico-divider {
+.dashAdmin-divider {
     width: 20%;
     height: 2px;
     background: #ff6600;
-    margin: 20px 0;
+    margin: 0 auto 0 auto; /* Reducir el margen inferior */
 }
 
 .icon-btn-Dash:hover {
