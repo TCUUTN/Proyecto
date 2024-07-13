@@ -161,6 +161,50 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
   }
 };
 
+const getGrupoEstudianteporIdentificacionParaUsuario = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    // Primero busca con estado "En Curso" o "Aprobado"
+    const estudianteGrupo = await GruposEstudiantes.findOne({
+      where: {
+        Identificacion: Identificacion,
+        Estado: {
+          [Op.or]: ["En Curso", "Aprobado"],
+        },
+      },
+      attributes: ["GrupoId", "Estado"], // Añadiendo atributos
+    });
+
+    if (estudianteGrupo) {
+      return res.status(200).json(estudianteGrupo);
+    }
+
+    // Si no encuentra, busca con estado "Reprobado" y selecciona el registro con el GrupoId más alto
+    const reprobados = await GruposEstudiantes.findAll({
+      where: {
+        Identificacion: Identificacion,
+        Estado: "Reprobado",
+      },
+      attributes: ["GrupoId", "Estado"], // Añadiendo atributos
+      order: [['GrupoId', 'DESC']],
+    });
+
+    if (reprobados.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Estudiante en el Grupo no encontrado" });
+    }
+
+    // Selecciona el registro con el GrupoId más alto
+    const estudianteGrupoReprobado = reprobados[0];
+
+    res.status(200).json(estudianteGrupoReprobado);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getListaEstudiantes = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -928,4 +972,5 @@ module.exports = {
   getEstudianteAdministrativo,
   getGruposActivos,
   getprueba,
+  getGrupoEstudianteporIdentificacionParaUsuario
 };

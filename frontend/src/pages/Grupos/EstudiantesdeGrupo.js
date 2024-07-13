@@ -160,7 +160,7 @@ function ListaEstudiantes() {
     localStorage.removeItem("GrupoSeleccionado");
 
     if (selectedRole==="Académico") {
-      navigate("/ListaEstudiantes");
+      navigate("/GruposAcademico");
     } else {
       navigate("/Home");
     }

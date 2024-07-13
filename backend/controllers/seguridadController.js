@@ -339,6 +339,7 @@ const crearOActualizarUsuario = async (req, res) => {
       CarreraEstudiante = "-",
       Sede,
       Usuarios_Roles,
+      GrupoId, // nuevo parámetro
     } = req.body;
 
     console.log('Datos recibidos:', req.body);
@@ -393,6 +394,24 @@ const crearOActualizarUsuario = async (req, res) => {
       // Actualizar roles de usuario
       await actualizarRolesUsuario(Identificacion, Usuarios_Roles);
 
+      // Verificar y actualizar el registro en GruposEstudiantes si GrupoId está presente
+      if (GrupoId) {
+        let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+          where: {
+            Identificacion: Identificacion,
+            GrupoId: GrupoId,
+          },
+        });
+
+        if (!grupoEstudianteExistente) {
+          await GruposEstudiantes.create({
+            Identificacion: Identificacion,
+            GrupoId: GrupoId,
+            Estado: "En Curso",
+          });
+        }
+      }
+
       return res.status(200).json(usuarioExistente);
     }
 
@@ -416,6 +435,24 @@ const crearOActualizarUsuario = async (req, res) => {
     // Agregar roles de usuario
     await agregarRolesUsuario(Identificacion, Usuarios_Roles);
 
+    // Verificar y crear el registro en GruposEstudiantes si GrupoId está presente
+    if (GrupoId) {
+      let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+        where: {
+          Identificacion: Identificacion,
+          GrupoId: GrupoId,
+        },
+      });
+
+      if (!grupoEstudianteExistente) {
+        await GruposEstudiantes.create({
+          Identificacion: Identificacion,
+          GrupoId: GrupoId,
+          Estado: "En Curso",
+        });
+      }
+    }
+
     console.log('Usuario creado:', nuevoUsuario);
     res.status(201).json(nuevoUsuario);
   } catch (error) {
@@ -423,6 +460,7 @@ const crearOActualizarUsuario = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 

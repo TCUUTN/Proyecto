@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { FaChevronLeft } from "react-icons/fa6";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./CrearActuUsuario.modulo.css";
-
 
 const CrearActualizarUsuario = () => {
   const navigate = useNavigate();
@@ -20,16 +19,23 @@ const CrearActualizarUsuario = () => {
     estado: "",
     correo: "",
     contrasena: "",
+    GrupoId: "",
   });
 
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [grupos, setGrupos] = useState([]);
+  const [grupoEstudiante, setGrupoEstudiante] = useState(null);
   const identificacionUsuario = sessionStorage.getItem("IdentificacionUsuario");
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (identificacionUsuario) {
         try {
+          const grupoResponse = await fetch(`/grupos/GrupoEstudianteUsuario/${identificacionUsuario}`);
+          const grupoData = await grupoResponse.json();
+          
+          setGrupoEstudiante(grupoData);
           const response = await fetch(`/usuarios/${identificacionUsuario}`);
           const data = await response.json();
           setFormData({
@@ -45,7 +51,12 @@ const CrearActualizarUsuario = () => {
             carrera:
               data.CarreraEstudiante !== "-" ? data.CarreraEstudiante : "",
             contrasena: "",
+            GrupoId: grupoData.GrupoId,
           });
+
+          
+          
+
         } catch (error) {
           console.log("Error fetching user data:", error);
         }
@@ -73,13 +84,70 @@ const CrearActualizarUsuario = () => {
     validateForm();
   }, [formData]);
 
+  useEffect(() => {
+    const fetchGrupos = async () => {
+      if (formData.sede && formData.roles.includes(3)) {
+        try {
+          const response = await fetch(
+            `/grupos/GruposActivos/${formData.sede}`
+          );
+          if (!response.ok) {
+            throw new Error(`Error fetching groups: ${response.statusText}`);
+          }
+          const data = await response.json();
+          const gruposData = data.length ? data : [{
+            GrupoId: "",
+            Grupos_TipoGrupo: {
+              NombreProyecto: `La Sede de ${formData.sede} no contiene grupos activos en este momento`,
+            },
+            Cuatrimestre: "",
+            NumeroGrupo: "",
+            Anno: "",
+          }];
+
+          if (grupoEstudiante && !gruposData.some(grupo => grupo.GrupoId === grupoEstudiante.GrupoId)) {
+            gruposData.push({
+              GrupoId: grupoEstudiante.GrupoId,
+              Grupos_TipoGrupo: {
+                NombreProyecto: `El grupo ya no se encuentra activo, Pero el estudiante ha ${grupoEstudiante.Estado} el curso`,
+              },
+              Cuatrimestre: "",
+              NumeroGrupo: "",
+              Anno: "",
+            });
+          }
+
+          setGrupos(gruposData);
+        } catch (error) {
+          console.log("Error fetching groups:", error);
+          setGrupos([
+            {
+              GrupoId: "",
+              Grupos_TipoGrupo: {
+                NombreProyecto: `La Sede de ${formData.sede} no contiene grupos activos en este momento`,
+              },
+              Cuatrimestre: "",
+              NumeroGrupo: "",
+              Anno: "",
+            },
+          ]);
+        }
+      } else {
+        setGrupos([]);
+      }
+    };
+
+    fetchGrupos();
+  }, [formData.sede, formData.roles, grupoEstudiante]);
+
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.identificacion) {
       newErrors.identificacion = "Identificación es requerida";
     } else if (formData.identificacion.length < 3) {
-      newErrors.identificacion = "La identificación debe tener al menos 3 caracteres";
+      newErrors.identificacion =
+        "La identificación debe tener al menos 3 caracteres";
     }
 
     if (!formData.nombre) {
@@ -125,6 +193,15 @@ const CrearActualizarUsuario = () => {
       newErrors.roles = "Al menos un rol es requerido";
     }
 
+    if (formData.roles.includes(3)) {
+      if (!formData.carrera) {
+        newErrors.carrera = "Carrera es requerida para el rol de Estudiante";
+      }
+      if (!formData.GrupoId) {
+        newErrors.grupo = "Grupo es requerido para el rol de Estudiante";
+      }
+    }
+
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
   };
@@ -138,7 +215,14 @@ const CrearActualizarUsuario = () => {
     const roles = formData.roles.includes(role)
       ? formData.roles.filter((r) => r !== role)
       : [...formData.roles, role];
-    setFormData({ ...formData, roles });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      roles,
+      carrera: roles.includes(3) ? prevFormData.carrera : "",
+      grupo: roles.includes(3) ? prevFormData.grupo : "",
+    }));
+
+    console.log("Roles updated:", roles);
   };
 
   const handleSubmit = async (e) => {
@@ -167,7 +251,7 @@ const CrearActualizarUsuario = () => {
       Genero: formData.genero,
       CorreoElectronico: formData.correo,
       Contrasenna: formData.contrasena,
-      Estado: identificacionUsuario ? formData.estado : 1, // Valor predeterminado de 1 si identificacionUsuario no existe
+      Estado: identificacionUsuario ? formData.estado : 1,
       Sede: formData.sede,
       Usuarios_Roles: mappedRoles.map((rolId) => ({
         Identificacion: formData.identificacion,
@@ -176,13 +260,13 @@ const CrearActualizarUsuario = () => {
         LastUpdate: new Date().toISOString(),
         LastUser: "-",
       })),
+      ...(formData.roles.includes(3) && { GrupoId: formData.grupo }),
     };
+    
 
     console.log("Form Data to be submitted:", payload);
 
     try {
-
-      console.log(JSON.stringify(payload))
       const response = await fetch("/usuarios/crearOActualizarUsuario", {
         method: "POST",
         headers: {
@@ -195,7 +279,7 @@ const CrearActualizarUsuario = () => {
         console.log("Usuario guardado con éxito");
         sessionStorage.setItem("userSaved", "true");
         sessionStorage.removeItem("IdentificacionUsuario");
-        navigate(-1); // Regresar a la página anterior
+        navigate(-1);
       } else {
         const errorData = await response.json();
         console.log("Error al guardar el usuario", errorData);
@@ -218,11 +302,8 @@ const CrearActualizarUsuario = () => {
       <h2 className="creaediUsu-titulo">
         {identificacionUsuario ? "Editar Usuario" : "Crear Usuario"}
       </h2>
-      <div className="creaediUsu-line"></div> {/* Línea bajo el título */}
-      <form
-        onSubmit={handleSubmit}
-        className="creaediUsu-formUserEdit"
-      >
+      <div className="creaediUsu-line"></div>
+      <form onSubmit={handleSubmit} className="creaediUsu-formUserEdit">
         {/* Identificacion */}
         <div className="creaediUsu-formGroup">
           <input
@@ -236,10 +317,14 @@ const CrearActualizarUsuario = () => {
             disabled={!!identificacionUsuario}
           />
           {errors.identificacion && (
-        <div className={`${"creaediUsu-error"} ${errors.identificacion && 'active'}`}>
-          {errors.identificacion}
-        </div>
-      )}
+            <div
+              className={`${"creaediUsu-error"} ${
+                errors.identificacion && "active"
+              }`}
+            >
+              {errors.identificacion}
+            </div>
+          )}
         </div>
         {/* Nombre */}
         <div className="creaediUsu-formGroup">
@@ -253,10 +338,12 @@ const CrearActualizarUsuario = () => {
             placeholder="Nombre"
           />
           {errors.nombre && (
-        <div className={`${"creaediUsu-error"} ${errors.nombre && 'active'}`}>
-          {errors.nombre}
-        </div>
-      )}
+            <div
+              className={`${"creaediUsu-error"} ${errors.nombre && "active"}`}
+            >
+              {errors.nombre}
+            </div>
+          )}
         </div>
         {/* Primer Apellido */}
         <div className="creaediUsu-formGroup">
@@ -270,10 +357,14 @@ const CrearActualizarUsuario = () => {
             placeholder="Primer Apellido"
           />
           {errors.primerApellido && (
-        <div className={`${"creaediUsu-error"} ${errors.primerApellido && 'active'}`}>
-          {errors.primerApellido}
-        </div>
-      )}
+            <div
+              className={`${"creaediUsu-error"} ${
+                errors.primerApellido && "active"
+              }`}
+            >
+              {errors.primerApellido}
+            </div>
+          )}
         </div>
         {/* Segundo Apellido */}
         <div className="creaediUsu-formGroup">
@@ -287,50 +378,16 @@ const CrearActualizarUsuario = () => {
             placeholder="Segundo Apellido"
           />
           {errors.primerApellido && (
-        <div className={`${"creaediUsu-error"} ${errors.primerApellido && 'active'}`}>
-          {errors.primerApellido}
+            <div
+              className={`${"creaediUsu-error"} ${
+                errors.primerApellido && "active"
+              }`}
+            >
+              {errors.primerApellido}
+            </div>
+          )}
         </div>
-      )}
-        </div>
-        {/* Roles */}
-        <div className="creaediUsu-formGroupRoles">
-          <span>Roles:</span>
-          <div className="creaediUsu-roles">
-            <label>
-              <input
-              className="creaediUsu-check"
-                type="checkbox"
-                name="roles"
-                value="Administrador"
-                checked={formData.roles.includes(1)}
-                onChange={() => handleRoleChange(1)}
-              />
-              Administrador
-            </label>
-            <label>
-              <input
-                 className="creaediUsu-check"
-                type="checkbox"
-                name="roles"
-                value="Estudiante"
-                checked={formData.roles.includes(3)}
-                onChange={() => handleRoleChange(3)}
-              />
-              Estudiante
-            </label>
-            <label>
-              <input
-                 className="creaediUsu-check"
-                type="checkbox"
-                name="roles"
-                value="Académico"
-                checked={formData.roles.includes(2)}
-                onChange={() => handleRoleChange(2)}
-              />
-              Académico
-            </label>
-          </div>
-        </div>
+
         {/* Correo */}
         <div className="creaediUsu-formGroup">
           <input
@@ -342,13 +399,53 @@ const CrearActualizarUsuario = () => {
             className="creaediUsu-input"
             placeholder="Correo electrónico"
           />
-               {errors.correo && (
-        <div className={`${"creaediUsu-error"} ${errors.correo && 'active'}`}>
-          {errors.correo}
+          {errors.correo && (
+            <div
+              className={`${"creaediUsu-error"} ${errors.correo && "active"}`}
+            >
+              {errors.correo}
+            </div>
+          )}
         </div>
-      )}
+        <div className="creaediUsu-formGroupRoles">
+          <span>Roles:</span>
+          <div className="creaediUsu-roles">
+            <label>
+              <input
+                className="creaediUsu-check"
+                type="checkbox"
+                name="roles"
+                value="Administrador"
+                checked={formData.roles.includes(1)}
+                onChange={() => handleRoleChange(1)}
+              />
+              Administrador
+            </label>
+            <label>
+              <input
+                className="creaediUsu-check"
+                type="checkbox"
+                name="roles"
+                value="Estudiante"
+                checked={formData.roles.includes(3)}
+                onChange={() => handleRoleChange(3)}
+              />
+              Estudiante
+            </label>
+            <label>
+              <input
+                className="creaediUsu-check"
+                type="checkbox"
+                name="roles"
+                value="Académico"
+                checked={formData.roles.includes(2)}
+                onChange={() => handleRoleChange(2)}
+              />
+              Académico
+            </label>
+          </div>
         </div>
-        {/* Sedes */}
+
         <div className="creaediUsu-formGroup">
           <select
             id="sede"
@@ -367,86 +464,127 @@ const CrearActualizarUsuario = () => {
             <option value="Todas">Todas</option>
           </select>
           {errors.sede && (
-        <div className={`${"creaediUsu-error"} ${errors.sede && 'active'}`}>
-          {errors.sede}
+            <div className={`${"creaediUsu-error"} ${errors.sede && "active"}`}>
+              {errors.sede}
+            </div>
+          )}
         </div>
-      )}
-        </div>
+
+        {formData.roles.includes(3) && (
+          <>
+            <div className="creaediUsu-formGroup">
+              <input
+                type="text"
+                id="carrera"
+                name="carrera"
+                value={formData.carrera}
+                onChange={handleChange}
+                className="creaediUsu-input"
+                placeholder="Carrera"
+              />
+              {errors.carrera && (
+                <div
+                  className={`${"creaediUsu-error"} ${
+                    errors.carrera && "active"
+                  }`}
+                >
+                  {errors.carrera}
+                </div>
+              )}
+            </div>
+
+            <div className="creaediUsu-formGroup">
+              <select
+                id="grupo"
+                name="grupo"
+                value={formData.GrupoId}
+                onChange={handleChange}
+                className="creaediUsu-select"
+              >
+                <option value="">Selecciona un grupo</option>
+                {grupos.map((grupo) => (
+                  <option key={grupo.GrupoId} value={grupo.GrupoId}>
+                    {grupo.GrupoId
+                      ? `${grupo.Grupos_TipoGrupo.NombreProyecto} - Cuatrimestre: ${grupo.Cuatrimestre} - Grupo# ${grupo.NumeroGrupo} - Año: ${grupo.Anno}`
+                      : grupo.Grupos_TipoGrupo.NombreProyecto}
+                  </option>
+                ))}
+              </select>
+              {errors.grupo && (
+                <div
+                  className={`${"creaediUsu-error"} ${
+                    errors.grupo && "active"
+                  }`}
+                >
+                  {errors.grupo}
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
         {/* Div contiene genero, estado y carrera */}
         {identificacionUsuario && (
-          <div className="creaediUsu-otros">
-            <div className="creaediUsu-genero-estado">
-              {/* Genero */}
-              <div className="creaediUsu-formGroup">
-                <select
-                  id="genero"
-                  name="genero"
-                  value={formData.genero}
-                  onChange={handleChange}
-                  className="creaediUsu-select"
+          <div className="creaediUsu-genero-estado">
+            {/* Genero */}
+            <div className="creaediUsu-formGroup">
+              <select
+                id="genero"
+                name="genero"
+                value={formData.genero}
+                onChange={handleChange}
+                className="creaediUsu-select"
+              >
+                <option value="">Género</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Prefiero no Especificar">
+                  Prefiero no Especificar
+                </option>
+              </select>
+              {errors.genero && (
+                <div
+                  className={`${"creaediUsu-error"} ${
+                    errors.genero && "active"
+                  }`}
                 >
-                  <option value="">Género</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                  <option value="Prefiero no Especificar">Prefiero no Especificar</option>
-                </select>
-                {errors.genero && (
-              <div className={`${"creaediUsu-error"} ${errors.genero && 'active'}`}>
-                {errors.genero}
-              </div>
-            )}
-              </div>
-              {/* Estado */}
-              <div className="creaediUsu-formGroup">
-                <select
-                  id="estado"
-                  name="estado"
-                  value={formData.estado}
-                  onChange={handleChange}
-                  className="creaediUsu-select"
-                >
-                  <option value="1">Activo</option>
-                  <option value="0">Inactivo</option>
-                </select>
-
-                {errors.estado && (
-              <div className={`${"creaediUsu-error"} ${errors.estado && 'active'}`}>
-                {errors.estado}
-              </div>
-            )}
-              </div>
+                  {errors.genero}
+                </div>
+              )}
             </div>
-            {/* Carrera */}
-            {formData.roles.includes(3) && (
-              <div className="creaediUsu-formGroup">
-                <input
-                  type="text"
-                  id="carrera"
-                  name="carrera"
-                  value={formData.carrera}
-                  onChange={handleChange}
-                  className="creaediUsu-input"
-                  placeholder="Carrera"
-                />
-                {errors.carrera && (
-              <div className={`${"creaediUsu-error"} ${errors.carrera && 'active'}`}>
-                {errors.carrera}
-              </div>
-            )}
-              </div>
-            )}
+            {/* Estado */}
+            <div className="creaediUsu-formGroup">
+              <select
+                id="estado"
+                name="estado"
+                value={formData.estado}
+                onChange={handleChange}
+                className="creaediUsu-select"
+              >
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+
+              {errors.estado && (
+                <div
+                  className={`${"creaediUsu-error"} ${
+                    errors.estado && "active"
+                  }`}
+                >
+                  {errors.estado}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
-       
-        {/* Botones */}
         <div className="creaediUsu-formButtons">
           <button
             type="button"
             className="creaediUsu-btnRegresar"
             onClick={handleRegresar}
           >
-              <FaChevronLeft />
+            <FaChevronLeft />
             Regresar
           </button>
           <button
@@ -457,7 +595,6 @@ const CrearActualizarUsuario = () => {
             {identificacionUsuario ? "Actualizar" : "Guardar"}
           </button>
         </div>
-        
       </form>
     </div>
   );

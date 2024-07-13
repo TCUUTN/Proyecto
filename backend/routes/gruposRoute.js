@@ -11,6 +11,7 @@ router.get('/GruposActivos/:Sede', gruposController.getGruposActivos);
 router.get('/GruposEstudiantes/:Identificacion/:GrupoId', gruposController.getEstudiantePorGrupo);
 router.get('/tipos/:CodigoProyecto', gruposController.getTipoGrupoPorCodigoMateria);
 router.get('/GrupoEstudiante/:Identificacion', gruposController.getGrupoEstudianteporIdentificacion);
+router.get('/GrupoEstudianteUsuario/:Identificacion', gruposController.getGrupoEstudianteporIdentificacionParaUsuario);
 router.get('/Academicos/:Identificacion', gruposController.getGrupoPorIdentificacion);
 router.get('/Conclusiones/:Identificacion', gruposController.getGrupoPorIdentificacionParaConclusion);
 router.get('/ListaEstudiantes/:GrupoId', gruposController.getListaEstudiantes);

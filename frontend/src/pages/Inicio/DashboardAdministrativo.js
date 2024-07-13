@@ -119,7 +119,7 @@ function DashboardAdministrativo() {
             <div className="table-container-dashAdmin">
               <div className="chart-header">
                 <h2 className="chart-container-title">Gráfico de los estudiantes activos</h2>
-                <div className="dashAcademico-divider"></div>
+                <div className="dashAdmin-divider"></div>
               </div>
               <div className="chart-body">
                 {chartData.labels.length > 0 && (
