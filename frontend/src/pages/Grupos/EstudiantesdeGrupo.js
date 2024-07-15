@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./EstudiantesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
 
+
 function ListaEstudiantes() {
   const navigate = useNavigate();
   const grupoId = localStorage.getItem("GrupoSeleccionado");

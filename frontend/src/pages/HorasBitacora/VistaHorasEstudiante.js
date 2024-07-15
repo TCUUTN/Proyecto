@@ -5,8 +5,9 @@ import { IoMdAddCircle } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { BiSolidCommentCheck } from "react-icons/bi";
+
 import "./VistaHorasEstudiante.modulo.css";
+import { BiSolidCommentX } from "react-icons/bi";
 
 function VistaHorasEstudiante() {
   const navigate = useNavigate();
@@ -401,7 +402,7 @@ function VistaHorasEstudiante() {
                                     handleEditClick(materia.BitacoraId)
                                   }
                                 >
-                                  <BiSolidCommentCheck />
+                          <BiSolidCommentX />
                                 </button>
                               </td>
                             )}
