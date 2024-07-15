@@ -42,8 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  padding-bottom: 70px;
+  padding: 3px 15px ;
   gap: 20px;
   color: #002b69;
 }
@@ -268,7 +267,7 @@ main {
   .sidebar-user,
   .filters-user,
   .table-container {
-    width: 90%;
+    width: 80%;
   }
 
   .user-action {
@@ -286,7 +285,11 @@ main {
   .filters-user,
   .table-container {
     width: 100%;
-    margin: 20px auto;
+  }
+
+  .user-action {
+    margin-left: 0;
+    flex-direction: column;
   }
 
   .add-user {
@@ -313,6 +316,10 @@ main {
     flex-direction: column;
     gap: 15px;
   }
+  .filter-group-user {
+    width: 100%;
+    margin: 10px 0;
+  }
 
   .filter-input-user,
   .filter-select-user {
@@ -329,6 +336,10 @@ main {
   .filter-group-user {
     width: 100%;
    }
+   .title-user {
+    margin-left: 0;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
