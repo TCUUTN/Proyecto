@@ -19,7 +19,7 @@ function DashboardAcademico() {
     const fetchGrupos = async () => {
       const identificacion = sessionStorage.getItem("Identificacion");
       try {
-        const response = await fetch(`/grupos/Conclusiones/${identificacion}`);
+        const response = await fetch(`/grupos/Academicos/${identificacion}`);
         const data = await response.json();
         setGrupos(data);
         if (data.length > 0) {

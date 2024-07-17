@@ -31,12 +31,12 @@ const getAllConclusiones = async (req, res) => {
 const getAllAnnosParaConclusion = async (req, res) => {
   try {
     const { Rol } = req.params;
-
+    console.log(Rol)
     let whereClause = {};
     if (Rol === "Administrativo") {
-      whereClause.Estado = "Aprobado";
+      whereClause.EstadoBoleta = "Aprobado";
     }
-
+    console.log(whereClause)
     const conclusiones = await BoletaConclusion.findAll({
       where: whereClause,
       attributes: [],

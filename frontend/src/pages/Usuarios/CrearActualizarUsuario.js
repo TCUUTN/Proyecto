@@ -34,7 +34,6 @@ const CrearActualizarUsuario = () => {
         try {
           const grupoResponse = await fetch(`/grupos/GrupoEstudianteUsuario/${identificacionUsuario}`);
           const grupoData = await grupoResponse.json();
-          
           setGrupoEstudiante(grupoData);
           const response = await fetch(`/usuarios/${identificacionUsuario}`);
           const data = await response.json();
@@ -105,17 +104,7 @@ const CrearActualizarUsuario = () => {
             Anno: "",
           }];
 
-          if (grupoEstudiante && !gruposData.some(grupo => grupo.GrupoId === grupoEstudiante.GrupoId)) {
-            gruposData.push({
-              GrupoId: grupoEstudiante.GrupoId,
-              Grupos_TipoGrupo: {
-                NombreProyecto: `El grupo ya no se encuentra activo, Pero el estudiante ha ${grupoEstudiante.Estado} el curso`,
-              },
-              Cuatrimestre: "",
-              NumeroGrupo: "",
-              Anno: "",
-            });
-          }
+          
 
           setGrupos(gruposData);
         } catch (error) {
@@ -198,7 +187,7 @@ const CrearActualizarUsuario = () => {
         newErrors.carrera = "Carrera es requerida para el rol de Estudiante";
       }
       if (!formData.GrupoId) {
-        newErrors.grupo = "Grupo es requerido para el rol de Estudiante";
+        newErrors.GrupoId = "Grupo es requerido para el rol de Estudiante";
       }
     }
 
@@ -226,6 +215,7 @@ const CrearActualizarUsuario = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("Hola")
     e.preventDefault();
     if (!isFormValid) {
       console.log("Por favor complete todos los campos correctamente");
@@ -591,6 +581,7 @@ const CrearActualizarUsuario = () => {
             type="submit"
             className="creaediUsu-btnGuardar"
             disabled={!isFormValid}
+            onClick={handleSubmit}
           >
             {identificacionUsuario ? "Actualizar" : "Guardar"}
           </button>
