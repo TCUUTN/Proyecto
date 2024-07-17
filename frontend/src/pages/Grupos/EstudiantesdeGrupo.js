@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import { useNavigate } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EstudiantesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
-
 
 function ListaEstudiantes() {
   const navigate = useNavigate();
@@ -160,13 +162,134 @@ function ListaEstudiantes() {
   const handleBack = () => {
     localStorage.removeItem("GrupoSeleccionado");
 
-    if (selectedRole==="Académico") {
+    if (selectedRole === "Académico") {
       navigate("/GruposAcademico");
     } else {
       navigate("/Home");
     }
-    
   };
+
+// Función para generar el reporte PDF
+const handleGenerarReporte = async () => {
+  const doc = new jsPDF();
+
+  // Obtener datos del grupo
+  const grupoResponse = await fetch(`grupos/${grupoId}`);
+  const grupoData = await grupoResponse.json();
+
+  // Guardar títulos en variables
+  const titulo1 = `${grupoData.Grupos_TipoGrupo.NombreProyecto} - ${grupoData.CodigoMateria}`;
+  const titulo2 = `Lista del Grupo# ${grupoData.NumeroGrupo}, Cuatrimestre ${grupoData.Cuatrimestre} del año ${grupoData.Anno}`;
+  const titulo3 = `Académico a cargo: ${grupoData.Usuario.Nombre} ${grupoData.Usuario.Apellido1} ${grupoData.Usuario.Apellido2}`;
+
+  // Crear la tabla
+  const tableColumn = [
+    "Nombre Completo",
+    "Correo Electrónico",
+    "Identificación",
+    "Estado del Estudiante",
+    "Progreso del Estudiante",
+  ];
+  const tableRows = [];
+
+  filteredEstudiantes.forEach((estudiante) => {
+    const estudianteData = [
+      `${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`,
+      estudiante.Usuario.CorreoElectronico,
+      estudiante.Usuario.Identificacion,
+      estudiante.Estado,
+      estudiante.Progreso,
+    ];
+    tableRows.push(estudianteData);
+  });
+
+  // Añadir imagen como encabezado
+  const imgData = banderaCombinada;
+  
+  // Crear un objeto de imagen para obtener las dimensiones originales
+  const img = new Image();
+  img.src = imgData;
+  img.onload = () => {
+    const imgWidth = doc.internal.pageSize.getWidth() / 6;
+    const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
+    const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2; // Centrar imagen
+    const imgY =0;
+
+    // Dibujar fondo del encabezado
+    doc.setFillColor("#002b69");
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), imgHeight, 'F');
+
+    doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+
+    // Añadir títulos al cuerpo
+    const titleY = imgY + imgHeight + 10;
+    doc.setFontSize(14);
+    doc.setTextColor("#002b69"); // Color azul para el texto
+    doc.text(titulo1, doc.internal.pageSize.getWidth() / 2, titleY, { align: 'center' });
+    doc.text(titulo2, doc.internal.pageSize.getWidth() / 2, titleY + 10, { align: 'center' });
+    doc.text(titulo3, doc.internal.pageSize.getWidth() / 2, titleY + 20, { align: 'center' });
+
+    // Añadir tabla
+    doc.autoTable({
+      startY: titleY + 25,
+      head: [tableColumn],
+      body: tableRows,
+      styles: {
+        fontSize: 10,
+        cellPadding: 3,
+        halign: 'center' // Centrar datos de la tabla
+      },
+      headStyles: {
+        fillColor: [0, 43, 105],
+        textColor: [255, 255, 255],
+        halign: 'center' // Centrar encabezados de la tabla
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240],
+      },
+    });
+
+    // Añadir footer en cada página
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 0; i < pageCount; i++) {
+      doc.setPage(i + 1);
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const footerHeight = 20;
+
+      // Dibujar fondo del pie de página
+      doc.setFillColor("#002b69");
+      doc.rect(0, pageHeight - footerHeight, doc.internal.pageSize.getWidth(), footerHeight, 'F');
+
+      // Añadir paginación y texto del pie de página
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255); // Letra blanca
+      doc.text(
+        `Página ${i + 1} de ${pageCount}`,
+        doc.internal.pageSize.getWidth() / 2,
+        pageHeight - 15,
+        { align: 'center' }
+      );
+      doc.text(
+        `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+        doc.internal.pageSize.getWidth() / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
+      doc.text(
+        "Todos los derechos reservados.",
+        doc.internal.pageSize.getWidth() / 2,
+        pageHeight - 5,
+        { align: 'center' }
+      );
+    }
+
+    // Guardar el documento PDF
+    doc.save(grupoData.CodigoMateria + " - " + titulo2 + ".pdf");
+  };
+};
+
+
+
 
 
   return (
@@ -183,11 +306,7 @@ function ListaEstudiantes() {
         <div className="sliderlis-est">
           {/* Botón de regresar */}
           <div className="regred-action-listest">
-            <button
-
-              onClick={handleBack}
-              className="back-button-listest"
-            >
+            <button onClick={handleBack} className="back-button-listest">
               <FaChevronLeft />
               Regresar
             </button>
@@ -200,8 +319,8 @@ function ListaEstudiantes() {
                 Finalizar Cuatrimestre
               </button>
             )}
-             <div className="estt-divider" />
-             <h1 className="estt-titulo"> Lista de Estudiantes</h1>
+            <div className="estt-divider" />
+            <h1 className="estt-titulo"> Lista de Estudiantes</h1>
           </div>
         </div>
 
@@ -271,9 +390,7 @@ function ListaEstudiantes() {
               <option value="Prórroga">Prórroga</option>
             </select>
           </div>
-
         </div>
-
 
         {/* Tabla */}
         <div className="table-container-mat">
@@ -322,6 +439,14 @@ function ListaEstudiantes() {
               Página {currentPage} de {totalPages}
             </span>
             <button onClick={handleNextPage}>Siguiente</button>
+          </div>
+          <div className="pagination-mat">
+            <button
+              onClick={handleGenerarReporte}
+              className="finalizar-button-listest"
+            >
+              Generar Lista
+            </button>
           </div>
         </div>
       </main>

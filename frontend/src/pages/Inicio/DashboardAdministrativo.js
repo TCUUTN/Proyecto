@@ -113,56 +113,60 @@ function DashboardAdministrativo() {
   return (
     <div className="dashAca-container">
       <ToastContainer position="bottom-right" />
-      {!fetchError ? (
-        <>
-          <div className="content-container">
-            <div className="table-container-dashAdmin">
-              <div className="chart-header">
-                <h2 className="chart-container-title">Gráfico de los estudiantes activos</h2>
-                <div className="dashAdmin-divider"></div>
-              </div>
-              <div className="chart-body">
-                {chartData.labels.length > 0 && (
-                  <Pie
-                    data={chartData}
-                    options={{
-                      plugins: {
-                        legend: {
-                          display: true,
-                          position: "right",
-                          labels: {
-                            font: {
-                              size: 12,
-                            },
-                          },
-                        },
-                        tooltip: {
-                          callbacks: {
-                            label: (context) => {
-                              const label = context.label || "";
-                              const value = context.raw || 0;
-                              const total = context.chart.data.datasets[0].data.reduce(
-                                (acc, val) => acc + val,
-                                0
-                              );
-                              const percentage = ((value / total) * 100).toFixed(0);
-                              return `${label}: ${value} (${percentage}%)`;
-                            },
-                          },
+      <div className="content-container">
+        <div className="table-container-dashAdmin">
+          <div className="chart-header">
+            <h2 className="chart-container-title">Gráfico de los estudiantes activos</h2>
+            <div className="dashAdmin-divider"></div>
+          </div>
+          <div className="chart-body">
+            {fetchError || chartData.labels.length === 0 ? (
+              <p>No hay estudiantes activos.</p>
+            ) : (
+              <Pie
+                data={chartData}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: "right",
+                      labels: {
+                        font: {
+                          size: 12,
                         },
                       },
-                      maintainAspectRatio: false,
-                      responsive: true,
-                      layout: {
-                        padding: 20,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: (context) => {
+                          const label = context.label || "";
+                          const value = context.raw || 0;
+                          const total = context.chart.data.datasets[0].data.reduce(
+                            (acc, val) => acc + val,
+                            0
+                          );
+                          const percentage = ((value / total) * 100).toFixed(0);
+                          return `${label}: ${value} (${percentage}%)`;
+                        },
                       },
-                      aspectRatio: 1,
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-            <div className="table-container-dashAdmin">
+                    },
+                  },
+                  maintainAspectRatio: false,
+                  responsive: true,
+                  layout: {
+                    padding: 20,
+                  },
+                  aspectRatio: 1,
+                }}
+              />
+            )}
+          </div>
+        </div>
+        <div className="table-container-dashAdmin">
+          {grupos.length === 0 ? (
+            <p>No hay grupos activos.</p>
+          ) : (
+            <>
               <table className="mat-table">
                 <thead className="mat-thead">
                   <tr>
@@ -198,12 +202,10 @@ function DashboardAdministrativo() {
                 </span>
                 <button onClick={handleNextPage}>Siguiente</button>
               </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <p className="dashboard-container">El académico no posee grupos para ver.</p>
-      )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
