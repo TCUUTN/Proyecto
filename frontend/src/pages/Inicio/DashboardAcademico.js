@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Doughnut } from "react-chartjs-2";
@@ -14,6 +14,8 @@ function DashboardAcademico() {
   const [grupos, setGrupos] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [fetchError, setFetchError] = useState(false);
+  const [carouselKey, setCarouselKey] = useState(0);
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const fetchGrupos = async () => {
@@ -59,6 +61,7 @@ function DashboardAcademico() {
 
     const chartDataArray = await Promise.all(chartDataPromises);
     setChartData(chartDataArray);
+    setCarouselKey(carouselKey + 1); // Update the key to force re-render
   };
 
   const processChartData = (data) => {
@@ -102,6 +105,8 @@ function DashboardAcademico() {
         <>
           <div className="carousel-container-wrapper">
             <Carousel
+              key={carouselKey} // Use the key to force re-render
+              ref={carouselRef}
               showArrows={grupos.length > 1}
               showStatus={false}
               showThumbs={false}
