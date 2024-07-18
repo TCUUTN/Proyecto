@@ -112,6 +112,28 @@ const getUsuarioPorIdentificacion = async (req, res) => {
   }
 };
 
+const getNombrePorIdentificacion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    // Buscar el usuario por su número de identificación y traer también los roles asociados
+    const usuario = await Usuario.findOne({
+      where: {
+        Identificacion: Identificacion,
+      },
+      attributes: ['Nombre', 'Apellido1', 'Apellido2'],
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.status(200).json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getRolesPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -749,5 +771,6 @@ module.exports = {
   getUsuarioPorIdentificacion,
   actualizarGenero,
   cargarUsuario,
-  cargaCarreras
+  cargaCarreras,
+  getNombrePorIdentificacion
 };

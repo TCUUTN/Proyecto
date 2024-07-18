@@ -16,6 +16,7 @@ router.post('/EstadoUsuario', seguridadController.EstadoUsuario);
 router.get('/nombre', seguridadController.getUsuarioPorNombre);
 router.get('/RolesUsuarios/:Identificacion', seguridadController.getRolesPorIdentificacion);
 router.get('/:Identificacion', seguridadController.getUsuarioPorIdentificacion);
+router.get('/nombres/:Identificacion', seguridadController.getNombrePorIdentificacion);
 
 
 
