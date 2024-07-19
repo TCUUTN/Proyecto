@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./EstudiantesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
 
-
 function ListaEstudiantes() {
   const navigate = useNavigate();
   const grupoId = localStorage.getItem("GrupoSeleccionado");
@@ -160,14 +159,12 @@ function ListaEstudiantes() {
   const handleBack = () => {
     localStorage.removeItem("GrupoSeleccionado");
 
-    if (selectedRole==="Académico") {
+    if (selectedRole === "Académico") {
       navigate("/GruposAcademico");
     } else {
       navigate("/Home");
     }
-    
   };
-
 
   return (
     <div className="materia-container-est">
@@ -180,30 +177,28 @@ function ListaEstudiantes() {
       <ToastContainer position="bottom-right" />
       {/* Filtros y botón */}
       <main>
-        <div className="sliderlis-est">
-          {/* Botón de regresar */}
-          <div className="regred-action-listest">
-            <button
-
-              onClick={handleBack}
-              className="back-button-listest"
-            >
-              <FaChevronLeft />
-              Regresar
-            </button>
-            &nbsp; &nbsp;
-            {selectedRole === "Académico" && (
-              <button
-                onClick={handleFinalizarCuatrimestre}
-                className="finalizar-button-listest"
-              >
-                Finalizar Cuatrimestre
-              </button>
-            )}
-             <div className="estt-divider" />
-             <h1 className="estt-titulo"> Lista de Estudiantes</h1>
-          </div>
-        </div>
+      <div className="sliderlis-est">
+    {/* Botón de regresar */}
+    <div className="regred-action-listest">
+      <button onClick={handleBack} className="back-button-listest">
+        Regresar
+      </button>
+      <div className="estt-divider" />
+      <h1 className="estt-titulo">Lista de Estudiantes</h1>
+      <div className="estt-divider" />
+      <div className="buttFinalizar">
+        {selectedRole === "Académico" && (
+          <button
+            onClick={handleFinalizarCuatrimestre}
+            className="finalizar-button-listest"
+            disabled
+          >
+            Finalizar Cuatrimestre
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
 
         <div className="filters-est">
           {/* Filtros */}
@@ -271,9 +266,7 @@ function ListaEstudiantes() {
               <option value="Prórroga">Prórroga</option>
             </select>
           </div>
-
         </div>
-
 
         {/* Tabla */}
         <div className="table-container-mat">

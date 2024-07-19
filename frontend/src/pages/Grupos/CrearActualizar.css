@@ -12,12 +12,12 @@
   padding: 20px;
   width: 80%; /* Utilizamos vw en lugar de % para hacerlo responsivo */
   max-width: 600px; /* Ejemplo de tamaño máximo para tablets */
-  margin: 10% auto; /* Utilizamos vh en lugar de % para el margen superior */
+  margin: 2.5% auto; /* Utilizamos vh en lugar de % para el margen superior */
 
 }
 
 .projcreaed-tit {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
@@ -86,7 +86,7 @@
   border-radius: 25px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
 
 .button-projcreaed:hover {
@@ -104,31 +104,49 @@
   font-size: 0.8em;
 }
 
-/* Media queries para hacer ajustes específicos para tamaños de pantalla más pequeños */
+/* Media queries para tablets */
 @media (max-width: 768px) {
   .container-projcreaed {
-      width: 90%; /* Ajuste para tablets */
-      margin-top: 15vh; /* Ajuste del margen superior para tablets */
+      width: 90%;
+      margin-top: 20vh;
   }
 
   .button-projcreaed {
-      width: 50%; /* Ajuste del ancho del botón para tablets */
+      width: 50%;
   }
 }
 
-@media (max-width: 480px) {
+/* Media queries para celulares en orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
   .container-projcreaed {
-      width: 95%; /* Ajuste para celulares */
-      margin-top: 20vh; /* Ajuste del margen superior para celulares */
+      width: 95%;
+      margin-top: 10vh;
   }
 
   .button-projcreaed {
-      width: 70%; /* Ajuste del ancho del botón para celulares */
+      width: 70%;
   }
 
   .imput-projcreaed,
   .sele-projcreaed {
-      width: 90%; /* Ajuste del ancho de inputs y selects para celulares */
+      width: 90%;
+  }
+}
+
+/* Media queries para celulares en orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+  .container-projcreaed {
+      width: 90%;
+      margin-top: 5vh;
+  }
+
+  .button-projcreaed {
+      width: 60%;
+  }
+
+  .imput-projcreaed,
+  .sele-projcreaed {
+      width: 80%;
   }
 }
 
@@ -153,7 +171,7 @@
 }
 
 .creagrup-tit {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2rem;

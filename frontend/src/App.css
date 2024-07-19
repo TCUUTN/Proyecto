@@ -1,9 +1,57 @@
+@font-face {
+  font-family: 'Brush-TipTerrence';
+  src: url('./Assets/fonts/brush-tipTerrence.woff2') format('woff2'),
+       url('./Assets/fonts/brush-tipTerrence.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('./Assets/fonts/CenturyGothic.woff2') format('woff2'),
+      url('./Assets/fonts/CenturyGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('./Assets/fonts/HelveticaNeue-Light.woff2') format('woff2'),
+      url('./Assets/fonts/HelveticaNeue-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./Assets/fonts/PlayfairDisplay-Regular.woff2') format('woff2'),
+      url('./Assets/fonts/PlayfairDisplay-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./Assets/fonts/PlayfairDisplay-Italic.woff2') format('woff2'),
+      url('./Assets/fonts/PlayfairDisplay-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+
 body, html {
   padding: 0;
   margin: 0;
   font-family: "Century Gothic", sans-serif;
   height: 100%;
 
+}
+
+h1, h2{ /* Títulos */
+  font-family: 'Playfair Display', serif;
 }
 
 .App {

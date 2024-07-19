@@ -17,7 +17,7 @@
   .solici-title {
     font-family: "Brush-TipTerrence", cursive;
     color: #012c6a;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-size: 2.5rem;
     text-align: center;
   }
@@ -27,7 +27,7 @@
     width: 175px;
     height: 2px;
     background: #ff6600;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 15px auto;
   }
   
   /* Contenido principal */
@@ -227,37 +227,147 @@
     transition: 0.3s;
   }
   
+/* Responsividad */
 
+/* Teléfonos */
+@media (max-width: 480px) {
+  .solici-container {
+      width: 95%;
+      padding: 15px 15px 50px 15px;
+  }
 
+  .solici-title {
+      font-size: 1.8rem;
+  }
 
+  .solici-divider {
+      width: 100px;
+  }
 
-
-  @media (max-width: 768px) {
-    .solici-content {
+  .solici-content {
       flex-direction: column;
       align-items: center;
-    }
-  
-    .solici-left,
-    .solicitud-right {
+  }
+
+  .solici-left, .solicitud-right {
       width: 100%;
-    }
-  
-    .solici-divider-vertical {
+  }
+
+  .solici-divider-vertical {
       width: 100%;
       height: 2px;
       margin: 20px 0;
-    }
-  
-    .solicitud-buttons {
+  }
+
+  .solicitud-buttons {
       flex-direction: column;
       align-items: center;
-    }
-  
-    .solicitud-button,
-    .solici-button {
+  }
+
+  .solicitud-button, .solici-button {
       width: 100%;
       margin: 10px 0;
-    }
   }
-  
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .solici-container {
+      width: 90%;
+      padding: 18px 18px 60px 18px;
+  }
+
+  .solici-title {
+      font-size: 2.2rem;
+  }
+
+  .solici-divider {
+      width: 125px;
+  }
+
+  .solici-content {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .solici-left, .solicitud-right {
+      width: 100%;
+  }
+
+  .solici-divider-vertical {
+      width: 100%;
+      height: 2px;
+      margin: 20px 0;
+  }
+
+  .solicitud-buttons {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .solicitud-button, .solici-button {
+      width: 100%;
+      margin: 10px 0;
+  }
+}
+
+/* Monitores */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .solici-container {
+      width: 80%;
+  }
+
+  .solici-title {
+      font-size: 2.3rem;
+  }
+
+  .solici-divider {
+      width: 150px;
+  }
+
+  .solici-left, .solicitud-right {
+      width: 48%;
+  }
+
+  .solicitud-buttons {
+      flex-direction: row;
+      justify-content: space-between;
+  }
+
+  .solicitud-button, .solici-button {
+      width: 45%;
+  }
+}
+
+/* Monitores grandes */
+@media (min-width: 1201px) {
+  .solici-container {
+      width: 75%;
+  }
+
+  .solici-title {
+      font-size: 2.5rem;
+  }
+
+  .solici-divider {
+      width: 175px;
+  }
+
+  .solici-left, .solicitud-right {
+      width: 45%;
+  }
+
+  .solicitud-buttons {
+      flex-direction: row;
+      justify-content: space-between;
+  }
+
+  .solicitud-button, .solici-button {
+      width: 45%;
+  }
+}
+
+
+
+
+ 

@@ -22,17 +22,13 @@
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Titles */
 .crehoras-title {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2rem;
@@ -56,10 +52,9 @@
 
 .crehoras-content {
   background-color: #fff;
-  border: 2px solid #012c6a;
+  border: 2px solid rgba(0, 44, 105, 0.212);
   padding: 20px;
   border-radius: 8px;
-  border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 30%;
@@ -67,18 +62,24 @@
 
 .crehoras-input-container {
   margin: 20px 0;
+  margin-bottom: 1rem;
 }
 
+/* Unificación de Estilos para Inputs y Textareas */
 .crehoras-input-time,
 .crehoras-textarea,
 .crehoras-input-date,
-.crehoras-dropdown {
-  width: 90%;
+.crehoras-dropdown,
+.crehoras-file {
+  width: 100%;
   padding: 10px;
   border: 2px solid #002B69 !important;
   border-radius: 25px !important;
   font-size: 16px;
   color: #2b3945;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: block;
 }
 
 .crehoras-input-time:focus,
@@ -92,9 +93,6 @@
 }
 
 .crehoras-dropdown {
-  width: 85%;
-  border: 2px solid #002B69 !important;
-  border-radius: 25px !important;
   align-items: center;
 }
 
@@ -105,49 +103,58 @@
 
 /* Evidencias */
 .custom-file-upload {
-  position: relative;
-  display: inline-block;
-  width: 100%;
+  display: flex !important;
+justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+
 }
 
 .crehoras-file {
+  display: none;
+}
+
+.crehoras-upload-label {
+  background-color: #002c69f5;
   align-items: center;
-  width: 85%;
-  border: 2px solid #002B69 !important;
-  border-radius: 25px !important;
-  padding: 10px;
-  font-size: 16px;
-  position: relative;
-}
-
-.crehoras-file input[type="file"] {
-  display: none;
-}
-
-.crehoras-file label {
-  background-color: #002b69;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  display: none;
-}
-
-.crehoras-file label:hover {
-  background-color: #ff4500;
-  background-image: linear-gradient(to right, #ff8c00, #ff4500);
+  color: #f3f3f3;
+  display: flex;
+  padding: 10px 5px;
+  border-radius: 25px;
   transition: 0.3s;
+  width: 40%;
 }
 
-.crehoras-file span {
-  margin-left: 10px;
-  vertical-align: middle;
+.icon-crehoraso {
+  margin-right: 10px;
+  font-size: 1.6rem;
+  color: #ff6600;
+}
+
+.file-name-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0;
+ }
+
+.file-name {
+  font-size: 0.9rem;
+  color: #002b69;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+  align-items: center;
+  padding: 10px 5px;
+  cursor: pointer;
+  display: flex;
+
 }
 
 /* Boton */
 .crehoras-button {
-  width: 40%;
+  width: 100%;
   padding: 10px;
   background-color: #002b69 !important;
   color: #fff;
@@ -197,31 +204,6 @@
   transition: 0.3s;
 }
 
-/* Textarea */
-.crehoras-textarea,
-.crehoras-input-date,
-.crehoras-input-time {
-  width: 85%;
-  padding: 10px;
-  border: 1px solid #dee2e6;
-  border-radius: 25px;
-  font-size: 16px;
-  color: #2b3945;
-  font-family: "Century Gothic", sans-serif;
-  margin: 0 auto;
-  display: block;
-}
-
-.crehoras-textarea {
-  resize: vertical;
-  height: auto;
-  border-radius: 20px;
-}
-
-.react-time-picker__wrapper {
-  border: none !important;
-}
-
 /* Inputs Time and Date */
 .crehoras-input-date,
 .crehoras-input-time {
@@ -242,91 +224,63 @@
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
-  .crehoras-content {
-    width: 40%;
-  }
+  .crehoras-content { width: 40%; }
 }
 
 @media (min-height: 800px) {
-  .crehoras-container {
-    margin: 0;
-  }
+  .crehoras-container { margin: 0; }
 }
 
 @media (max-height: 800px) {
   .crehoras-container {
     height: auto;
     min-height: 100vh; /* Ensure container is at least the height of the viewport */
-    margin: 10 px;
+    margin: 10px 0;
   }
-
-  .crehoras-content {
-    padding: 10px;
-  }
-
+  .crehoras-content { padding: 10px; }
   .crehoras-input-time,
   .crehoras-textarea,
   .crehoras-input-date,
-  .crehoras-dropdown {
-    width: 100%;
-  }
-
+  .crehoras-dropdown,
   .crehoras-file {
     width: 100%;
   }
-
 }
 
 @media (max-width: 992px) {
-  .crehoras-content {
-    width: 50%;
-  }
-
-  .crehoras-container {
-    margin: 0;
-  }
+  .crehoras-content { width: 50%; }
+  .crehoras-container { margin: 0; }
 }
 
 @media (max-width: 768px) {
-  .crehoras-content {
-    width: 70%;
-  }
-
-  .crehoras-container {
-    margin: 0;
-  }
-
-  .crehoras-input,
+  .crehoras-content { width: 70%; }
+  .crehoras-container { margin: 0; }
+  .crehoras-input-time,
   .crehoras-textarea,
   .crehoras-file,
   .crehoras-dropdown,
   .crehoras-button {
-    width: 90%;
+    width: 100%;
   }
-
-  .crehoras-divider {
-    width: 60%;
-  }
+  .crehoras-divider { width: 60%; }
 }
 
 @media (max-width: 576px) {
-  .crehoras-content {
-    width: 90%;
-  }
-
-  .crehoras-container {
-    margin: 0;
-  }
-
-  .crehoras-input,
+  .crehoras-content { width: 90%; }
+  .crehoras-container { margin: 0; }
+  .crehoras-input-time,
   .crehoras-textarea,
   .crehoras-file,
   .crehoras-dropdown,
   .crehoras-button {
-    width: 90%;
+    width: 100%;
   }
+  .crehoras-divider { width: 70%; }
+}
 
-  .crehoras-divider {
-    width: 70%;
+/* Ensure responsiveness for horizontal orientation */
+@media (orientation: landscape) {
+  .crehoras-content {
+    width: 60%; /* Adjust width for landscape mode */
   }
 }

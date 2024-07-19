@@ -331,6 +331,7 @@ function Navbar() {
                   </ul>
                 </li>
               </ul>
+            {/* Icono Usuario */}
               <div className="navbar-link">
                 {roles.length > 1 ? (
                   <select
@@ -350,6 +351,7 @@ function Navbar() {
                   </span>
                 )}
               </div>
+
               <ul className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -360,6 +362,9 @@ function Navbar() {
                   <FaCircleUser className="user-icon-nav" />
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
+                  <li  className="dropdown-item dropdown-style2">
+
+                  </li>
                   <li>
                     <Link
                       className="dropdown-item dropdown-style2"

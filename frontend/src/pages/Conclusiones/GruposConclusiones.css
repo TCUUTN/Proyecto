@@ -83,7 +83,10 @@
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
-
+.filter-label-grupClu{
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+}
 /* Boton */
 .butBuscar-grupClu{
   display: flex;
@@ -153,6 +156,7 @@ margin-top: 20px;
   text-align: left;
   border-bottom: 2px solid #ff6600 !important;
   background-color: white !important;
+  font-family: 'Playfair Display', serif;
 }
 
 .card-title-grupClu {
@@ -162,7 +166,12 @@ margin-top: 20px;
   margin-top: 5px; 
   padding-bottom: 5px;
   text-align: center;
+  font-family: 'Playfair Display', serif;
+  text-transform: lowercase;
 }
+.card-title-grupClu::first-letter {
+  text-transform: capitalize;
+} 
 
 .card-content-grupClu {
   flex-grow: 1;

@@ -7,6 +7,7 @@ import "./CrearoActualizarHoras.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
+import { TbFileUpload } from "react-icons/tb";
 
 function CrearoActualizarHoras() {
   const [formData, setFormData] = useState({
@@ -95,6 +96,9 @@ function CrearoActualizarHoras() {
 
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
+    if (name === "Evidencias" && value) {
+      newFormData.NombreEvidencia = value.name;
+    }
     setFormData(newFormData);
     if (name === "HoraInicio" || name === "TipoActividad") {
       updateHoraFinalLimits(newFormData);
@@ -107,7 +111,6 @@ function CrearoActualizarHoras() {
       validateForm(newFormData);
     }
   };
-
   const updateHoraFinalLimits = (data) => {
     const { HoraInicio, TipoActividad } = data;
     if (HoraInicio) {
@@ -121,7 +124,6 @@ function CrearoActualizarHoras() {
       });
     }
   };
-
   const validateForm = (data) => {
     const { TipoActividad, HoraInicio, HoraFinal } = data;
     if (HoraInicio && HoraFinal) {
@@ -159,7 +161,6 @@ function CrearoActualizarHoras() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     const requiredFields = [
       "Fecha",
       "DescripcionActividad",
@@ -167,7 +168,6 @@ function CrearoActualizarHoras() {
       "HoraInicio",
       "HoraFinal",
     ];
-  
     for (let field of requiredFields) {
       if (!formData[field]) {
         setError(`Por favor, ingrese ${field}.`);
@@ -175,7 +175,6 @@ function CrearoActualizarHoras() {
         return;
       }
     }
-  
     try {
       const fechaCheckResponse = await fetch("horas/horasporFecha", {
         method: "POST",
@@ -184,7 +183,7 @@ function CrearoActualizarHoras() {
         },
         body: JSON.stringify({ Fecha: formData.Fecha }),
       });
-  
+
       if (!fechaCheckResponse.ok) {
         toast.error(
           "Error al guardar horas debido a que ya se han registrado horas en la fecha seleccionada. Por favor, seleccione otra fecha."
@@ -195,7 +194,7 @@ function CrearoActualizarHoras() {
       setError("Error al verificar la fecha. Por favor, inténtelo de nuevo.");
       return;
     }
-  
+
     const horasPlanificacionTotal =
       parseFloat(localStorage.getItem("horasPlanificacionTotal")) || 0;
     const horasGiraTotal =
@@ -204,20 +203,20 @@ function CrearoActualizarHoras() {
       parseFloat(localStorage.getItem("maxHorasPlanificacion")) || 30;
     const maxHorasEjecucion =
       parseFloat(localStorage.getItem("maxHorasEjecucion")) || 120;
-  
+
     const { HoraInicio, HoraFinal, TipoActividad } = formData;
     const start = moment.tz(HoraInicio, "HH:mm", "America/Costa_Rica");
     const end = moment.tz(HoraFinal, "HH:mm", "America/Costa_Rica");
     const horasIngresadas = end.diff(start, "hours", true);
-  
+
     let newHorasPlanificacionTotal = horasPlanificacionTotal;
     let newHorasGiraTotal = horasGiraTotal;
     let horasTotalesEstudiante =
       parseFloat(localStorage.getItem("horasTotalesEstudiante")) || 0;
-  
+
     if (TipoActividad === "Planificacion") {
       newHorasPlanificacionTotal += horasIngresadas;
-  
+
       if (newHorasPlanificacionTotal <= 10) {
         localStorage.setItem(
           "horasPlanificacionTotal",
@@ -250,7 +249,7 @@ function CrearoActualizarHoras() {
       localStorage.setItem("horasTotalesEstudiante", horasTotalesEstudiante);
     } else {
       newHorasGiraTotal += horasIngresadas;
-  
+
       if (newHorasGiraTotal <= maxHorasEjecucion) {
         localStorage.setItem("horasGiraTotal", newHorasGiraTotal);
       } else {
@@ -266,9 +265,7 @@ function CrearoActualizarHoras() {
       horasTotalesEstudiante += horasIngresadas;
       localStorage.setItem("horasTotalesEstudiante", horasTotalesEstudiante);
     }
-  
     const dataToSend = { ...formData, BitacoraId: bitacoraId };
-  
     try {
       const response = await fetch("horas/crearOActualizarHoras", {
         method: "POST",
@@ -277,21 +274,21 @@ function CrearoActualizarHoras() {
         },
         body: JSON.stringify(dataToSend),
       });
-  
+
       if (response.ok) {
         const responseData = await response.json();
         const { BitacoraId: newBitacoraId } = responseData;
-  
+
         if (formData.Evidencias) {
           const formDataToSend = new FormData();
           formDataToSend.append("BitacoraId", newBitacoraId);
           formDataToSend.append("Evidencias", formData.Evidencias);
-  
+
           const evidenceResponse = await fetch("horas/subirAdjunto", {
             method: "POST",
             body: formDataToSend,
           });
-  
+
           if (!evidenceResponse.ok) {
             setError(
               "Error al subir las evidencias. Por favor, inténtelo de nuevo."
@@ -299,7 +296,7 @@ function CrearoActualizarHoras() {
             return;
           }
         }
-  
+
         toast.success("La actividad se ha registrado correctamente");
         sessionStorage.removeItem("BitacoraId");
         navigate("/VistaHorasEstudiantes");
@@ -312,8 +309,6 @@ function CrearoActualizarHoras() {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
-  
-
   const handleBackClick = () => {
     sessionStorage.removeItem("BitacoraId");
     navigate("/VistaHorasEstudiantes");
@@ -321,7 +316,6 @@ function CrearoActualizarHoras() {
 
   const minDate = moment().subtract(6, "months").tz("America/Costa_Rica");
   const maxDate = moment().tz("America/Costa_Rica");
-
   return (
     <div className="crehoras-container">
       <div className="crehoras-content">
@@ -404,21 +398,24 @@ function CrearoActualizarHoras() {
           </div>
           <div className="crehoras-input-container">
             <div className="custom-file-upload">
+              <label htmlFor="Evidencias" className="crehoras-upload-label">
+                <TbFileUpload className="icon-crehoraso" /> Evidencias
+              </label>
               <input
                 type="file"
                 id="Evidencias"
                 name="Evidencias"
                 onChange={(e) => handleChange(e.target.name, e.target.files[0])}
                 className="crehoras-file"
-                placeholder="Evidencias"
               />
-              {formData.NombreEvidencia && formData.NombreEvidencia !== "-" && (
-                <div className="file-name">
-                  Archivo seleccionado: {formData.NombreEvidencia}
-                </div>
-              )}
+              <div className="file-name-container">
+                {formData.NombreEvidencia && (
+                  <span className="file-name">{formData.NombreEvidencia}</span>
+                )}
+              </div>
             </div>
           </div>
+
           <div className="crehoras-input-container">
             <button onClick={handleBackClick} className="crehoras-button">
               <FaChevronLeft />
