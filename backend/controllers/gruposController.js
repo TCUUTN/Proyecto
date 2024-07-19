@@ -234,11 +234,50 @@ const getListaEstudiantes = async (req, res) => {
         .json({ error: "Estudiante en el Grupo no encontrado" });
     }
 
+    // Para cada estudiante en el grupo, calcular el total de horas aprobadas
+    for (const estudiante of estudianteGrupo) {
+      const { Identificacion } = estudiante.Usuario;
+
+      const horas = await Horas.findAll({
+        where: {
+          Identificacion: Identificacion,
+          GrupoId: GrupoId,
+          EstadoHoras: 'Aprobado'
+        },
+        attributes: [
+          'HoraInicio',
+          'HoraFinal',
+        ]
+      });
+
+      let HorasAprobadas = 0;
+
+      horas.forEach(hora => {
+        const [horaInicio, minutoInicio] = hora.HoraInicio.split(':').map(Number);
+        const [horaFinal, minutoFinal] = hora.HoraFinal.split(':').map(Number);
+
+        let diferenciaHoras = horaFinal - horaInicio;
+        let diferenciaMinutos = minutoFinal - minutoInicio;
+
+        if (diferenciaMinutos < 0) {
+          diferenciaMinutos += 60;
+          diferenciaHoras -= 1;
+        }
+
+        HorasAprobadas += diferenciaHoras + (diferenciaMinutos / 60);
+      });
+
+      estudiante.dataValues.HorasAprobadas = HorasAprobadas || 0;
+    }
+
     res.status(200).json(estudianteGrupo);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+
 
 // Crear o actualizar TipoGrupo
 const crearOActualizarTipoGrupo = async (req, res) => {
@@ -529,6 +568,21 @@ const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
   }
 };
 
+const getAllAnnosParaReporte = async (req, res) => {
+  try {
+    const grupos = await Grupo.findAll({
+      attributes: ["Anno"],
+    });
+
+    // Extraer los años y eliminar duplicados
+    const anos = [...new Set(grupos.map(grupos => grupos.Anno))];
+
+    res.json(anos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
   try {
     const { Anno, Cuatrimestre, Sede } = req.body;
@@ -581,6 +635,62 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+const getGrupoPorAnnoyCuatrimestreParaGenero = async (req, res) => {
+  try {
+    const { Anno, Cuatrimestre, Sede } = req.body;
+    const whereClause = {
+      Anno: Anno,
+      Cuatrimestre: Cuatrimestre,
+    };
+
+    if (Sede !== "Todas") {
+      whereClause.Sede = Sede;
+    }
+
+    // Encuentra los GruposEstudiantes con los filtros aplicados
+    const gruposEstudiantes = await GruposEstudiantes.findAll({
+      include: [
+        {
+          model: Grupo,
+          where: whereClause,
+          attributes: [],
+        },
+        {
+          model: Usuario,
+          attributes: ["Genero"],
+        },
+      ],
+      attributes: [],
+    });
+
+    if (gruposEstudiantes.length === 0) {
+      return res.status(404).json({ error: "No hay grupos para este periodo" });
+    }
+
+    // Contar la cantidad de estudiantes por género
+    const generoCount = {
+      Masculino: 0,
+      Femenino: 0,
+      "Prefiero no Especificar": 0,
+      Indefinido: 0,
+    };
+
+    gruposEstudiantes.forEach((grupoEstudiante) => {
+      const genero = grupoEstudiante.Usuario.Genero;
+      if (generoCount[genero] !== undefined) {
+        generoCount[genero]++;
+      } else {
+        generoCount["Indefinido"]++;
+      }
+    });
+
+    res.status(200).json(generoCount);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 const getprueba = async (req, res) => {
   try {
@@ -972,5 +1082,7 @@ module.exports = {
   getEstudianteAdministrativo,
   getGruposActivos,
   getprueba,
-  getGrupoEstudianteporIdentificacionParaUsuario
+  getGrupoEstudianteporIdentificacionParaUsuario,
+  getGrupoPorAnnoyCuatrimestreParaGenero,
+  getAllAnnosParaReporte
 };
