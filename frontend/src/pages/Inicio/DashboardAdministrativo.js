@@ -415,6 +415,14 @@ function DashboardAdministrativo() {
         </div>
       </div>
 
+      <div className="Reportes-DashAdmin">
+      <div className="Reportes-header">
+              <h2 className="Reportes-container-title">
+                Reporte de Generos de Estudiante Por periodo de matricula
+              </h2>
+              <div className="dashAdmin-divider"></div>
+      </div>
+      </div>
       <div className="filters-DashAdmin">
         <div className="filter-group-DashAdmin">
           <label

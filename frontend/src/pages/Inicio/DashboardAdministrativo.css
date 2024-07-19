@@ -163,7 +163,7 @@
   padding: 20px;
   border-radius: 8px;
   width: 100%;
-  margin: 20px auto;
+  margin: 0; /* Reducir el margen inferior */
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   flex-wrap: nowrap;
@@ -280,6 +280,12 @@
       width: 90%;
       padding: 10px;
     }
+    .Reportes-DashAdmin {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 90%;
+        padding: 10px;
+      }
   
     .filter-select-DashAdmin {
       width: 80%;
@@ -299,6 +305,10 @@
       flex-direction: column;
       align-items: center;
     }
+    .Reportes-DashAdmin {
+        flex-direction: column;
+        align-items: center;
+      }
   
     .filter-group-DashAdmin{
       flex-direction: row;
@@ -340,6 +350,12 @@
       width: 100%;
       padding: 10px;
     }
+    .Reportes-DashAdmin {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        padding: 10px;
+      }
     .filter-group-DashAdmin{
       width: 100%;
       padding: 10px;
@@ -377,4 +393,31 @@
       height: 2px;
       margin: 20px 0;
     }
+  }
+
+  /* Contenedor del Titulo de reportes */
+.Reportes-header {
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .Reportes-DashAdmin {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar contenido horizontalmente */
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    margin: 0 auto 0 auto; /* Reducir el margen inferior */
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: nowrap;
+    background-color: #fff;
+  }
+
+  .Reportes-container-title {
+    font-family: "Brush-TipTerrence", cursive;
+    color: #012c6a;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
   }
