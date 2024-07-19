@@ -165,7 +165,7 @@
 
 .icon-btn--sociocomu {
   color: #ff6600;
-  font-size: 1.8em;
+  font-size: 1.5rem;
   cursor: pointer;
   background: none;
   border: none;
@@ -375,3 +375,20 @@
   padding: 0;
   font: inherit; /* Hereda las propiedades de fuente del padre */
 }
+
+
+/* Estilo del menú desplegable */
+.dropdown-menu-custom {
+  min-width: 160px; /* Ajusta según sea necesario */
+}
+
+.dropdown-item-custom {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item-custom .fa-map-marked-alt,
+.dropdown-item-custom .fa-waze {
+  margin-right: 8px;
+}
+

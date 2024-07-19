@@ -171,7 +171,11 @@ function ListaEstudiantes() {
 
 // Función para generar el reporte PDF
 const handleGenerarReporte = async () => {
-  const doc = new jsPDF();
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
+    format: 'letter' // Tamaño carta
+  });
 
   // Obtener datos del grupo
   const grupoResponse = await fetch(`grupos/${grupoId}`);
@@ -187,8 +191,8 @@ const handleGenerarReporte = async () => {
     "Nombre Completo",
     "Correo Electrónico",
     "Identificación",
-    "Estado del Estudiante",
-    "Progreso del Estudiante",
+    "Cant. de horas Aprobadas",
+    "Estado del Estudiante"
   ];
   const tableRows = [];
 
@@ -197,41 +201,44 @@ const handleGenerarReporte = async () => {
       `${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`,
       estudiante.Usuario.CorreoElectronico,
       estudiante.Usuario.Identificacion,
-      estudiante.Estado,
-      estudiante.Progreso,
+      estudiante.HorasAprobadas,
+      estudiante.Estado
     ];
     tableRows.push(estudianteData);
   });
 
   // Añadir imagen como encabezado
   const imgData = banderaCombinada;
-  
+
   // Crear un objeto de imagen para obtener las dimensiones originales
   const img = new Image();
   img.src = imgData;
   img.onload = () => {
-    const imgWidth = doc.internal.pageSize.getWidth() / 6;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const imgWidth = pageWidth / 6;
     const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
-    const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2; // Centrar imagen
-    const imgY =0;
+    const imgX = (pageWidth - imgWidth) / 2; // Centrar imagen
+    const imgY = 0;
 
     // Dibujar fondo del encabezado
     doc.setFillColor("#002b69");
-    doc.rect(0, 0, doc.internal.pageSize.getWidth(), imgHeight, 'F');
+    doc.rect(0, 0, pageWidth, imgHeight, 'F');
 
     doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
 
-    // Añadir títulos al cuerpo
-    const titleY = imgY + imgHeight + 10;
+    // Añadir títulos al cuerpo con espacios entre ellos
+    const titleY = imgY + imgHeight + 20;
     doc.setFontSize(14);
     doc.setTextColor("#002b69"); // Color azul para el texto
-    doc.text(titulo1, doc.internal.pageSize.getWidth() / 2, titleY, { align: 'center' });
-    doc.text(titulo2, doc.internal.pageSize.getWidth() / 2, titleY + 10, { align: 'center' });
-    doc.text(titulo3, doc.internal.pageSize.getWidth() / 2, titleY + 20, { align: 'center' });
+    doc.text(titulo1, pageWidth / 2, titleY, { align: 'center' });
+    doc.text(titulo2, pageWidth / 2, titleY + 20, { align: 'center' }); // Espacio adicional
+    doc.text(titulo3, pageWidth / 2, titleY + 40, { align: 'center' }); // Espacio adicional
 
     // Añadir tabla
+    const startY = titleY + 50;
     doc.autoTable({
-      startY: titleY + 25,
+      startY: startY,
       head: [tableColumn],
       body: tableRows,
       styles: {
@@ -247,38 +254,38 @@ const handleGenerarReporte = async () => {
       alternateRowStyles: {
         fillColor: [240, 240, 240],
       },
+      margin: { bottom: 40 } // Espacio adicional para el pie de página
     });
 
     // Añadir footer en cada página
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 0; i < pageCount; i++) {
       doc.setPage(i + 1);
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const footerHeight = 20;
+      const footerHeight = 35; // Incrementar la altura del pie de página
 
       // Dibujar fondo del pie de página
       doc.setFillColor("#002b69");
-      doc.rect(0, pageHeight - footerHeight, doc.internal.pageSize.getWidth(), footerHeight, 'F');
+      doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
 
       // Añadir paginación y texto del pie de página
       doc.setFontSize(10);
       doc.setTextColor(255, 255, 255); // Letra blanca
       doc.text(
         `Página ${i + 1} de ${pageCount}`,
-        doc.internal.pageSize.getWidth() / 2,
-        pageHeight - 15,
+        pageWidth / 2,
+        pageHeight - 25, // Ajustar para que quepa bien en el pie de página
         { align: 'center' }
       );
       doc.text(
         `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
-        doc.internal.pageSize.getWidth() / 2,
-        pageHeight - 10,
+        pageWidth / 2,
+        pageHeight - 15, // Ajustar para que quepa bien en el pie de página
         { align: 'center' }
       );
       doc.text(
         "Todos los derechos reservados.",
-        doc.internal.pageSize.getWidth() / 2,
-        pageHeight - 5,
+        pageWidth / 2,
+        pageHeight - 5, // Ajustar para que quepa bien en el pie de página
         { align: 'center' }
       );
     }
@@ -287,7 +294,6 @@ const handleGenerarReporte = async () => {
     doc.save(grupoData.CodigoMateria + " - " + titulo2 + ".pdf");
   };
 };
-
 
 
 
@@ -400,9 +406,10 @@ const handleGenerarReporte = async () => {
                 <th>Nombre Completo</th>
                 <th>Correo Electrónico</th>
                 <th>Identificación</th>
-                <th>Estado del Estudiante</th>
+                <th>Cantidad de Horas Aprobadas</th>
                 <th>Progreso del Estudiante</th>
                 <th>Acciones</th>
+                <th>Estado del Estudiante</th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
@@ -411,8 +418,9 @@ const handleGenerarReporte = async () => {
                   <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
                   <td>{estudiante.Usuario.CorreoElectronico}</td>
                   <td>{estudiante.Usuario.Identificacion}</td>
-                  <td>{estudiante.Estado}</td>
+                  <td>{estudiante.HorasAprobadas}</td>
                   <td>{estudiante.Progreso}</td>
+                  <td>{estudiante.Estado}</td>
                   <td>
                     {estudiante.Estado !== "Reprobado" ? (
                       <button

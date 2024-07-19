@@ -2,151 +2,271 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Contenedor principal */
 .dashAca-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    gap: 20px;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  overflow: hidden;
 }
 
 /* Contenedor del gráfico y la tabla */
 .content-container {
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .table-container-dashAdmin {
-    flex: 1 1 48%;
-    border: 2px solid rgba(0, 44, 105, 0.212);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 20px;
-    min-width: 300px;
-    max-height: 500px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  flex: 1 1 48%;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  min-width: 300px;
+  max-height: 500px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
 }
 
 /* Contenedor del gráfico */
 .chart-header {
-    flex-shrink: 0;
-    text-align: center;
+  flex-shrink: 0;
+  text-align: center;
 }
 
 .chart-body {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .table-container-mat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Tabla */
-.mat-table {
-    width: 100%;
-    border-collapse: collapse;
+.DashAdmin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.mat-thead th,
-.mat-tbody td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.DashAdmin-thead th {
+  background-color: #002b69;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }
 
-.mat-thead th {
-    background-color: #f4f4f4;
+.DashAdmin-tbody td {
+  padding: 10px;
+  border: 1px solid #ddd; /* Bordes internos de las celdas */
+  text-align: center;
 }
 
 /* Botón */
 .icon-btn-Dash {
-    background: none;
-    font-size: 1.8em;
-    color: #ff6600;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: 0.5s;
+  background: none;
+  font-size: 1.8em;
+  color: #ff6600;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.5s;
 }
 
 .dashAdmin-divider {
-    width: 20%;
-    height: 2px;
-    background: #ff6600;
-    margin: 0 auto 0 auto; /* Reducir el margen inferior */
+  width: 20%;
+  height: 2px;
+  background: #ff6600;
+  margin: 0 auto 0 auto; /* Reducir el margen inferior */
 }
 
 .icon-btn-Dash:hover {
-    color: #012c6a;
-    transition: 0.5s;
+  color: #012c6a;
+  transition: 0.5s;
 }
 
 /* Paginación */
 .pagination-mat {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: center;
+  gap: 10px;
 }
 
 .pagination-mat button {
-    margin: 0;
-    padding: 5px 10px;
-    cursor: pointer;
+  margin: 0;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .pagination-mat button.active {
-    background-color: #007bff;
-    color: white;
+  background-color: #007bff;
+  color: white;
 }
 
 .chart-container-title {
-    font-family: "Brush-TipTerrence", cursive;
-    color: #012c6a;
-    font-size: 1.4rem;
-    margin-bottom: 10px;
+  font-family: "Brush-TipTerrence", cursive;
+  color: #012c6a;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
-    .content-container {
-        flex-direction: column;
-    }
+  .content-container {
+    flex-direction: column;
+  }
 
-    .table-container-dashAdmin {
-        max-width: 100%;
-    }
+  .table-container-dashAdmin {
+    max-width: 100%;
+  }
 
-    .pagination-mat {
-        justify-content: center;
-        flex-wrap: nowrap;
-        gap: 5px;
-    }
+  .pagination-mat {
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
 
-    .pagination-mat button {
-        flex: 1 1 auto;
-        text-align: center;
-    }
+  .pagination-mat button {
+    flex: 1 1 auto;
+    text-align: center;
+  }
 
-    .pagination-mat span {
-        flex-shrink: 0;
-    }
+  .pagination-mat span {
+    flex-shrink: 0;
+  }
 }
+
+/* Filtros */
+.filters-DashAdmin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  margin: 20px auto;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: nowrap;
+  background-color: #fff;
+}
+
+.filter-group-DashAdmin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.filter-select-DashAdmin {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: 2px solid #002b69;
+  border-radius: 25px;
+  width: 300px;
+  text-align: center;
+  color: #002b69;
+}
+
+.filter-select-DashAdmin::placeholder {
+  color: #575656;
+}
+
+.filter-select-DashAdmin:focus {
+  border-color: #ff6600;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+/* Boton */
+.butBuscar-DashAdmin {
+  display: flex;
+  align-items: center;
+  margin-right: 30%;
+}
+.buscar-button-DashAdmin {
+  padding: 10px 40px;
+  background-color: #002b69;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 20px;
+  align-self: center;
+  width: 100%;
+}
+
+.buscar-button-DashAdmin:hover {
+  background-color: #f66226;
+}
+
+.buscar-button-DashAdmin:disabled {
+  background-color: #777777;
+  cursor: not-allowed;
+}
+/* Linea */
+.DashAdmin-divider {
+  width: 2px;
+  height: 65px; /* Ajusta el alto según sea necesario */
+  background: #ff6600;
+  margin: auto 20px;
+}
+
+/* Boton Reporte */
+.butGenerar-DashAdmin {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 0 auto; /* Reducir el margen inferior */
+}
+.Generar-button-DashAdmin {
+  padding: 10px 40px;
+  background-color: #002b69;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 20px;
+  align-self: center;
+  width: 100%;
+}
+
+.Generar-button-DashAdmin:hover {
+  background-color: #f66226;
+}
+
+.Generar-DashAdmin {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    margin: 20px auto;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: nowrap;
+    background-color: #fff;
+  }

@@ -278,203 +278,208 @@ function VistaHorasEstudiante() {
   };
 
   const handleGenerarReporte = async () => {
-    const doc = new jsPDF();
-
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
+      format: 'letter' // Tamaño carta
+    });
+  
     // Obtener datos del grupo
     const usuarioResponse = await fetch(`usuarios/nombres/${identificacion}`);
     const usuarioData = await usuarioResponse.json();
-
+  
     // Guardar títulos en variables
     const titulo1 = `Reporte de horas del Estudiante ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}`;
     const titulo2 = `Horas Aprobadas`;
     const titulo3 = `Horas Rechazadas`;
-
+  
     // Añadir imagen como encabezado
     const imgData = banderaCombinada;
-
+  
     // Crear un objeto de imagen para obtener las dimensiones originales
     const img = new Image();
     img.src = imgData;
     img.onload = () => {
-        const imgWidth = doc.internal.pageSize.getWidth() / 6;
-        const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
-        const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2; // Centrar imagen
-        const imgY = 0; // Ajustar la coordenada Y para que no esté en el borde superior
-
-        // Dibujar fondo del encabezado
-        doc.setFillColor("#002b69");
-        doc.rect(0, 0, doc.internal.pageSize.getWidth(), imgHeight, 'F'); // Ajustar la altura del fondo
-
-        doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
-        const titleY = imgY + imgHeight + 15; // Ajustar el espacio entre la imagen y el título
-
-        // Añadir títulos al cuerpo
-        doc.setFontSize(14);
-        doc.setTextColor("#002b69"); // Color azul para el texto
-        doc.text(titulo1, doc.internal.pageSize.getWidth() / 2, titleY, { align: 'center' });
-
-        // Función para convertir horas a formato de 12 horas
-        const formatTime = (time) => {
-            let [hours, minutes] = time.split(':').map(Number);
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12; // Convertir 0 a 12
-            return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-        };
-
-        // Función para convertir fecha a formato dd/mm/aaaa
-        const formatDate = (date) => {
-            const [yyyy, mm, dd] = date.split('-');
-            return `${dd}/${mm}/${yyyy}`;
-        };
-
-        // Datos de las actividades aprobadas
-        const tableColumnApproved = [
-            "Fecha",
-            "Descripción de la Actividad",
-            "Tipo de Actividad",
-            "Hora de Inicio",
-            "Hora Final",
-            "Evidencia",
-        ];
-        const tableRowsApproved = filteredApprovedMaterias.map((materia) => [
-            formatDate(materia.Fecha),
-            materia.DescripcionActividad,
-            materia.TipoActividad,
-            formatTime(materia.HoraInicio),
-            formatTime(materia.HoraFinal),
-            materia.NombreEvidencia && materia.NombreEvidencia !== "-" ? "Sí" : "No",
-        ]);
-
-        // Datos de las actividades rechazadas
-        const tableColumnRejected = [
-            "Fecha",
-            "Descripción de la Actividad",
-            "Tipo de Actividad",
-            "Comentarios de Rechazo",
-        ];
-        const tableRowsRejected = filteredRejectedMaterias.map((materia) => [
-            formatDate(materia.Fecha),
-            materia.DescripcionActividad,
-            materia.TipoActividad,
-            materia.ComentariosRechazo,
-        ]);
-
-        let startY = titleY + 10;
-
-        // Añadir tabla de actividades aprobadas si hay registros
-        if (tableRowsApproved.length > 0) {
-            doc.text(titulo2, doc.internal.pageSize.getWidth() / 2, startY, { align: 'center' });
-            startY += 10;
-            doc.autoTable({
-                startY: startY,
-                head: [tableColumnApproved],
-                body: tableRowsApproved,
-                styles: {
-                    fontSize: 10,
-                    cellPadding: 3,
-                    halign: 'center' // Centrar datos de la tabla
-                },
-                headStyles: {
-                    fillColor: [0, 43, 105],
-                    textColor: [255, 255, 255],
-                    halign: 'center' // Centrar encabezados de la tabla
-                },
-                alternateRowStyles: {
-                    fillColor: [240, 240, 240],
-                },
-                margin: { bottom: 30 }, // Margen inferior para el pie de página
-                didDrawPage: (data) => {
-                    const pageHeight = doc.internal.pageSize.getHeight();
-                    const footerHeight = 20;
-
-                    // Dibujar fondo del pie de página
-                    doc.setFillColor("#002b69");
-                    doc.rect(0, pageHeight - footerHeight, doc.internal.pageSize.getWidth(), footerHeight, 'F');
-
-                    // Añadir paginación y texto del pie de página
-                    doc.setFontSize(10);
-                    doc.setTextColor(255, 255, 255); // Letra blanca
-                    doc.text(
-                        `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 15,
-                        { align: 'center' }
-                    );
-                    doc.text(
-                        `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 10,
-                        { align: 'center' }
-                    );
-                    doc.text(
-                        "Todos los derechos reservados.",
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 5,
-                        { align: 'center' }
-                    );
-                }
-            });
-            startY = doc.lastAutoTable.finalY + 10; // Actualizar startY para la siguiente tabla
-        }
-
-        // Añadir tabla de actividades rechazadas si hay registros
-        if (tableRowsRejected.length > 0) {
-            doc.text(titulo3, doc.internal.pageSize.getWidth() / 2, startY, { align: 'center' });
-            startY += 10;
-            doc.autoTable({
-                startY: startY,
-                head: [tableColumnRejected],
-                body: tableRowsRejected,
-                styles: {
-                    fontSize: 10,
-                    cellPadding: 3,
-                    halign: 'center' // Centrar datos de la tabla
-                },
-                headStyles: {
-                    fillColor: [0, 43, 105],
-                    textColor: [255, 255, 255],
-                    halign: 'center' // Centrar encabezados de la tabla
-                },
-                alternateRowStyles: {
-                    fillColor: [240, 240, 240],
-                },
-                margin: { bottom: 30 }, // Margen inferior para el pie de página
-                didDrawPage: (data) => {
-                    const pageHeight = doc.internal.pageSize.getHeight();
-                    const footerHeight = 20;
-
-                    // Dibujar fondo del pie de página
-                    doc.setFillColor("#002b69");
-                    doc.rect(0, pageHeight - footerHeight, doc.internal.pageSize.getWidth(), footerHeight, 'F');
-
-                    // Añadir paginación y texto del pie de página
-                    doc.setFontSize(10);
-                    doc.setTextColor(255, 255, 255); // Letra blanca
-                    doc.text(
-                        `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 15,
-                        { align: 'center' }
-                    );
-                    doc.text(
-                        `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 10,
-                        { align: 'center' }
-                    );
-                    doc.text(
-                        "Todos los derechos reservados.",
-                        doc.internal.pageSize.getWidth() / 2,
-                        pageHeight - 5,
-                        { align: 'center' }
-                    );
-                }
-            });
-        }
-
-        doc.save(`Reporte de horas ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}.pdf`);
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const imgWidth = pageWidth / 6;
+      const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
+      const imgX = (pageWidth - imgWidth) / 2; // Centrar imagen
+      const imgY = 0; // Ajustar la coordenada Y para que no esté en el borde superior
+  
+      // Dibujar fondo del encabezado
+      doc.setFillColor("#002b69");
+      doc.rect(0, 0, pageWidth, imgHeight, 'F'); // Ajustar la altura del fondo
+  
+      doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+      const titleY = imgY + imgHeight + 15; // Ajustar el espacio entre la imagen y el título
+  
+      // Añadir títulos al cuerpo con espacios entre ellos
+      doc.setFontSize(14);
+      doc.setTextColor("#002b69"); // Color azul para el texto
+      doc.text(titulo1, pageWidth / 2, titleY, { align: 'center' });
+      doc.text(titulo2, pageWidth / 2, titleY + 20, { align: 'center' }); // Espacio adicional
+      const startYApproved = titleY + 30; // Más espacio para el próximo título
+  
+      // Función para convertir horas a formato de 12 horas
+      const formatTime = (time) => {
+        let [hours, minutes] = time.split(':').map(Number);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convertir 0 a 12
+        return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+      };
+  
+      // Función para convertir fecha a formato dd/mm/aaaa
+      const formatDate = (date) => {
+        const [yyyy, mm, dd] = date.split('-');
+        return `${dd}/${mm}/${yyyy}`;
+      };
+  
+      // Datos de las actividades aprobadas
+      const tableColumnApproved = [
+        "Fecha",
+        "Descripción de la Actividad",
+        "Tipo de Actividad",
+        "Hora de Inicio",
+        "Hora Final",
+        "Evidencia",
+      ];
+      const tableRowsApproved = filteredApprovedMaterias.map((materia) => [
+        formatDate(materia.Fecha),
+        materia.DescripcionActividad,
+        materia.TipoActividad,
+        formatTime(materia.HoraInicio),
+        formatTime(materia.HoraFinal),
+        materia.NombreEvidencia && materia.NombreEvidencia !== "-" ? "Sí" : "No",
+      ]);
+  
+      // Datos de las actividades rechazadas
+      const tableColumnRejected = [
+        "Fecha",
+        "Descripción de la Actividad",
+        "Tipo de Actividad",
+        "Comentarios de Rechazo",
+      ];
+      const tableRowsRejected = filteredRejectedMaterias.map((materia) => [
+        formatDate(materia.Fecha),
+        materia.DescripcionActividad,
+        materia.TipoActividad,
+        materia.ComentariosRechazo,
+      ]);
+  
+      let startY = startYApproved;
+  
+      // Añadir tabla de actividades aprobadas si hay registros
+      if (tableRowsApproved.length > 0) {
+        doc.autoTable({
+          startY: startY,
+          head: [tableColumnApproved],
+          body: tableRowsApproved,
+          styles: {
+            fontSize: 10,
+            cellPadding: 3,
+            halign: 'center' // Centrar datos de la tabla
+          },
+          headStyles: {
+            fillColor: [0, 43, 105],
+            textColor: [255, 255, 255],
+            halign: 'center' // Centrar encabezados de la tabla
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240],
+          },
+          margin: { bottom: 30 }, // Margen inferior para el pie de página
+          didDrawPage: (data) => {
+            const footerHeight = 35; // Incrementar la altura del pie de página
+  
+            // Dibujar fondo del pie de página
+            doc.setFillColor("#002b69");
+            doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
+  
+            // Añadir paginación y texto del pie de página
+            doc.setFontSize(10);
+            doc.setTextColor(255, 255, 255); // Letra blanca
+            doc.text(
+              `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
+              pageWidth / 2,
+              pageHeight - 25, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+            doc.text(
+              `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+              pageWidth / 2,
+              pageHeight - 15, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+            doc.text(
+              "Todos los derechos reservados.",
+              pageWidth / 2,
+              pageHeight - 5, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+          }
+        });
+        startY = doc.lastAutoTable.finalY + 20; // Actualizar startY para la siguiente tabla con más espacio
+      }
+  
+      // Añadir tabla de actividades rechazadas si hay registros
+      if (tableRowsRejected.length > 0) {
+        doc.text(titulo3, pageWidth / 2, startY, { align: 'center' });
+        startY += 10;
+        doc.autoTable({
+          startY: startY,
+          head: [tableColumnRejected],
+          body: tableRowsRejected,
+          styles: {
+            fontSize: 10,
+            cellPadding: 3,
+            halign: 'center' // Centrar datos de la tabla
+          },
+          headStyles: {
+            fillColor: [0, 43, 105],
+            textColor: [255, 255, 255],
+            halign: 'center' // Centrar encabezados de la tabla
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240],
+          },
+          margin: { bottom: 30 }, // Margen inferior para el pie de página
+          didDrawPage: (data) => {
+            const footerHeight = 30; // Incrementar la altura del pie de página
+  
+            // Dibujar fondo del pie de página
+            doc.setFillColor("#002b69");
+            doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
+  
+            // Añadir paginación y texto del pie de página
+            doc.setFontSize(10);
+            doc.setTextColor(255, 255, 255); // Letra blanca
+            doc.text(
+              `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
+              pageWidth / 2,
+              pageHeight - 25, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+            doc.text(
+              `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+              pageWidth / 2,
+              pageHeight - 15, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+            doc.text(
+              "Todos los derechos reservados.",
+              pageWidth / 2,
+              pageHeight - 5, // Ajustar para que quepa bien en el pie de página
+              { align: 'center' }
+            );
+          }
+        });
+      }
+  
+      doc.save(`Reporte de horas ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}.pdf`);
     };
-};
+  };
+  
 
   return (
     <div className="horasi-container">
