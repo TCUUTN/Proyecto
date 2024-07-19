@@ -227,7 +227,7 @@ function SocioComunitarios() {
               onClick={handleGenerarReporte}
               className="finalizar-button-listest"
             >
-              Reporte de horas
+              Reporte de Socios Comunitarios
             </button>
             <div className="socio-divider" />
             <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
