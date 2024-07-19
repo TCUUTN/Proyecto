@@ -9,6 +9,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: "Century Gothic", sans-serif;
   padding: 20px;
   width: 80%; /* Utilizamos vw en lugar de % para hacerlo responsivo */
   max-width: 600px; /* Ejemplo de tamaño máximo para tablets */
@@ -168,6 +169,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: "Century Gothic", sans-serif;
 }
 
 .creagrup-tit {
@@ -204,7 +206,7 @@
   border-radius: 25px;
   box-sizing: border-box;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-align: center;
   /* Chrome, Safari, Opera */
   -webkit-text-align: center;
@@ -241,7 +243,7 @@
 .creagrup-error {
   color: red;
   font-size: 0.875rem;
-  margin-top: 0.25rem;
+  margin-top: 0.20rem;
 }
 
 
@@ -273,6 +275,7 @@
   cursor: not-allowed;
 }
 
+/* Media queries para tablets */
 @media (max-width: 768px) {
   .creagrup-container {
     width: 80%;
@@ -300,5 +303,66 @@
 
   .creagrup-buttonrow {
     flex-direction: column;
+  }
+}
+
+/* Media queries para celulares en orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
+  .creagrup-container {
+    width: 90%;
+    padding: 15px 10px;
+  }
+
+  .creagrup-tit {
+    font-size: 1.8rem;
+  }
+
+  .creagrup-formrow {
+    margin-bottom: 10px;
+  }
+
+  .creagrup-inputfield,
+  .creagrup-select {
+    width: 95%;
+  }
+
+  .creagrup-button {
+    width: 100%;
+  }
+
+  .creagrup-buttonrow {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+}
+
+/* Media queries para celulares en orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+  .creagrup-container {
+    width: 70%;
+    padding: 10px 5px;
+  }
+
+  .creagrup-tit {
+    font-size: 1.5rem;
+  }
+
+  .creagrup-formrow {
+    margin-bottom: 8px;
+  }
+
+  .creagrup-inputfield,
+  .creagrup-select {
+    width: 90%;
+  }
+
+  .creagrup-button {
+    width: 48%;
+  }
+
+  .creagrup-buttonrow {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
   }
 }

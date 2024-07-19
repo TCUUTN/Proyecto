@@ -399,7 +399,7 @@ function CrearoActualizarHoras() {
           <div className="crehoras-input-container">
             <div className="custom-file-upload">
               <label htmlFor="Evidencias" className="crehoras-upload-label">
-                <TbFileUpload className="icon-crehoraso" /> Evidencias
+                <TbFileUpload className="icon-crehoraso" /> Subir Evidencias
               </label>
               <input
                 type="file"

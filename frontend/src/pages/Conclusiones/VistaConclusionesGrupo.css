@@ -37,6 +37,7 @@
   padding: 3px 15px;
   gap: 20px;
   color: #002b69;
+  font-family: "Century Gothic", sans-serif;
 }
 
 /* Main content area */
@@ -134,6 +135,7 @@
 .filter-label-vistconclgrup {
   font-family: 'Playfair Display', serif;
   font-weight: bold;
+  font-size: 18px;
 }
 
 .vistconclgrup-filter-input,

@@ -58,8 +58,7 @@ h1, h2{ /* Títulos */
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Mínimo 100% de la altura de la ventana */
-
-  
+  font-family: "Century Gothic", sans-serif;
   background: #f3f3f3;
 }
 

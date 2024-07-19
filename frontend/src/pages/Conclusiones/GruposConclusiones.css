@@ -38,6 +38,7 @@
   padding: 0px 20px;
   gap: 20px;
   color: #002b69;
+  font-family: "Century Gothic", sans-serif;
 }
 
 /* Filtros */
@@ -86,6 +87,7 @@
 .filter-label-grupClu{
   font-family: 'Playfair Display', serif;
   font-weight: bold;
+  font-size: 18px;
 }
 /* Boton */
 .butBuscar-grupClu{
@@ -162,7 +164,7 @@ margin-top: 20px;
 .card-title-grupClu {
   font-weight: bold;
   font-size: 1.1em;
-  color: #ff6600;
+  color: #002b69;
   margin-top: 5px; 
   padding-bottom: 5px;
   text-align: center;

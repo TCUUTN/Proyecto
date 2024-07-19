@@ -67,10 +67,10 @@ function RechazoHoras() {
     <div className="rechazo-container">
       <div className="rechazo-content">
         <h1 className="rechazo-title">Rechazo de Horas</h1>
-        <hr className="rechazo-divider" />
+        <div className="rechazo-divider" />
         <form onSubmit={handleSubmit}>
           <div className="rechazo-inputcontainer">
-            <input
+            <textarea
               type="text"
               id="comentariosRechazo"
               name="comentariosRechazo"
@@ -80,7 +80,7 @@ function RechazoHoras() {
               placeholder="Ingrese los comentarios de rechazo"
             />
           </div>
-          <div className="rechazo-inputcontainer">
+          <div className="rechazo-buttons-container">
             <button onClick={handleBackClick} className="rechazo-button">
               <FaChevronLeft />
               Regresar

@@ -40,6 +40,7 @@
   padding: 3px 15px ;
   gap: 20px;
   color: #002b69;
+  font-family: "Century Gothic", sans-serif;
 }
 /* agreagr  y la carga */
 .sidebar-mater {
@@ -69,6 +70,7 @@
   border: none;
   background: none;
   cursor: pointer;
+
 }
 
 .icon-addMater {
@@ -91,12 +93,13 @@
 }
 .title-mater {
   color: #002b69;
-  font-size: 20px;
+  font-size: 25px;
   margin-bottom: 10px;
   align-items: center;
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   justify-content: center;
   margin-left: 35%;
+  font-weight: bold;
 }
 
 .bulk-upload-mater {
@@ -174,6 +177,9 @@
   border-color: #ff6600;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+.filter-label-mat{
+    font-size: 18px;
 }
 /* Tabla */
 .table-container-mat {
@@ -375,6 +381,40 @@
     margin: 5px 0;
   }
 }
+/* Media Queries para orientación horizontal */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .sidebar-mater,
+  .filters-mat,
+  .table-container-mat {
+    width: 90%;
+  }
 
+  .mater-action {
+    margin-left: 10%;
+    flex-direction: row;
+  }
+
+  .title-mater {
+    margin-left: 10%;
+  }
+}
+
+/* Media Queries para orientación vertical */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .sidebar-mater,
+  .filters-mat,
+  .table-container-mat {
+    width: 100%;
+  }
+
+  .mater-action {
+    margin-left: 0;
+    flex-direction: column;
+  }
+
+  .title-mater {
+    margin-left: 0;
+  }
+}
 
 

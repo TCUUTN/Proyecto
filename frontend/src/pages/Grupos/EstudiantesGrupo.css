@@ -1,227 +1,296 @@
 /*Diseño para la pagina de la lista de estudiantes. Academicos*/
 
-
-
 /* cARGA */
 .loading-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .loading-spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #f66226;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+}
 
 /*Contiene todo */
 .materia-container-est {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3px 15px ;
-    gap: 20px;
-    color: #002b69;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3px 15px ;
+  gap: 20px;
+  color: #002b69;
+  font-family: "Century Gothic", sans-serif;
+}
 /* Botones y titulo */
 .sliderlis-est {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  width: 80%;
-  margin: 5px auto;
-  background-color: #fff;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  box-sizing: border-box;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px;
+width: 80%;
+margin: 5px auto;
+background-color: #fff;
+border: 2px solid rgba(0, 44, 105, 0.212);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+box-sizing: border-box;
 }
 
 .regred-action-listest {
-  display: flex;
-  align-items: center;
-  width: 100%;
+display: flex;
+align-items: center;
+width: 100%;
 }
-  
-  /* Boton de regresar y finalizar*/
-  .back-button-listest,
-  .finalizar-button-listest {
-    background-color: #002b69;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 0 10px;
-    cursor: pointer;
-    border-radius: 50px;
-    transition: background-color 0.3s;
-  }
-  
-  .finalizar-button-listest {
-    margin-left: auto;
-  }
-  
-  .back-button-listest:hover,
-  .finalizar-button-listest:hover {
-    background-color: #f66226;
-  }
-  
-  .finalizar-button-listest:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
 
-  /* Linea */
-  .estt-divider{
-    width: 2px;
-    height: 65px;
-    background: #ff6600;
-    margin: auto 15px auto 20px;
-  }
-  /* Titulo */
-  .estt-titulo {
-    font-family: "Brush-TipTerrence", cursive;
-    color: #012c6a;
-    font-size: 2.5rem;
-    text-align: center;
-    flex-grow: 1;
-  }
+/* Boton de regresar y finalizar*/
+.back-button-listest,
+.finalizar-button-listest {
+  background-color: #002b69;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+}
+
+.finalizar-button-listest {
+  margin-left: auto;
+}
+
+.back-button-listest:hover,
+.finalizar-button-listest:hover {
+  background-color: #f66226;
+}
+
+.finalizar-button-listest:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Linea */
+.estt-divider{
+  width: 2px;
+  height: 65px;
+  background: #ff6600;
+  margin: auto 15px auto 20px;
+}
+/* Titulo */
+.estt-titulo {
+  font-family: 'Playfair Display', serif;
+  color: #012c6a;
+  font-size: 2.5rem;
+  text-align: center;
+  flex-grow: 1;
+}
 
 /* Filtros */
 .filters-est {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px; /* Ajusta el padding según sea necesario */
-  width: 80%; /* Ajusta el ancho según sea necesario */
-  margin: 20px auto;
-  flex-wrap: wrap; /* Añadir esta línea */
-  background-color: #fff;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  box-sizing: border-box;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px; /* Ajusta el padding según sea necesario */
+width: 80%; /* Ajusta el ancho según sea necesario */
+margin: 20px auto;
+flex-wrap: wrap; /* Añadir esta línea */
+background-color: #fff;
+border: 2px solid rgba(0, 44, 105, 0.212);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+box-sizing: border-box;
 }
-  
-  .filter-group-est {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 10px;
-  }
-  
-  .filter-input-est,
-  .filter-select-est {
-    padding: 10px 20px; /* Ajusta el padding según sea necesario */
-    font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
-    border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
-    border-radius: 25px;
-    width: 250px; /* Ajusta el ancho según sea necesario */
-    text-align: center;
-    color: #002b69;
-  }
-  
-  .filter-input-est::placeholder,
-  .filter-select-est::placeholder {
-    color: #575656;
-  }
-  
-  .filter-input-est:focus,
-  .filter-select-est:focus {
-    border-color: #ff6600;
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
-  }
-  
+
+.filter-group-est {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.filter-input-est,
+.filter-select-est {
+  padding: 10px 20px; /* Ajusta el padding según sea necesario */
+  font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
+  border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
+  border-radius: 25px;
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  text-align: center;
+  color: #002b69;
+}
+
+.filter-input-est::placeholder,
+.filter-select-est::placeholder {
+  color: #575656;
+}
+
+.filter-input-est:focus,
+.filter-select-est:focus {
+  border-color: #ff6600;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+.filter-label-est{
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  font-size: 18px;
+}
 /* Tablets */
 @media  (max-width: 1024px){
-  .sliderlis-est,
-  .filters-est {
-      width: 100%;
-  }
+.sliderlis-est,
+.filters-est {
+    width: 100%;
+}
 }
 @media (max-width: 768px) {
-  .sliderlis-est,
-  .filters-est {
-    flex-direction: column;
-    align-items: center;
-  }
+.sliderlis-est,
+.filters-est {
+  flex-direction: column;
+  align-items: center;
+}
 
-  .regred-action-listest {
-    flex-direction: column;
-    align-items: center;
-  }
+.regred-action-listest {
+  flex-direction: column;
+  align-items: center;
+}
 
-  .estt-titulo {
-      font-size: 2rem; /* Ajusta el tamaño de fuente según sea necesario */
-      margin: 10px 0;
-  }
+.estt-titulo {
+    font-size: 2.5rem; /* Ajusta el tamaño de fuente según sea necesario */
+    margin: 10px 0;
+}
 
-  .filter-group-est {
-      width: 100%;
-      margin: 10px 0; /* Ajusta el margen según sea necesario */
-  }
+.filter-group-est {
+    width: 100%;
+    margin: 10px 0; /* Ajusta el margen según sea necesario */
+}
 
-  .filter-input-est,
-  .filter-select-est {
-      width: 100%;
-  }
+.filter-input-est,
+.filter-select-est {
+    width: 100%;
+}
+
+.estt-divider {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
 }
 
 /* Celulares */
 @media (max-width: 480px) {
-  .sliderlis-est,
-  .filters-est {
-      width: 100%; /* Ajusta el ancho según sea necesario */
-      padding: 10px; /* Ajusta el padding según sea necesario */
-  }
+.sliderlis-est,
+.filters-est {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+}
 
-  .back-button-listest,
-  .finalizar-button-listest {
+.back-button-listest,
+.finalizar-button-listest {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.filter-input-est,
+.filter-select-est {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
+}
+
+.estt-titulo {
+    font-size: 2rem; /* Ajusta el tamaño de fuente según sea necesario */
+    margin-left: 0;
+}
+
+.regred-action-listest {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.estt-divider {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
+}
+
+/* Orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
+.sliderlis-est,
+.filters-est {
+    padding: 10px;
+}
+
+.estt-titulo {
+    font-size: 2rem;
+}
+
+.back-button-listest,
+.finalizar-button-listest {
     padding: 5px 10px;
     font-size: 14px;
-  }
+}
 
-  .filter-input-est,
-  .filter-select-est {
-      width: 100%; /* Ajusta el ancho según sea necesario */
-      font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
-  }
+.filter-input-est,
+.filter-select-est {
+    width: 100%;
+    font-size: 16px;
+}
 
-  .estt-titulo {
-      font-size: 1.5rem; /* Ajusta el tamaño de fuente según sea necesario */
-      margin-left: 0;
-  }
+.estt-divider {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
+}
 
-  .regred-action-listest {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-  }
-  .estt-divider{
-    display: block; /* Asegúrate de que la línea sea visible */
+/* Orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+.sliderlis-est,
+.filters-est {
+    padding: 10px;
+}
+
+.estt-titulo {
+    font-size: 2rem;
+}
+
+.back-button-listest,
+.finalizar-button-listest {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.filter-input-est,
+.filter-select-est {
+    width: 100%;
+    font-size: 16px;
+}
+
+.estt-divider {
     width: 65%;
     height: 2px;
     margin: 20px 0;
-  }
+}
 }

@@ -1,6 +1,3 @@
-
-
-
 /* cARGA */
 .loading-overlay {
   position: absolute;
@@ -32,24 +29,52 @@
     transform: rotate(360deg);
   }
 }
-/*Contiene todo */
+
+/* Contiene todo */
 .horasi-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  font-family: "Century Gothic", sans-serif;
 }
-/* Boton de agregar actividades  */
+
+/* Botón de agregar actividades */
 .horasi-botton {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
-  border-radius: 5px;
-  width: 35%;
-  margin: 20px auto;
-  margin-right: 55%;
+  width: 80%;
+  margin: 15px auto;
+  cursor: pointer;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: center;
 }
+
+/* Título */
+.horasies-titulo {
+  font-family: 'Playfair Display', serif;
+  color: #012c6a;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-left: 0; /* Ajustado para dispositivos móviles */
+  width: 100%;
+}
+
+/* Línea divisoria */
+.horasies-divider {
+  width: 2px;
+  height: 50px;
+  background: #ff6600;
+  margin: auto 20px;
+  text-align: center;
+}
+
 .add-horasi {
   display: flex;
   align-items: center;
@@ -59,6 +84,7 @@
   border: none;
   background: none;
   cursor: pointer;
+  font-family: 'Playfair Display', serif;
 }
 
 .icon-horasi {
@@ -66,7 +92,8 @@
   font-size: 35px;
   color: #ff6600; /* Color anaranjado para el icono */
 }
-/* Boton de regresar para academico  */
+
+/* Botón de regresar para académico */
 .add-horasiRegresar {
   display: flex;
   align-items: center;
@@ -89,26 +116,29 @@
   transition: 0.3s;
 }
 
-/* Contiene los filtros y la tabla de aprobados y rechazar */
+/* Contiene los filtros y la tabla de aprobados y rechazados */
 .container-tableapro, .container-tablerecha {
   width: 80%;
   margin: auto;
   padding: 20px;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: white;
+  border-radius: 8px;
+  background-color: #fff;
 }
-.container-tablerecha{
+
+.container-tablerecha {
   margin-top: 3%;
 }
-/* Titulo y la linea */
+
+/* Título y la línea */
 .apro-titl {
   font-family: 'Playfair Display', serif;
   color: #012c6a;
   text-align: center;
-  font-size: 32px;
+  font-size: 2.5rem;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .apro-divider {
@@ -117,7 +147,8 @@
   background: #ff6600;
   margin: 0 auto 20px auto;
 }
-/* Filtros de aprobar  y rechazar*/
+
+/* Filtros de aprobar y rechazar */
 .filter-apro {
   display: flex;
   flex-wrap: wrap;
@@ -148,6 +179,7 @@
   color: #002b69;
   border: 2px solid #002b69 !important;
 }
+
 .filter-input-apro:focus,
 .filter-select-apro:focus {
   border-color: #ff6600 !important;
@@ -155,12 +187,12 @@
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-
 /* Tabla */
 .apro-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+ 
 }
 
 .apro-thead th {
@@ -175,23 +207,24 @@
   border: 1px solid #ddd;
   text-align: center;
 }
-/* Boton del academico */
+
+/* Botón del académico */
 .icon-btn-acade {
   border: none;
   cursor: pointer;
   color: #ff6600;
   background: none;
   font-size: 1.8em;
-  transition:0.5s;
+  transition: 0.5s;
   padding: 5px;
 }
 
 .icon-btn-acade:hover {
   color: #002b69;
-  transition:0.5s;
+  transition: 0.5s;
 }
 
-/*Boton como link*/
+/* Botón como link */
 .btn-link {
   background: none;
   border: none;
@@ -201,7 +234,8 @@
   padding: 0;
   font: inherit; /* Hereda las propiedades de fuente del padre */
 }
-/*Paginacion*/
+
+/* Paginación */
 .pagination-apro {
   display: flex;
   justify-content: center;
@@ -225,6 +259,7 @@
   margin: 0 10px;
   color: #002b69;
 }
+
 /* Mensaje */
 .no-data-message {
   text-align: center;
@@ -239,15 +274,150 @@
 }
 
 /* Responsividad */
-@media (max-width: 768px) {
-  /* Estilos específicos para pantallas menores a 768px */
+@media (max-width: 600px) and (orientation: portrait) {
+  /* Estilos específicos para pantallas menores a 600px en orientación vertical (teléfonos en modo retrato) */
   .horasi-botton {
-    width: 80%;
-    margin-right: 10%;
+    width: 100%;
+    margin: 10px auto;
   }
 
   .container-tableapro, .container-tablerecha {
-    width: 95%;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .apro-titl {
+    font-size: 28px;
+  }
+
+  .apro-divider {
+    width: 50%;
+  }
+
+  .filter-apro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group-apro {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: 100%;
+  }
+
+  .pagination-apro button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .horasies-titulo {
+    font-size: 1.8rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
+  }
+
+  .horasies-divider {
+    display: block;
+    width: 2px;
+    height: 55px;
+    background: #ff6600;
+    margin: auto 20px;
+    text-align: center;
+  }
+
+  .apro-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    font-size: 12px;
+  }
+
+  .apro-thead th,
+  .apro-tbody td {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) and (orientation: landscape) {
+  /* Estilos específicos para pantallas menores a 600px en orientación horizontal (teléfonos en modo paisaje) */
+  .horasi-botton {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .apro-titl {
+    font-size: 28px;
+  }
+
+  .apro-divider {
+    width: 50%;
+  }
+
+  .filter-apro {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-group-apro {
+    width: auto;
+    margin: 10px 0;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: auto;
+  }
+
+  .pagination-apro button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .horasies-titulo {
+    font-size: 1.8rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
+  }
+
+  .horasies-divider {
+    display: block;
+    width: 2px;
+    height: 55px;
+    background: #ff6600;
+    margin: auto 20px;
+    text-align: center;
+  }
+
+  .apro-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    font-size: 12px;
+  }
+
+  .apro-thead th,
+  .apro-tbody td {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 992px) and (orientation: portrait) {
+  /* Estilos específicos para pantallas entre 601px y 992px en orientación vertical (tabletas en modo retrato) */
+  .horasi-botton {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 100%;
   }
 
   .apro-titl {
@@ -275,5 +445,175 @@
   .pagination-apro button {
     padding: 8px 16px;
     font-size: 0.9em;
+  }
+
+  .horasies-titulo {
+    font-size: 2rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
+  }
+
+  .horasies-divider {
+    width: 2px;
+    height: 50px;
+    background: #ff6600;
+    margin: auto 20px;
+    text-align: center;
+  }
+
+  .apro-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 992px) and (orientation: landscape) {
+  /* Estilos específicos para pantallas entre 601px y 992px en orientación horizontal (tabletas en modo paisaje) */
+  .horasi-botton {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 100%;
+  }
+
+  .apro-titl {
+    font-size: 28px;
+  }
+
+  .apro-divider {
+    width: 100px;
+  }
+
+  .filter-apro {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-group-apro {
+    width: auto;
+    margin: 10px 0;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: auto;
+  }
+
+  .pagination-apro button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .horasies-titulo {
+    font-size: 2rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
+  }
+
+  .horasies-divider {
+    width: 2px;
+    height: 50px;
+    background: #ff6600;
+    margin: auto 20px;
+    text-align: center;
+  }
+
+  .apro-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (min-width: 993px) and (orientation: portrait) {
+  /* Estilos específicos para pantallas mayores a 993px en orientación vertical (computadoras en modo retrato) */
+  .horasi-botton {
+    width: 80%;
+    margin: 15px auto;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 80%;
+    padding: 20px;
+  }
+
+  .apro-titl {
+    font-size: 32px;
+  }
+
+  .apro-divider {
+    width: 100px;
+  }
+
+  .filter-apro {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .filter-group-apro {
+    width: auto;
+    margin: 0 10px;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: auto;
+  }
+
+  .pagination-apro button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .horasies-titulo {
+    font-size: 2.5rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
+  }
+}
+
+@media (min-width: 993px) and (orientation: landscape) {
+  /* Estilos específicos para pantallas mayores a 993px en orientación horizontal (computadoras en modo paisaje) */
+  .horasi-botton {
+    width: 80%;
+    margin: 15px auto;
+  }
+
+  .container-tableapro, .container-tablerecha {
+    width: 80%;
+    padding: 20px;
+  }
+
+  .apro-titl {
+    font-size: 32px;
+  }
+
+  .apro-divider {
+    width: 100px;
+  }
+
+  .filter-apro {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .filter-group-apro {
+    width: auto;
+    margin: 0 10px;
+  }
+
+  .filter-input-apro, .filter-select-apro {
+    width: auto;
+  }
+
+  .pagination-apro button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .horasies-titulo {
+    font-size: 2.5rem;
+    margin-left: 0; /* Ajustado para dispositivos móviles */
+    width: 100%; /* Ajustado para dispositivos móviles */
   }
 }

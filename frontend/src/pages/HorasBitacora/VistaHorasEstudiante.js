@@ -294,7 +294,10 @@ function VistaHorasEstudiante() {
               Agregar Actividades <IoMdAddCircle className="icon-horasi" />
             </button>
           )}
+          <div className="horasies-divider" />
+          <h1 className="horasies-titulo"> Bitacora de horas </h1>
         </div>
+
         {/* */}
         {filteredApprovedMaterias.length === 0 &&
         filteredRejectedMaterias.length === 0 ? (
