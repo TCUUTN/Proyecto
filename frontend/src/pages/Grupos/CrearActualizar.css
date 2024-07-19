@@ -9,15 +9,16 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: "Century Gothic", sans-serif;
   padding: 20px;
   width: 80%; /* Utilizamos vw en lugar de % para hacerlo responsivo */
   max-width: 600px; /* Ejemplo de tamaño máximo para tablets */
-  margin: 10% auto; /* Utilizamos vh en lugar de % para el margen superior */
+  margin: 2.5% auto; /* Utilizamos vh en lugar de % para el margen superior */
 
 }
 
 .projcreaed-tit {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
@@ -86,7 +87,7 @@
   border-radius: 25px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
 
 .button-projcreaed:hover {
@@ -104,31 +105,49 @@
   font-size: 0.8em;
 }
 
-/* Media queries para hacer ajustes específicos para tamaños de pantalla más pequeños */
+/* Media queries para tablets */
 @media (max-width: 768px) {
   .container-projcreaed {
-      width: 90%; /* Ajuste para tablets */
-      margin-top: 15vh; /* Ajuste del margen superior para tablets */
+      width: 90%;
+      margin-top: 20vh;
   }
 
   .button-projcreaed {
-      width: 50%; /* Ajuste del ancho del botón para tablets */
+      width: 50%;
   }
 }
 
-@media (max-width: 480px) {
+/* Media queries para celulares en orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
   .container-projcreaed {
-      width: 95%; /* Ajuste para celulares */
-      margin-top: 20vh; /* Ajuste del margen superior para celulares */
+      width: 95%;
+      margin-top: 10vh;
   }
 
   .button-projcreaed {
-      width: 70%; /* Ajuste del ancho del botón para celulares */
+      width: 70%;
   }
 
   .imput-projcreaed,
   .sele-projcreaed {
-      width: 90%; /* Ajuste del ancho de inputs y selects para celulares */
+      width: 90%;
+  }
+}
+
+/* Media queries para celulares en orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+  .container-projcreaed {
+      width: 90%;
+      margin-top: 5vh;
+  }
+
+  .button-projcreaed {
+      width: 60%;
+  }
+
+  .imput-projcreaed,
+  .sele-projcreaed {
+      width: 80%;
   }
 }
 
@@ -150,10 +169,11 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: "Century Gothic", sans-serif;
 }
 
 .creagrup-tit {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2rem;
@@ -186,7 +206,7 @@
   border-radius: 25px;
   box-sizing: border-box;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-align: center;
   /* Chrome, Safari, Opera */
   -webkit-text-align: center;
@@ -223,7 +243,7 @@
 .creagrup-error {
   color: red;
   font-size: 0.875rem;
-  margin-top: 0.25rem;
+  margin-top: 0.20rem;
 }
 
 
@@ -255,6 +275,7 @@
   cursor: not-allowed;
 }
 
+/* Media queries para tablets */
 @media (max-width: 768px) {
   .creagrup-container {
     width: 80%;
@@ -282,5 +303,66 @@
 
   .creagrup-buttonrow {
     flex-direction: column;
+  }
+}
+
+/* Media queries para celulares en orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
+  .creagrup-container {
+    width: 90%;
+    padding: 15px 10px;
+  }
+
+  .creagrup-tit {
+    font-size: 1.8rem;
+  }
+
+  .creagrup-formrow {
+    margin-bottom: 10px;
+  }
+
+  .creagrup-inputfield,
+  .creagrup-select {
+    width: 95%;
+  }
+
+  .creagrup-button {
+    width: 100%;
+  }
+
+  .creagrup-buttonrow {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+}
+
+/* Media queries para celulares en orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+  .creagrup-container {
+    width: 70%;
+    padding: 10px 5px;
+  }
+
+  .creagrup-tit {
+    font-size: 1.5rem;
+  }
+
+  .creagrup-formrow {
+    margin-bottom: 8px;
+  }
+
+  .creagrup-inputfield,
+  .creagrup-select {
+    width: 90%;
+  }
+
+  .creagrup-button {
+    width: 48%;
+  }
+
+  .creagrup-buttonrow {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
   }
 }

@@ -231,8 +231,9 @@
     margin: 10px 0;
   }
 
-  .solicitud-section {
-    width: 100%;
+  .solicitud-section,
+  .sociocomu-sidebar {
+    width: 95%;
   }
 
   .table-container-socioc {
@@ -265,7 +266,7 @@
   }
 
   .solicitud-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .pagination-sociocomu button {
@@ -313,7 +314,7 @@
   }
 
   .sociocomu-titulo {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
   }
 
   .socio-divider {
@@ -331,7 +332,7 @@
   }
 
   .solicitud-title {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
   }
 
   .solicitud-section {

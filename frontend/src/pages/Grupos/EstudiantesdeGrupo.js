@@ -294,10 +294,6 @@ const handleGenerarReporte = async () => {
     doc.save(grupoData.CodigoMateria + " - " + titulo2 + ".pdf");
   };
 };
-
-
-
-
   return (
     <div className="materia-container-est">
       {/*Para la carga */}
@@ -309,26 +305,29 @@ const handleGenerarReporte = async () => {
       <ToastContainer position="bottom-right" />
       {/* Filtros y botón */}
       <main>
-        <div className="sliderlis-est">
-          {/* Botón de regresar */}
-          <div className="regred-action-listest">
-            <button onClick={handleBack} className="back-button-listest">
-              <FaChevronLeft />
-              Regresar
-            </button>
-            &nbsp; &nbsp;
-            {selectedRole === "Académico" && (
-              <button
-                onClick={handleFinalizarCuatrimestre}
-                className="finalizar-button-listest"
-              >
-                Finalizar Cuatrimestre
-              </button>
-            )}
-            <div className="estt-divider" />
-            <h1 className="estt-titulo"> Lista de Estudiantes</h1>
-          </div>
-        </div>
+      <div className="sliderlis-est">
+    {/* Botón de regresar */}
+    <div className="regred-action-listest">
+      <button onClick={handleBack} className="back-button-listest">
+        Regresar
+      </button>
+      <div className="estt-divider" />
+      <h1 className="estt-titulo">Lista de Estudiantes</h1>
+      <div className="estt-divider" />
+      <div className="buttFinalizar">
+        {selectedRole === "Académico" && (
+          <button
+            onClick={handleFinalizarCuatrimestre}
+            className="finalizar-button-listest"
+            disabled
+          >
+            Finalizar Cuatrimestre
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+
 
         <div className="filters-est">
           {/* Filtros */}

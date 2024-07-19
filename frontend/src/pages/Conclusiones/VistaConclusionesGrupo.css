@@ -1,11 +1,43 @@
+/* CARGA */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 /* General container */
 .vistconclgrup-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3px 20px ;
+  padding: 3px 15px;
   gap: 20px;
   color: #002b69;
+  font-family: "Century Gothic", sans-serif;
 }
 
 /* Main content area */
@@ -21,14 +53,13 @@
   padding: 3%;
 }
 
-
-/* Section de Boton t el titulo */
+/* Section de Boton y el titulo */
 .vistconclgrup-action {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  width: 80%; /* Ajusta el ancho según sea necesario */
+  width: 80%;
   margin: 20px auto;
   background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
@@ -36,6 +67,7 @@
   border-radius: 8px;
   box-sizing: border-box;
 }
+
 /* Boton de regresar */
 .regred-vistconclgrup {
   display: flex;
@@ -62,51 +94,60 @@
 /* Linea */
 .vistconclgrup-divider {
   width: 2px;
-  height: 50px; /* Ajusta el alto según sea necesario */
+  height: 50px;
   background: #ff6600;
   margin: auto 20px;
 }
+
 /* Titulo */
-.vistconclgrup-titulo{
-  font-family: "Brush-TipTerrence", cursive;
+.vistconclgrup-titulo {
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
-  margin-left: 135px;
+  margin-left: 90px;
 }
+
 /* Filters section */
 .vistconclgrup-filter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  width: 80%; /* Ajusta el ancho según sea necesario */
+  width: 80%;
   margin: 20px auto;
+  flex-wrap: wrap; /* Añadir esta línea */
   background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-sizing: border-box;
 }
+
 /* Filtros */
 .vistconclgrup-filter-group {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 10px;
-  flex: 1;
+}
+
+.filter-label-vistconclgrup {
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .vistconclgrup-filter-input,
 .vistconclgrup-filter-select {
-  font-size: 16px;
+  font-size: 18px;
   padding: 10px 20px;
   margin: 5px 0;
   border-radius: 25px;
   text-align: center;
   color: #002b69;
   border: 2px solid #002b69;
-  width: 100%;
+  width: 450px;
 }
 
 .vistconclgrup-filter-input:focus,
@@ -122,87 +163,106 @@
   outline: none;
 }
 
-
 /* Responsividad */
 
-/* Computadoras */
-@media (min-width: 769px) {
-  .vistconclgrup-action {
-    flex-direction: row;
+/* Tablets y dispositivos menores a 1024px */
+@media (max-width: 1024px) {
+  .vistconclgrup-container {
+    padding: 3px 10px;
+    gap: 15px;
   }
-  .vistconclgrup-filter {
-    flex-direction: row;
-  }
-}
 
-/* Tablets */
-@media (max-width: 768px) {
-  .vistconclgrup-action {
-    flex-direction: column;
-    align-items: center;
-  }
-  .vistconclgrup-filter {
-    flex-direction: column;
-    align-items: stretch;
+  .vistconclgrup-action, .vistconclgrup-filter {
     width: 90%;
   }
-  .vistconclgrup-filter-group {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .vistconclgrup-filter-input,
-  .vistconclgrup-filter-select {
-    width: 100%;
-    max-width: 400px;
-    margin: 5px 0;
-  }
-  .vistconclgrup-divider {
-    width: 100%;
-    height: 2px;
-    margin: 10px 0;
-  }
-  .regred-vistconclgrup {
-    margin-left: 0;
-    margin-top: 20px;
-    justify-content: center;
-  }
+
   .vistconclgrup-titulo {
-    margin-left: 0;
-    text-align: center;
     font-size: 2rem;
+    margin-left: 50px;
   }
 
+  .vistconclgrup-filter-input, .vistconclgrup-filter-select {
+    width: 200px;
+  }
 }
 
-/* Teléfonos */
-@media (max-width: 480px) {
-  .vistconclgrup-action {
+/* Celulares en orientación vertical */
+@media (max-width: 768px) and (orientation: portrait) {
+  .vistconclgrup-container {
+    padding: 3px 5px;
+    gap: 10px;
+  }
+
+  .vistconclgrup-action, .vistconclgrup-filter {
     width: 100%;
     padding: 10px;
   }
-  .vistconclgrup-filter {
-    width: 100%;
-    padding: 10px;
-  }
-  .vistconclgrup-filter-input,
-  .vistconclgrup-filter-select {
-    font-size: 16px;
-    padding: 8px 15px;
-  }
-  .back-button-vistconclgrup {
-    font-size: 1em;
-    padding: 5px 15px;
-  }
+
   .vistconclgrup-titulo {
-    margin-left: 0;
-    text-align: center;
     font-size: 1.5rem;
+    margin-left: 20px;
   }
-  .vistconclgrup-divider {
-    width: 2px;
-    height: 50px; /* Ajusta el alto según sea necesario */
-    background: #ff6600;
-    margin: auto 20px;
+
+  .vistconclgrup-filter-group {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .vistconclgrup-filter-input, .vistconclgrup-filter-select {
+    width: 100%;
+  }
+}
+
+/* Celulares en orientación horizontal */
+@media (max-width: 768px) and (orientation: landscape) {
+  .vistconclgrup-container {
+    padding: 3px 10px;
+    gap: 10px;
+  }
+
+  .vistconclgrup-action, .vistconclgrup-filter {
+    width: 100%;
+    padding: 10px;
+
+  }
+
+  .vistconclgrup-titulo {
+    font-size: 1.5rem;
+    margin-left: 20px;
+  }
+
+  .vistconclgrup-filter-group {
+    width: 100%;
+    margin: 5px 0;
+    align-items: stretch;
+  }
+
+  .vistconclgrup-filter-input, .vistconclgrup-filter-select {
+    width: 100%;
+  }
+}
+
+/* Estilos para computadoras */
+@media (min-width: 1025px) {
+  .vistconclgrup-container {
+    padding: 3px 15px;
+    gap: 20px;
+  }
+
+  .vistconclgrup-action, .vistconclgrup-filter {
+    width: 80%;
+  }
+
+  .vistconclgrup-titulo {
+    font-size: 2.5rem;
+    margin-left: 90px;
+  }
+
+  .vistconclgrup-filter-group {
+    margin: 0 10px;
+  }
+
+  .vistconclgrup-filter-input, .vistconclgrup-filter-select {
+    width: 300px;
   }
 }

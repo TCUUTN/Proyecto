@@ -505,6 +505,9 @@ function VistaHorasEstudiante() {
             </button>
             
           )}
+
+          <div className="horasies-divider" />
+          <h1 className="horasies-titulo"> Bitacora de horas </h1>
           <button
               onClick={handleGenerarReporte}
               className="finalizar-button-listest"
@@ -512,6 +515,7 @@ function VistaHorasEstudiante() {
               Reporte de horas
             </button>
         </div>
+
         {/* */}
         {filteredApprovedMaterias.length === 0 &&
         filteredRejectedMaterias.length === 0 ? (
