@@ -270,3 +270,111 @@
     flex-wrap: nowrap;
     background-color: #fff;
   }
+
+
+  /* Media Queries */
+@media (max-width: 1200px) {
+    .filters-DashAdmin {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .filter-select-DashAdmin {
+      width: 80%;
+    }
+  
+    .card-container-DashAdmin {
+      width: 90%;
+    }
+  
+    .card-DashAdmin {
+      width: 45%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .filters-DashAdmin {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .filter-group-DashAdmin{
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 95%;
+    }
+    .filter-select-DashAdmin {
+      width: 100%;
+    }
+  
+    .buscar-button-DashAdmin {
+      margin: 10px 0;
+      width: 50%;
+    }
+  
+    .butBuscar-DashAdmin {
+      margin-right: 0;
+      width: 100%;
+      font-size: 18px;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .DashAdmin-divider {
+      display: block; /* Asegúrate de que la línea sea visible */
+      width: 65%;
+      height: 2px;
+      margin: 20px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+  
+    .filters-DashAdmin {
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      padding: 10px;
+    }
+    .filter-group-DashAdmin{
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .filter-select-DashAdmin {
+      width: 100%;
+      font-size: 18px;
+    }
+  
+    .buscar-button-DashAdmin {
+      margin: 10px 0;
+      width: 50%;
+    }
+  
+    .butBuscar-DashAdmin {
+      margin-right: 0;
+      width: 100%;
+      font-size: 18px;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .pagination-DashAdmin button {
+      padding: 5px 10px;
+    }
+    .pagination-DashAdmin span {
+      padding: 5px 10px;
+    }
+  
+    .DashAdmin-divider {
+      display: block; /* Asegúrate de que la línea sea visible */
+      width: 65%;
+      height: 2px;
+      margin: 20px 0;
+    }
+  }
