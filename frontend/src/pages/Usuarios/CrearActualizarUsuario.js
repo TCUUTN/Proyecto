@@ -57,7 +57,7 @@ const CrearActualizarUsuario = () => {
           
 
         } catch (error) {
-          console.log("Error fetching user data:", error);
+          toast.error("Error fetching user data:", error);
         }
       } else {
         setFormData({
@@ -103,23 +103,10 @@ const CrearActualizarUsuario = () => {
             NumeroGrupo: "",
             Anno: "",
           }];
-
-          
-
           setGrupos(gruposData);
         } catch (error) {
-          console.log("Error fetching groups:", error);
-          setGrupos([
-            {
-              GrupoId: "",
-              Grupos_TipoGrupo: {
-                NombreProyecto: `La Sede de ${formData.sede} no contiene grupos activos en este momento`,
-              },
-              Cuatrimestre: "",
-              NumeroGrupo: "",
-              Anno: "",
-            },
-          ]);
+          toast.error(`La Sede de ${formData.sede} no contiene grupos activos en este momento`);
+          
         }
       } else {
         setGrupos([]);
@@ -210,15 +197,12 @@ const CrearActualizarUsuario = () => {
       carrera: roles.includes(3) ? prevFormData.carrera : "",
       grupo: roles.includes(3) ? prevFormData.grupo : "",
     }));
-
-    console.log("Roles updated:", roles);
   };
 
   const handleSubmit = async (e) => {
-    console.log("Hola")
     e.preventDefault();
     if (!isFormValid) {
-      console.log("Por favor complete todos los campos correctamente");
+      toast.error("Por favor complete todos los campos correctamente");
       return;
     }
 
@@ -250,11 +234,8 @@ const CrearActualizarUsuario = () => {
         LastUpdate: new Date().toISOString(),
         LastUser: "-",
       })),
-      ...(formData.roles.includes(3) && { GrupoId: formData.grupo }),
+      ...(formData.roles.includes(3) && { GrupoId: formData.GrupoId }),
     };
-    
-
-    console.log("Form Data to be submitted:", payload);
 
     try {
       const response = await fetch("/usuarios/crearOActualizarUsuario", {
@@ -266,17 +247,15 @@ const CrearActualizarUsuario = () => {
       });
 
       if (response.ok) {
-        console.log("Usuario guardado con éxito");
+        toast.success("Usuario guardado con éxito");
         sessionStorage.setItem("userSaved", "true");
         sessionStorage.removeItem("IdentificacionUsuario");
         navigate(-1);
       } else {
         const errorData = await response.json();
-        console.log("Error al guardar el usuario", errorData);
         toast.error(`${errorData.error}`);
       }
     } catch (error) {
-      console.log("Error al guardar el usuario", error);
       toast.error("Error al guardar el usuario");
     }
   };
@@ -485,8 +464,8 @@ const CrearActualizarUsuario = () => {
 
             <div className="creaediUsu-formGroup">
               <select
-                id="grupo"
-                name="grupo"
+                id="GrupoId"
+                name="GrupoId"
                 value={formData.GrupoId}
                 onChange={handleChange}
                 className="creaediUsu-select"
@@ -500,7 +479,7 @@ const CrearActualizarUsuario = () => {
                   </option>
                 ))}
               </select>
-              {errors.grupo && (
+              {errors.GrupoId && (
                 <div
                   className={`${"creaediUsu-error"} ${
                     errors.grupo && "active"

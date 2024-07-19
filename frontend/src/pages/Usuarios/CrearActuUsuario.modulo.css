@@ -130,7 +130,8 @@
 }
 
 .creaediUsu-btnGuardar:disabled {
-  background-color: #cccccc;
+  background-color: #777777 !important;
+  cursor: not-allowed;
 }
 
 .creaediUsu-btnGuardar,

@@ -43,10 +43,10 @@ function MantenimientoUs() {
           setFilteredUsuarios(data);
         }
       } else {
-        console.error("Error al obtener la lista de usuarios");
+        toast.error("Error al obtener la lista de usuarios");
       }
     } catch (error) {
-      console.error("Error al obtener la lista de usuarios:", error);
+      toast.error("Error al obtener la lista de usuarios:", error);
     }
   };
 
@@ -155,10 +155,10 @@ function MantenimientoUs() {
       "Correo Electrónico": "CorreoElectronico",
     },
     Académico: {
-      "Sede": "Sede",
       "Identificación": "Identificacion",
       "Nombre Completo": "NombreCompleto",
       "Correo Electrónico": "CorreoElectronico",
+      "Sede": "Sede",
     },
   };
   
@@ -180,9 +180,9 @@ function MantenimientoUs() {
           { header: 1 }
         );
   
-        const mapHeaders = (row, mappings) => {
+        const mapHeaders = (row, mappings, headerRow) => {
           return row.reduce((acc, value, index) => {
-            const header = worksheet[1][index]; // Usar la segunda fila como encabezados
+            const header = headerRow[index]; // Usar la fila de encabezados correcta
             const mappedHeader = mappings[header];
             if (mappedHeader) {
               acc[mappedHeader] = value;
@@ -192,9 +192,10 @@ function MantenimientoUs() {
         };
   
         if (role === "Académico") {
-          const dataRows = worksheet.slice(2); // Omitir las dos primeras filas
+          const headerRow = worksheet[0];
+          const dataRows = worksheet.slice(1);
           const jsonData = dataRows.map((row) => {
-            const mappedRow = mapHeaders(row, headerMappings.Académico);
+            const mappedRow = mapHeaders(row, headerMappings.Académico, headerRow);
             const nombres = mappedRow.NombreCompleto?.split(" ") || [];
             const Apellido1 = nombres[0] || "";
             const Apellido2 = nombres[1] || "";
@@ -228,8 +229,10 @@ function MantenimientoUs() {
               return acc;
             }, {});
   
-            const jsonData = worksheet.slice(2).map((row) => {
-              const mappedRow = mapHeaders(row, headerMappings.Estudiante);
+            const headerRow = worksheet[1];
+            const dataRows = worksheet.slice(2);
+            const jsonData = dataRows.map((row) => {
+              const mappedRow = mapHeaders(row, headerMappings.Estudiante, headerRow);
               const nombres = mappedRow.NombreCompleto?.split(" ") || [];
               const Apellido1 = nombres[0] || "";
               const Apellido2 = nombres[1] || "";
@@ -250,28 +253,22 @@ function MantenimientoUs() {
   
               return user;
             });
-            console.log(jsonData);
             uploadJsonData(jsonData, role);
           } else {
-            console.error("Formato de archivo inválido");
             toast.error("Formato de archivo inválido");
           }
         } else {
-          console.error("Rol de usuario no reconocido");
           toast.error("Rol de usuario no reconocido");
         }
       };
       reader.readAsArrayBuffer(file);
     } else {
-      console.error("Por favor, suba un archivo Excel válido");
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
   
   
   
-
-
 
   const handleCarrerasUplaod = (e) => {
     const file = e.target.files[0];
@@ -306,7 +303,6 @@ function MantenimientoUs() {
       };
       reader.readAsArrayBuffer(file);
     } else {
-      console.error("Por favor, suba un archivo Excel válido");
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
@@ -342,15 +338,12 @@ function MantenimientoUs() {
       });
 
       if (response.ok) {
-        console.log("Usuarios cargados exitosamente");
         toast.success(`${role}s cargados exitosamente`);
         fetchUsuarios();
       } else {
-        console.error("Error al cargar los usuarios");
         toast.error("Error al cargar los usuarios");
       }
     } catch (error) {
-      console.error("Error al cargar los usuarios:", error);
       toast.error("Error al cargar los usuarios");
     } finally {
       setIsLoading(false); // Ocultar pantalla de carga
@@ -368,15 +361,12 @@ function MantenimientoUs() {
       });
 
       if (response.ok) {
-        console.log("Carreras cargadas exitosamente");
         toast.success(`Carreras cargadas exitosamente`);
         fetchUsuarios();
       } else {
-        console.error("Error al cargar las carreras");
         toast.error("Error al cargar las carreras");
       }
     } catch (error) {
-      console.error("Error al cargar las carreras:", error);
       toast.error("Error al cargar las carreras", error);
     } finally {
       setIsLoading(false); // Ocultar pantalla de carga
