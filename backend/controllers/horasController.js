@@ -357,5 +357,5 @@ module.exports = {
   subirArchivo, 
   descargarArchivo,
   eliminarArchivo,
-  getHorasPorFecha
+  getHorasPorFecha,
 };

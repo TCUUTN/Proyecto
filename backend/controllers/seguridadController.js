@@ -64,7 +64,6 @@ const getAllAcademicos = async (req, res) => {
 const getUsuarioPorNombre = async (req, res) => {
   try {
     const { Apellido1, Apellido2, Nombre } = req.query;
-    console.log(Apellido1, Apellido2, Nombre);
 
     // Buscar el usuario por su nombre y apellidos
     const usuario = await Usuario.findOne({
@@ -100,6 +99,28 @@ const getUsuarioPorIdentificacion = async (req, res) => {
       include: {
         model: UsuarioRoles,
       },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.status(200).json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getNombrePorIdentificacion = async (req, res) => {
+  try {
+    const { Identificacion } = req.params;
+
+    // Buscar el usuario por su número de identificación y traer también los roles asociados
+    const usuario = await Usuario.findOne({
+      where: {
+        Identificacion: Identificacion,
+      },
+      attributes: ['Nombre', 'Apellido1', 'Apellido2'],
     });
 
     if (!usuario) {
@@ -342,7 +363,6 @@ const crearOActualizarUsuario = async (req, res) => {
       GrupoId, // nuevo parámetro
     } = req.body;
 
-    console.log('Datos recibidos:', req.body);
 
     // Asignar valores por defecto si son cadenas vacías
     const generoFinal = Genero === '' ? 'Indefinido' : Genero;
@@ -388,7 +408,6 @@ const crearOActualizarUsuario = async (req, res) => {
         updateData.Contrasenna = hashedPassword;
       }
 
-      console.log('Actualizando usuario existente:', Identificacion);
       usuarioExistente = await usuarioExistente.update(updateData);
 
       // Actualizar roles de usuario
@@ -453,10 +472,8 @@ const crearOActualizarUsuario = async (req, res) => {
       }
     }
 
-    console.log('Usuario creado:', nuevoUsuario);
     res.status(201).json(nuevoUsuario);
   } catch (error) {
-    console.error('Error al crear o actualizar el usuario:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -513,7 +530,6 @@ const actualizarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
 // Función para crear o modificar un usuario
 const cargarUsuario = async (req, res) => {
   const users = req.body;
-
   try {
     for (let userData of users) {
       // Hashear la contraseña
@@ -626,7 +642,6 @@ const cargarUsuario = async (req, res) => {
 
     res.status(200).send("Usuarios cargados/actualizados exitosamente");
   } catch (error) {
-    console.error("Error al cargar/actualizar los usuarios:", error);
     res.status(500).send("Error al cargar/actualizar los usuarios", error);
   }
 };
@@ -673,7 +688,6 @@ const cargaCarreras = async (req, res) => {
 
     res.status(200).send("Se han añadido las carreras de los Usuarios encontrados");
   } catch (error) {
-    console.error("Error al cargar/actualizar los usuarios:", error);
     res.status(500).send("Error al cargar/actualizar los usuarios");
   }
 };
@@ -749,5 +763,6 @@ module.exports = {
   getUsuarioPorIdentificacion,
   actualizarGenero,
   cargarUsuario,
-  cargaCarreras
+  cargaCarreras,
+  getNombrePorIdentificacion
 };

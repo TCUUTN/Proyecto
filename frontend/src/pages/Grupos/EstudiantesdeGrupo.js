@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import { useNavigate } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -166,6 +169,131 @@ function ListaEstudiantes() {
     }
   };
 
+// Función para generar el reporte PDF
+const handleGenerarReporte = async () => {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
+    format: 'letter' // Tamaño carta
+  });
+
+  // Obtener datos del grupo
+  const grupoResponse = await fetch(`grupos/${grupoId}`);
+  const grupoData = await grupoResponse.json();
+
+  // Guardar títulos en variables
+  const titulo1 = `${grupoData.Grupos_TipoGrupo.NombreProyecto} - ${grupoData.CodigoMateria}`;
+  const titulo2 = `Lista del Grupo# ${grupoData.NumeroGrupo}, Cuatrimestre ${grupoData.Cuatrimestre} del año ${grupoData.Anno}`;
+  const titulo3 = `Académico a cargo: ${grupoData.Usuario.Nombre} ${grupoData.Usuario.Apellido1} ${grupoData.Usuario.Apellido2}`;
+
+  // Crear la tabla
+  const tableColumn = [
+    "Nombre Completo",
+    "Correo Electrónico",
+    "Identificación",
+    "Cant. de horas Aprobadas",
+    "Estado del Estudiante"
+  ];
+  const tableRows = [];
+
+  filteredEstudiantes.forEach((estudiante) => {
+    const estudianteData = [
+      `${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`,
+      estudiante.Usuario.CorreoElectronico,
+      estudiante.Usuario.Identificacion,
+      estudiante.HorasAprobadas,
+      estudiante.Estado
+    ];
+    tableRows.push(estudianteData);
+  });
+
+  // Añadir imagen como encabezado
+  const imgData = banderaCombinada;
+
+  // Crear un objeto de imagen para obtener las dimensiones originales
+  const img = new Image();
+  img.src = imgData;
+  img.onload = () => {
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const imgWidth = pageWidth / 6;
+    const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
+    const imgX = (pageWidth - imgWidth) / 2; // Centrar imagen
+    const imgY = 0;
+
+    // Dibujar fondo del encabezado
+    doc.setFillColor("#002b69");
+    doc.rect(0, 0, pageWidth, imgHeight, 'F');
+
+    doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+
+    // Añadir títulos al cuerpo con espacios entre ellos
+    const titleY = imgY + imgHeight + 20;
+    doc.setFontSize(14);
+    doc.setTextColor("#002b69"); // Color azul para el texto
+    doc.text(titulo1, pageWidth / 2, titleY, { align: 'center' });
+    doc.text(titulo2, pageWidth / 2, titleY + 20, { align: 'center' }); // Espacio adicional
+    doc.text(titulo3, pageWidth / 2, titleY + 40, { align: 'center' }); // Espacio adicional
+
+    // Añadir tabla
+    const startY = titleY + 50;
+    doc.autoTable({
+      startY: startY,
+      head: [tableColumn],
+      body: tableRows,
+      styles: {
+        fontSize: 10,
+        cellPadding: 3,
+        halign: 'center' // Centrar datos de la tabla
+      },
+      headStyles: {
+        fillColor: [0, 43, 105],
+        textColor: [255, 255, 255],
+        halign: 'center' // Centrar encabezados de la tabla
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240],
+      },
+      margin: { bottom: 40 } // Espacio adicional para el pie de página
+    });
+
+    // Añadir footer en cada página
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 0; i < pageCount; i++) {
+      doc.setPage(i + 1);
+      const footerHeight = 35; // Incrementar la altura del pie de página
+
+      // Dibujar fondo del pie de página
+      doc.setFillColor("#002b69");
+      doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
+
+      // Añadir paginación y texto del pie de página
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255); // Letra blanca
+      doc.text(
+        `Página ${i + 1} de ${pageCount}`,
+        pageWidth / 2,
+        pageHeight - 25, // Ajustar para que quepa bien en el pie de página
+        { align: 'center' }
+      );
+      doc.text(
+        `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+        pageWidth / 2,
+        pageHeight - 15, // Ajustar para que quepa bien en el pie de página
+        { align: 'center' }
+      );
+      doc.text(
+        "Todos los derechos reservados.",
+        pageWidth / 2,
+        pageHeight - 5, // Ajustar para que quepa bien en el pie de página
+        { align: 'center' }
+      );
+    }
+
+    // Guardar el documento PDF
+    doc.save(grupoData.CodigoMateria + " - " + titulo2 + ".pdf");
+  };
+};
   return (
     <div className="materia-container-est">
       {/*Para la carga */}
@@ -199,6 +327,7 @@ function ListaEstudiantes() {
       </div>
     </div>
   </div>
+
 
         <div className="filters-est">
           {/* Filtros */}
@@ -276,9 +405,10 @@ function ListaEstudiantes() {
                 <th>Nombre Completo</th>
                 <th>Correo Electrónico</th>
                 <th>Identificación</th>
-                <th>Estado del Estudiante</th>
+                <th>Cantidad de Horas Aprobadas</th>
                 <th>Progreso del Estudiante</th>
                 <th>Acciones</th>
+                <th>Estado del Estudiante</th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
@@ -287,8 +417,9 @@ function ListaEstudiantes() {
                   <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
                   <td>{estudiante.Usuario.CorreoElectronico}</td>
                   <td>{estudiante.Usuario.Identificacion}</td>
-                  <td>{estudiante.Estado}</td>
+                  <td>{estudiante.HorasAprobadas}</td>
                   <td>{estudiante.Progreso}</td>
+                  <td>{estudiante.Estado}</td>
                   <td>
                     {estudiante.Estado !== "Reprobado" ? (
                       <button
@@ -315,6 +446,14 @@ function ListaEstudiantes() {
               Página {currentPage} de {totalPages}
             </span>
             <button onClick={handleNextPage}>Siguiente</button>
+          </div>
+          <div className="pagination-mat">
+            <button
+              onClick={handleGenerarReporte}
+              className="finalizar-button-listest"
+            >
+              Generar Lista
+            </button>
           </div>
         </div>
       </main>

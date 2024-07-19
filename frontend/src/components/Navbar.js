@@ -253,33 +253,7 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-                <li className="nav-item dropdown">
-                  <Link
-                    className="nav-link dropdown-toggle"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Reportes
-                  </Link>
-                  <ul className="dropdown-menu bg-blue">
-                    <li>
-                      <Link className="dropdown-item dropdown-style" to="#">
-                        Reporte #1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item dropdown-style" to="#">
-                        Reporte #2
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item dropdown-style" to="#">
-                        Reporte #3
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                
                 {showBoletaConclusion && (
                   <li className="nav-item">
                     <Link

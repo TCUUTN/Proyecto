@@ -1,17 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.be21eec4.css",
-    "main.js": "/static/js/main.d4485ed0.js",
-    "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "main.css": "/static/css/main.5c8f4793.css",
+    "main.js": "/static/js/main.a33805d2.js",
+    "static/js/213.1276bd44.chunk.js": "/static/js/213.1276bd44.chunk.js",
+    "static/js/455.3c2c18bf.chunk.js": "/static/js/455.3c2c18bf.chunk.js",
+    "static/js/453.d855a71b.chunk.js": "/static/js/453.d855a71b.chunk.js",
+    "static/media/ImageIniciarS.png": "/static/media/ImageIniciarS.2a00375330b0ff5c6d36.png",
+    "static/media/ImageEmail.png": "/static/media/ImageEmail.a13ab21f3a56b4679697.png",
+    "static/media/ImageOlvidar.png": "/static/media/ImageOlvidar.63f8a07f983f495534b8.png",
     "static/media/Bandera Combinada.png": "/static/media/Bandera Combinada.b68732730d5f2c1848d0.png",
+    "static/media/CompletarPerfil.png": "/static/media/CompletarPerfil.9971074a6a4252cdebef.png",
+    "static/media/RestablecerClave.png": "/static/media/RestablecerClave.1d7cef2af29332ffeba2.png",
+    "static/media/navbar icono usuario.png": "/static/media/navbar icono usuario.eeb2c2d501fa135a8f3d.png",
     "index.html": "/index.html",
     "static/media/Denegado.Css": "/static/media/Denegado.acb3f1a98d1182c36573.Css",
-    "main.be21eec4.css.map": "/static/css/main.be21eec4.css.map",
-    "main.d4485ed0.js.map": "/static/js/main.d4485ed0.js.map",
-    "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
+    "main.5c8f4793.css.map": "/static/css/main.5c8f4793.css.map",
+    "main.a33805d2.js.map": "/static/js/main.a33805d2.js.map",
+    "213.1276bd44.chunk.js.map": "/static/js/213.1276bd44.chunk.js.map",
+    "455.3c2c18bf.chunk.js.map": "/static/js/455.3c2c18bf.chunk.js.map",
+    "453.d855a71b.chunk.js.map": "/static/js/453.d855a71b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.be21eec4.css",
-    "static/js/main.d4485ed0.js"
+    "static/css/main.5c8f4793.css",
+    "static/js/main.a33805d2.js"
   ]
 }

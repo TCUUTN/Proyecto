@@ -4,6 +4,7 @@ const gruposController = require('../controllers/gruposController');
 
 router.get('/', gruposController.getAllGrupos);
 router.get('/tipos', gruposController.getAllTiposGrupos);
+router.get('/Annos', gruposController.getAllAnnosParaReporte);
 router.get('/GruposEstudiantes', gruposController.getAllGruposEstudiantes);
 router.get('/EstudiantesActivos/:Sede', gruposController.getEstudianteAdministrativo);
 router.get('/PruebaEstudiantes/:GrupoId', gruposController.getprueba);
@@ -17,6 +18,7 @@ router.get('/Conclusiones/:Identificacion', gruposController.getGrupoPorIdentifi
 router.get('/ListaEstudiantes/:GrupoId', gruposController.getListaEstudiantes);
 router.get('/:GrupoId', gruposController.getGrupoPorGrupoId);
 router.post('/ConclusionesPorBusqueda', gruposController.getGrupoPorAnnoyCuatrimestreParaConclusion);
+router.post('/ReporteGeneroPorBusqueda', gruposController.getGrupoPorAnnoyCuatrimestreParaGenero);
 router.post('/crearOActualizarTipoGrupo', gruposController.crearOActualizarTipoGrupo);
 router.post('/crearOActualizarGrupo', gruposController.crearOActualizarGrupo);
 router.post('/crearOActualizarGrupoEstudiante', gruposController.crearOActualizarGrupoEstudiante);

@@ -16,6 +16,7 @@ function DashboardEstudiante() {
 
   useEffect(() => {
     const identificacion = sessionStorage.getItem("Identificacion");
+    localStorage.setItem("IdentificacionHoras",identificacion);
     if (!identificacion) {
       toast.error("Identificación no encontrada en el SessionStorage");
       return;
