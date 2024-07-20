@@ -494,6 +494,7 @@ function VistaHorasEstudiante() {
       <main>
         {/* */}
         <div className="horasi-botton">
+          <div className="button-action-horasi">
           {(selectedRole === "Académico"||selectedRole === "Administrativo") && (
             <button className="add-horasiRegresar" onClick={handleViewDetails}>
               <FaChevronLeft className="icon-horasiRegresar" /> Regresar
@@ -508,12 +509,15 @@ function VistaHorasEstudiante() {
 
           <div className="horasies-divider" />
           <h1 className="horasies-titulo"> Bitacora de horas </h1>
+          <div className="horasies-divider" />
           <button
               onClick={handleGenerarReporte}
-              className="finalizar-button-listest"
+             className="desRep-botton-horasi"
             >
               Reporte de horas
             </button>
+          </div>
+         
         </div>
 
         {/* */}
