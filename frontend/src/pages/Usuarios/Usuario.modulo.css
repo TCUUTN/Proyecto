@@ -44,6 +44,7 @@
   padding: 3px 15px ;
   gap: 20px;
   color: #002b69;
+  font-family: "Century Gothic", sans-serif;
 }
 /* agreagr usuario y la carga */
 .sidebar-user {
@@ -75,7 +76,7 @@
   border: none;
   background: none;
   cursor: pointer;
-
+  font-family: 'Playfair Display', serif;
 }
 
 .icon-add {
@@ -105,7 +106,7 @@
   margin-bottom: 10px;
   align-items: center;
   justify-content: center;
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   margin-left: 35%;
 }
 

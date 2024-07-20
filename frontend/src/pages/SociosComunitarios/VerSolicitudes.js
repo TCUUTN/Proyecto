@@ -11,6 +11,7 @@ function VerSolicitudes() {
   const [estudiantes, setEstudiantes] = useState([]);
   const [file, setFile] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
+  const [fileName, setFileName] = useState(""); // Estado para manejar el nombre del archivo
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
 
   useEffect(() => {
@@ -46,9 +47,9 @@ function VerSolicitudes() {
     setIsLoading(true); // Mostrar pantalla de carga
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
+    setFileName(selectedFile ? selectedFile.name : ""); // Guardar el nombre del archivo
     setIsLoading(false); // Ocultar pantalla de carga
     setIsFileSelected(!!selectedFile);
-    
   };
 
   const handleSubmit = async (event) => {
@@ -60,7 +61,7 @@ function VerSolicitudes() {
     const formData = new FormData();
     formData.append("Carta", file);
     formData.append("SolicitudId", solicitudId);
-    
+
     try {
       const response = await fetch("/socios/GuardaryEnviarCarta", {
         method: "POST",
@@ -91,11 +92,11 @@ function VerSolicitudes() {
       )}
       {/**/}
       <div className="solicitud-socio-seleccionado">
-      <h3 className="title-versolicart">
-        Socio Seleccionado: 
+        <h3 className="title-versolicart">
+          Socio Seleccionado:
         </h3>
         <h3 className="title-versolicart" id="NombreSocioSeleccionadoVer">
-        {socioNombre}
+          {socioNombre}
         </h3>
       </div>
       <div className="versolicart-divider" />
@@ -124,19 +125,21 @@ function VerSolicitudes() {
           <h2 className="subtitle-versolicart">Adjuntar Carta</h2>
           <form className="form-versolicart" onSubmit={handleSubmit}>
             <div className="SubirCartas-Soli">
-            <label className="solicar-upload-label">
-            <BsUpload className="icon-cartSolicitud"/> Subir carta
-            </label>
-            <input
-              className="fileinput-versolicart"
-              type="file"
-              onChange={handleFileChange}
-            />
+              <label htmlFor="fileinput" className="solicar-upload-label">
+                <BsUpload className="icon-cartSolicitud" /> Subir carta
+              </label>
+              <input
+                id="fileinput"
+                className="fileinput-versolicart"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <div className="filename-container-versoli">
+                {fileName && (
+                  <span className="file-name-versoli">{fileName}</span>
+                )}
+              </div>
             </div>
-         
-
-
-
             <div className="buttons-versolicart">
               <button
                 className="back-button-versolicart"
