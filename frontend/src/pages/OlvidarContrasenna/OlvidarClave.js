@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEmail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { RiMailSendLine } from "react-icons/ri";
 import { FaChevronLeft } from "react-icons/fa6";
 import "./Olvidar.modulo.css";
 
@@ -99,7 +100,7 @@ function OlvidarClave() {
             Regresar
           </button>
           <button type="submit" className="olvidar-button" disabled={loading}>
-            Enviar
+            Enviar <RiMailSendLine />
           </button>
           </div>
           

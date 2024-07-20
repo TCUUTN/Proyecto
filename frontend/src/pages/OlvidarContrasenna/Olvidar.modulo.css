@@ -96,7 +96,7 @@
   cursor: pointer;
   font-size: 16px;
   margin: 0 10px;
-  transition: 2.5s;
+  transition: 0.5s;
   color: white;
   width: 40%;
 
@@ -104,7 +104,7 @@
 
 .olvidar-button:hover{
   background-color: #ff4500;
-  transition: 2.5s;
+  transition: 0.5s;
 }
 
 .olvidar-button:disabled {
