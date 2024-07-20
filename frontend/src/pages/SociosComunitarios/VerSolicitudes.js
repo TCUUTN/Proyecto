@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa6";
 import { RiMailSendLine } from "react-icons/ri";
 import "./VerSolicitud.css";
+import { BsUpload } from "react-icons/bs";
 
 function VerSolicitudes() {
   const navigate = useNavigate();
@@ -122,11 +123,20 @@ function VerSolicitudes() {
         <div className="right-versolicart">
           <h2 className="subtitle-versolicart">Adjuntar Carta</h2>
           <form className="form-versolicart" onSubmit={handleSubmit}>
+            <div className="SubirCartas-Soli">
+            <label className="solicar-upload-label">
+            <BsUpload className="icon-cartSolicitud"/> Subir carta
+            </label>
             <input
               className="fileinput-versolicart"
               type="file"
               onChange={handleFileChange}
             />
+            </div>
+         
+
+
+
             <div className="buttons-versolicart">
               <button
                 className="back-button-versolicart"

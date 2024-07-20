@@ -10,6 +10,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: "Century Gothic", sans-serif;
 }
 /* Titulo */
 .title-versolicart {
@@ -18,6 +19,7 @@
   margin-bottom: 5px;
   font-size: 1.8rem;
   text-align: center;
+  font-family: 'Playfair Display', serif;
 }
 
 /* Linea debajo del titulo */
@@ -51,6 +53,35 @@
   font-size: 1.2rem;
   color: #012c6a;
   text-align: center;
+}
+/* Subir cartas */
+.SubirCartas-Soli{
+  display: flex !important;
+  justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+.icon-cartSolicitud{
+  margin-right: 10px;
+  font-size: 1.6rem;
+  color: #ff6600;
+}
+.fileinput-versolicart{
+  font-size: 20px;
+  text-align: center;
+  padding: 10px;
+  display: none;
+}
+.solicar-upload-label{
+  background-color: #002c69f5;
+  align-items: center;
+  cursor: pointer;
+  color: #f3f3f3;
+  display: flex;
+  padding: 10px 5px;
+  border-radius: 25px;
+  transition: 0.3s;
+  width: 25%;
 }
 
 /*Tabla*/
