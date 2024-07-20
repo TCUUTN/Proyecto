@@ -315,7 +315,7 @@ function DashboardAdministrativo() {
   return (
     <div className="dashAca-container">
       <ToastContainer position="bottom-right" />
-      <div className="content-container">
+      <div className="content-container-Admin">
         <div className="table-container-dashAdmin">
           <div className="chart-header">
             <h2 className="chart-container-title">
@@ -480,7 +480,7 @@ function DashboardAdministrativo() {
       </div>
 
       {Object.keys(generos).length > 0 && (
-        <div className="content-container">
+        <div className="content-container-Admin">
           <div className="table-container-dashAdmin" ref={chartRef}>
             <div className="chart-header">
               <h2 className="chart-container-title">

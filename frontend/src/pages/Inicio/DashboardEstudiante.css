@@ -1,12 +1,12 @@
 .dashEstudiante-title {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   text-align: center;
   font-size: 25px;
   margin-bottom: 10px;
 }
 .dashEstudiante-horas {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   text-align: center;
   font-size: 15px;
@@ -19,6 +19,8 @@
   align-items: center;
   gap: 5px;
   margin: 0% auto;
+  font-family: "Century Gothic", sans-serif;
+  padding-top: 15px;
 }
 
 .dashEstudiante-divider {
@@ -35,7 +37,7 @@
   width: 85%;
 }
 
-.dashboard-container {
+.dashboard-container-Est {
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

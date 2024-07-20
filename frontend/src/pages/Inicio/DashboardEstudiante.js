@@ -110,7 +110,7 @@ function DashboardEstudiante() {
   return (
     <div className="mainDash-container">
       {grupoData && (
-        <div className="dashboard-container">
+        <div className="dashboard-container-Est">
           <h3 className="dashEstudiante-title">
             Proyecto:{" "}
             {`${grupoData.CodigoMateria} - ${grupoData.Grupos_TipoGrupo.NombreProyecto}`}
@@ -131,7 +131,7 @@ function DashboardEstudiante() {
         </div>
       )}
 
-      <div className="dashboard-container">
+      <div className="dashboard-container-Est">
         <h3 className="dashEstudiante-title">Cantidad total de horas</h3>
         <div className="dashEstudiante-divider"></div>
         <ProgressBar
@@ -143,7 +143,7 @@ function DashboardEstudiante() {
       </div>
 
       <div className="progress-sections">
-        <div className="dashboard-container">
+        <div className="dashboard-container-Est">
           <h3 className="dashEstudiante-title">Total de horas de planificación</h3>
           <div className="dashEstudiante-divider"></div>
           <ProgressBar
@@ -162,7 +162,7 @@ function DashboardEstudiante() {
           )} horas completadas de ${Math.min(30, Math.max(10, horasPlanificacionTotal))} horas`}</p>
         </div>
 
-        <div className="dashboard-container">
+        <div className="dashboard-container-Est">
           <h3 className="dashEstudiante-title">Total de horas de ejecución</h3>
           <div className="dashEstudiante-divider"></div>
           <ProgressBar

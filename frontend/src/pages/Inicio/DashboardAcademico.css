@@ -1,12 +1,13 @@
-.dashAca-container {
+.dashAcad-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
     gap: 0px; /* Eliminar el espacio entre los contenedores hijos */
+    font-family: "Century Gothic", sans-serif;
 }
 
-.carousel-container-wrapper {
+.carousel-container-wrapper-Acade {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,7 +21,7 @@
     flex-grow: 1; /* Hacer que el contenedor ocupe todo el espacio vertical disponible */
 }
 
-.chart-slide-Aca {
+.chart-slide-Acade {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,14 +31,14 @@
     height: calc(90vh - 140px); /* Ajustar la altura del slide */
 }
 
-.chart-title-divider-container {
+.chart-title-divider-container-Acad {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-.chart-container-Aca {
+.chart-container-Acad {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,30 +47,33 @@
     flex-grow: 1; /* Hacer que el gráfico ocupe el espacio disponible */
 }
 
-.chart-container-Aca canvas {
+.chart-container-Acad canvas {
     max-width: 100%; /* Asegurar que el canvas se ajuste dentro del contenedor */
     max-height: 100%;
 }
 
 /* Estilo general */
-.chart-container-title {
-    font-family: "Brush-TipTerrence", cursive;
+.chart-container-title-Acad  {
+    font-family: 'Playfair Display', serif;
     color: #012c6a;
     font-size: 1.4rem; /* Tamaño de fuente base */
     text-align: center;
     max-width: 90%; /* Asegurar que el título no se desborde del contenedor */
     margin-top: 10px;
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    text-overflow: ellipsis; /* Agrega "..." al final del texto desbordante */
 }
 
-.dashAcademico-divider {
+.dashAcademico-divider-Acad  {
     width: 20%;
     height: 3px;
     background: #ff6600;
     margin: 0 auto 0 auto; /* Reducir el margen inferior */
 }
 
-.dashboard-container {
-    font-family: "Brush-TipTerrence", cursive;
+.dashboard-container-Acade {
+    font-family: 'Playfair Display', serif;
     color: #012c6a;
     font-size: 1.5rem;
     text-align: center;
@@ -87,19 +91,19 @@
 
 /* Media Queries para Responsividad */
 @media (max-width: 768px) {
-    .carousel-container-wrapper {
+    .carousel-container-wrapper-Acade {
         height: auto; /* Alto automático en responsividad */
     }
 
-    .chart-slide-Aca {
+    .chart-slide-Acade {
         height: 350px; /* Ajuste de la altura del slide para vistas pequeñas */
     }
 
-    .chart-container-Aca {
+    .chart-container-Acad {
         height: 50%; /* Reducir altura del gráfico para dar más espacio al título */
     }
 
-    .chart-container-title {
+    .chart-container-title-Acad  {
         font-size: 4vw; /* Ajustar tamaño de fuente basado en el ancho de la ventana */
     }
 
@@ -110,19 +114,19 @@
 }
 
 @media (max-width: 480px) {
-    .carousel-container-wrapper {
+    .carousel-container-wrapper-Acade {
         height: auto; /* Alto automático en responsividad */
     }
 
-    .chart-slide-Aca {
+    .chart-slide-Acade {
         height: 300px; /* Ajuste de la altura del slide para vistas más pequeñas */
     }
 
-    .chart-container-Aca {
+    .chart-container-Acad {
         height: 40%; /* Reducir más la altura del gráfico para dar más espacio al título */
     }
 
-    .chart-container-title {
+    .chart-container-title-Acad  {
         font-size: 5vw; /* Ajustar tamaño de fuente basado en el ancho de la ventana */
     }
 

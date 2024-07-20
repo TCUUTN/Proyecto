@@ -99,11 +99,11 @@ function DashboardAcademico() {
   };
 
   return (
-    <div className="dashAca-container">
+    <div className="dashAcad-container">
       <ToastContainer position="bottom-right" />
       {!fetchError ? (
         <>
-          <div className="carousel-container-wrapper">
+          <div className="carousel-container-wrapper-Acade">
             <Carousel
               key={carouselKey} // Use the key to force re-render
               ref={carouselRef}
@@ -113,14 +113,14 @@ function DashboardAcademico() {
               infiniteLoop
             >
               {chartData.map(({ grupo, data }, index) => (
-                <div key={index} className="chart-slide-Aca">
-                  <div className="chart-title-divider-container">
-                    <h2 className="chart-container-title">
+                <div key={index} className="chart-slide-Acade">
+                  <div className="chart-title-divider-container-Acad ">
+                    <h2 className="chart-container-title-Acad ">
                       {`${grupo.CodigoMateria} - ${grupo.Grupos_TipoGrupo.NombreProyecto} - Grupo# ${grupo.NumeroGrupo} - Cuatrimestre ${grupo.Cuatrimestre} - ${grupo.Anno}`}
                     </h2>
-                    <div className="dashAcademico-divider"></div>
+                    <div className="dashAcademico-divider-Acad "></div>
                   </div>
-                  <div className="chart-container-Aca">
+                  <div className="chart-container-Acad">
                     {data ? (
                       <Doughnut
                         data={data}
@@ -163,7 +163,7 @@ function DashboardAcademico() {
                         }}
                       />
                     ) : (
-                      <p className="dashboard-container">
+                      <p className="dashboard-container-Acade">
                         El grupo aún no posee estudiantes.
                       </p>
                     )}
@@ -174,7 +174,7 @@ function DashboardAcademico() {
           </div>
         </>
       ) : (
-        <p className="dashboard-container">
+        <p className="dashboard-container-Acade">
           El académico no posee grupos para ver.
         </p>
       )}

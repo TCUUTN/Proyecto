@@ -13,10 +13,11 @@
   padding: 10px;
   gap: 20px;
   overflow: hidden;
+  font-family: "Century Gothic", sans-serif;
 }
 
 /* Contenedor del gráfico y la tabla */
-.content-container {
+.content-container-Admin {
   display: flex;
   width: 100%;
   gap: 20px;
@@ -102,28 +103,10 @@
   transition: 0.5s;
 }
 
-/* Paginación */
-.pagination-mat {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  justify-content: center;
-  gap: 10px;
-}
 
-.pagination-mat button {
-  margin: 0;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.pagination-mat button.active {
-  background-color: #007bff;
-  color: white;
-}
 
 .chart-container-title {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   font-size: 1.4rem;
   margin-bottom: 10px;
@@ -131,7 +114,7 @@
 
 /* Responsividad */
 @media (max-width: 768px) {
-  .content-container {
+  .content-container-Admin {
     flex-direction: column;
   }
 
@@ -139,20 +122,7 @@
     max-width: 100%;
   }
 
-  .pagination-mat {
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 5px;
-  }
-
-  .pagination-mat button {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-
-  .pagination-mat span {
-    flex-shrink: 0;
-  }
+ 
 }
 
 /* Filtros */
@@ -277,7 +247,7 @@
     .filters-DashAdmin {
       flex-wrap: wrap;
       justify-content: center;
-      width: 90%;
+      width: 100%;
       padding: 10px;
     }
     .Reportes-DashAdmin {
@@ -416,7 +386,7 @@
   }
 
   .Reportes-container-title {
-    font-family: "Brush-TipTerrence", cursive;
+    font-family: 'Playfair Display', serif;
     color: #012c6a;
     font-size: 1.4rem;
     margin-bottom: 10px;
