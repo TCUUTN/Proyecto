@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaChevronLeft } from "react-icons/fa6";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { TiUserDelete, TiUserAdd } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { BsFillSendPlusFill } from "react-icons/bs";
@@ -134,7 +135,11 @@ function SolicitudCartas() {
 
   return (
     <div className="solici-container">
-      {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       <div className="solici-title">Creación de Solicitud</div>
       <div className="solici-divider" />
       <div className="solici-content">
@@ -194,7 +199,7 @@ function SolicitudCartas() {
             onClick={handleAddEstudiante}
             disabled={!selectedSocio || !selectedGrupo || !selectedEstudiante}
           >
-            <TiUserAdd /> Añadir Estudiantes
+            <TiUserAdd /> Añadir Estudiante
           </button>
         </div>
         <div className="solici-divider-vertical"></div>
@@ -217,12 +222,21 @@ function SolicitudCartas() {
                   <tr key={est.id}>
                     <td>{est.name}</td>
                     <td>
-                      <button
-                        className="icon-removeEst-button"
-                        onClick={() => handleRemoveEstudiante(est.id)}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={
+                          <Tooltip id="tooltip-edit">
+                            Eliminar Estudiante de la Solicitud
+                          </Tooltip>
+                        }
                       >
-                        <TiUserDelete />
-                      </button>
+                        <button
+                          className="icon-removeEst-button"
+                          onClick={() => handleRemoveEstudiante(est.id)}
+                        >
+                          <TiUserDelete />
+                        </button>
+                      </OverlayTrigger>
                     </td>
                   </tr>
                 ))}

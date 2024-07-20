@@ -233,7 +233,7 @@ function SocioComunitarios() {
         <div className="sociocomu-sidebar">
           <div className="action-sociocomu">
             <button className="add-sociocomu" onClick={handleAddUser}>
-              Agregar <IoMdAddCircle className="icon-socio" />
+              Agregar Socio<IoMdAddCircle className="icon-socio" />
             </button>
             <OverlayTrigger
               placement="top"

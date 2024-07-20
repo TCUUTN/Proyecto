@@ -4,6 +4,8 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { ToastContainer, toast } from "react-toastify";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./ListaSocios.css";
 
@@ -45,15 +47,16 @@ function SolicitudesCarta() {
         setSolicitudesPendientes(pendientes);
         setSolicitudesCompletadas(completadas);
         const banderaEnviado = sessionStorage.getItem("BanderaEnviado");
-        if (banderaEnviado==="true") {
-          toast.success("La carta se cargó al sistema y ha sido enviada con éxito");
+        if (banderaEnviado === "true") {
+          toast.success(
+            "La carta se cargó al sistema y ha sido enviada con éxito"
+          );
           sessionStorage.removeItem("BanderaEnviado");
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-
 
     fetchData();
   }, []);
@@ -178,9 +181,7 @@ function SolicitudesCarta() {
                 Agregar <IoMdAddCircle className="icon-socio" />
               </button>
             )}
-            {role === "Académico" && (
-              <div className="socio-divider" />
-            )}
+            {role === "Académico" && <div className="socio-divider" />}
             <h1 className="sociocomu-titulo">Solicitudes de Carta</h1>
           </div>
         </div>
@@ -242,16 +243,33 @@ function SolicitudesCarta() {
                         </td>
                         <td>
                           {role === "Académico" && (
-                            <button
-                              className="icon-btn--sociocomu"
-                              onClick={() =>
-                                handleEditSolicitud(solicitud.SolicitudId)
+                            <OverlayTrigger
+                              placement="top"
+                              overlay={
+                                <Tooltip id="tooltip-edit">
+                                  Editar Solicitud
+                                </Tooltip>
                               }
                             >
-                              <RiEdit2Fill />
-                            </button>
+                              <button
+                                className="icon-btn--sociocomu"
+                                onClick={() =>
+                                  handleEditSolicitud(solicitud.SolicitudId)
+                                }
+                              >
+                                <RiEdit2Fill />
+                              </button>
+                            </OverlayTrigger>
                           )}
                           {role === "Administrativo" && (
+                            <OverlayTrigger
+                            placement="top"
+                            overlay={
+                              <Tooltip id="tooltip-edit">
+                                Revisar Solicitud
+                              </Tooltip>
+                            }
+                          >
                             <button
                               className="icon-btn--sociocomu"
                               onClick={() =>
@@ -260,6 +278,7 @@ function SolicitudesCarta() {
                             >
                               <SlEnvolopeLetter />
                             </button>
+                            </OverlayTrigger>
                           )}
                         </td>
                       </tr>
@@ -271,23 +290,31 @@ function SolicitudesCarta() {
             <p className="no-results-sociocomu">No se encontraron resultados</p>
           )}
           <div className="pagination-sociocomu">
-            <button
-              className="pagination-button-sociocomu"
-              onClick={handlePreviousPagePending}
-              disabled={currentPagePending === 1}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
             >
-              Anterior
-            </button>
+              <button
+                onClick={handlePreviousPagePending}
+                disabled={currentPagePending === 1}
+              >
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
             <span className="pagination-info-sociocomu">
-              Página {currentPagePending} de {pendingPages}
+              {currentPagePending} de {pendingPages}
             </span>
-            <button
-              className="pagination-button-sociocomu"
-              onClick={handleNextPagePending}
-              disabled={currentPagePending === pendingPages}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
             >
-              Siguiente
-            </button>
+              <button
+                onClick={handleNextPagePending}
+                disabled={currentPagePending === pendingPages}
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
 
@@ -377,23 +404,34 @@ function SolicitudesCarta() {
             <p className="no-results-sociocomu">No se encontraron resultados</p>
           )}
           <div className="pagination-sociocomu">
-            <button
-              className="pagination-button-sociocomu"
-              onClick={handlePreviousPageCompleted}
-              disabled={currentPageCompleted === 1}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
             >
-              Anterior
-            </button>
+              <button
+                onClick={handlePreviousPageCompleted}
+                disabled={currentPageCompleted === 1}
+              >
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
             <span className="pagination-info-sociocomu">
-              Página {currentPageCompleted} de {completedPages}
+              {currentPageCompleted} de {completedPages}
             </span>
-            <button
-              className="pagination-button-sociocomu"
-              onClick={handleNextPageCompleted}
-              disabled={currentPageCompleted === completedPages}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
             >
-              Siguiente
-            </button>
+              <button
+                onClick={handleNextPageCompleted}
+                disabled={
+                  currentPageCompleted === completedPages ||
+                  completedPages === 0
+                }
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
         <ToastContainer position="bottom-right" />
