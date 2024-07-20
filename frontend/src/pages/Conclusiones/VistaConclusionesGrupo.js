@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./VistaConclusionesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -139,21 +141,23 @@ function VistaConclusionesGrupo() {
           </div>
         ) : (
           <>
-      {/* boton de regreso y titulo*/}
+            {/* boton de regreso y titulo*/}
 
             <div className="vistconclgrup-action">
               {/* Boton de regresar */}
               <div className="regred-vistconclgrup">
-                <button className="back-button-vistconclgrup" onClick={handlebackClick}>
+                <button
+                  className="back-button-vistconclgrup"
+                  onClick={handlebackClick}
+                >
                   <FaChevronLeft />
                   Regresar
                 </button>
-                 {/*linea*/}
-              <div className="vistconclgrup-divider" />
-              <h1 className="vistconclgrup-titulo"> Conclusión de Grupo</h1>
+                {/*linea*/}
+                <div className="vistconclgrup-divider" />
+                <h1 className="vistconclgrup-titulo"> Conclusión de Grupo</h1>
               </div>
             </div>
-
 
             <div className="vistconclgrup-filter">
               {/*Filtros*/}
@@ -173,7 +177,9 @@ function VistaConclusionesGrupo() {
                 />
               </div>
               <div className="vistconclgrup-filter-group">
-                <label className="filter-label-vistconclgrup">Nombre Completo</label>
+                <label className="filter-label-vistconclgrup">
+                  Nombre Completo
+                </label>
                 <input
                   type="text"
                   value={nombreFilter}
@@ -200,8 +206,8 @@ function VistaConclusionesGrupo() {
                 </div>
               )}
             </div>
-            
-     {/* Tabla */}
+
+            {/* Tabla */}
             <div className="table-container-mat">
               <table className="mat-table">
                 <thead className="mat-thead">
@@ -223,40 +229,58 @@ function VistaConclusionesGrupo() {
                         <td>{conclusion.EstadoBoleta}</td>
                       )}
                       <td>
-                        
-                        <button
-                          className="icon-btn-mat"
-                          onClick={() =>
-                            handleEditClick(conclusion.ConclusionId)
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={
+                            <Tooltip id="tooltip-edit">Ver Solicitud</Tooltip>
                           }
                         >
-                          <FaEdit />
-                        </button>
+                          <button
+                            className="icon-btn-mat"
+                            onClick={() =>
+                              handleEditClick(conclusion.ConclusionId)
+                            }
+                          >
+                            <FaEdit />
+                          </button>
+                        </OverlayTrigger>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               <div className="pagination-mat">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
                 >
-                  Anterior
-                </button>
+                  <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    <GrFormPreviousLink />
+                  </button>
+                </OverlayTrigger>
                 <span>
-                  Página {currentPage} de{" "}
+                  {currentPage} de{" "}
                   {Math.ceil(filteredConclusiones.length / conclusionesPerPage)}
                 </span>
-                <button
-                  onClick={handleNextPage}
-                  disabled={
-                    currentPage ===
-                    Math.ceil(filteredConclusiones.length / conclusionesPerPage)
-                  }
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
                 >
-                  Siguiente
-                </button>
+                  <button
+                    onClick={handleNextPage}
+                    disabled={
+                      currentPage ===
+                      Math.ceil(
+                        filteredConclusiones.length / conclusionesPerPage
+                      )
+                    }
+                  >
+                    <GrFormNextLink />
+                  </button>
+                </OverlayTrigger>
               </div>
             </div>
           </>
