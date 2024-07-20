@@ -1,20 +1,37 @@
-import React from "react";
-import "./Denegado.Css";
+import React, { useEffect } from "react";
+import "./Denegado.css";
+import { MdLogin } from "react-icons/md";
+import { BsRobot } from "react-icons/bs";
+import { TbLockAccessOff } from "react-icons/tb";
+
 
 function AccesoDenegado() {
+  useEffect(() => {
+    sessionStorage.clear();
+    localStorage.clear();
+  }, []);
+
   const redirigirAInicio = () => {
     window.location.href = "/";
   };
 
   return (
-    <div className="container">
-      {" "}
-      {/* Añade la clase 'container' aquí */}
-      <h1>Acceso Denegado</h1>
-      <p>No tienes acceso a este sitio hasta que ingreses tus credenciales.</p>
-      <button onClick={redirigirAInicio} className="login-button">
-        Ir a la página de inicio
-      </button>
+    <div className="container-denegado">
+      <div className="content-denegado">
+        <h1>Ooops!... Acceso Denegado</h1>
+        <div className="denegado-divider" />
+        <div className="flex-container">
+          <div className="text-container">
+            <p>No tienes acceso a este sitio hasta que ingreses tus credenciales</p>
+          </div>
+          <div className="robot-container">
+            <div className="robot-icon"><BsRobot /> <TbLockAccessOff /></div>
+          </div>
+        </div>
+        <button onClick={redirigirAInicio} className="denegado-button">
+          Iniciar Sesión <MdLogin />
+        </button>
+      </div>
     </div>
   );
 }

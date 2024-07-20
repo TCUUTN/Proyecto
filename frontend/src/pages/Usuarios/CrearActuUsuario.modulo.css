@@ -117,7 +117,7 @@
 
 .creaediUsu-btnGuardar,
 .creaediUsu-btnRegresar {
-  background-color: #002b69 !important; /* Color celeste */
+  background-color: #002b69; /* Color celeste */
   color: white;
   padding: 10px;
   border: none;
@@ -126,18 +126,19 @@
   font-size: 16px;
   margin: 0 10px;
   width: 40%;
-  transition: 0.2s;
+  transition: 0.5s;
 }
 
 .creaediUsu-btnGuardar:disabled {
-  background-color: #777777 !important;
+  background-color: #777777;
   cursor: not-allowed;
+  transition: 0.5s;
 }
 
 .creaediUsu-btnGuardar,
 .creaediUsu-btnRegresar:hover {
   background-color: #ff4500;
-  transition: 0.25s;
+  transition: 0.5s;
 }
 
 .creaediUsu-otros {
