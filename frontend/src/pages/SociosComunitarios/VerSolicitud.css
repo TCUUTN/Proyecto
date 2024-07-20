@@ -14,12 +14,12 @@
 }
 /* Titulo */
 .title-versolicart {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 5px;
   font-size: 1.8rem;
   text-align: center;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
 /* Linea debajo del titulo */
@@ -55,24 +55,22 @@
   text-align: center;
 }
 /* Subir cartas */
-.SubirCartas-Soli{
+.SubirCartas-Soli {
   display: flex !important;
-  justify-content: space-between;
-    gap: 10px;
-    align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
 }
-.icon-cartSolicitud{
+.icon-cartSolicitud {
   margin-right: 10px;
   font-size: 1.6rem;
   color: #ff6600;
 }
-.fileinput-versolicart{
-  font-size: 20px;
-  text-align: center;
-  padding: 10px;
+.fileinput-versolicart {
   display: none;
 }
-.solicar-upload-label{
+.solicar-upload-label {
   background-color: #002c69f5;
   align-items: center;
   cursor: pointer;
@@ -81,7 +79,28 @@
   padding: 10px 5px;
   border-radius: 25px;
   transition: 0.3s;
-  width: 25%;
+  min-width: 150px; /* Ajusta según sea necesario */
+  text-align: center;
+  justify-content: center;
+}
+.filename-container-versoli {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.file-name-versoli {
+  font-size: 0.9rem;
+  color: #002b69;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  align-items: center;
+  padding: 10px 5px;
+  cursor: pointer;
+  display: flex;
+  max-width: calc(100% - 160px);
 }
 
 /*Tabla*/
@@ -181,10 +200,118 @@
     width: 100%;
     margin: 10px 0;
   }
+
+  .SubirCartas-Soli {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .solicar-upload-label {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .filename-container-versoli {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .file-name-versoli {
+    max-width: 100%;
+  }
+}
+/* Media queries para orientación */
+@media (orientation: landscape) {
+  .content-versolicart {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .left-versolicart,
+  .right-versolicart {
+    width: 45%;
+  }
+
+  .buttons-versolicart {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .back-button-versolicart,
+  .submit-button-versolicart {
+    width: 45%;
+    margin: 0 10px;
+  }
+
+  .SubirCartas-Soli {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .solicar-upload-label {
+    min-width: 150px;
+    margin-right: 10px;
+  }
+
+  .filename-container-versoli {
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .file-name-versoli {
+    max-width: calc(100% - 160px);
+  }
+}
+
+@media (orientation: portrait) {
+  .content-versolicart {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-versolicart,
+  .right-versolicart {
+    width: 100%;
+  }
+
+  .buttons-versolicart {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .back-button-versolicart,
+  .submit-button-versolicart {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .SubirCartas-Soli {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .solicar-upload-label {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .filename-container-versoli {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .file-name-versoli {
+    max-width: 100%;
+  }
 }
 
 /*Pantalla de Carga*/
-
 .loading-screen {
   position: fixed;
   top: 0;
@@ -206,4 +333,3 @@
   height: 120px;
   animation: spin 2s linear infinite;
 }
-
