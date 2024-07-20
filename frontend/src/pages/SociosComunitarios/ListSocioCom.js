@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
+import { FaFileDownload } from "react-icons/fa";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { FaMapMarkedAlt, FaWaze, FaShareAlt } from "react-icons/fa";
 import { RiEdit2Fill } from "react-icons/ri";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./ListaSocios.css";
@@ -17,15 +19,15 @@ function SocioComunitarios() {
     institucion: "",
     contacto: "",
     tipoInstitucion: "",
-    estado: ""
+    estado: "",
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/socios/")
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setSocios(data);
         setFilteredSocios(data);
       });
@@ -52,7 +54,7 @@ function SocioComunitarios() {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -61,26 +63,32 @@ function SocioComunitarios() {
       let filtered = socios;
 
       if (filters.institucion) {
-        filtered = filtered.filter(socio =>
-          socio.NombreSocio.toLowerCase().includes(filters.institucion.toLowerCase())
+        filtered = filtered.filter((socio) =>
+          socio.NombreSocio.toLowerCase().includes(
+            filters.institucion.toLowerCase()
+          )
         );
       }
 
       if (filters.contacto) {
-        filtered = filtered.filter(socio =>
-          socio.NombreCompletoContacto.toLowerCase().includes(filters.contacto.toLowerCase())
+        filtered = filtered.filter((socio) =>
+          socio.NombreCompletoContacto.toLowerCase().includes(
+            filters.contacto.toLowerCase()
+          )
         );
       }
 
       if (filters.tipoInstitucion) {
-        filtered = filtered.filter(socio =>
-          socio.TipoInstitucion.toLowerCase().includes(filters.tipoInstitucion.toLowerCase())
+        filtered = filtered.filter((socio) =>
+          socio.TipoInstitucion.toLowerCase().includes(
+            filters.tipoInstitucion.toLowerCase()
+          )
         );
       }
 
       if (filters.estado !== "") {
-        filtered = filtered.filter(socio =>
-          String(socio.Estado) === filters.estado
+        filtered = filtered.filter(
+          (socio) => String(socio.Estado) === filters.estado
         );
       }
 
@@ -102,17 +110,17 @@ function SocioComunitarios() {
 
   const handleGenerarReporte = () => {
     const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
-      format: 'letter' // Tamaño carta
+      orientation: "portrait",
+      unit: "px", // Usar píxeles como unidad para conservar los tamaños originales
+      format: "letter", // Tamaño carta
     });
-  
+
     // Guardar título en variable
     const titulo = `Lista de Socios Comunitarios`;
-  
+
     // Añadir imagen como encabezado (ajusta la fuente de la imagen según tu necesidad)
     const imgData = banderaCombinada;
-  
+
     // Crear un objeto de imagen para obtener las dimensiones originales
     const img = new Image();
     img.src = imgData;
@@ -123,19 +131,19 @@ function SocioComunitarios() {
       const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
       const imgX = (pageWidth - imgWidth) / 2; // Centrar imagen
       const imgY = 0; // Ajustar la coordenada Y para que no esté en el borde superior
-  
+
       // Dibujar fondo del encabezado
       doc.setFillColor("#002b69");
-      doc.rect(0, 0, pageWidth, imgHeight, 'F'); // Ajustar la altura del fondo
-  
-      doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+      doc.rect(0, 0, pageWidth, imgHeight, "F"); // Ajustar la altura del fondo
+
+      doc.addImage(imgData, "PNG", imgX, imgY, imgWidth, imgHeight);
       const titleY = imgY + imgHeight + 15; // Ajustar el espacio entre la imagen y el título
-  
+
       // Añadir título al cuerpo
       doc.setFontSize(14);
       doc.setTextColor("#002b69"); // Color azul para el texto
-      doc.text(titulo, pageWidth / 2, titleY, { align: 'center' });
-  
+      doc.text(titulo, pageWidth / 2, titleY, { align: "center" });
+
       // Datos de los socios
       const sociosData = filteredSocios.map((socio) => [
         socio.NombreSocio,
@@ -145,18 +153,18 @@ function SocioComunitarios() {
         `${socio.CorreoElectronicoContacto}\n${socio.TelefonoContacto}`,
         socio.DireccionSocio,
       ]);
-  
+
       const tableColumnSocios = [
-        'Nombre', 
-        'Contacto', 
-        'Tipo de Institución', 
-        'Nombre del Encargado', 
-        'Contacto del Encargado', 
-        'Dirección'
+        "Nombre",
+        "Contacto",
+        "Tipo de Institución",
+        "Nombre del Encargado",
+        "Contacto del Encargado",
+        "Dirección",
       ];
-  
+
       let startY = titleY + 10;
-  
+
       // Añadir tabla de socios
       if (sociosData.length > 0) {
         doc.autoTable({
@@ -166,12 +174,12 @@ function SocioComunitarios() {
           styles: {
             fontSize: 10,
             cellPadding: 3,
-            halign: 'center' // Centrar datos de la tabla
+            halign: "center", // Centrar datos de la tabla
           },
           headStyles: {
             fillColor: [0, 43, 105],
             textColor: [255, 255, 255],
-            halign: 'center' // Centrar encabezados de la tabla
+            halign: "center", // Centrar encabezados de la tabla
           },
           alternateRowStyles: {
             fillColor: [240, 240, 240],
@@ -179,11 +187,17 @@ function SocioComunitarios() {
           margin: { bottom: 40 }, // Margen inferior para el pie de página
           didDrawPage: (data) => {
             const footerHeight = 35; // Incrementar la altura del pie de página
-  
+
             // Dibujar fondo del pie de página
             doc.setFillColor("#002b69");
-            doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
-  
+            doc.rect(
+              0,
+              pageHeight - footerHeight,
+              pageWidth,
+              footerHeight,
+              "F"
+            );
+
             // Añadir paginación y texto del pie de página
             doc.setFontSize(10);
             doc.setTextColor(255, 255, 255); // Letra blanca
@@ -191,29 +205,27 @@ function SocioComunitarios() {
               `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
               pageWidth / 2,
               pageHeight - 25, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
               pageWidth / 2,
               pageHeight - 15, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               "Todos los derechos reservados.",
               pageWidth / 2,
               pageHeight - 5, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
-          }
+          },
         });
       }
-  
-      doc.save('Lista de Socios Comunitarios.pdf');
+
+      doc.save("Lista de Socios Comunitarios.pdf");
     };
   };
-  
-  
 
   return (
     <div className="sociocomunitario-container">
@@ -223,12 +235,22 @@ function SocioComunitarios() {
             <button className="add-sociocomu" onClick={handleAddUser}>
               Agregar <IoMdAddCircle className="icon-socio" />
             </button>
-            <button
-              onClick={handleGenerarReporte}
-              className="finalizar-button-listest"
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id="tooltip-edit">
+                  {" "}
+                  Lista de Socios Comunitarios
+                </Tooltip>
+              }
             >
-              Reporte de Socios Comunitarios
-            </button>
+              <button
+                onClick={handleGenerarReporte}
+                className="finalizar-button-listest"
+              >
+                <FaFileDownload /> Descargar Reporte
+              </button>
+            </OverlayTrigger>
             <div className="socio-divider" />
             <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
           </div>
@@ -237,7 +259,9 @@ function SocioComunitarios() {
         <div className="solicitud-section">
           <div className="filters-sociocomu">
             <div className="filter-group-sociocomu">
-              <label className="filter-label-sociocomu">Buscar Nombre Institución</label>
+              <label className="filter-label-sociocomu">
+                Buscar Nombre Institución
+              </label>
               <input
                 type="text"
                 name="institucion"
@@ -259,7 +283,9 @@ function SocioComunitarios() {
               />
             </div>
             <div className="filter-group-sociocomu">
-              <label className="filter-label-sociocomu">Tipo de Institución</label>
+              <label className="filter-label-sociocomu">
+                Tipo de Institución
+              </label>
               <input
                 type="text"
                 name="tipoInstitucion"
@@ -299,62 +325,124 @@ function SocioComunitarios() {
               </thead>
 
               <tbody className="tbody-socioc">
-                {filteredSocios.slice((currentPage - 1) * 10, currentPage * 10).map((socio) => (
-                  <tr key={socio.SocioId}>
-                    <td>{socio.NombreSocio}</td>
-                    <td>
-                      <a href={`mailto:${socio.CorreoElectronicoSocio}`}>{socio.CorreoElectronicoSocio}</a>
-                      <br />
-                      {socio.TelefonoSocio}
-                    </td>
-                    
-                    <td>{socio.TipoInstitucion}</td>
-                    <td>{socio.NombreCompletoContacto}</td>
-                    <td>
-                      <a href={`mailto:${socio.CorreoElectronicoContacto}`}>{socio.CorreoElectronicoContacto}</a>
-                      <br />
-                      {socio.TelefonoContacto}
-                    </td>
-                    <td>{socio.DireccionSocio}</td>
-                    <td>
-                      <button className="icon-btn--sociocomu" onClick={() => handleEditUser(socio.SocioId)}>
-                        <RiEdit2Fill />
-                      </button>
-                      <Dropdown>
-                        <Dropdown.Toggle variant="link" id="dropdown-basic" className="icon-btn--sociocomu">
-                          <FaShareAlt />
-                        </Dropdown.Toggle>
+                {filteredSocios
+                  .slice((currentPage - 1) * 10, currentPage * 10)
+                  .map((socio) => (
+                    <tr key={socio.SocioId}>
+                      <td>{socio.NombreSocio}</td>
+                      <td>
+                        <a href={`mailto:${socio.CorreoElectronicoSocio}`}>
+                          {socio.CorreoElectronicoSocio}
+                        </a>
+                        <br />
+                        {socio.TelefonoSocio}
+                      </td>
 
-                        <Dropdown.Menu className="dropdown-menu-custom">
-                          <Dropdown.Item
-                            href={generateMapsLink(socio.UbicacionGPS)}
-                            target="_blank"
-                            className="dropdown-item-custom"
+                      <td>{socio.TipoInstitucion}</td>
+                      <td>{socio.NombreCompletoContacto}</td>
+                      <td>
+                        <a href={`mailto:${socio.CorreoElectronicoContacto}`}>
+                          {socio.CorreoElectronicoContacto}
+                        </a>
+                        <br />
+                        {socio.TelefonoContacto}
+                      </td>
+                      <td>{socio.DireccionSocio}</td>
+                      <td>
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={
+                            <Tooltip id="tooltip-edit">
+                              Ver y Editar Socio
+                            </Tooltip>
+                          }
+                        >
+                          <button
+                            className="icon-btn--sociocomu"
+                            onClick={() => handleEditUser(socio.SocioId)}
                           >
-                            <FaMapMarkedAlt /> Google Maps
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            href={generateWazeLink(socio.UbicacionGPS)}
-                            target="_blank"
-                            className="dropdown-item-custom"
+                            <RiEdit2Fill />
+                          </button>
+                        </OverlayTrigger>
+                        <Dropdown>
+                          <OverlayTrigger
+                            placement="top"
+                            overlay={
+                              <Tooltip id="tooltip-share">Compartir</Tooltip>
+                            }
                           >
-                            <FaWaze /> Waze
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </td>
-                  </tr>
-                ))}
+                            <Dropdown.Toggle
+                              variant="link"
+                              id="dropdown-basic"
+                              className="icon-btn--sociocomu"
+                            >
+                              <FaShareAlt />
+                            </Dropdown.Toggle>
+                          </OverlayTrigger>
+
+                          <Dropdown.Menu className="dropdown-menu-custom">
+                            <OverlayTrigger
+                              placement="top"
+                              overlay={
+                                <Tooltip id="tooltip-maps">Google Maps</Tooltip>
+                              }
+                            >
+                              <Dropdown.Item
+                                href={generateMapsLink(socio.UbicacionGPS)}
+                                target="_blank"
+                                className="dropdown-item-custom"
+                              >
+                                <FaMapMarkedAlt />
+                              </Dropdown.Item>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                              placement="top"
+                              overlay={
+                                <Tooltip id="tooltip-waze">Waze</Tooltip>
+                              }
+                            >
+                              <Dropdown.Item
+                                href={generateWazeLink(socio.UbicacionGPS)}
+                                target="_blank"
+                                className="dropdown-item-custom"
+                              >
+                                <FaWaze />
+                              </Dropdown.Item>
+                            </OverlayTrigger>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
             <div className="pagination-sociocomu">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Anterior
-              </button>
-              <span>Página {currentPage} de {Math.ceil(filteredSocios.length / 10)}</span>
-              <button onClick={handleNextPage} disabled={filteredSocios.length <= currentPage * 10}>
-                Siguiente
-              </button>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+              >
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  
+                >
+                  <GrFormPreviousLink />
+                </button>
+              </OverlayTrigger>
+              <span>
+                {currentPage} de {Math.ceil(filteredSocios.length / 10)}
+              </span>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
+              >
+                <button
+                  onClick={handleNextPage}
+                  disabled={filteredSocios.length <= currentPage * 10}
+                >
+                  <GrFormNextLink />
+                </button>
+              </OverlayTrigger>
             </div>
           </div>
         </div>

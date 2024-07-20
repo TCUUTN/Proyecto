@@ -4,6 +4,8 @@ import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TbUserEdit } from "react-icons/tb";
@@ -147,21 +149,21 @@ function MantenimientoUs() {
     Estudiante: {
       "Código de Proyecto": "CodigoMateria",
       "Grupo#": "Grupo",
-      "Cuatrimestre": "Cuatrimestre",
-      "Año": "Anno",
-      "Sede": "Sede",
-      "Identificación": "Identificacion",
+      Cuatrimestre: "Cuatrimestre",
+      Año: "Anno",
+      Sede: "Sede",
+      Identificación: "Identificacion",
       "Nombre Completo": "NombreCompleto",
       "Correo Electrónico": "CorreoElectronico",
     },
     Académico: {
-      "Identificación": "Identificacion",
+      Identificación: "Identificacion",
       "Nombre Completo": "NombreCompleto",
       "Correo Electrónico": "CorreoElectronico",
-      "Sede": "Sede",
+      Sede: "Sede",
     },
   };
-  
+
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (
@@ -179,7 +181,7 @@ function MantenimientoUs() {
           workbook.Sheets[firstSheetName],
           { header: 1 }
         );
-  
+
         const mapHeaders = (row, mappings, headerRow) => {
           return row.reduce((acc, value, index) => {
             const header = headerRow[index]; // Usar la fila de encabezados correcta
@@ -190,17 +192,21 @@ function MantenimientoUs() {
             return acc;
           }, {});
         };
-  
+
         if (role === "Académico") {
           const headerRow = worksheet[0];
           const dataRows = worksheet.slice(1);
           const jsonData = dataRows.map((row) => {
-            const mappedRow = mapHeaders(row, headerMappings.Académico, headerRow);
+            const mappedRow = mapHeaders(
+              row,
+              headerMappings.Académico,
+              headerRow
+            );
             const nombres = mappedRow.NombreCompleto?.split(" ") || [];
             const Apellido1 = nombres[0] || "";
             const Apellido2 = nombres[1] || "";
             const Nombre = nombres.slice(2).join(" ") || "";
-  
+
             return {
               Identificacion: mappedRow.Identificacion,
               Nombre,
@@ -214,7 +220,7 @@ function MantenimientoUs() {
               Sede: mappedRow.Sede,
             };
           });
-  
+
           uploadJsonData(jsonData, role);
         } else if (role === "Estudiante") {
           if (worksheet.length > 2) {
@@ -228,16 +234,20 @@ function MantenimientoUs() {
               }
               return acc;
             }, {});
-  
+
             const headerRow = worksheet[1];
             const dataRows = worksheet.slice(2);
             const jsonData = dataRows.map((row) => {
-              const mappedRow = mapHeaders(row, headerMappings.Estudiante, headerRow);
+              const mappedRow = mapHeaders(
+                row,
+                headerMappings.Estudiante,
+                headerRow
+              );
               const nombres = mappedRow.NombreCompleto?.split(" ") || [];
               const Apellido1 = nombres[0] || "";
               const Apellido2 = nombres[1] || "";
               const Nombre = nombres.slice(2).join(" ") || "";
-  
+
               const user = {
                 Identificacion: mappedRow.Identificacion,
                 Nombre,
@@ -250,7 +260,7 @@ function MantenimientoUs() {
                 Estado: true,
                 ...generalData,
               };
-  
+
               return user;
             });
             uploadJsonData(jsonData, role);
@@ -266,9 +276,6 @@ function MantenimientoUs() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
-  
-  
-  
 
   const handleCarrerasUplaod = (e) => {
     const file = e.target.files[0];
@@ -287,16 +294,16 @@ function MantenimientoUs() {
           workbook.Sheets[firstSheetName],
           { header: 1 }
         );
-  
+
         // eslint-disable-next-line no-unused-vars
         const dataRows = worksheet.slice(1); // Omitir la primera fila (encabezados)
-  
+
         const jsonData = dataRows.map((row) => {
           const [Identificación, Carrera] = row;
-  
+
           return {
             Identificacion: Identificación,
-            CarreraEstudiante: Carrera
+            CarreraEstudiante: Carrera,
           };
         });
         uploadJsonDataSinRol(jsonData);
@@ -532,12 +539,21 @@ function MantenimientoUs() {
                     )}
                   </td>
                   <td>
-                    <button
-                      className="icon-btn-user"
-                      onClick={() => handleEditUser(usuario.Identificacion)}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id="tooltip-edit">
+                          Ver o Editar Usuario
+                        </Tooltip>
+                      }
                     >
-                      <TbUserEdit />
-                    </button>
+                      <button
+                        className="icon-btn-user"
+                        onClick={() => handleEditUser(usuario.Identificacion)}
+                      >
+                        <TbUserEdit />
+                      </button>
+                    </OverlayTrigger>
                   </td>
                 </tr>
               ))}
@@ -545,22 +561,32 @@ function MantenimientoUs() {
           </table>
           {/* La paginacion */}
           <div className="pagination-user">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Anterior
-            </button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+            >
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
             <span>
-              Página {currentPage} de{" "}
+              {currentPage} de{" "}
               {Math.ceil(filteredUsuarios.length / usuariosPerPage)}
             </span>
-            <button
-              onClick={handleNextPage}
-              disabled={
-                currentPage ===
-                Math.ceil(filteredUsuarios.length / usuariosPerPage)
-              }
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
             >
-              Siguiente
-            </button>
+              <button
+                onClick={handleNextPage}
+                disabled={
+                  currentPage ===
+                  Math.ceil(filteredUsuarios.length / usuariosPerPage)
+                }
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
 
