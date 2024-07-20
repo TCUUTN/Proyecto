@@ -48,7 +48,7 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 padding: 20px;
-width: 80%;
+width: 95%;
 margin: 5px auto;
 background-color: #fff;
 border: 2px solid rgba(0, 44, 105, 0.212);
@@ -106,13 +106,26 @@ width: 100%;
   flex-grow: 1;
 }
 
+.box-pagination-ListEst {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  width: 95%;
+  margin: 10px auto;
+  border: 2px solid rgba(0, 44, 105, 0.212); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: nowrap;
+  background-color: #fff;
+}
+
 /* Filtros */
 .filters-est {
 display: flex;
 align-items: center;
 justify-content: space-between;
 padding: 20px; /* Ajusta el padding según sea necesario */
-width: 80%; /* Ajusta el ancho según sea necesario */
+width: 95%; /* Ajusta el ancho según sea necesario */
 margin: 20px auto;
 flex-wrap: wrap; /* Añadir esta línea */
 background-color: #fff;
@@ -159,14 +172,21 @@ box-sizing: border-box;
 /* Tablets */
 @media  (max-width: 1024px){
 .sliderlis-est,
+.box-pagination-ListEst,
 .filters-est {
     width: 100%;
 }
 }
 @media (max-width: 768px) {
 .sliderlis-est,
+
 .filters-est {
   flex-direction: column;
+  align-items: center;
+}
+
+.box-pagination-ListEst{
+  
   align-items: center;
 }
 
@@ -204,6 +224,12 @@ box-sizing: border-box;
     width: 100%; /* Ajusta el ancho según sea necesario */
     padding: 10px; /* Ajusta el padding según sea necesario */
 }
+.box-pagination-ListEst {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+    flex-direction: column;
+}
+
 
 .back-button-listest,
 .finalizar-button-listest {
@@ -238,6 +264,7 @@ box-sizing: border-box;
 /* Orientación vertical */
 @media (max-width: 480px) and (orientation: portrait) {
 .sliderlis-est,
+.box-pagination-ListEst,
 .filters-est {
     padding: 10px;
 }
@@ -268,6 +295,7 @@ box-sizing: border-box;
 /* Orientación horizontal */
 @media (max-width: 480px) and (orientation: landscape) {
 .sliderlis-est,
+.box-pagination-ListEst,
 .filters-est {
     padding: 10px;
 }

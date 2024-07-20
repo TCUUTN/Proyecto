@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./GruposAcademico.css";
 
@@ -255,13 +256,33 @@ function GruposAcademico() {
             </div>
           ))}
         </div>
-        <div className="pagination-acad">
-            <button onClick={handlePreviousPage}>Anterior</button>
+        <div className="box-pagination-grupEst">
+          <div className="pagination-mat">
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+            >
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
+
             <span>
-              Página {currentPage} de {totalPages}
+              {currentPage} de {totalPages}
             </span>
-            <button onClick={handleNextPage}>Siguiente</button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
+            >
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
+        </div>
       </main>
     </div>
   );

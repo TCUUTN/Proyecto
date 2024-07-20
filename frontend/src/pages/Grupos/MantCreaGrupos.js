@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaFileDownload,
-  FaFileUpload,
-} from "react-icons/fa";
+import { FaFileDownload, FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./Materias.modulo.css";
 import { GrEdit } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
@@ -288,7 +287,6 @@ function MantGrupos() {
   };
 
   return (
-    
     <div className="materia-container">
       {/*Para la carga */}
       {loading && (
@@ -434,13 +432,19 @@ function MantGrupos() {
                   <td>{grupo.Aula}</td>
                   <td>{`${grupo.Usuario.Nombre} ${grupo.Usuario.Apellido1} ${grupo.Usuario.Apellido2}`}</td>
                   <td>
-                    <button
-                      className="icon-btn-mat"
-                      onClick={() => handleClick(grupo.GrupoId)}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id="tooltip-edit">Ver o Editar Grupo</Tooltip>
+                      }
                     >
-                          <GrEdit />
-                    </button>
-                   
+                      <button
+                        className="icon-btn-mat"
+                        onClick={() => handleClick(grupo.GrupoId)}
+                      >
+                        <GrEdit />
+                      </button>
+                    </OverlayTrigger>
                   </td>
                 </tr>
               ))}
@@ -448,11 +452,28 @@ function MantGrupos() {
           </table>
           {/* La paginacion */}
           <div className="pagination-mat">
-            <button onClick={handlePreviousPage}>Anterior</button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+            >
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
             <span>
-              Página {currentPage} de {totalPages}
+              {currentPage} de {totalPages}
             </span>
-            <button onClick={handleNextPage}>Siguiente</button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
+            >
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
         {/**/}

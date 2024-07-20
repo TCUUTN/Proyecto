@@ -55,7 +55,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 80%;
+  width: 95%!important;
   margin: 20px auto;
 
 }
@@ -427,7 +427,7 @@ main {
   .sidebar-user,
   .filters-user,
   .table-container {
-    width: 100%;
+    width: 95%;
   }
 
   .filters-user {
@@ -454,7 +454,7 @@ main {
   .sidebar-user,
   .filters-user,
   .table-container {
-    width: 100%;
+    width: 95%;
   }
 
   .filters-user {

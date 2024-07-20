@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { FaSave } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import "./CrearActualizar.css";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -392,7 +393,7 @@ function CrearActuCreacionGrupos() {
             className="creagrup-button"
             disabled={!isFormValid}
           >
-            {GrupoId ? "Actualizar" : "Guardar"}
+            {GrupoId ? "Actualizar" : "Guardar"} <FaSave />
           </button>
         </div>
       </form>
