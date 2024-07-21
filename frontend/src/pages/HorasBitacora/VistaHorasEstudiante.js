@@ -348,7 +348,7 @@ function VistaHorasEstudiante() {
       // Función para convertir horas a formato de 12 horas
       const formatTime = (time) => {
         let [hours, minutes] = time.split(":").map(Number);
-        const ampm = hours >= 12 ? "PM" : "AM";
+        const ampm = hours >= 12 ? "pm" : "am";
         hours = hours % 12 || 12; // Convertir 0 a 12
         return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
       };
@@ -520,6 +520,19 @@ function VistaHorasEstudiante() {
     };
   };
 
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'pm' : 'am';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    return `${formattedHours}:${formattedMinutes} ${period}`;
+  };
+
+  const formatDate = (date) => {
+    const [yyyy, mm, dd] = date.split("-");
+    return `${dd}/${mm}/${yyyy}`;
+  };
+
   return (
     <div className="horasi-container">
       {/* */}
@@ -645,11 +658,11 @@ function VistaHorasEstudiante() {
                     <tbody className="apro-tbody">
                       {currentApprovedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
-                          <td>{materia.Fecha}</td>
+                          <td>{formatDate(materia.Fecha)}</td>
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
-                          <td>{materia.HoraInicio}</td>
-                          <td>{materia.HoraFinal}</td>
+                          <td>{formatTime(materia.HoraInicio)}</td>
+<td>{formatTime(materia.HoraFinal)}</td>
                           <td>
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
@@ -806,7 +819,7 @@ function VistaHorasEstudiante() {
                     <tbody className="apro-tbody">
                       {currentRejectedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
-                          <td>{materia.Fecha}</td>
+                          <td>{formatDate(materia.Fecha)}</td>
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
                           <td>{materia.ComentariosRechazo}</td>
