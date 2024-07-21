@@ -118,6 +118,7 @@ function Navbar() {
 
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.clear();
     setIsAuthenticated(false);
     window.location.href = "/"; // Redirige a la página de inicio de sesión
   };

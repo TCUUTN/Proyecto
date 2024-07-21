@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
+import { FaListCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { FaChevronLeft } from "react-icons/fa6";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaFileDownload } from "react-icons/fa";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
@@ -311,6 +313,7 @@ function ListaEstudiantes() {
           {/* Botón de regresar */}
           <div className="regred-action-listest">
             <button onClick={handleBack} className="back-button-listest">
+            <FaChevronLeft />
               Regresar
             </button>
             <div className="estt-divider" />
@@ -323,7 +326,7 @@ function ListaEstudiantes() {
                   className="finalizar-button-listest"
                   disabled
                 >
-                  Finalizar Cuatrimestre
+                  Finalizar Cuatrimestre <FaListCheck />
                 </button>
               )}
             </div>
@@ -408,8 +411,8 @@ function ListaEstudiantes() {
                 <th>Identificación</th>
                 <th>Cantidad de Horas Aprobadas</th>
                 <th>Progreso del Estudiante</th>
-                <th>Acciones</th>
                 <th>Estado del Estudiante</th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
@@ -418,11 +421,15 @@ function ListaEstudiantes() {
                   <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
                   <td>{estudiante.Usuario.CorreoElectronico}</td>
                   <td>{estudiante.Usuario.Identificacion}</td>
-                  <td>{estudiante.HorasAprobadas}</td>
+                  <td>{`${Math.floor(estudiante.HorasAprobadas)} Hrs, ${Math.round((estudiante.HorasAprobadas - Math.floor(estudiante.HorasAprobadas)) * 60)} min`}</td>
                   <td>{estudiante.Progreso}</td>
                   <td>{estudiante.Estado}</td>
                   <td>
                     {estudiante.Estado !== "Reprobado" ? (
+                      <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-edit">Ver Bitacora del Estudiante</Tooltip>}
+                    >
                       <button
                         className="icon-btn-mat"
                         onClick={() =>
@@ -434,6 +441,7 @@ function ListaEstudiantes() {
                       >
                         <FaInfoCircle />
                       </button>
+                      </OverlayTrigger>
                     ) : null}
                   </td>
                 </tr>

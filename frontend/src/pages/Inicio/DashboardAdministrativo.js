@@ -2,9 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Pie } from "react-chartjs-2";
+import { FaFileDownload } from "react-icons/fa";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { LuDoorOpen } from "react-icons/lu";
+import { IoMdSearch } from "react-icons/io";
+import { OverlayTrigger, Tooltip as BootstrapTooltip } from "react-bootstrap";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "./DashboardAdministrativo.css";
@@ -108,7 +113,7 @@ function DashboardAdministrativo() {
         Cuatrimestre: cuatrimestreFilter,
         Sede: sedeFilter,
       });
-  
+
       const response = await fetch("/grupos/ReporteGeneroPorBusqueda", {
         method: "POST",
         headers: {
@@ -116,14 +121,14 @@ function DashboardAdministrativo() {
         },
         body: requestBody,
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         setGeneros(data);
-  
+
         const labels = Object.keys(data);
         const values = Object.values(data);
-  
+
         setGenderChartData({
           labels: labels,
           datasets: [
@@ -134,21 +139,24 @@ function DashboardAdministrativo() {
           ],
         });
       } else {
-        setGeneros([]);  // Limpia los datos en caso de error
-        toast.error("No se poseen estudiantes matriculados para el periodo de tiempo consultado");
+        setGeneros([]); // Limpia los datos en caso de error
+        toast.error(
+          "No se poseen estudiantes matriculados para el periodo de tiempo consultado"
+        );
       }
     } catch (error) {
-      setGeneros([]);  // Limpia los datos en caso de error
-      toast.error("No se poseen estudiantes matriculados para el periodo de tiempo consultado");
+      setGeneros([]); // Limpia los datos en caso de error
+      toast.error(
+        "No se poseen estudiantes matriculados para el periodo de tiempo consultado"
+      );
     }
   };
-  
 
   const handleGenerarClick = async () => {
     const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
-      format: 'letter' // Tamaño carta
+      orientation: "portrait",
+      unit: "px", // Usar píxeles como unidad para conservar los tamaños originales
+      format: "letter", // Tamaño carta
     });
 
     const chartElement = chartRef.current;
@@ -161,7 +169,8 @@ function DashboardAdministrativo() {
         const chartDataUrl = chartCanvas.toDataURL("image/png");
         const chartImgProps = pdf.getImageProperties(chartDataUrl);
         const chartPdfWidth = pdf.internal.pageSize.getWidth() - 40; // Ancho con margen
-        const chartPdfHeight = (chartImgProps.height * chartPdfWidth) / chartImgProps.width;
+        const chartPdfHeight =
+          (chartImgProps.height * chartPdfWidth) / chartImgProps.width;
 
         // Añadir encabezado
         const imgData = banderaCombinada;
@@ -178,36 +187,58 @@ function DashboardAdministrativo() {
 
           // Dibujar fondo del encabezado
           pdf.setFillColor("#002b69");
-          pdf.rect(0, 0, pageWidth, imgHeight, 'F');
+          pdf.rect(0, 0, pageWidth, imgHeight, "F");
 
-          pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+          pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth, imgHeight);
 
           // Añadir títulos al cuerpo con espacios entre ellos
           const titleY = imgY + imgHeight;
           pdf.setFontSize(14);
           pdf.setTextColor("#002b69"); // Color azul para el texto
-        
 
           // Agrega el gráfico al PDF
           const chartY = titleY + 25;
-          pdf.addImage(chartDataUrl, "PNG", 20, chartY, chartPdfWidth, chartPdfHeight);
+          pdf.addImage(
+            chartDataUrl,
+            "PNG",
+            20,
+            chartY,
+            chartPdfWidth,
+            chartPdfHeight
+          );
 
           // Captura la tabla
           const tableCanvas = await html2canvas(tableElement, { scale: 2 });
           const tableDataUrl = tableCanvas.toDataURL("image/png");
           const tableImgProps = pdf.getImageProperties(tableDataUrl);
           const tablePdfWidth = pdf.internal.pageSize.getWidth() - 40; // Ancho con margen
-          const tablePdfHeight = (tableImgProps.height * tablePdfWidth) / tableImgProps.width;
+          const tablePdfHeight =
+            (tableImgProps.height * tablePdfWidth) / tableImgProps.width;
 
           // Comprueba si la tabla cabe en la página actual, si no, agrega una nueva página
           const currentYPosition = chartY + chartPdfHeight + 20;
-          const spaceLeft = pdf.internal.pageSize.getHeight() - currentYPosition;
+          const spaceLeft =
+            pdf.internal.pageSize.getHeight() - currentYPosition;
 
           if (spaceLeft < tablePdfHeight) {
             pdf.addPage();
-            pdf.addImage(tableDataUrl, "PNG", 20, 20, tablePdfWidth, tablePdfHeight);
+            pdf.addImage(
+              tableDataUrl,
+              "PNG",
+              20,
+              20,
+              tablePdfWidth,
+              tablePdfHeight
+            );
           } else {
-            pdf.addImage(tableDataUrl, "PNG", 20, currentYPosition, tablePdfWidth, tablePdfHeight);
+            pdf.addImage(
+              tableDataUrl,
+              "PNG",
+              20,
+              currentYPosition,
+              tablePdfWidth,
+              tablePdfHeight
+            );
           }
 
           // Añadir footer en cada página
@@ -219,7 +250,13 @@ function DashboardAdministrativo() {
 
             // Dibujar fondo del pie de página
             pdf.setFillColor("#002b69");
-            pdf.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
+            pdf.rect(
+              0,
+              pageHeight - footerHeight,
+              pageWidth,
+              footerHeight,
+              "F"
+            );
 
             // Añadir paginación y texto del pie de página
             pdf.setFontSize(10);
@@ -228,32 +265,36 @@ function DashboardAdministrativo() {
               `Página ${i + 1} de ${pageCount}`,
               pageWidth / 2,
               pageHeight - 25, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             pdf.text(
               `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
               pageWidth / 2,
               pageHeight - 15, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             pdf.text(
               "Todos los derechos reservados.",
               pageWidth / 2,
               pageHeight - 5, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
           }
 
           // Guardar el PDF
-          pdf.save("Reporte de Géneros del cuatrimestre #"+cuatrimestreFilter+", año "+annoFilter+".pdf");
+          pdf.save(
+            "Reporte de Géneros del cuatrimestre #" +
+              cuatrimestreFilter +
+              ", año " +
+              annoFilter +
+              ".pdf"
+          );
         };
       } catch (error) {
         toast.error("Error al generar el reporte PDF");
       }
     }
   };
-
-
 
   const processChartData = (data) => {
     const progresoEstados = { Nuevo: 0, Continuidad: 0, Prórroga: 0 };
@@ -376,7 +417,7 @@ function DashboardAdministrativo() {
                 <thead className="DashAdmin-thead">
                   <tr>
                     <th>Proyecto</th>
-                    <th>Ver</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody className="DashAdmin-tbody">
@@ -386,29 +427,66 @@ function DashboardAdministrativo() {
                         {`${grupo.Grupos_TipoGrupo.NombreProyecto} - ${grupo.NumeroGrupo} - Cuatrimestre ${grupo.Cuatrimestre} - ${grupo.Anno}`}
                       </td>
                       <td>
-                        <button
-                          className="icon-btn-Dash"
-                          onClick={() => {
-                            localStorage.setItem(
-                              "GrupoSeleccionado",
-                              grupo.GrupoId
-                            );
-                            window.location.href = "/ListaEstudiantes";
-                          }}
+                        <OverlayTrigger
+                          placement="top"
+                          overlay={
+                            <BootstrapTooltip id="tooltip-edit">
+                              Ver Grupo
+                            </BootstrapTooltip>
+                          }
                         >
-                          <LuDoorOpen />
-                        </button>
+                          <button
+                            className="icon-btn-Dash"
+                            onClick={() => {
+                              localStorage.setItem(
+                                "GrupoSeleccionado",
+                                grupo.GrupoId
+                              );
+                              window.location.href = "/ListaEstudiantes";
+                            }}
+                          >
+                            <LuDoorOpen />
+                          </button>
+                        </OverlayTrigger>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               <div className="pagination-mat">
-                <button onClick={handlePreviousPage}>Anterior</button>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <BootstrapTooltip id="tooltip-edit">
+                      Anterior
+                    </BootstrapTooltip>
+                  }
+                >
+                  <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    <GrFormPreviousLink />
+                  </button>
+                </OverlayTrigger>
                 <span>
-                  Página {currentPage} de {totalPages}
+                  {currentPage} de {totalPages}
                 </span>
-                <button onClick={handleNextPage}>Siguiente</button>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <BootstrapTooltip id="tooltip-edit">
+                      Siguiente
+                    </BootstrapTooltip>
+                  }
+                >
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    <GrFormNextLink />
+                  </button>
+                </OverlayTrigger>
               </div>
             </>
           )}
@@ -416,12 +494,12 @@ function DashboardAdministrativo() {
       </div>
 
       <div className="Reportes-DashAdmin">
-      <div className="Reportes-header">
-              <h2 className="Reportes-container-title">
-                Reporte de Generos de Estudiante Por periodo de matricula
-              </h2>
-              <div className="dashAdmin-divider"></div>
-      </div>
+        <div className="Reportes-header">
+          <h2 className="Reportes-container-title">
+            Reporte de Generos de Estudiante Por periodo de matricula
+          </h2>
+          <div className="dashAdmin-divider"></div>
+        </div>
       </div>
       <div className="filters-DashAdmin">
         <div className="filter-group-DashAdmin">
@@ -473,7 +551,7 @@ function DashboardAdministrativo() {
               onClick={handleBuscarClick}
               disabled={isBuscarButtonDisabled}
             >
-              Buscar
+              Buscar <IoMdSearch />
             </button>
           </div>
         </div>
@@ -559,12 +637,17 @@ function DashboardAdministrativo() {
 
           <div className="Generar-DashAdmin">
             <div className="butGenerar-DashAdmin">
+            <OverlayTrigger
+                  placement="top"
+                  overlay={<BootstrapTooltip id="tooltip-edit">Reporte de estudiantes por genero, por periodo de matricula</BootstrapTooltip>}
+                >
               <button
                 className="Generar-button-DashAdmin"
                 onClick={handleGenerarClick}
               >
-                Generar Reporte
+                <FaFileDownload /> Descargar Reporte
               </button>
+              </OverlayTrigger>
             </div>
           </div>
         </div>

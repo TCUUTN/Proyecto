@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./RechazoHoras.modulo.css";
 import { FaChevronLeft } from "react-icons/fa6";
+import { FaSave } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function RechazoHoras() {
@@ -87,7 +88,7 @@ function RechazoHoras() {
             </button>
             &nbsp;
             <button type="submit" className="rechazo-button">
-              Guardar
+              Guardar <FaSave />
             </button>
           </div>
         </form>

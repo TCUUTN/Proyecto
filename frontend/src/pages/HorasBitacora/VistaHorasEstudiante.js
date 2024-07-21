@@ -4,10 +4,13 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { IoMdAddCircle } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FaFileDownload } from "react-icons/fa";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 import "./VistaHorasEstudiante.modulo.css";
 import { BiSolidCommentX } from "react-icons/bi";
@@ -27,18 +30,20 @@ function VistaHorasEstudiante() {
   const [tipoFilterRejected, setTipoFilterRejected] = useState("");
   const [fechaFilter, setFechaFilter] = useState("");
   const [fechaFilterRejected, setFechaFilterRejected] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageApro, setCurrentPageApro] = useState(1);
+  const [currentPageRejected, setCurrentPageRejected] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [identificacion, setIdentificacion] = useState(localStorage.getItem("IdentificacionHoras"));
+  const [identificacion, setIdentificacion] = useState(
+    localStorage.getItem("IdentificacionHoras")
+  );
   const materiasPerPage = 10;
-  
+
   const estado = localStorage.getItem("EstadoHoras");
   const selectedRole = sessionStorage.getItem("SelectedRole");
   useEffect(() => {
     if (identificacion) {
       fetchHoras();
     }
-    localStorage.removeItem("IdentificacionHoras");
   }, []);
 
   const fetchGrupoId = async () => {
@@ -86,13 +91,13 @@ function VistaHorasEstudiante() {
             });
           }, 100); // 100 milisegundos de retraso para asegurar que la descarga haya comenzado
         } else {
-          console.log("Fallo al descargar el archivo");
+          toast.error("Fallo al descargar el archivo");
         }
       } else {
-        console.log("Fallo al extraer imagen");
+        toast.error("Fallo al extraer imagen");
       }
     } catch (error) {
-      console.error("Error al manejar la descarga del archivo:", error);
+      toast.error("Error al manejar la descarga del archivo:", error);
     }
   };
 
@@ -226,39 +231,59 @@ function VistaHorasEstudiante() {
     }
 
     setFilteredMaterias(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPageApro(1); // Reset to first page on filter change
+    setCurrentPageRejected(1); // Reset to first page on filter change
   };
 
-  const indexOfLastMateria = currentPage * materiasPerPage;
-  const indexOfFirstMateria = indexOfLastMateria - materiasPerPage;
+  const indexOfLastHoraApro = currentPageApro * materiasPerPage;
+  const indexOfFirstHoraApro = indexOfLastHoraApro - materiasPerPage;
+  const indexOfLastHoraRejected = currentPageRejected * materiasPerPage;
+  const indexOfFirstHoraRejected = indexOfLastHoraRejected - materiasPerPage;
   const currentApprovedMaterias = filteredApprovedMaterias.slice(
-    indexOfFirstMateria,
-    indexOfLastMateria
+    indexOfFirstHoraApro,
+    indexOfLastHoraApro
   );
   const currentRejectedMaterias = filteredRejectedMaterias.slice(
-    indexOfFirstMateria,
-    indexOfLastMateria
+    indexOfFirstHoraRejected,
+    indexOfLastHoraRejected
   );
 
-  const handleNextPage = () => {
+  const handleNextPageApro = () => {
     if (
-      currentPage <
+      currentPageApro <
         Math.ceil(filteredApprovedMaterias.length / materiasPerPage) ||
-      currentPage < Math.ceil(filteredRejectedMaterias.length / materiasPerPage)
+      currentPageApro <
+        Math.ceil(filteredRejectedMaterias.length / materiasPerPage)
     ) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPageApro(currentPageApro + 1);
     }
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+  const handlePreviousPageApro = () => {
+    if (currentPageApro > 1) {
+      setCurrentPageApro(currentPageApro - 1);
+    }
+  };
+
+  const handleNextPageRejected = () => {
+    if (
+      currentPageRejected <
+        Math.ceil(filteredApprovedMaterias.length / materiasPerPage) ||
+      currentPageRejected <
+        Math.ceil(filteredRejectedMaterias.length / materiasPerPage)
+    ) {
+      setCurrentPageRejected(currentPageRejected + 1);
+    }
+  };
+
+  const handlePreviousPageRejected = () => {
+    if (currentPageRejected > 1) {
+      setCurrentPageRejected(currentPageRejected - 1);
     }
   };
 
   const handleViewDetails = () => {
     localStorage.removeItem("EstadoHoras");
-    localStorage.removeItem("IdentificacionHoras");
     navigate("/ListaEstudiantes");
   };
 
@@ -273,29 +298,28 @@ function VistaHorasEstudiante() {
   };
 
   const handleButtonClick = () => {
-    localStorage.removeItem("IdentificacionHoras");
     navigate("/CrearoActualizarHoras");
   };
 
   const handleGenerarReporte = async () => {
     const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px', // Usar píxeles como unidad para conservar los tamaños originales
-      format: 'letter' // Tamaño carta
+      orientation: "portrait",
+      unit: "px", // Usar píxeles como unidad para conservar los tamaños originales
+      format: "letter", // Tamaño carta
     });
-  
+
     // Obtener datos del grupo
     const usuarioResponse = await fetch(`usuarios/nombres/${identificacion}`);
     const usuarioData = await usuarioResponse.json();
-  
+
     // Guardar títulos en variables
     const titulo1 = `Reporte de horas del Estudiante ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}`;
     const titulo2 = `Horas Aprobadas`;
     const titulo3 = `Horas Rechazadas`;
-  
+
     // Añadir imagen como encabezado
     const imgData = banderaCombinada;
-  
+
     // Crear un objeto de imagen para obtener las dimensiones originales
     const img = new Image();
     img.src = imgData;
@@ -306,35 +330,35 @@ function VistaHorasEstudiante() {
       const imgHeight = imgWidth * (img.height / img.width); // Mantener proporción original
       const imgX = (pageWidth - imgWidth) / 2; // Centrar imagen
       const imgY = 0; // Ajustar la coordenada Y para que no esté en el borde superior
-  
+
       // Dibujar fondo del encabezado
       doc.setFillColor("#002b69");
-      doc.rect(0, 0, pageWidth, imgHeight, 'F'); // Ajustar la altura del fondo
-  
-      doc.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+      doc.rect(0, 0, pageWidth, imgHeight, "F"); // Ajustar la altura del fondo
+
+      doc.addImage(imgData, "PNG", imgX, imgY, imgWidth, imgHeight);
       const titleY = imgY + imgHeight + 15; // Ajustar el espacio entre la imagen y el título
-  
+
       // Añadir títulos al cuerpo con espacios entre ellos
       doc.setFontSize(14);
       doc.setTextColor("#002b69"); // Color azul para el texto
-      doc.text(titulo1, pageWidth / 2, titleY, { align: 'center' });
-      doc.text(titulo2, pageWidth / 2, titleY + 20, { align: 'center' }); // Espacio adicional
+      doc.text(titulo1, pageWidth / 2, titleY, { align: "center" });
+      doc.text(titulo2, pageWidth / 2, titleY + 20, { align: "center" }); // Espacio adicional
       const startYApproved = titleY + 30; // Más espacio para el próximo título
-  
+
       // Función para convertir horas a formato de 12 horas
       const formatTime = (time) => {
-        let [hours, minutes] = time.split(':').map(Number);
-        const ampm = hours >= 12 ? 'PM' : 'AM';
+        let [hours, minutes] = time.split(":").map(Number);
+        const ampm = hours >= 12 ? "pm" : "am";
         hours = hours % 12 || 12; // Convertir 0 a 12
-        return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+        return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
       };
-  
+
       // Función para convertir fecha a formato dd/mm/aaaa
       const formatDate = (date) => {
-        const [yyyy, mm, dd] = date.split('-');
+        const [yyyy, mm, dd] = date.split("-");
         return `${dd}/${mm}/${yyyy}`;
       };
-  
+
       // Datos de las actividades aprobadas
       const tableColumnApproved = [
         "Fecha",
@@ -350,9 +374,11 @@ function VistaHorasEstudiante() {
         materia.TipoActividad,
         formatTime(materia.HoraInicio),
         formatTime(materia.HoraFinal),
-        materia.NombreEvidencia && materia.NombreEvidencia !== "-" ? "Sí" : "No",
+        materia.NombreEvidencia && materia.NombreEvidencia !== "-"
+          ? "Sí"
+          : "No",
       ]);
-  
+
       // Datos de las actividades rechazadas
       const tableColumnRejected = [
         "Fecha",
@@ -366,9 +392,9 @@ function VistaHorasEstudiante() {
         materia.TipoActividad,
         materia.ComentariosRechazo,
       ]);
-  
+
       let startY = startYApproved;
-  
+
       // Añadir tabla de actividades aprobadas si hay registros
       if (tableRowsApproved.length > 0) {
         doc.autoTable({
@@ -378,12 +404,12 @@ function VistaHorasEstudiante() {
           styles: {
             fontSize: 10,
             cellPadding: 3,
-            halign: 'center' // Centrar datos de la tabla
+            halign: "center", // Centrar datos de la tabla
           },
           headStyles: {
             fillColor: [0, 43, 105],
             textColor: [255, 255, 255],
-            halign: 'center' // Centrar encabezados de la tabla
+            halign: "center", // Centrar encabezados de la tabla
           },
           alternateRowStyles: {
             fillColor: [240, 240, 240],
@@ -391,11 +417,17 @@ function VistaHorasEstudiante() {
           margin: { bottom: 30 }, // Margen inferior para el pie de página
           didDrawPage: (data) => {
             const footerHeight = 35; // Incrementar la altura del pie de página
-  
+
             // Dibujar fondo del pie de página
             doc.setFillColor("#002b69");
-            doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
-  
+            doc.rect(
+              0,
+              pageHeight - footerHeight,
+              pageWidth,
+              footerHeight,
+              "F"
+            );
+
             // Añadir paginación y texto del pie de página
             doc.setFontSize(10);
             doc.setTextColor(255, 255, 255); // Letra blanca
@@ -403,28 +435,28 @@ function VistaHorasEstudiante() {
               `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
               pageWidth / 2,
               pageHeight - 25, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
               pageWidth / 2,
               pageHeight - 15, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               "Todos los derechos reservados.",
               pageWidth / 2,
               pageHeight - 5, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
-          }
+          },
         });
         startY = doc.lastAutoTable.finalY + 20; // Actualizar startY para la siguiente tabla con más espacio
       }
-  
+
       // Añadir tabla de actividades rechazadas si hay registros
       if (tableRowsRejected.length > 0) {
-        doc.text(titulo3, pageWidth / 2, startY, { align: 'center' });
+        doc.text(titulo3, pageWidth / 2, startY, { align: "center" });
         startY += 10;
         doc.autoTable({
           startY: startY,
@@ -433,12 +465,12 @@ function VistaHorasEstudiante() {
           styles: {
             fontSize: 10,
             cellPadding: 3,
-            halign: 'center' // Centrar datos de la tabla
+            halign: "center", // Centrar datos de la tabla
           },
           headStyles: {
             fillColor: [0, 43, 105],
             textColor: [255, 255, 255],
-            halign: 'center' // Centrar encabezados de la tabla
+            halign: "center", // Centrar encabezados de la tabla
           },
           alternateRowStyles: {
             fillColor: [240, 240, 240],
@@ -446,11 +478,17 @@ function VistaHorasEstudiante() {
           margin: { bottom: 30 }, // Margen inferior para el pie de página
           didDrawPage: (data) => {
             const footerHeight = 30; // Incrementar la altura del pie de página
-  
+
             // Dibujar fondo del pie de página
             doc.setFillColor("#002b69");
-            doc.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
-  
+            doc.rect(
+              0,
+              pageHeight - footerHeight,
+              pageWidth,
+              footerHeight,
+              "F"
+            );
+
             // Añadir paginación y texto del pie de página
             doc.setFontSize(10);
             doc.setTextColor(255, 255, 255); // Letra blanca
@@ -458,28 +496,42 @@ function VistaHorasEstudiante() {
               `Página ${data.pageNumber} de ${doc.internal.getNumberOfPages()}`,
               pageWidth / 2,
               pageHeight - 25, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
               pageWidth / 2,
               pageHeight - 15, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
             doc.text(
               "Todos los derechos reservados.",
               pageWidth / 2,
               pageHeight - 5, // Ajustar para que quepa bien en el pie de página
-              { align: 'center' }
+              { align: "center" }
             );
-          }
+          },
         });
       }
-  
-      doc.save(`Reporte de horas ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}.pdf`);
+
+      doc.save(
+        `Reporte de horas ${usuarioData.Nombre} ${usuarioData.Apellido1} ${usuarioData.Apellido2}.pdf`
+      );
     };
   };
-  
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'pm' : 'am';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    return `${formattedHours}:${formattedMinutes} ${period}`;
+  };
+
+  const formatDate = (date) => {
+    const [yyyy, mm, dd] = date.split("-");
+    return `${dd}/${mm}/${yyyy}`;
+  };
 
   return (
     <div className="horasi-container">
@@ -495,29 +547,40 @@ function VistaHorasEstudiante() {
         {/* */}
         <div className="horasi-botton">
           <div className="button-action-horasi">
-          {(selectedRole === "Académico"||selectedRole === "Administrativo") && (
-            <button className="add-horasiRegresar" onClick={handleViewDetails}>
-              <FaChevronLeft className="icon-horasiRegresar" /> Regresar
-            </button>
-          )}
-          {selectedRole === "Estudiante" && estado !== "Aprobado" && (
-            <button className="add-horasi" onClick={handleButtonClick}>
-              Agregar Actividades <IoMdAddCircle className="icon-horasi" />
-            </button>
-            
-          )}
+            {(selectedRole === "Académico" ||
+              selectedRole === "Administrativo") && (
+              <button
+                className="add-horasiRegresar"
+                onClick={handleViewDetails}
+              >
+                <FaChevronLeft className="icon-horasiRegresar" /> Regresar
+              </button>
+            )}
+            {selectedRole === "Estudiante" && estado !== "Aprobado" && (
+              <button className="add-horasi" onClick={handleButtonClick}>
+                Agregar Actividades <IoMdAddCircle className="icon-horasi" />
+              </button>
+            )}
 
-          <div className="horasies-divider" />
-          <h1 className="horasies-titulo"> Bitacora de horas </h1>
-          <div className="horasies-divider" />
-          <button
-              onClick={handleGenerarReporte}
-             className="desRep-botton-horasi"
+            <div className="horasies-divider" />
+            <h1 className="horasies-titulo"> Bitacora de horas </h1>
+            <div className="horasies-divider" />
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id="tooltip-edit">
+                  Bitácora de Horas del Estudiante
+                </Tooltip>
+              }
             >
-              Reporte de horas
-            </button>
+              <button
+                onClick={handleGenerarReporte}
+                className="desRep-botton-horasi"
+              >
+                Descargar Reporte <FaFileDownload />
+              </button>
+            </OverlayTrigger>
           </div>
-         
         </div>
 
         {/* */}
@@ -589,17 +652,17 @@ function VistaHorasEstudiante() {
                         <th>Hora Final</th>
                         <th>Evidencia</th>
                         {selectedRole === "Académico" &&
-                          estado !== "Aprobado" && <th>Rechazar Horas</th>}
+                          estado !== "Aprobado" && <th></th>}
                       </tr>
                     </thead>
                     <tbody className="apro-tbody">
                       {currentApprovedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
-                          <td>{materia.Fecha}</td>
+                          <td>{formatDate(materia.Fecha)}</td>
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
-                          <td>{materia.HoraInicio}</td>
-                          <td>{materia.HoraFinal}</td>
+                          <td>{formatTime(materia.HoraInicio)}</td>
+<td>{formatTime(materia.HoraFinal)}</td>
                           <td>
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
@@ -621,14 +684,23 @@ function VistaHorasEstudiante() {
                           {selectedRole === "Académico" &&
                             estado !== "Aprobado" && (
                               <td>
-                                <button
-                                  className="icon-btn-acade"
-                                  onClick={() =>
-                                    handleEditClick(materia.BitacoraId)
+                                <OverlayTrigger
+                                  placement="top"
+                                  overlay={
+                                    <Tooltip id="tooltip-edit">
+                                      Rechazar Horas
+                                    </Tooltip>
                                   }
                                 >
-                          <BiSolidCommentX />
-                                </button>
+                                  <button
+                                    className="icon-btn-acade"
+                                    onClick={() =>
+                                      handleEditClick(materia.BitacoraId)
+                                    }
+                                  >
+                                    <BiSolidCommentX />
+                                  </button>
+                                </OverlayTrigger>
                               </td>
                             )}
                         </tr>
@@ -636,30 +708,41 @@ function VistaHorasEstudiante() {
                     </tbody>
                   </table>
                   {/* La paginacion */}
-                  <div className="pagination-apro">
-                    <button
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1}
+                  <div className="pagination-mat">
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
                     >
-                      Anterior
-                    </button>
+                      <button
+                        onClick={handlePreviousPageApro}
+                        disabled={currentPageApro === 1}
+                      >
+                        <GrFormPreviousLink />
+                      </button>
+                    </OverlayTrigger>
+
                     <span>
-                      Página {currentPage} de{" "}
+                      {currentPageApro} de{" "}
                       {Math.ceil(
                         filteredApprovedMaterias.length / materiasPerPage
                       )}
                     </span>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={
-                        currentPage ===
-                        Math.ceil(
-                          filteredApprovedMaterias.length / materiasPerPage
-                        )
-                      }
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
                     >
-                      Siguiente
-                    </button>
+                      <button
+                        onClick={handleNextPageApro}
+                        disabled={
+                          currentPageApro ===
+                          Math.ceil(
+                            filteredApprovedMaterias.length / materiasPerPage
+                          )
+                        }
+                      >
+                        <GrFormNextLink />
+                      </button>
+                    </OverlayTrigger>
                   </div>
                 </>
               ) : (
@@ -730,27 +813,36 @@ function VistaHorasEstudiante() {
                         <th>Tipo de Actividad</th>
                         <th>Comentarios de Rechazo</th>
                         {selectedRole === "Estudiante" &&
-                          estado !== "Aprobado" && <th>Modificar</th>}
+                          estado !== "Aprobado" && <th></th>}
                       </tr>
                     </thead>
                     <tbody className="apro-tbody">
                       {currentRejectedMaterias.map((materia) => (
                         <tr key={materia.BitacoraId}>
-                          <td>{materia.Fecha}</td>
+                          <td>{formatDate(materia.Fecha)}</td>
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
                           <td>{materia.ComentariosRechazo}</td>
                           {selectedRole === "Estudiante" &&
                             estado !== "Aprobado" && (
                               <td>
-                                <button
-                                  className="icon-btn-acade"
-                                  onClick={() =>
-                                    handleEditClick2(materia.BitacoraId)
+                                <OverlayTrigger
+                                  placement="top"
+                                  overlay={
+                                    <Tooltip id="tooltip-edit">
+                                      Modificar Registro
+                                    </Tooltip>
                                   }
                                 >
-                                  <FaEdit />
-                                </button>
+                                  <button
+                                    className="icon-btn-acade"
+                                    onClick={() =>
+                                      handleEditClick2(materia.BitacoraId)
+                                    }
+                                  >
+                                    <FaEdit />
+                                  </button>
+                                </OverlayTrigger>
                               </td>
                             )}
                         </tr>
@@ -758,30 +850,40 @@ function VistaHorasEstudiante() {
                     </tbody>
                   </table>
                   {/* La paginacion */}
-                  <div className="pagination-apro">
-                    <button
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1}
+                  <div className="pagination-mat">
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
                     >
-                      Anterior
-                    </button>
+                      <button
+                        onClick={handlePreviousPageRejected}
+                        disabled={currentPageRejected === 1}
+                      >
+                        <GrFormPreviousLink />
+                      </button>
+                    </OverlayTrigger>
                     <span>
-                      Página {currentPage} de{" "}
+                      {currentPageRejected} de{" "}
                       {Math.ceil(
                         filteredRejectedMaterias.length / materiasPerPage
                       )}
                     </span>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={
-                        currentPage ===
-                        Math.ceil(
-                          filteredRejectedMaterias.length / materiasPerPage
-                        )
-                      }
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
                     >
-                      Siguiente
-                    </button>
+                      <button
+                        onClick={handleNextPageRejected}
+                        disabled={
+                          currentPageRejected ===
+                          Math.ceil(
+                            filteredRejectedMaterias.length / materiasPerPage
+                          )
+                        }
+                      >
+                        <GrFormNextLink />
+                      </button>
+                    </OverlayTrigger>
                   </div>
                 </>
               ) : (
