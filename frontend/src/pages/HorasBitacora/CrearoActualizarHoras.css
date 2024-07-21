@@ -165,7 +165,7 @@ justify-content: center;
 /* Boton */
 .crehoras-button {
   width: 100%;              /* Asegúrate de que ocupe el 100% del contenedor hijo */
-  max-width: 48%;           /* Limitar el ancho máximo al 50% del contenedor padre */
+  max-width: 50%;           /* Limitar el ancho máximo al 50% del contenedor padre */
   padding: 10px;
   background-color: #002b69;
   color: #fff;
@@ -179,7 +179,7 @@ justify-content: center;
 
 .crehoras-label {
   width: 100%;              /* Asegúrate de que ocupe el 100% del contenedor hijo */
-  max-width: 48%;           /* Limitar el ancho máximo al 50% del contenedor padre */
+  max-width: 50%;           /* Limitar el ancho máximo al 50% del contenedor padre */
   padding: 10px;
   background-color: #002b69;
   color: #fff;
@@ -196,7 +196,7 @@ justify-content: center;
 
 .crehoras-section {
   width: 100%;              /* Asegúrate de que ocupe el 100% del contenedor hijo */
-  max-width: 48%;           /* Limitar el ancho máximo al 50% del contenedor padre */
+  max-width: 50%;           /* Limitar el ancho máximo al 50% del contenedor padre */
   width: 100%;
   padding: 10px;
   color: #002b69;
