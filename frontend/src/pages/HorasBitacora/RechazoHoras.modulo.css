@@ -41,8 +41,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh;
-  margin: 2px 0;
+  height: 80vh;
+  margin: 0;
 }
 
 .rechazo-content {
@@ -108,10 +108,6 @@
   border-color: #ff6600 !important;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
-}
-
-.rechazo-inputcontainer {
-  margin: 20px 0;
 }
 
 .rechazo-divider {
@@ -189,10 +185,7 @@
 
 /* Orientación Horizontal */
 @media (orientation: landscape) {
-  .rechazo-container {
-    padding: 10px;
-    margin: 20px 0;
-  }
+
   .rechazo-content {
     width: 80%;
   }
