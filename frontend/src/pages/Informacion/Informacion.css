@@ -1,0 +1,398 @@
+/*Diseño para la pagina de la lista de estudiantes. Academicos*/
+
+/* cARGA */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f66226;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*Contiene todo */
+.container-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3px 15px ;
+  gap: 20px;
+  color: #002b69;
+  font-family: "Century Gothic", sans-serif;
+}
+/* Botones y titulo */
+.sliderlis-info {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px;
+width: 95%;
+margin: 0 auto 20px auto;
+background-color: #fff;
+border: 2px solid rgba(0, 44, 105, 0.212);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+box-sizing: border-box;
+}
+
+/* Botones y titulo */
+.SelectorGrupo-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  width: 95%;
+  margin: 10px auto;
+  background-color: #fff;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  }
+
+  .tituleselect-Grupo {
+    margin:0px;
+    font-size: 1.2rem;
+    color: #012c6a;
+    text-align: left;
+  }
+
+  .info-select {
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    color: #002b69;
+    border: 2px solid #002b69;
+    border-radius: 25px;
+    /* Chrome, Safari, Opera */
+   -webkit-text-align: center;
+   /* Firefox */
+   -moz-text-align: center;
+   /* IE */
+   -ms-text-align: center;
+  }
+  
+  .info-select:focus {
+    border-color: #ff6600;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+  }
+
+.regred-action-listinfo {
+display: flex;
+align-items: center;
+width: 100%;
+}
+
+/* Boton de regresar y finalizar*/
+.back-button-listinfo,
+.finalizar-button-listinfo {
+  background-color: #002b69;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+}
+
+.finalizar-button-listinfo {
+  margin-left: auto;
+}
+
+.back-button-listinfo:hover,
+.finalizar-button-listinfo:hover {
+  background-color: #f66226;
+}
+
+.finalizar-button-listinfo:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Linea */
+.info-divider-ver{
+  width: 2px;
+  height: 65px;
+  background: #ff6600;
+  margin: auto 15px auto 20px;
+}
+
+.info-divider-hor{
+  width: 33%;
+  height: 2px;
+  background: #ff6600;
+  margin: 10px;
+}
+/* Titulo */
+.estt-titulo {
+  font-family: 'Playfair Display', serif;
+  color: #012c6a;
+  font-size: 2.5rem;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.box-pagination-listinfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  width: 95%;
+  margin: 10px auto;
+  border: 2px solid rgba(0, 44, 105, 0.212); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: nowrap;
+  background-color: #fff;
+}
+
+/* Filtros */
+.filters-info {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px; /* Ajusta el padding según sea necesario */
+width: 95%; /* Ajusta el ancho según sea necesario */
+margin: 20px auto;
+flex-wrap: wrap; /* Añadir esta línea */
+background-color: #fff;
+border: 2px solid rgba(0, 44, 105, 0.212);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+box-sizing: border-box;
+}
+
+.filter-group-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.filter-input-info,
+.filter-select-info {
+  padding: 10px 20px; /* Ajusta el padding según sea necesario */
+  font-size: 18px; /* Ajusta el tamaño de fuente según sea necesario */
+  border: 2px solid #002b69; /* Ajusta el borde según sea necesario */
+  border-radius: 25px;
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  text-align: center;
+  color: #002b69;
+}
+
+.filter-input-info::placeholder,
+.filter-select-info::placeholder {
+  color: #575656;
+}
+
+.filter-input-info:focus,
+.filter-select-info:focus {
+  border-color: #ff6600;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+.filter-label-info{
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  font-size: 18px;
+}
+/* Tablets */
+@media  (max-width: 1024px){
+.sliderlis-info,
+.SelectorGrupo-info,
+.box-pagination-listinfo,
+.filters-info {
+    width: 100%;
+}
+}
+@media (max-width: 768px) {
+.sliderlis-info,
+.SelectorGrupo-info,
+.filters-info {
+  flex-direction: column;
+  align-items: center;
+}
+
+.box-pagination-listinfo{
+  
+  align-items: center;
+}
+
+.regred-action-listinfo {
+  flex-direction: column;
+  align-items: center;
+}
+
+.estt-titulo {
+    font-size: 2.5rem; /* Ajusta el tamaño de fuente según sea necesario */
+    margin: 10px 0;
+}
+
+.filter-group-info {
+    width: 100%;
+    margin: 10px 0; /* Ajusta el margen según sea necesario */
+}
+
+.filter-input-info,
+.filter-select-info {
+    width: 100%;
+}
+
+.info-divider-ver {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
+
+.info-divider-hor {
+  width: 2px;
+  height: 45%;
+}
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+.sliderlis-info,
+.SelectorGrupo-info,
+.filters-info {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+}
+.box-pagination-listinfo {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+    flex-direction: column;
+}
+
+
+.back-button-listinfo,
+.finalizar-button-listinfo {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.filter-input-info,
+.filter-select-info {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
+}
+
+.estt-titulo {
+    font-size: 2rem; /* Ajusta el tamaño de fuente según sea necesario */
+    margin-left: 0;
+}
+
+.regred-action-listinfo {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.info-divider-ver {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
+
+.info-divider-hor {
+  width: 2px;
+  height: 45%;
+}
+}
+
+/* Orientación vertical */
+@media (max-width: 480px) and (orientation: portrait) {
+.sliderlis-info,
+.SelectorGrupo-info,
+.box-pagination-listinfo,
+.filters-info {
+    padding: 10px;
+}
+
+.estt-titulo {
+    font-size: 2rem;
+}
+
+.back-button-listinfo,
+.finalizar-button-listinfo {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.filter-input-info,
+.filter-select-info {
+    width: 100%;
+    font-size: 16px;
+}
+
+.info-divider-ver {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+}
+
+.info-divider-hor {
+  width: 2px;
+  height: 45%;
+}
+}
+
+/* Orientación horizontal */
+@media (max-width: 480px) and (orientation: landscape) {
+.sliderlis-info,
+.SelectorGrupo-info,
+.box-pagination-listinfo,
+.filters-info {
+    padding: 10px;
+}
+
+.estt-titulo {
+    font-size: 2rem;
+}
+
+.back-button-listinfo,
+.finalizar-button-listinfo {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.filter-input-info,
+.filter-select-info {
+    width: 100%;
+    font-size: 16px;
+}
+
+.info-divider-ver {
+    width: 65%;
+    height: 2px;
+    margin: 20px 0;
+}
+.info-divider-hor {
+  width: 2px;
+  height: 65%;
+}
+}

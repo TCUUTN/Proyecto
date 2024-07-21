@@ -57,13 +57,12 @@ const getinfoPorInformacionId = async (req, res) => {
   }
 };
 
-const getInformacionPorIdentificacionyGrupoId = async (req, res) => {
+const getInformacionPorGrupoId = async (req, res) => {
   try {
-    const { Identificacion, GrupoId, SelectedRole } = req.body;
+    const { GrupoId, SelectedRole } = req.body;
 
     // Construye el objeto 'where'
     const whereClause = {
-      Identificacion: Identificacion,
       GrupoId: GrupoId,
       TipoInformacion: "Académico"
     };
@@ -98,7 +97,8 @@ const getInformacionPorIdentificacionyGrupoId = async (req, res) => {
 const getInformacionPorSedeyTipoInformacion = async (req, res) => {
   try {
     const { Sede, TipoInformacion } = req.body;
-
+    console.log(Sede)
+    console.log(TipoInformacion)
     // Definimos el filtro para la Sede
     let sedeFilter = Sede === 'Todas' ? Sede : [Sede, 'Todas'];
 
@@ -140,8 +140,8 @@ const getInformacionPorSedeyTipoInformacion = async (req, res) => {
             Estado
         } = req.body;
 
-        if (!GrupoId || !Identificacion || !Fecha) {
-            return res.status(400).json({ error: 'GrupoId, Identificacion, y Fecha son requeridos' });
+        if (!Identificacion || !Fecha) {
+            return res.status(400).json({ error: 'Identificacion, y Fecha son requeridos' });
         }
 
         const Archivo = null;
@@ -254,7 +254,7 @@ const eliminarArchivo = async (req, res) => {
 
 module.exports = {
   getinfoPorInformacionId,
-  getInformacionPorIdentificacionyGrupoId,
+  getInformacionPorGrupoId,
   getInformacionPorSedeyTipoInformacion,
   crearOActualizarInformacion,
   subirArchivo, 

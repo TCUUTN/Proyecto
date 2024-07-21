@@ -32,6 +32,11 @@ const conclusionesRoute = require('./routes/conclusionesRoute');
 app.use('/conclusiones', conclusionesRoute);
 // Rutas para el modulo de Boletas de Conclusion
 
+const informacionRoute = require('./routes/informacionRoute');
+app.use('/informacion', informacionRoute);
+// Rutas para el modulo de Boletas de Conclusion
+
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 import imagen from "../Assets/Images/Bandera Combinada.png";
 import { FaCircleUser } from "react-icons/fa6";
 import { LiaReadme } from "react-icons/lia";
@@ -14,6 +14,8 @@ function Navbar() {
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
   const [showBoletaConclusion, setShowBoletaConclusion] = useState(false);
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   useEffect(() => {
     const storedNombre = sessionStorage.getItem("Nombre");
@@ -115,6 +117,13 @@ function Navbar() {
 
     fetchHorasTotales();
   }, [selectedRole, identificacion]);
+
+  const handleLinkClick = (tipo, linkPath) => {
+    localStorage.setItem('TipoInfoSeleccionado', tipo);
+    if (currentPath === linkPath) {
+      window.location.reload();
+    }
+  };
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -255,7 +264,7 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-                
+
                 {showBoletaConclusion && (
                   <li className="nav-item">
                     <Link
@@ -270,7 +279,7 @@ function Navbar() {
                     </Link>
                   </li>
                 )}
-                            {/*Información*/}
+                {/*Información*/}
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -282,44 +291,68 @@ function Navbar() {
                   </Link>
                   <ul className="dropdown-menu bg-blue">
                     <li className="dropdown-submenu">
-                      <Link className="dropdown-item dropdown-style dropdown-toggle" to="#"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      <LiaReadme />  Guías
+                      <Link
+                        className="dropdown-item dropdown-style dropdown-toggle"
+                        to="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <LiaReadme /> Guías
                       </Link>
                       {/*Aqui va el otro dopdown*/}
                       <ul className="dropdown-menu bg-blue">
-                      <li>
+                        <li>
                           <Link
                             className="dropdown-item dropdown-style"
                             to="GuiaIniciarSesion"
                           >
-                           Guia de Iniciar Sesión
+                            Guia de Iniciar Sesión
                           </Link>
                         </li>
                         {(selectedRole === "Estudiante" ||
-                           selectedRole === "Administrativo"
-                         )&& (
-                        <li>
-                          <Link
-                            className="dropdown-item dropdown-style"
-                            to="GuiaEstudiantes"
-                          >
-                           Guia para Estudiantes
-                          </Link>
-                        </li>
-                         )}
+                          selectedRole === "Administrativo") && (
+                          <li>
+                            <Link
+                              className="dropdown-item dropdown-style"
+                              to="GuiaEstudiantes"
+                            >
+                              Guia para Estudiantes
+                            </Link>
+                          </li>
+                        )}
                       </ul>
                     </li>
                     <li>
-                      <Link className="dropdown-item dropdown-style" to="#">
-                        -
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('General', '/Informacion')}
+                      >
+                        Informacion General
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('Académico', '/Informacion')}
+                      >
+                        Informacion del Académico
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('Plantilla', '/Informacion')}
+                      >
+                        Plantillas
                       </Link>
                     </li>
                   </ul>
                 </li>
               </ul>
-            {/* Icono Usuario */}
+              {/* Icono Usuario */}
               <div className="navbar-link">
                 {roles.length > 1 ? (
                   <select
@@ -350,9 +383,7 @@ function Navbar() {
                   <FaCircleUser className="user-icon-nav" />
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
-                  <li  className="dropdown-item dropdown-style2">
-
-                  </li>
+                  <li className="dropdown-item dropdown-style2"></li>
                   <li>
                     <Link
                       className="dropdown-item dropdown-style2"

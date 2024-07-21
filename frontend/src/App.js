@@ -22,6 +22,7 @@ import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
+import Informacion from "./pages/Informacion/Informacion.js";
 //Guias del aplicacion web
 import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
 import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
@@ -134,6 +135,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
                   <VistaHorasEstudiantes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Informacion"
+              element={
+                <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
+                  <Informacion />
                 </ProtectedRoute>
               }
             />

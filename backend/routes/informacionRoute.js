@@ -17,9 +17,9 @@ const fileUpload = multer({
 
 
 
-router.get('/descargarAdjunto/:BitacoraId',informacionController.descargarArchivo);
+router.get('/descargarAdjunto/:InformacionId',informacionController.descargarArchivo);
 router.get('/:InformacionId', informacionController.getinfoPorInformacionId);
-router.post('/getInformacionPorIdentificacionyGrupoId',informacionController.getInformacionPorIdentificacionyGrupoId);
+router.post('/getInformacionPorGrupoId',informacionController.getInformacionPorGrupoId);
 router.post('/getInformacionPorSedeyTipoInformacion',informacionController.getInformacionPorSedeyTipoInformacion);
 router.post('/crearOActualizarInformacion', informacionController.crearOActualizarInformacion);
 router.post('/subirAdjunto', fileUpload, informacionController.subirArchivo);

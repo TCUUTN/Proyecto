@@ -64,10 +64,8 @@ const Informacion = sequelize.define('Informacion', {
   GrupoId: {
     type: DataTypes.MEDIUMINT.UNSIGNED,
     allowNull: false,
-    references: {
-      model: Grupo,
-      key: 'GrupoId'
-    }
+    defaultValue: 0
+
   },
   Estado: {
     type: DataTypes.TINYINT(1),
@@ -102,12 +100,6 @@ const Informacion = sequelize.define('Informacion', {
   timestamps: false
 });
 
-// Relaciones
-Informacion.belongsTo(Grupo, {
-  foreignKey: 'GrupoId',
-  targetKey: 'GrupoId',
-  onDelete: 'CASCADE'
-});
 
 Informacion.belongsTo(Usuario, {
   foreignKey: 'Identificacion',
