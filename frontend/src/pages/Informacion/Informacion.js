@@ -40,7 +40,6 @@ function VistaInformacion() {
     }
   }, [selectedGrupo]);
 
-
   useEffect(() => {
     if (selectedGrupo !== "") {
       handletablaacademico(selectedGrupo);
@@ -72,7 +71,7 @@ function VistaInformacion() {
       }
     } catch (error) {
       setInformacion([]);
-        setFilteredInformacion([]);
+      setFilteredInformacion([]);
       console.error("Error al obtener la información:", error);
       toast.error("Error al obtener la información");
     } finally {
@@ -104,7 +103,7 @@ function VistaInformacion() {
       }
     } catch (error) {
       setInformacion([]);
-        setFilteredInformacion([]);
+      setFilteredInformacion([]);
       console.error("Error al obtener la información:", error);
       toast.error("Error al obtener la información");
     } finally {
@@ -211,9 +210,7 @@ function VistaInformacion() {
   const handleBack = () => {
     localStorage.removeItem("TipoInfoSeleccionado");
 
-
-      navigate("/Home");
-
+    navigate("/Home");
   };
 
   const getTitulo = (tipoInfo) => {
@@ -221,12 +218,12 @@ function VistaInformacion() {
       case "General":
         return "Información General";
       case "Académico":
-        if (selectedRole==="Académico") {
+        if (selectedRole === "Académico") {
           return "Información por grupo";
         } else {
           return "Información proporcionada por el Académico";
         }
-        
+
       case "Plantilla":
         return "Plantillas del sistema";
       default:
@@ -258,7 +255,6 @@ function VistaInformacion() {
       <ToastContainer position="bottom-right" />
       {/* Filtros y botón */}
       <main>
-        
         <div className="sliderlis-info">
           {/* Botón de regresar */}
           <div className="regred-action-listinfo">
@@ -361,35 +357,47 @@ function VistaInformacion() {
             <thead className="mat-thead">
               <tr>
                 <th className="mat-th">Fecha</th>
-                <th className="mat-th">Descripción</th>
+                {TipoInfoSeleccionado !== "Plantilla" && (
+                  <th className="mat-th">Descripción</th>
+                )}
                 <th className="mat-th">Nombre de Archivo</th>
-                <th className="mat-th">Acción</th>
+                {TipoInfoSeleccionado !== "Plantilla" && (
+                  <th className="mat-th">Acción</th>
+                )}
               </tr>
             </thead>
             <tbody className="mat-tbody">
               {currentInformacion.length === 0 ? (
                 <tr>
-                  <td colSpan="4">No se encontró información</td>
+                  <td
+                    colSpan={TipoInfoSeleccionado !== "Plantilla" ? "4" : "2"}
+                  >
+                    No se encontró información
+                  </td>
                 </tr>
               ) : (
                 currentInformacion.map((info) => (
                   <tr key={info.Id}>
                     <td className="mat-td">{info.Fecha}</td>
-                    <td className="mat-td">{info.Descripcion}</td>
+                    {TipoInfoSeleccionado !== "Plantilla" && (
+                      <td className="mat-td">{info.Descripcion}</td>
+                    )}
                     <td className="mat-td">{info.NombreArchivo}</td>
-                    <td className="mat-td">
-                      <OverlayTrigger
-                        overlay={<Tooltip>Ver Detalles</Tooltip>}
-                        placement="top"
-                      >
-                        <button
-                          className="icon-btn-mat"
-                          onClick={() => handleViewDetails(info.Id)}
+                    {TipoInfoSeleccionado !== "Plantilla" && (
+                      <td className="mat-td">
+                        <OverlayTrigger
+                          overlay={<Tooltip>Ver Detalles</Tooltip>}
+                          placement="top"
                         >
-                          <FaInfoCircle />
-                        </button>
-                      </OverlayTrigger>
-                    </td>
+                          <button
+                            className="icon-btn-mat"
+                            onClick={() => handleViewDetails(info.Id)}
+                          >
+                            <FaInfoCircle />
+                          </button>
+                        </OverlayTrigger>
+                      </td>
+                    )}
                   </tr>
                 ))
               )}
@@ -398,23 +406,29 @@ function VistaInformacion() {
 
           {/* Paginación */}
           <div className="pagination-mat">
-            <button
-              onClick={handlePreviousPage}
-              className="pagination-button"
-              disabled={currentPage === 1}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
             >
-              <GrFormPreviousLink />
-            </button>
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
+
             <span className="pagination-info">
               {currentPage} de {totalPages}
             </span>
-            <button
-              onClick={handleNextPage}
-              className="pagination-button"
-              disabled={currentPage === totalPages}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
             >
-              <GrFormNextLink />
-            </button>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
       </main>
