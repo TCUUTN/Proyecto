@@ -222,6 +222,7 @@ function Navbar() {
                     </Link>
                   </li>
                 )}
+
                 {(selectedRole === "Académico" ||
                   selectedRole === "Administrativo") && (
                   <li className="nav-item dropdown">
@@ -295,6 +296,18 @@ function Navbar() {
                            Guia de Iniciar Sesión
                           </Link>
                         </li>
+                        {(selectedRole === "Estudiante" ||
+                           selectedRole === "Administrativo"
+                         )&& (
+                        <li>
+                          <Link
+                            className="dropdown-item dropdown-style"
+                            to="GuiaEstudiantes"
+                          >
+                           Guia para Estudiantes
+                          </Link>
+                        </li>
+                         )}
                       </ul>
                     </li>
                     <li>

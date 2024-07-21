@@ -1,15 +1,192 @@
-.guiaIni-container {
-  padding: 20px;
+/* Guia contiene todo */
+.guias-container {
   font-family: "Century Gothic", sans-serif;
   color: #0b2f6b;
-  max-width: 800px;
- margin-top: 3% auto;
-
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  animation: slide-in 0.4s ease-out;
+  border-radius: 0 0 10px 10px;
+  padding: 15px;
+  width: 100%;
+  max-width: 1400px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  height: 100%;
+  margin: 15px 0;
+}
+.contenedor-guias {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*Titulos */
+.titulos-guiaIn {
+  font-size: 30px;
+  font-family: "Playfair Display", serif;
+  margin-bottom: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
+.titulo-Portada {
+  font-size: 35px;
+  font-family: "Playfair Display", serif;
+  margin-bottom: 10px;
+  text-align: center;
+}
+/* Lineas */
+.celes-divider,
+.naranja-divider {
+  width: 20%;
+  margin-bottom: 20px;
+  margin-left: 40%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.celes-divider {
+  border: 2px solid #0daace;
+}
+
+.naranja-divider {
+  border: 2px solid #f66226;
+}
+
+/* Section portada */
+.section-portada {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px 10px 0 0;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+.section-portada p {
+  font-size: 20px;
+  justify-content: center;
+  padding: 10px;
+  align-items: center;
+}
+
+/* Contenido */
+.section-contenido {
+  text-align: center;
+  padding-left: 20px;
+}
+.guiaIn-contenido {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15%;
+}
+.guiaIn-contenido li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.interlink-guiaIn {
+  text-decoration: none;
+  display: block;
+  font-weight: bold;
+  color: #0b2f6b;
+  padding: 3px 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.interlink-guiaIn:hover {
+  color: #fff;
+  background-color: #0daace;
+}
+
+/* Imagenes */
+.centered {
+  display: block;
+  margin: 0 auto;
+  background-color: none;
+}
+.small-image {
+  max-width: 350px;
+  background-color: none;
+}
+.large-image {
+  max-width: 1150px;
+  margin-top: 20px;
+  background-color: none;
+}
+
+/*Section todas */
+.section-guias {
+  background-color: #fff;
+  border: 2px solid rgba(0, 44, 105, 0.212);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  padding: 20px;
+  font-size: 20px;
+}
+
+/*Section IniciarS */
+.text-InS {
+  font-size: 20px;
+  left: 20px !important;
+}
+
+.alert {
+  border: 1px solid #e40d0d;
+  background-color: #f4652a;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+}
+/* Section restablecer contraseña */
+.restablecer-container {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 15px 0 0 55px;
+  gap: 20px;
+  justify-content: center;
+}
+.ima-resta {
+  max-width: 100%;
+  height: auto;
+}
+/* Cuadro de los consejos de restablecer contraseña */
+.titu-res {
+  font-size: 20px;
+  font-family: "Playfair Display", serif;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.conse-puntos {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-left: 5%;
+  padding: 10px 0 10px 10px;
+}
+.consejos {
+  border: 2px solid #98d4e1;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 50%; /* Ajusta el ancho máximo para el cuadro de consejos */
+  margin-left: 20px;
+  font-size: 1.3rem;
+  margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/* Otros */
 @keyframes slide-in {
   from {
     transform: translateY(20px);
@@ -21,150 +198,24 @@
   }
 }
 
-/* Titulos */
-.titulos-guiaIn {
-    font-size: 35px;
-    font-family: "Brush-TipTerrence", cursive;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .titulo-Portada {
-    font-size: 24px;
-    font-family: "Brush-TipTerrence", cursive;
-    margin-bottom: 10px;
-  }
-  
-  /* Lineas */
-  .celes-divider,
-  .naranja-divider {
-    width: 25%;
-    margin-bottom: 20px;
-    margin-left: 38%;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .celes-divider {
-    border: 2px solid #0daace;
-  }
-  
-  .naranja-divider {
-    border: 2px solid #f66226;
-  }
-  
-/**/
-.section-portada {
-  margin-bottom: 20px;
-  background: #0073e6;
+/* Boton flotante */
+.scroll-to-top {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #0b2f6b;
   color: white;
-  padding: 20px;
-  border-radius: 8px 8px 0 0;
-  text-align: center;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.section-portada p {
-  font-size: 16px;
+.scroll-to-top:hover {
+  background-color: #0daace;
+  transform: scale(1.1);
 }
-
-.section-texto {
-  margin-bottom: 20px;
-  background-color: #fff;
-}
-
-.section-texto ul {
-  list-style-type: disc;
-  padding-left: 20px;
-}
-
-.section-contenido,
-.section-iniciarS,
-.section-olvidarC,
-.section-restablecer {
-  margin-bottom: 20px;
-  padding: 20px;
-
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-.section-contenido ol,
-.section-iniciarS ol,
-.section-olvidarC ol,
-.section-restablecer ol {
-  list-style-type: decimal;
-  padding-left: 20px;
-}
-
-.section-contenido p,
-.section-iniciarS p,
-.section-olvidarC p,
-.section-restablecer p {
-  font-size: 16px;
-}
-
-.alert {
-  border: 1px solid #e40d0d;
-  background-color: #f4652a;
-  padding: 10px;
-  border-radius: 5px;
-  color: white;
-  margin-top: 20px;
-}
-/* Section que contiene la imagen y el cuadro de consejos */
-
-.restablecer-container {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 20px;
-}
-
-.ima-resta img {
-    max-width: 100%; /* Ajusta el ancho máximo para la imagen */
-    height: auto;
-}
-/* Cuadro de los consejos */
-.titu-res {
-    font-size: 20px;
-    font-family: "Brush-TipTerrence", cursive;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-
-.conse-puntos {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin-left: 5%;
-    padding: 10px 0 10px 10px;
-  }
-.consejos {
-    border: 2px solid #98d4e1;
-    border-radius: 8px;
-    padding: 10px;
-    max-width: 50%; /* Ajusta el ancho máximo para el cuadro de consejos */
-    margin-left: 20px;
-    font-size: 1.3rem;
-}
-
-/* Imagenes */
-
-.centered {
-    display: block;
-    margin: 0 auto;
-    background-color: none;
- 
-  }
-  
-  .small-image {
-    max-width: 350px;
-    background-color: none;
-
-  }
-  
-  .large-image {
-    max-width: 450px;
-    margin-top: 20px;
-    background-color: none;
-
-  }
