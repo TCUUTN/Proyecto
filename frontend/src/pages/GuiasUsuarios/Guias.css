@@ -115,6 +115,11 @@
   margin-top: 20px;
   background-color: none;
 }
+.medium-image{
+  max-width: 450px;
+  margin-top: 20px;
+  background-color: none;
+}
 
 /*Section todas */
 .section-guias {
