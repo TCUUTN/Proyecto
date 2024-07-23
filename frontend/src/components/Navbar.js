@@ -94,16 +94,20 @@ function Navbar() {
           );
           const horasData = await horasResponse.json();
 
-          const horasTotales = horasData.reduce((total, hora) => {
-            const horaInicio = new Date(`1970-01-01T${hora.horaInicio}`);
-            const horaFinal = new Date(`1970-01-01T${hora.horaFinal}`);
-            const diff = (horaFinal - horaInicio) / (1000 * 60 * 60); // Diferencia en horas
-            return total + diff;
-          }, 0);
+          const parseHora = (hora) => {
+            const [hours, minutes, seconds] = hora.split(':').map(Number);
+            return hours * 60 + minutes + seconds / 60;
+        };
+        
+        const horasTotales = horasData.reduce((total, hora) => {
+            const horaInicio = parseHora(hora.HoraInicio);
+            const horaFinal = parseHora(hora.HoraFinal);
+            const diff = horaFinal - horaInicio;
+            return total + diff / 60; // Convertir minutos a horas
+        }, 0);
 
           // Guarda horasTotales en localStorage
           localStorage.setItem("horasTotalesEstudiante", horasTotales);
-
           if (horasTotales >= 150) {
             setShowBoletaConclusion(true);
           }
@@ -283,7 +287,7 @@ function Navbar() {
                       className="nav-link"
                       to={
                         selectedRole === "Estudiante"
-                          ? "/CrearoActualizarConclusiones"
+                          ? "/CrearActualizarConclusiones"
                           : "/GruposConclusiones"
                       }
                     >

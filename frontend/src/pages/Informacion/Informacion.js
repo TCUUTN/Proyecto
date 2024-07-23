@@ -90,7 +90,7 @@ function VistaInformacion() {
         },
         body: JSON.stringify({
           SelectedRole: selectedRole,
-          GrupoId: localStorage.getItem("GrupoSeleccionado"),
+          GrupoId: sessionStorage.getItem("GrupoId"),
         }),
       });
 
