@@ -85,10 +85,11 @@
   margin: auto 0 auto 20px;
 }
 
-.bulk-upload-section {
+.bulk-upload-section-Pro {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  min-width: 40%;
   margin: 0 10%; 
 }
 .title-mater {
@@ -98,7 +99,7 @@
   align-items: center;
   font-family: 'Playfair Display', serif;
   justify-content: center;
-  margin-left: 35%;
+
   font-weight: bold;
 }
 

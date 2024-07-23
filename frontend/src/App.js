@@ -23,6 +23,7 @@ import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
 import Informacion from "./pages/Informacion/Informacion.js";
+import RegistroInformacion from "./pages/Informacion/CrearActualizarInfo.js";
 //Guias del aplicacion web
 import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
 import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
@@ -143,6 +144,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
                   <Informacion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/RegistroInformacion"
+              element={
+                <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
+                  <RegistroInformacion />
                 </ProtectedRoute>
               }
             />

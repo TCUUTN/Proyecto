@@ -13,7 +13,7 @@ const diskStorage = multer.diskStorage({
 
 const fileUpload = multer({
     storage:diskStorage
-}).single('Evidencias')
+}).single('Archivo')
 
 
 

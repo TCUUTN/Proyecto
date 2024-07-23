@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaInfoCircle } from "react-icons/fa";
-import { FaListCheck } from "react-icons/fa6";
+import { MdOutlinePostAdd } from "react-icons/md";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,6 +11,7 @@ import "./Informacion.css"; // Usar la misma hoja de estilos de ListaEstudiantes
 function VistaInformacion() {
   const navigate = useNavigate();
   const TipoInfoSeleccionado = localStorage.getItem("TipoInfoSeleccionado");
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const Sede = sessionStorage.getItem("Sede");
   const Identificacion = sessionStorage.getItem("Identificacion");
   const selectedRole = sessionStorage.getItem("SelectedRole");
@@ -174,9 +175,7 @@ function VistaInformacion() {
     setCurrentPage(1); // Reset to first page on filter change
   };
 
-  const handleFinalizarCuatrimestre = () => {
-    // Logica para finalizar cuatrimestre
-  };
+  
 
   const indexOfLastInfo = currentPage * informacionPerPage;
   const indexOfFirstInfo = indexOfLastInfo - informacionPerPage;
@@ -198,9 +197,6 @@ function VistaInformacion() {
     }
   };
 
-  const handleViewDetails = (id) => {
-    // Lógica para ver detalles de la información
-  };
 
   const handletablaacademico = (grupoId) => {
     localStorage.setItem("GrupoSeleccionado", grupoId);
@@ -211,6 +207,59 @@ function VistaInformacion() {
     localStorage.removeItem("TipoInfoSeleccionado");
 
     navigate("/Home");
+  };
+
+  const handleAgregar = () => {
+    navigate("/RegistroInformacion");
+  };
+
+  const handleEditar = (InformacionId) => {
+    sessionStorage.setItem("InformacionId",InformacionId);
+    navigate("/RegistroInformacion");
+  };
+
+  const handleDescargaArchivo = async (InformacionId) => {
+    try {
+      console.log(InformacionId)
+      const response = await fetch(`/informacion/descargarAdjunto/${InformacionId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const fileName = encodeURIComponent(data);
+
+        // Obtener el contenido del archivo
+        const fileResponse = await fetch(`/${fileName}`);
+        if (fileResponse.ok) {
+          const blob = await fileResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+
+          // Crear un enlace temporal para la descarga del archivo
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = data;
+
+          // Agregar el enlace al DOM y hacer clic en él
+          document.body.appendChild(a);
+          a.click();
+
+          // Eliminar el enlace del DOM y revocar el objeto URL
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            // Solicitar la eliminación del archivo del servidor
+            fetch(`/informacion/eliminarAdjunto/${fileName}`, {
+              method: "DELETE",
+            });
+          }, 100); // 100 milisegundos de retraso para asegurar que la descarga haya comenzado
+        } else {
+          toast.error("Fallo al descargar el archivo");
+        }
+      } else {
+        toast.error("Fallo al extraer imagen");
+      }
+    } catch (error) {
+      toast.error("Error al manejar la descarga del archivo:", error);
+    }
   };
 
   const getTitulo = (tipoInfo) => {
@@ -244,6 +293,41 @@ function VistaInformacion() {
     }
   };
 
+  const validacionAgregar = () => {
+    switch (selectedRole) {
+      case "Estudiante":
+        return false;
+      case "Académico":
+        if (TipoInfoSeleccionado==="Académico") {
+          return true
+        } else {
+          return false
+        }
+      case "Administrativo":
+        if (TipoInfoSeleccionado!=="Académico") {
+          return true
+        } else {
+          return false
+        }
+      default:
+        return false;
+    }
+  };
+
+  const formatDate = (date) => {
+    const [yyyy, mm, dd] = date.split("-");
+    return `${dd}/${mm}/${yyyy}`;
+  };
+
+  useEffect(() => {
+    // Verificar las condiciones para habilitar el botón
+    if (TipoInfoSeleccionado !== 'Académico' || (selectedGrupo && TipoInfoSeleccionado === 'Académico')) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [selectedGrupo, TipoInfoSeleccionado]);
+
   return (
     <div className="container-info">
       {/*Para la carga */}
@@ -264,17 +348,16 @@ function VistaInformacion() {
             </button>
             <div className="info-divider-ver" />
             <h1 className="estt-titulo">{getTitulo(TipoInfoSeleccionado)}</h1>
-            {(selectedRole === "Académico" ||
-              selectedRole === "Administrativo") && (
+            {(validacionAgregar()) && (
               <>
                 <div className="info-divider-ver" />
                 <div className="buttFinalizar">
                   <button
-                    onClick={handleFinalizarCuatrimestre}
+                    onClick={handleAgregar}
                     className="finalizar-button-listinfo"
-                    disabled
+                    disabled={!isButtonEnabled}
                   >
-                    {getButtonText(TipoInfoSeleccionado)} <FaListCheck />
+                    {getButtonText(TipoInfoSeleccionado)} <MdOutlinePostAdd />
                   </button>
                 </div>
               </>
@@ -282,7 +365,7 @@ function VistaInformacion() {
           </div>
         </div>
 
-        {selectedRole === "Académico" && (
+        {selectedRole === "Académico" && TipoInfoSeleccionado==="Académico"&& (
           <>
             <div className="SelectorGrupo-info">
               <h3 className="tituleselect-Grupo">Seleccione un grupo:</h3>
@@ -311,14 +394,15 @@ function VistaInformacion() {
             </label>
             <input
               id="Fecha-Busqueda"
-              type="text"
+              type="date"
               placeholder="Fecha"
               className="filter-input-info"
               value={fechaFilter}
               onChange={handleFechaFilterChange}
             />
           </div>
-
+          {TipoInfoSeleccionado !== "Plantilla" && (
+          <>
           <div className="filter-group-info">
             <label className="filter-label-info" htmlFor="Descripcion-Busqueda">
               Buscar por Descripción
@@ -332,7 +416,8 @@ function VistaInformacion() {
               onChange={handleDescripcionFilterChange}
             />
           </div>
-
+            </>
+          )}
           <div className="filter-group-info">
             <label
               className="filter-label-info"
@@ -360,9 +445,9 @@ function VistaInformacion() {
                 {TipoInfoSeleccionado !== "Plantilla" && (
                   <th className="mat-th">Descripción</th>
                 )}
-                <th className="mat-th">Nombre de Archivo</th>
+                <th className="mat-th">Archivo Adjuntado</th>
                 {TipoInfoSeleccionado !== "Plantilla" && (
-                  <th className="mat-th">Acción</th>
+                  <th className="mat-th"></th>
                 )}
               </tr>
             </thead>
@@ -377,21 +462,40 @@ function VistaInformacion() {
                 </tr>
               ) : (
                 currentInformacion.map((info) => (
-                  <tr key={info.Id}>
-                    <td className="mat-td">{info.Fecha}</td>
+                  <tr key={info.InformacionId}>
+                    <td className="mat-td">{formatDate(info.Fecha)}</td>
                     {TipoInfoSeleccionado !== "Plantilla" && (
                       <td className="mat-td">{info.Descripcion}</td>
                     )}
-                    <td className="mat-td">{info.NombreArchivo}</td>
+                    <td className="mat-td">
+                    {info.NombreArchivo &&
+                            info.NombreArchivo !== "-" ? (
+                              <button
+                                className="btn-link"
+                                onClick={() =>
+                                  handleDescargaArchivo(
+                                    info.InformacionId
+                                  )
+                                }
+                              >
+                                {info.NombreArchivo}
+                              </button>
+                            ) : (
+                              "No hay Archivo Adjunto"
+                            )}
+
+
+
+                    </td>
                     {TipoInfoSeleccionado !== "Plantilla" && (
                       <td className="mat-td">
                         <OverlayTrigger
-                          overlay={<Tooltip>Ver Detalles</Tooltip>}
+                          overlay={<Tooltip>Editar Información</Tooltip>}
                           placement="top"
                         >
                           <button
                             className="icon-btn-mat"
-                            onClick={() => handleViewDetails(info.Id)}
+                            onClick={() => handleEditar(info.InformacionId)}
                           >
                             <FaInfoCircle />
                           </button>

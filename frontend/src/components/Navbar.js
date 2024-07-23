@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import imagen from "../Assets/Images/Bandera Combinada.png";
+import { FaFileDownload } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { LiaReadme } from "react-icons/lia";
 import "./Navbar.css";
@@ -42,6 +43,8 @@ function Navbar() {
       );
       setIdentificacion(storedIdentificacion);
     }
+
+    
 
     const navbarCollapse = document.getElementById("navbarSupportedContent");
     const dropdownMenuEnd = document.querySelector(".dropdown-menu-end");
@@ -137,6 +140,15 @@ function Navbar() {
     setSelectedRole(newRole);
     sessionStorage.setItem("SelectedRole", newRole);
     window.location.href = "/Home";
+  };
+
+  const renderLinkText = () => {
+    if (selectedRole === 'Estudiante') {
+      return 'Del Grupo';
+    } else if (selectedRole === 'Académico') {
+      return 'Grupos a Cargo';
+    }
+    return '';
   };
 
   return (
@@ -322,33 +334,56 @@ function Navbar() {
                         )}
                       </ul>
                     </li>
-                    <li>
+                    {(selectedRole === "Estudiante" ||
+                          selectedRole === "Académico"||
+                          selectedRole === "Administrativo") && (
+                    <li className="dropdown-submenu">
+                      <Link
+                        className="dropdown-item dropdown-style dropdown-toggle"
+                        to="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <LiaReadme /> Información
+                      </Link>
+                      {/*Aqui va el otro dopdown*/}
+                      <ul className="dropdown-menu bg-blue">
+                        
+                      <li>
                       <Link
                         className="dropdown-item dropdown-style"
                         to="/Informacion"
                         onClick={() => handleLinkClick('General', '/Informacion')}
                       >
-                        Informacion General
+                        General
                       </Link>
                     </li>
+                    {(selectedRole === "Estudiante" ||
+                      selectedRole === "Académico") && (
                     <li>
                       <Link
                         className="dropdown-item dropdown-style"
                         to="/Informacion"
                         onClick={() => handleLinkClick('Académico', '/Informacion')}
                       >
-                        Informacion del Académico
+                        {renderLinkText()}
                       </Link>
                     </li>
+                    )}
+                      </ul>
+                    </li>
+                    )}
+                    {(selectedRole === "Administrativo") && (
                     <li>
                       <Link
                         className="dropdown-item dropdown-style"
                         to="/Informacion"
                         onClick={() => handleLinkClick('Plantilla', '/Informacion')}
                       >
-                        Plantillas
+                        <FaFileDownload /> Plantillas
                       </Link>
                     </li>
+                    )}
                   </ul>
                 </li>
               </ul>
