@@ -1,6 +1,6 @@
 
 
-/* */
+/*Pagina del form de proyectos */
 .container-projcreaed {
   display: flex;
   flex-direction: column;
@@ -150,11 +150,6 @@
       width: 80%;
   }
 }
-
-
-
-
-
 
 /* Pagina de crear y editar la creacion de grupos */
 

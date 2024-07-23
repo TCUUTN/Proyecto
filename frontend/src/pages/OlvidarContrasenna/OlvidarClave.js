@@ -7,12 +7,22 @@ import { RiMailSendLine } from "react-icons/ri";
 import { FaChevronLeft } from "react-icons/fa6";
 import "./Olvidar.modulo.css";
 
-function OlvidarClave() {
-  const [CorreoElectronico, setCorreoElectronico] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+/**
+ * Componente OlvidarClave
+ * Este componente renderiza una interfaz para que 
+ * el usuario pueda solicitar el restablecimiento de su contraseña.
+ */
 
+function OlvidarClave() {
+  // Estado para almacenar el correo electrónico ingresado por el usuario
+  const [CorreoElectronico, setCorreoElectronico] = useState("");
+    // Estado para manejar errores en el envío de la solicitud
+  const [error, setError] = useState("");
+  // Estado para manejar la pantalla de carga
+  const [loading, setLoading] = useState(false);
+   // Hook de navegación para redirigir al usuario
+  const navigate = useNavigate();
+ // Hook de efecto para mostrar una notificación después de redirigir
   useEffect(() => {
     const showNotificationAfterRedirect = () => {
       const params = new URLSearchParams(window.location.search);
@@ -26,18 +36,15 @@ function OlvidarClave() {
 
     showNotificationAfterRedirect();
   }, []);
-
+// Maneja el evento de regresar a la página anterior
   const handleRegresar = () => {
     sessionStorage.removeItem("IdentificacionUsuario");
     navigate("/");
   };
-
-
-
+   // Maneja el evento de enviar el formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Show loading screen
-
+    setLoading(true); // Muestra la pantalla de carga
     try {
       const response = await fetch("/usuarios/olvidoContrasenna", {
         method: "POST",
@@ -103,12 +110,7 @@ function OlvidarClave() {
             Enviar <RiMailSendLine />
           </button>
           </div>
-          
-
-
-
-        </form>
-        
+        </form>     
         <ToastContainer position="bottom-right" />
       </div>
     </div>

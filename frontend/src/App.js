@@ -25,6 +25,8 @@ import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
 //Guias del aplicacion web
 import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
 import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
+import GuiaAcademico from "./pages/GuiasUsuarios/GuiaAcademico.js"
+
 //
 import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
 import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
@@ -234,6 +236,14 @@ function App() {
                 <GuiaEstudiantes />
               </ProtectedRoute>  
              }
+            />
+            <Route 
+            path="/GuiaAcademico"
+            element={
+              <ProtectedRoute allowedRoles={["Administrativo","Académico"]}>
+                <GuiaAcademico />
+              </ProtectedRoute>
+            }
             />
           </Routes>
         </div>
