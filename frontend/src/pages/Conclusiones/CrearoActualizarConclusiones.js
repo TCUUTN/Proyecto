@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
 import "react-toastify/dist/ReactToastify.css";
+import { FaSave } from "react-icons/fa";
 import "./CrearoActualizarConclusiones.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 function CrearoActualizarConclusiones() {
   const [formData, setFormData] = useState({
+    ConclusionId:"",
     Identificacion: "",
     GrupoId: "",
     Labor1: "",
@@ -21,7 +23,7 @@ function CrearoActualizarConclusiones() {
     MotivoRechazo: "",
     LastUser: "",
   });
-
+  
   const [error, setError] = useState("");
   const [conclusionId, setConclusionId] = useState(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -57,20 +59,23 @@ function CrearoActualizarConclusiones() {
         fetch(`conclusiones/${identificacion}/${grupoId}`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data)
             if (data) {
+              setConclusionId(data.ConclusionId)
               setFormData((prevFormData) => ({
                 ...prevFormData,
-                Identificacion: data.Identificacion || "",
-                GrupoId: data.GrupoId || "",
-                Labor1: data.Labor1 || "",
-                Labor2: data.Labor2 || "",
-                Labor3: data.Labor3 || "",
-                Labor4: data.Labor4 || "",
-                Labor5: data.Labor5 || "",
-                Labor6: data.Labor6 || "",
-                Comentarios: data.Comentarios || "",
+                ConclusionId:data.ConclusionId,
+                Identificacion: data.Identificacion,
+                GrupoId: data.GrupoId,
+                Labor1: data.Labor1,
+                Labor2: data.Labor2,
+                Labor3: data.Labor3,
+                Labor4: data.Labor4,
+                Labor5: data.Labor5,
+                Labor6: data.Labor6,
+                Comentarios: data.Comentarios,
                 EstadoBoleta: data.EstadoBoleta || "En Proceso",
-                MotivoRechazo: data.MotivoRechazo || "",
+                MotivoRechazo: data.MotivoRechazo,
                 LastUser: data.LastUser || "",
               }));
               validateForm(data);
@@ -172,10 +177,16 @@ function CrearoActualizarConclusiones() {
         return;
       }
     }
-
+    formData.Identificacion=sessionStorage.getItem("Identificacion")
+    formData.GrupoId=sessionStorage.getItem("GrupoId")
+    formData.ConclusionId=conclusionId
+    console.log(formData.Identificacion)
+  console.log(formData.GrupoId)
+  console.log(formData.ConclusionId)
     const dataToSend = { ...formData, ConclusionId: conclusionId };
 
     try {
+      console.log(dataToSend)
       const response = await fetch(
         "conclusiones/crearOActualizarConclusiones",
         {
@@ -191,7 +202,12 @@ function CrearoActualizarConclusiones() {
         toast.success("La conclusión se ha registrado correctamente");
         sessionStorage.removeItem("ConclusionIdSeleccionado");
         setIsLoading(false); // Ocultar pantalla de carga
-        navigate("/VistaConclusionesGrupo");
+        if(selectedRole!=="Estudiante"){
+          navigate("/VistaConclusionesGrupo");
+        }else{
+          navigate("/Home");
+        }
+        
       } else {
         setError(
           "Error al registrar la conclusión. Por favor, inténtelo de nuevo."
@@ -205,7 +221,11 @@ function CrearoActualizarConclusiones() {
 
   const handleBackClick = () => {
     sessionStorage.removeItem("ConclusionIdSeleccionado");
-    navigate("/VistaConclusionesGrupo");
+    if(selectedRole!=="Estudiante"){
+      navigate("/VistaConclusionesGrupo");
+    }else{
+      navigate("/Home");
+    }
   };
 
   const handleApprove = async () => {
@@ -336,7 +356,6 @@ function CrearoActualizarConclusiones() {
       </div>
     );
   }
-
   return (
     <div className="creconclusiones-container">
       <div className="creconclusiones-content">
@@ -346,7 +365,7 @@ function CrearoActualizarConclusiones() {
           <FaChevronLeft />
           Regresar
         </button>
-        {selectedRole === "Académico" || selectedRole === "Administrativo" ? (
+        {selectedRole === "Académico" || selectedRole === "Administrativo"||(selectedRole === "Estudiante"&&formData.EstadoBoleta==="Aprobado") ? (
           <div>
             <input
               type="hidden"
@@ -474,14 +493,14 @@ function CrearoActualizarConclusiones() {
                 placeholder="Comentarios"
               />
             </div>
-            {formData.EstadoBoleta === "Aprobado" && (
+            {(formData.EstadoBoleta !== "Aprobado"&&selectedRole==="Estudiante") && (
               <div className="creconclusiones-input-container">
                 <button
                   type="submit"
                   className="creconclusiones-button"
                   disabled={isSubmitDisabled}
                 >
-                  {conclusionId ? "Actualizar" : "Guardar"}
+                  {conclusionId ? "Actualizar" : "Guardar"} <FaSave />
                 </button>
               </div>
             )}

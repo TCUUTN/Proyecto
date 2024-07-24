@@ -199,7 +199,7 @@ const crearOActualizarConclusiones = async (req, res) => {
     ) {
       return res.status(400).json({ error: "Faltan valores son requeridos" });
     }
-
+    console.log(ConclusionId)
     if (ConclusionId) {
       // Verificar si existe un registro con el BitacoraId proporcionado
       let conclusionExistente = await BoletaConclusion.findOne({

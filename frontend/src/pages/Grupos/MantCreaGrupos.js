@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaFileDownload, FaFileUpload } from "react-icons/fa";
+import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
@@ -310,13 +310,10 @@ function MantGrupos() {
           </div>
           <div className="mater-divider" />
           {/*Parte de las carga masiva*/}
-          <div className="bulk-upload-section">
+          <div className="bulk-upload-section-Pro">
             <h2 className="title-mater">Carga masiva</h2>
 
             <div className="bulk-upload-mater">
-              <div className="upload-option-mater">
-                <FaFileDownload className="icon-othermat" /> Descargar Plantilla
-              </div>
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
                   <FaFileUpload className="icon-othermat" /> Cargar Grupos
@@ -339,7 +336,7 @@ function MantGrupos() {
               className="filter-label-mat"
               htmlFor="CodigoMateria-Busqueda"
             >
-              Buscar por Código de Materia
+              Buscar por Código de Proyecto
             </label>
             <input
               id="CodigoMateria-Busqueda"
@@ -409,7 +406,7 @@ function MantGrupos() {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Materia</th>
+                <th>Proyecto</th>
                 <th>Nombre Proyecto</th>
                 <th>Tipo</th>
                 <th>Grupo</th>

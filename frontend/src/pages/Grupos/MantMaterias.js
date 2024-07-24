@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
-import { FaFileDownload, FaFileUpload } from "react-icons/fa";
+import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
@@ -204,17 +204,14 @@ function MantMaterias() {
               className="add-mater"
               onClick={() => navigate("/CrearActuProyectos")}
             >
-              Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
+              Agregar Proyecto <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
           <div className="mater-divider" />
-          <div className="bulk-upload-section">
+          <div className="bulk-upload-section-Pro">
             <h2 className="title-mater">Carga masiva</h2>
 
             <div className="bulk-upload-mater">
-              <div className="upload-option-mater">
-                <FaFileDownload className="icon-othermat" /> Descargar Plantilla
-              </div>
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
                   <FaFileUpload className="icon-othermat" /> Cargar Proyectos
@@ -279,10 +276,10 @@ function MantMaterias() {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Código de Materia</th>
+                <th>Código de Proyecto</th>
                 <th>Nombre del Proyecto</th>
                 <th>Tipo</th>
-                <th>Acciones</th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
