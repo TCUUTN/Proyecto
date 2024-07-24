@@ -100,11 +100,14 @@ const getHorasPorBitacoraId = async (req, res) => {
 
 const getHorasPorFecha = async (req, res) => {
   try {
-    const { Fecha } = req.body;
+    const { Fecha,Identificacion,GrupoId } = req.body;
     console.log(Fecha)
     const horas = await HorasBitacora.findOne({
       where: {
         Fecha: Fecha,
+        EstadoHoras:"Aprobado",
+        Identificacion:Identificacion,
+        GrupoId:GrupoId
       },
       attributes: [
         'Fecha',

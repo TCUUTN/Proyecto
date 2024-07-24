@@ -233,8 +233,12 @@ function SocioComunitarios() {
         <div className="sociocomu-sidebar">
           <div className="action-sociocomu">
             <button className="add-sociocomu" onClick={handleAddUser}>
-              Agregar <IoMdAddCircle className="icon-socio" />
+              Agregar Socio<IoMdAddCircle className="icon-socio" />
             </button>
+            <div className="socio-divider" />
+            <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
+            <div className="socio-divider" />
+            <div className="butRepor-socio">
             <OverlayTrigger
               placement="top"
               overlay={
@@ -246,13 +250,15 @@ function SocioComunitarios() {
             >
               <button
                 onClick={handleGenerarReporte}
-                className="finalizar-button-listest"
+                className="descagarReport-Socios"
               >
                 <FaFileDownload /> Descargar Reporte
               </button>
             </OverlayTrigger>
-            <div className="socio-divider" />
-            <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
+            </div>
+           
+            
+          
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 import imagen from "../Assets/Images/Bandera Combinada.png";
+import { FaFileDownload } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { LiaReadme } from "react-icons/lia";
 import "./Navbar.css";
@@ -14,6 +15,8 @@ function Navbar() {
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
   const [showBoletaConclusion, setShowBoletaConclusion] = useState(false);
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   useEffect(() => {
     const storedNombre = sessionStorage.getItem("Nombre");
@@ -40,6 +43,8 @@ function Navbar() {
       );
       setIdentificacion(storedIdentificacion);
     }
+
+    
 
     const navbarCollapse = document.getElementById("navbarSupportedContent");
     const dropdownMenuEnd = document.querySelector(".dropdown-menu-end");
@@ -89,16 +94,20 @@ function Navbar() {
           );
           const horasData = await horasResponse.json();
 
-          const horasTotales = horasData.reduce((total, hora) => {
-            const horaInicio = new Date(`1970-01-01T${hora.horaInicio}`);
-            const horaFinal = new Date(`1970-01-01T${hora.horaFinal}`);
-            const diff = (horaFinal - horaInicio) / (1000 * 60 * 60); // Diferencia en horas
-            return total + diff;
-          }, 0);
+          const parseHora = (hora) => {
+            const [hours, minutes, seconds] = hora.split(':').map(Number);
+            return hours * 60 + minutes + seconds / 60;
+        };
+        
+        const horasTotales = horasData.reduce((total, hora) => {
+            const horaInicio = parseHora(hora.HoraInicio);
+            const horaFinal = parseHora(hora.HoraFinal);
+            const diff = horaFinal - horaInicio;
+            return total + diff / 60; // Convertir minutos a horas
+        }, 0);
 
           // Guarda horasTotales en localStorage
           localStorage.setItem("horasTotalesEstudiante", horasTotales);
-
           if (horasTotales >= 150) {
             setShowBoletaConclusion(true);
           }
@@ -116,8 +125,16 @@ function Navbar() {
     fetchHorasTotales();
   }, [selectedRole, identificacion]);
 
+  const handleLinkClick = (tipo, linkPath) => {
+    localStorage.setItem('TipoInfoSeleccionado', tipo);
+    if (currentPath === linkPath) {
+      window.location.reload();
+    }
+  };
+
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.clear();
     setIsAuthenticated(false);
     window.location.href = "/"; // Redirige a la página de inicio de sesión
   };
@@ -127,6 +144,15 @@ function Navbar() {
     setSelectedRole(newRole);
     sessionStorage.setItem("SelectedRole", newRole);
     window.location.href = "/Home";
+  };
+
+  const renderLinkText = () => {
+    if (selectedRole === 'Estudiante') {
+      return 'Del Grupo';
+    } else if (selectedRole === 'Académico') {
+      return 'Grupos a Cargo';
+    }
+    return '';
   };
 
   return (
@@ -222,6 +248,7 @@ function Navbar() {
                     </Link>
                   </li>
                 )}
+
                 {(selectedRole === "Académico" ||
                   selectedRole === "Administrativo") && (
                   <li className="nav-item dropdown">
@@ -253,14 +280,14 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-                
+
                 {showBoletaConclusion && (
                   <li className="nav-item">
                     <Link
                       className="nav-link"
                       to={
                         selectedRole === "Estudiante"
-                          ? "/CrearoActualizarConclusiones"
+                          ? "/CrearActualizarConclusiones"
                           : "/GruposConclusiones"
                       }
                     >
@@ -268,7 +295,7 @@ function Navbar() {
                     </Link>
                   </li>
                 )}
-                            {/*Información*/}
+                {/*Información*/}
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -280,32 +307,117 @@ function Navbar() {
                   </Link>
                   <ul className="dropdown-menu bg-blue">
                     <li className="dropdown-submenu">
-                      <Link className="dropdown-item dropdown-style dropdown-toggle" to="#"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      <LiaReadme />  Guías
+                      <Link
+                        className="dropdown-item dropdown-style dropdown-toggle"
+                        to="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <LiaReadme /> Guías
                       </Link>
                       {/*Aqui va el otro dopdown*/}
                       <ul className="dropdown-menu bg-blue">
-                      <li>
+                        <li>
                           <Link
                             className="dropdown-item dropdown-style"
-                            to="GuiaIniciarSesion"
+                            to="/GuiaIniciarSesion"
                           >
-                           Guia de Iniciar Sesión
+                            Guia de Iniciar Sesión
                           </Link>
                         </li>
+                        {(selectedRole === "Estudiante" ||
+
+                           selectedRole === "Administrativo"
+                         )&& (
+                        <li>
+                          <Link
+                            className="dropdown-item dropdown-style"
+                            to="/GuiaEstudiantes"
+                          >
+                           Guia para Estudiantes
+                          </Link>
+                        </li>
+                         )}
+                         {(selectedRole === "Académico" ||
+                           selectedRole === "Administrativo"
+                         )&& (
+                        <li>
+                          <Link
+                            className="dropdown-item dropdown-style"
+                            to="/GuiaAcademico"
+                          >
+                           Guia para Académico
+                          </Link>
+                        </li>
+                         )}
+
+                          selectedRole === "Administrativo") && (
+                          <li>
+                            <Link
+                              className="dropdown-item dropdown-style"
+                              to="GuiaEstudiantes"
+                            >
+                              Guia para Estudiantes
+                            </Link>
+                          </li>
+                        )}
+
                       </ul>
                     </li>
-                    <li>
-                      <Link className="dropdown-item dropdown-style" to="#">
-                        -
+                    {(selectedRole === "Estudiante" ||
+                          selectedRole === "Académico"||
+                          selectedRole === "Administrativo") && (
+                    <li className="dropdown-submenu">
+                      <Link
+                        className="dropdown-item dropdown-style dropdown-toggle"
+                        to="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <LiaReadme /> Información
+                      </Link>
+                      {/*Aqui va el otro dopdown*/}
+                      <ul className="dropdown-menu bg-blue">
+                        
+                      <li>
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('General', '/Informacion')}
+                      >
+                        General
                       </Link>
                     </li>
+                    {(selectedRole === "Estudiante" ||
+                      selectedRole === "Académico") && (
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('Académico', '/Informacion')}
+                      >
+                        {renderLinkText()}
+                      </Link>
+                    </li>
+                    )}
+                      </ul>
+                    </li>
+                    )}
+                    {(selectedRole === "Administrativo") && (
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-style"
+                        to="/Informacion"
+                        onClick={() => handleLinkClick('Plantilla', '/Informacion')}
+                      >
+                        <FaFileDownload /> Plantillas
+                      </Link>
+                    </li>
+                    )}
                   </ul>
                 </li>
               </ul>
-            {/* Icono Usuario */}
+              {/* Icono Usuario */}
               <div className="navbar-link">
                 {roles.length > 1 ? (
                   <select
@@ -336,9 +448,7 @@ function Navbar() {
                   <FaCircleUser className="user-icon-nav" />
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end bg-lightblue">
-                  <li  className="dropdown-item dropdown-style2">
-
-                  </li>
+                  <li className="dropdown-item dropdown-style2"></li>
                   <li>
                     <Link
                       className="dropdown-item dropdown-style2"

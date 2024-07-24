@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { RxEnter } from "react-icons/rx";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import "./Login.modulo.css";
 
@@ -133,7 +134,7 @@ function Login() {
 
           <br />
           <button type="submit" className="login-button">
-            Acceder
+            Acceder <RxEnter />
           </button>
         </form>
         {error && <p className="error-message-login">{error}</p>}

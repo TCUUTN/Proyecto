@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaFileDownload,
-  FaFileUpload,
-} from "react-icons/fa";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,7 +21,7 @@ function MantMaterias() {
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
 
-  const banderaProyecto = sessionStorage.getItem("proyectoGuardado")
+  const banderaProyecto = sessionStorage.getItem("proyectoGuardado");
 
   const navigate = useNavigate();
 
@@ -45,8 +44,8 @@ function MantMaterias() {
 
   useEffect(() => {
     fetchMaterias();
-    
-    if (banderaProyecto==="true") {
+
+    if (banderaProyecto === "true") {
       toast.success("El proyecto fue guardado con éxito.");
       sessionStorage.removeItem("proyectoGuardado");
     }
@@ -118,35 +117,38 @@ function MantMaterias() {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    if (
+      file &&
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
-  
+        const worksheet = XLSX.utils.sheet_to_json(
+          workbook.Sheets[firstSheetName],
+          { header: 1 }
+        );
+
         const expectedHeaders = [
           "Código del Proyecto",
           "Nombre del Proyecto",
-          "Modalidad del Proyecto"
+          "Modalidad del Proyecto",
         ];
-  
+
         if (worksheet[0].join(",") === expectedHeaders.join(",")) {
           const jsonData = worksheet.slice(1).map((row) => {
-            const [
-              CodigoMateria, 
-              NombreProyecto, 
-              TipoCurso
-            ] = row;
-  
+            const [CodigoMateria, NombreProyecto, TipoCurso] = row;
+
             return {
               CodigoMateria,
               NombreProyecto,
               TipoCurso,
             };
           });
-  
+
           uploadJsonData(jsonData);
         } else {
           console.error("Formato de archivo inválido");
@@ -159,7 +161,6 @@ function MantMaterias() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
-  
 
   const uploadJsonData = async (data) => {
     setLoading(true);
@@ -203,17 +204,14 @@ function MantMaterias() {
               className="add-mater"
               onClick={() => navigate("/CrearActuProyectos")}
             >
-              Agregar Proyectos <IoMdAddCircle className="icon-addMater" />
+              Agregar Proyecto <IoMdAddCircle className="icon-addMater" />
             </button>
           </div>
           <div className="mater-divider" />
-          <div className="bulk-upload-section">
+          <div className="bulk-upload-section-Pro">
             <h2 className="title-mater">Carga masiva</h2>
 
             <div className="bulk-upload-mater">
-              <div className="upload-option-mater">
-                <FaFileDownload className="icon-othermat" /> Descargar Plantilla
-              </div>
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
                   <FaFileUpload className="icon-othermat" /> Cargar Proyectos
@@ -278,10 +276,10 @@ function MantMaterias() {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Código de Materia</th>
+                <th>Código de Proyecto</th>
                 <th>Nombre del Proyecto</th>
                 <th>Tipo</th>
-                <th>Acciones</th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
@@ -291,41 +289,57 @@ function MantMaterias() {
                   <td>{materia.NombreProyecto}</td>
                   <td>{materia.TipoCurso}</td>
                   <td>
-                    <button
-                      className="icon-btn-mat"
-                      onClick={() => {
-                        sessionStorage.setItem(
-                          "CodigoProyecto",
-                          materia.CodigoMateria
-                        );
-                        navigate("/CrearActuProyectos");
-                      }}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id="tooltip-edit">Editar proyecto</Tooltip>
+                      }
                     >
-               <LuFileEdit />
-                    </button>
-                   
+                      <button
+                        className="icon-btn-mat"
+                        onClick={() => {
+                          sessionStorage.setItem(
+                            "CodigoProyecto",
+                            materia.CodigoMateria
+                          );
+                          navigate("/CrearActuProyectos");
+                        }}
+                      >
+                        <LuFileEdit />
+                      </button>
+                    </OverlayTrigger>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="pagination-mat">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Anterior
-            </button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+            >
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <GrFormPreviousLink />
+              </button>
+            </OverlayTrigger>
             <span>
-              Página {currentPage} de{" "}
+              {currentPage} de{" "}
               {Math.ceil(filteredMaterias.length / materiasPerPage)}
             </span>
-            <button
-              onClick={handleNextPage}
-              disabled={
-                currentPage ===
-                Math.ceil(filteredMaterias.length / materiasPerPage)
-              }
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
             >
-              Siguiente
-            </button>
+              <button
+                onClick={handleNextPage}
+                disabled={
+                  currentPage ===
+                  Math.ceil(filteredMaterias.length / materiasPerPage)
+                }
+              >
+                <GrFormNextLink />
+              </button>
+            </OverlayTrigger>
           </div>
         </div>
       </main>

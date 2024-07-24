@@ -1,4 +1,4 @@
-/* cARGA */
+/* Carga */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -36,43 +36,45 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  gap: 20px;
   font-family: "Century Gothic", sans-serif;
 }
 
 /* Botón de agregar actividades */
 .horasi-botton {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-  width: 80%;
-  margin: 15px auto;
-  cursor: pointer;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  background-color: #fff;
-  text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    width: 95%;
+    margin: 5px auto;
+    cursor: pointer;
+    border: 2px solid rgba(0, 44, 105, 0.212);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: center;
+    box-sizing: border-box;
+    flex-direction: column;
 }
 
 /* Título */
 .horasies-titulo {
   font-family: 'Playfair Display', serif;
   color: #012c6a;
-  margin-bottom: 10px;
   font-size: 2.5rem;
   text-align: center;
-  margin-left: 0; /* Ajustado para dispositivos móviles */
   width: 100%;
+  flex-grow: 1;
+  margin: 20px 0;
 }
 
 /* Línea divisoria */
 .horasies-divider {
   width: 2px;
-  height: 50px;
+  height: 65px;
   background: #ff6600;
-  margin: auto 20px;
-  text-align: center;
+  margin: auto 15px auto 20px;
 }
 
 .add-horasi {
@@ -94,7 +96,8 @@
 }
 
 /* Botón de regresar para académico */
-.add-horasiRegresar {
+.add-horasiRegresar,
+.desRep-botton-horasi {
   display: flex;
   align-items: center;
   padding: 5px 10px;
@@ -104,6 +107,7 @@
   border-radius: 50px;
   cursor: pointer;
   transition: 0.3s;
+  margin: 10px 0;
 }
 
 .icon-horasiRegresar {
@@ -111,14 +115,27 @@
   font-size: 35px;
 }
 
-.add-horasiRegresar:hover {
+.add-horasiRegresar:hover,
+.desRep-botton-horasi:hover {
   background-color: #f66226;
   transition: 0.3s;
 }
 
+.button-action-horasi {
+  display: flex;
+  
+  align-items: center;
+  width: 100%;
+}
+
+.desRep-botton-horasi {
+  margin-left: auto;
+}
+
 /* Contiene los filtros y la tabla de aprobados y rechazados */
-.container-tableapro, .container-tablerecha {
-  width: 80%;
+.container-tableapro,
+.container-tablerecha {
+  width: 95%;
   margin: auto;
   padding: 20px;
   border: 2px solid rgba(0, 44, 105, 0.212);
@@ -128,7 +145,7 @@
 }
 
 .container-tablerecha {
-  margin-top: 3%;
+  margin-top: 1%;
 }
 
 /* Título y la línea */
@@ -192,7 +209,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 5px;
- 
+  overflow-x: auto; /* Agregado para hacer la tabla scrollable en dispositivos pequeños */
 }
 
 .apro-thead th {
@@ -274,346 +291,220 @@
 }
 
 /* Responsividad */
-@media (max-width: 600px) and (orientation: portrait) {
-  /* Estilos específicos para pantallas menores a 600px en orientación vertical (teléfonos en modo retrato) */
-  .horasi-botton {
-    width: 100%;
-    margin: 10px auto;
-  }
-
-  .container-tableapro, .container-tablerecha {
-    width: 100%;
+@media (max-width: 480px) {
+  /* Estilos para móviles */
+  .horasi-container {
     padding: 10px;
   }
 
+  .horasi-botton {
+    padding: 10px;
+    font-size: 0.8rem;
+    flex-direction: column;
+    width: 100%; 
+  }
+
+  .horasies-titulo {
+    font-size: 1.5rem;
+  }
+
+  .horasies-divider {
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+  }
+  .button-action-horasi{
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .add-horasi {
+    font-size: 1rem;
+  }
+.container-tableapro,
+.container-tablerecha{
+  width: 100%;
+}
+  .icon-horasi {
+    font-size: 1.5rem;
+  }
+
+  .add-horasiRegresar,
+  .desRep-botton-horasi {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-left: 0;
+  }
+
+  .icon-horasiRegresar {
+    font-size: 1.5rem;
+  }
+
   .apro-titl {
-    font-size: 28px;
+    font-size: 1.5rem;
   }
 
   .apro-divider {
-    width: 50%;
+    width: 50px;
+    margin: 10px auto; /* Ajustado el margen */
   }
 
   .filter-apro {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .filter-group-apro {
-    width: 100%;
     margin: 10px 0;
   }
 
-  .filter-input-apro, .filter-select-apro {
-    width: 100%;
-  }
-
   .pagination-apro button {
-    padding: 8px 16px;
-    font-size: 0.9em;
+    padding: 5px 10px;
   }
 
-  .horasies-titulo {
-    font-size: 1.8rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
-  }
-
-  .horasies-divider {
-    display: block;
-    width: 2px;
-    height: 55px;
-    background: #ff6600;
-    margin: auto 20px;
-    text-align: center;
+  .pagination-apro span {
+    font-size: 0.8em;
   }
 
   .apro-table {
-    width: 100%;
-    overflow-x: auto;
-    display: block;
-    font-size: 12px;
-  }
-
-  .apro-thead th,
-  .apro-tbody td {
-    white-space: nowrap;
+    overflow-x: scroll;
+    display: block; /* Hace que la tabla se comporte como un bloque scrollable */
   }
 }
 
-@media (max-width: 600px) and (orientation: landscape) {
-  /* Estilos específicos para pantallas menores a 600px en orientación horizontal (teléfonos en modo paisaje) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  /* Estilos para tablets */
+  .horasi-container {
+    padding: 15px;
+  }
+
   .horasi-botton {
-    width: 100%;
-    margin: 10px auto;
-  }
-
-  .container-tableapro, .container-tablerecha {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .apro-titl {
-    font-size: 28px;
-  }
-
-  .apro-divider {
-    width: 50%;
-  }
-
-  .filter-apro {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .filter-group-apro {
-    width: auto;
-    margin: 10px 0;
-  }
-
-  .filter-input-apro, .filter-select-apro {
-    width: auto;
-  }
-
-  .pagination-apro button {
-    padding: 8px 16px;
-    font-size: 0.9em;
-  }
-
-  .horasies-titulo {
-    font-size: 1.8rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
-  }
-
-  .horasies-divider {
-    display: block;
-    width: 2px;
-    height: 55px;
-    background: #ff6600;
-    margin: auto 20px;
-    text-align: center;
-  }
-
-  .apro-table {
-    width: 100%;
-    overflow-x: auto;
-    display: block;
-    font-size: 12px;
-  }
-
-  .apro-thead th,
-  .apro-tbody td {
-    white-space: nowrap;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 992px) and (orientation: portrait) {
-  /* Estilos específicos para pantallas entre 601px y 992px en orientación vertical (tabletas en modo retrato) */
-  .horasi-botton {
-    width: 100%;
-    margin: 10px auto;
-  }
-
-  .container-tableapro, .container-tablerecha {
-    width: 100%;
-  }
-
-  .apro-titl {
-    font-size: 28px;
-  }
-
-  .apro-divider {
-    width: 100px;
-  }
-
-  .filter-apro {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-group-apro {
-    width: 100%;
-    margin: 10px 0;
-  }
-
-  .filter-input-apro, .filter-select-apro {
-    width: 100%;
-  }
-
-  .pagination-apro button {
-    padding: 8px 16px;
-    font-size: 0.9em;
+    padding: 15px;
+    font-size: 1rem;
   }
 
   .horasies-titulo {
     font-size: 2rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
   }
 
   .horasies-divider {
-    width: 2px;
-    height: 50px;
-    background: #ff6600;
-    margin: auto 20px;
-    text-align: center;
+    height: 35px;
+    margin: auto 15px;
   }
 
-  .apro-table {
-    width: 100%;
-    overflow-x: auto;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 992px) and (orientation: landscape) {
-  /* Estilos específicos para pantallas entre 601px y 992px en orientación horizontal (tabletas en modo paisaje) */
-  .horasi-botton {
-    width: 100%;
-    margin: 10px auto;
+  .add-horasi {
+    font-size: 1.2rem;
   }
 
-  .container-tableapro, .container-tablerecha {
-    width: 100%;
+  .icon-horasi {
+    font-size: 2rem;
+  }
+
+  .add-horasiRegresar,
+  .desRep-botton-horasi {
+    padding: 4px 8px;
+    font-size: 1rem;
+  }
+
+  .icon-horasiRegresar {
+    font-size: 2rem;
   }
 
   .apro-titl {
-    font-size: 28px;
+    font-size: 2rem;
   }
 
   .apro-divider {
-    width: 100px;
+    width: 75px;
+    margin: 0 auto 15px auto;
   }
 
   .filter-apro {
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .filter-group-apro {
-    width: auto;
-    margin: 10px 0;
-  }
-
-  .filter-input-apro, .filter-select-apro {
-    width: auto;
+    margin: 10px;
   }
 
   .pagination-apro button {
-    padding: 8px 16px;
+    padding: 8px 15px;
+  }
+
+  .pagination-apro span {
     font-size: 0.9em;
   }
 
+  .apro-table {
+    overflow-x: scroll;
+    display: block; /* Hace que la tabla se comporte como un bloque scrollable */
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Estilos para computadoras */
+  .horasi-container {
+    padding: 20px;
+  }
+
+  .horasi-botton {
+    padding: 20px;
+  }
+
   .horasies-titulo {
-    font-size: 2rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
+    font-size: 2.5rem;
   }
 
   .horasies-divider {
-    width: 2px;
     height: 50px;
-    background: #ff6600;
     margin: auto 20px;
-    text-align: center;
+  }
+
+  .add-horasi {
+    font-size: 1.5rem;
+  }
+
+  .icon-horasi {
+    font-size: 2.5rem;
+  }
+
+  .add-horasiRegresar,
+  .desRep-botton-horasi {
+    padding: 5px 10px;
+    font-size: 1rem;
+  }
+
+  .icon-horasiRegresar {
+    font-size: 2.5rem;
+  }
+
+  .apro-titl {
+    font-size: 2.5rem;
+  }
+
+  .apro-divider {
+    width: 100px;
+    margin: 0 auto 20px auto;
+  }
+
+  .filter-apro {
+    flex-direction: row;
+  }
+
+  .filter-group-apro {
+    margin: 10px;
+  }
+
+  .pagination-apro button {
+    padding: 10px 20px;
+  }
+
+  .pagination-apro span {
+    font-size: 1em;
   }
 
   .apro-table {
-    width: 100%;
-    overflow-x: auto;
-  }
-}
-
-@media (min-width: 993px) and (orientation: portrait) {
-  /* Estilos específicos para pantallas mayores a 993px en orientación vertical (computadoras en modo retrato) */
-  .horasi-botton {
-    width: 80%;
-    margin: 15px auto;
-  }
-
-  .container-tableapro, .container-tablerecha {
-    width: 80%;
-    padding: 20px;
-  }
-
-  .apro-titl {
-    font-size: 32px;
-  }
-
-  .apro-divider {
-    width: 100px;
-  }
-
-  .filter-apro {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .filter-group-apro {
-    width: auto;
-    margin: 0 10px;
-  }
-
-  .filter-input-apro, .filter-select-apro {
-    width: auto;
-  }
-
-  .pagination-apro button {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-
-  .horasies-titulo {
-    font-size: 2.5rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
-  }
-}
-
-@media (min-width: 993px) and (orientation: landscape) {
-  /* Estilos específicos para pantallas mayores a 993px en orientación horizontal (computadoras en modo paisaje) */
-  .horasi-botton {
-    width: 80%;
-    margin: 15px auto;
-  }
-
-  .container-tableapro, .container-tablerecha {
-    width: 80%;
-    padding: 20px;
-  }
-
-  .apro-titl {
-    font-size: 32px;
-  }
-
-  .apro-divider {
-    width: 100px;
-  }
-
-  .filter-apro {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .filter-group-apro {
-    width: auto;
-    margin: 0 10px;
-  }
-
-  .filter-input-apro, .filter-select-apro {
-    width: auto;
-  }
-
-  .pagination-apro button {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-
-  .horasies-titulo {
-    font-size: 2.5rem;
-    margin-left: 0; /* Ajustado para dispositivos móviles */
-    width: 100%; /* Ajustado para dispositivos móviles */
+    overflow-x: auto; /* Agregado para hacer la tabla scrollable en dispositivos pequeños */
   }
 }

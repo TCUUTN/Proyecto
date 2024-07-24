@@ -22,7 +22,13 @@ import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
+import Informacion from "./pages/Informacion/Informacion.js";
+import RegistroInformacion from "./pages/Informacion/CrearActualizarInfo.js";
+//Guias del aplicacion web
 import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
+import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
+import GuiaAcademico from "./pages/GuiasUsuarios/GuiaAcademico.js"
+
 //
 import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
 import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
@@ -136,6 +142,22 @@ function App() {
               }
             />
             <Route
+              path="/Informacion"
+              element={
+                <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
+                  <Informacion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/RegistroInformacion"
+              element={
+                <ProtectedRoute allowedRoles={["Estudiante", "Académico","Administrativo"]}>
+                  <RegistroInformacion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/VistaConclusionesGrupo"
               element={
                 <ProtectedRoute allowedRoles={["Administrativo", "Académico"]}>
@@ -224,6 +246,22 @@ function App() {
                 <GuiaIniciarSesion />
               </ProtectedRoute>  
              }
+            />
+            <Route 
+             path="/GuiaEstudiantes"
+             element={
+              <ProtectedRoute allowedRoles={["Administrativo","Estudiante"]}>
+                <GuiaEstudiantes />
+              </ProtectedRoute>  
+             }
+            />
+            <Route 
+            path="/GuiaAcademico"
+            element={
+              <ProtectedRoute allowedRoles={["Administrativo","Académico"]}>
+                <GuiaAcademico />
+              </ProtectedRoute>
+            }
             />
           </Routes>
         </div>

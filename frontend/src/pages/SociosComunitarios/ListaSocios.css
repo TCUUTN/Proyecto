@@ -5,6 +5,7 @@
   align-items: center;
   padding: 15px auto;
   gap: 20px;
+  font-family: "Century Gothic", sans-serif;
 }
 
 /* Sidebar */
@@ -19,6 +20,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  flex-wrap: wrap;
 }
 
 /* Add button */
@@ -26,6 +28,7 @@
   display: flex;
   align-items: center;
   margin-left: 15%;
+  flex-wrap: wrap;
 }
 
 .add-sociocomu {
@@ -42,6 +45,21 @@
 .icon-socio {
   margin-left: 10px;
   font-size: 30px;
+}
+
+.descagarReport-Socios{
+  background-color: #002b69;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+  margin-left: auto;
+}
+.descagarReport-Socios:hover{
+  background-color: #f66226;
 }
 
 /* Divider */
@@ -61,11 +79,12 @@
 
 /* Title */
 .sociocomu-titulo {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
-  margin-left: 135px;
+  margin:0 10px 0 25px ;
+  text-align: center;
 }
 
 /* Filters */
@@ -128,7 +147,7 @@
 }
 
 .solicitud-title {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
   color: #012c6a;
   text-align: center;
@@ -228,6 +247,35 @@
   color: #002b69;
 }
 
+/*Boton como link*/
+.btn-link-carta {
+  background: none;
+  border: none;
+  color: blue; /* Usualmente el color de los enlaces es azul */
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit; /* Hereda las propiedades de fuente del padre */
+}
+
+/* Estilo del menú desplegable */
+.dropdown-menu-custom {
+  min-width: auto; /* Elimina la anchura mínima para que se ajuste al contenido */
+}
+
+.dropdown-item-custom {
+  display: flex;
+  align-items: center;
+  padding: 8px; /* Ajusta el padding según sea necesario */
+  width: auto; /* Ajusta el ancho según el contenido */
+}
+
+.dropdown-item-custom .fa-map-marked-alt,
+.dropdown-item-custom .fa-waze {
+  font-size: 30px !important; /* Aumenta el tamaño de los íconos */
+  margin-right: 8px; /* Mantén un pequeño espacio entre el ícono y el borde */
+}
+
 /* Media Queries */
 
 /* Tablets and small desktops */
@@ -240,6 +288,7 @@
 
   .action-sociocomu {
     margin-left: 0;
+    width: 100%;
   }
 
   .sociocomu-titulo {
@@ -277,8 +326,18 @@
 
 /* Mobile phones */
 @media (max-width: 768px) {
+  .sociocomu-sidebar{
+    flex-direction: column;
+    align-items: center;
+  }
   .sociocomu-titulo {
     font-size: 1.8rem;
+    margin-left: 0;
+  }
+  .action-sociocomu {
+    margin-left: 0;
+    margin: 0 auto 15px auto;
+    flex-direction: column;
   }
 
   .filters-sociocomu {
@@ -319,6 +378,11 @@
   .tbody-socioc td {
     padding: 5px;
   }
+  .socio-divider {
+    width: 60%;
+    height: 2px;
+    margin: 10px auto;
+  }
 }
 
 /* Small mobile phones */
@@ -329,10 +393,13 @@
 
   .sociocomu-sidebar {
     width: 100%;
+    flex-direction: column;
+    align-items: center;
   }
 
   .add-sociocomu {
     font-size: 1.2rem;
+    padding: 5px 10px;
   }
 
   .icon-socio {
@@ -344,7 +411,10 @@
   }
 
   .socio-divider {
-    height: 30px;
+    width: 45%;
+    height: 2px;
+    margin: 20px 0;
+    display: block;
   }
 
   .filters-sociocomu {
@@ -391,35 +461,27 @@
   }
 }
 
+/* Landscape orientation for mobile phones */
+@media (max-width: 480px) and (orientation: landscape) {
+  .sociocomu-titulo {
+    font-size: 1.5rem;
+  }
 
-/*Boton como link*/
-.btn-link-carta {
-  background: none;
-  border: none;
-  color: blue; /* Usualmente el color de los enlaces es azul */
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  font: inherit; /* Hereda las propiedades de fuente del padre */
-}
+  .add-sociocomu {
+    font-size: 1rem;
+  }
 
+  .icon-socio {
+    font-size: 1.2rem;
+  }
 
-/* Estilo del menú desplegable */
-.dropdown-menu-custom {
-  min-width: auto; /* Elimina la anchura mínima para que se ajuste al contenido */
-}
+  .descagarReport-Socios {
+    font-size: 0.9rem;
+  }
 
-.dropdown-item-custom {
-  display: flex;
-  align-items: center;
-  padding: 8px; /* Ajusta el padding según sea necesario */
-  width: auto; /* Ajusta el ancho según el contenido */
-}
-
-.dropdown-item-custom .fa-map-marked-alt,
-.dropdown-item-custom .fa-waze {
-  font-size: 30px !important; /* Aumenta el tamaño de los íconos */
-  margin-right: 8px; /* Mantén un pequeño espacio entre el ícono y el borde */
+  .socio-divider {
+    height: 1px;
+  }
 }
 
 

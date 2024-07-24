@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-time-picker/dist/TimePicker.css";
+import { FaSave } from "react-icons/fa";
 import TimePicker from "react-time-picker";
+import { MdDeleteForever } from "react-icons/md";
 import "./CrearoActualizarHoras.css";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
@@ -19,7 +22,7 @@ function CrearoActualizarHoras() {
     HoraInicio: "",
     HoraFinal: "",
     Evidencias: null,
-    NombreEvidencia: "",
+    NombreEvidencia: "-",
   });
 
   const [error, setError] = useState("");
@@ -48,7 +51,7 @@ function CrearoActualizarHoras() {
             HoraInicio: formattedHoraInicio || "",
             HoraFinal: formattedHoraFinal || "",
             Evidencias: null,
-            NombreEvidencia: data.NombreEvidencia || "",
+            NombreEvidencia: data.NombreEvidencia || "-",
           }));
           updateHoraFinalLimits({
             ...data,
@@ -181,7 +184,7 @@ function CrearoActualizarHoras() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ Fecha: formData.Fecha }),
+        body: JSON.stringify({ Fecha: formData.Fecha,Identificacion: formData.Identificacion,GrupoId:formData.GrupoId }),
       });
 
       if (!fechaCheckResponse.ok) {
@@ -314,12 +317,22 @@ function CrearoActualizarHoras() {
     navigate("/VistaHorasEstudiantes");
   };
 
+  const handleDelete = () => {
+    setFormData({
+      ...formData,
+      NombreEvidencia: "-",
+    });
+    document.getElementById("Evidencias").value = ""; // Reset the file input
+  };
+
   const minDate = moment().subtract(6, "months").tz("America/Costa_Rica");
   const maxDate = moment().tz("America/Costa_Rica");
   return (
     <div className="crehoras-container">
       <div className="crehoras-content">
-        <h1 className="crehoras-title">Registro de Horas</h1>
+        <h1 className="crehoras-title"> {bitacoraId ? "Modificar registrar horas" : "Crear registro horas"}
+
+        </h1>
         <div className="crehoras-divider" />
         <form onSubmit={handleSubmit}>
           <input
@@ -397,37 +410,56 @@ function CrearoActualizarHoras() {
             />
           </div>
           <div className="crehoras-input-container">
-            <div className="custom-file-upload">
-              <label htmlFor="Evidencias" className="crehoras-upload-label">
-                <TbFileUpload className="icon-crehoraso" /> Subir Evidencias
-              </label>
-              <input
-                type="file"
-                id="Evidencias"
-                name="Evidencias"
-                onChange={(e) => handleChange(e.target.name, e.target.files[0])}
-                className="crehoras-file"
-              />
-              <div className="file-name-container">
-                {formData.NombreEvidencia && (
-                  <span className="file-name">{formData.NombreEvidencia}</span>
-                )}
-              </div>
+            <label htmlFor="Evidencias" className="crehoras-label">
+              <TbFileUpload /> Subir Evidencias
+            </label>
+            <input
+              type="file"
+              id="Evidencias"
+              name="Evidencias"
+              onChange={(e) => handleChange(e.target.name, e.target.files[0])}
+              className="crehoras-file"
+            />
+
+            <div className="crehoras-section">
+              {formData.NombreEvidencia !== "-" ? (
+                <>
+                  <div className="crehoras-section-title">
+                    {formData.NombreEvidencia}
+                  </div>
+                  <div className="delete-button">
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id="tooltip-edit">Eliminar Archivo</Tooltip>
+                      }
+                    >
+                      <button onClick={handleDelete}>
+                        <MdDeleteForever />
+                      </button>
+                    </OverlayTrigger>
+                  </div>
+                </>
+              ) : (
+                <div className="crehoras-section-title">
+                  Nombre del Archivo Seleccionado
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="crehoras-input-container">
+          <div className="crehoras-buttons-container">
             <button onClick={handleBackClick} className="crehoras-button">
               <FaChevronLeft />
               Regresar
             </button>
-            &nbsp;&nbsp;&nbsp;
+
             <button
               type="submit"
               className="crehoras-button"
               disabled={isSubmitDisabled}
             >
-              {bitacoraId ? "Actualizar" : "Guardar"}
+              {bitacoraId ? "Actualizar" : "Guardar"} <FaSave />
             </button>
           </div>
           {error && <div className="error-message">{error}</div>}

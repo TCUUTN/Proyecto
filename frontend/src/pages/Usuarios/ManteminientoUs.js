@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaFileDownload, FaFileUpload } from "react-icons/fa";
+import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import "./Usuario.modulo.css";
 import { useNavigate } from "react-router-dom";
@@ -403,9 +403,6 @@ function MantenimientoUs() {
             <h2 className="title-user">Carga masiva</h2>
 
             <div className="bulk-upload">
-              <div className="upload-option">
-                <FaFileDownload className="icon-other" /> Descargar Plantilla
-              </div>
               <div className="upload-option">
                 <label
                   htmlFor="file-upload-estudiante"

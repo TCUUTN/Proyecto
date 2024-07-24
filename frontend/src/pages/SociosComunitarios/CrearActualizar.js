@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { FaSave } from "react-icons/fa";
+
 import "./CrearActuSocioCom.css";
 
 function CrearActuSocioComunitarios() {
@@ -351,7 +353,7 @@ function CrearActuSocioComunitarios() {
               className="creaedsocio-button"
               disabled={!isFormValid}
             >
-              Guardar
+              Guardar <FaSave />
             </button>
           </div>
         </form>

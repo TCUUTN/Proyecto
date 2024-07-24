@@ -51,7 +51,7 @@
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 80%;
+  width: 95%;
   margin: 10px auto;
   background-color: #fff;
 
@@ -85,10 +85,11 @@
   margin: auto 0 auto 20px;
 }
 
-.bulk-upload-section {
+.bulk-upload-section-Pro {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  min-width: 40%;
   margin: 0 10%; 
 }
 .title-mater {
@@ -98,7 +99,10 @@
   align-items: center;
   font-family: 'Playfair Display', serif;
   justify-content: center;
-  margin-left: 35%;
+
+
+  font-weight: bold;
+
 }
 
 .bulk-upload-mater {
@@ -140,7 +144,7 @@
   flex-wrap: wrap;
   padding: 20px;
   border-radius: 8px;
-  width: 80%;
+  width: 95%;
   margin: 20px auto;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -182,7 +186,7 @@
 }
 /* Tabla */
 .table-container-mat {
-  width: 80%;
+  width: 95%;
   margin: 10px auto; 
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -193,6 +197,7 @@
 .mat-table {
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto; /* Permite desplazamiento horizontal */
   margin-bottom: 20px;
 }
 
@@ -230,18 +235,31 @@
   display: flex; /* Usar flexbox para alinear elementos */
   justify-content: center; /* Centrar elementos horizontalmente */
   align-items: center; /* Centrar elementos verticalmente */
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .pagination-mat button {
   background-color: #002B69;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   margin: 0 5px;
-  font-size: 1em;
+  font-size: 1.7em;
+  transition: 0.5s;
+}
+
+.pagination-mat button:hover {
+  background-color: #ff6600;
+  transition: 0.5s;
+}
+
+.pagination-mat button:disabled {
+  background-color: #777777;
+  cursor: not-allowed;
+  transition: 0.5s;
 }
 .pagination-mat  span {
   font-size: 1em;
@@ -256,6 +274,14 @@
   .filters-mat,
   .table-container-mat {
     width: 100%;
+  }
+
+  .mat-table {
+    width: 100%;
+    display: block;
+    border-collapse: collapse;
+    overflow-x: auto; /* Permite desplazamiento horizontal */
+    margin-bottom: 20px;
   }
 
   .mater-action {
@@ -371,7 +397,7 @@
   }
 
   .pagination-mat {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
 
@@ -385,7 +411,7 @@
   .sidebar-mater,
   .filters-mat,
   .table-container-mat {
-    width: 90%;
+    width: 100%;
   }
 
   .mater-action {

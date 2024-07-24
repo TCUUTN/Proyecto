@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FaInfoCircle } from "react-icons/fa";
+import { IoMdSearch } from "react-icons/io";
+import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "./GruposConclusiones.css";
@@ -9,8 +12,6 @@ function GruposAcademico() {
   const navigate = useNavigate();
   const [grupos, setGrupos] = useState([]);
   const [filteredGrupos, setFilteredGrupos] = useState([]);
-  const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
-  const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
   const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
   const [annoFilter, setAnnoFilter] = useState("");
   const [yearsOptions, setYearsOptions] = useState([]);
@@ -38,20 +39,9 @@ function GruposAcademico() {
 
   useEffect(() => {
     if (selectedRole !== "Administrativo") {
-      applyFilters(
-        codigoMateriaFilter,
-        nombreProyectoFilter,
-        cuatrimestreFilter,
-        annoFilter
-      );
-
+      applyFilters(cuatrimestreFilter, annoFilter);
     }
-  }, [
-    codigoMateriaFilter,
-    nombreProyectoFilter,
-    cuatrimestreFilter,
-    annoFilter,
-  ]);
+  }, [cuatrimestreFilter, annoFilter]);
 
   const fetchYearsOptions = async () => {
     try {
@@ -97,16 +87,6 @@ function GruposAcademico() {
       setFilteredGrupos([]);
       toast.error("Error al obtener la lista de grupos");
     }
-  };
-
-  const handleCodigoMateriaFilterChange = (e) => {
-    const value = e.target.value;
-    setCodigoMateriaFilter(value);
-  };
-
-  const handleNombreProyectoFilterChange = (e) => {
-    const value = e.target.value;
-    setNombreProyectoFilter(value);
   };
 
   const handleCuatrimestreFilterChange = (e) => {
@@ -222,7 +202,7 @@ function GruposAcademico() {
                   className="filter-label-grupClu"
                   htmlFor="Cuatrimestre-Busqueda"
                 >
-                  Buscar por año
+                  Seleccionar por Año
                 </label>
                 <select
                   id="Anno-Busqueda"
@@ -244,7 +224,7 @@ function GruposAcademico() {
                   className="filter-label-grupClu"
                   htmlFor="Cuatrimestre-Busqueda"
                 >
-                  Buscar por cuatrimestre
+                  Seleccionar por Cuatrimestre
                 </label>
                 <select
                   id="Cuatrimestre-Busqueda"
@@ -253,9 +233,9 @@ function GruposAcademico() {
                   onChange={handleCuatrimestreFilterChange}
                 >
                   <option value="">Cuatrimestre</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option value="1">I Cuatrimestre</option>
+                  <option value="2">II Cuatrimestre</option>
+                  <option value="3">III Cuatrimestre</option>
                 </select>
               </div>
               <div className="filter-group-grupClu">
@@ -266,7 +246,7 @@ function GruposAcademico() {
                     onClick={handleBuscarClick}
                     disabled={isBuscarButtonDisabled}
                   >
-                    Buscar
+                    Buscar <IoMdSearch />
                   </button>
                 </div>
               </div>
@@ -309,9 +289,9 @@ function GruposAcademico() {
                   onChange={handleCuatrimestreFilterChange}
                 >
                   <option value="">Cuatrimestre</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option value="1">I Cuatrimestre</option>
+                  <option value="2">II Cuatrimestre</option>
+                  <option value="3">III Cuatrimestre</option>
                 </select>
               </div>
             </>
@@ -361,13 +341,39 @@ function GruposAcademico() {
 
         {(selectedRole === "Académico" ||
           (selectedRole === "Administrativo" && grupos.length > 0)) && (
-          <div className="pagination-grupClu">
-            <button onClick={handlePreviousPage}>Anterior</button>
-            <span>
-              Página {currentPage} de{" "}
-              {Math.ceil(filteredGrupos.length / gruposPerPage)}
-            </span>
-            <button onClick={handleNextPage}>Siguiente</button>
+          <div className="box-pagination-grupClu">
+            <div className="pagination-mat">
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="tooltip-edit">Anterior</Tooltip>}
+              >
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
+                  <GrFormPreviousLink />
+                </button>
+              </OverlayTrigger>
+
+              <span>
+                {currentPage} de{" "}
+                {Math.ceil(filteredGrupos.length / gruposPerPage)}
+              </span>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="tooltip-edit">Siguiente</Tooltip>}
+              >
+                <button
+                  onClick={handleNextPage}
+                  disabled={
+                    currentPage ===
+                    Math.ceil(filteredGrupos.length / gruposPerPage)
+                  }
+                >
+                  <GrFormNextLink />
+                </button>
+              </OverlayTrigger>
+            </div>
           </div>
         )}
       </main>

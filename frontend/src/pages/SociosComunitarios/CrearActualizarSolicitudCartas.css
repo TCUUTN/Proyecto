@@ -11,11 +11,12 @@
     border: 2px solid rgba(0, 44, 105, 0.212);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    font-family: "Century Gothic", sans-serif;
   }
   
   /* Titulo */
   .solici-title {
-    font-family: "Brush-TipTerrence", cursive;
+    font-family: 'Playfair Display', serif;
     color: #012c6a;
     margin-bottom: 5px;
     font-size: 2.5rem;
@@ -229,141 +230,218 @@
   
 /* Responsividad */
 
-/* Teléfonos */
-@media (max-width: 480px) {
+/* Teléfonos en modo retrato */
+@media (max-width: 480px) and (orientation: portrait) {
   .solici-container {
-      width: 95%;
-      padding: 15px 15px 50px 15px;
+    width: 95%;
+    padding: 15px 15px 50px 15px;
   }
 
   .solici-title {
-      font-size: 1.8rem;
+    font-size: 1.8rem;
   }
 
   .solici-divider {
-      width: 100px;
+    width: 100px;
   }
 
   .solici-content {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .solici-left, .solicitud-right {
-      width: 100%;
+    width: 100%;
   }
 
   .solici-divider-vertical {
-      width: 100%;
-      height: 2px;
-      margin: 20px 0;
+    width: 100%;
+    height: 2px;
+    margin: 20px 0;
   }
 
   .solicitud-buttons {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .solicitud-button, .solici-button {
-      width: 100%;
-      margin: 10px 0;
+    width: 100%;
+    margin: 10px 0;
   }
 }
 
-/* Tablets */
-@media (max-width: 768px) {
+/* Teléfonos en modo paisaje */
+@media (max-width: 480px) and (orientation: landscape) {
   .solici-container {
-      width: 90%;
-      padding: 18px 18px 60px 18px;
+    width: 95%;
+    padding: 15px 15px 50px 15px;
   }
 
   .solici-title {
-      font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 
   .solici-divider {
-      width: 125px;
+    width: 100px;
   }
 
   .solici-content {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
   }
 
   .solici-left, .solicitud-right {
-      width: 100%;
+    width: 45%;
   }
 
   .solici-divider-vertical {
-      width: 100%;
-      height: 2px;
-      margin: 20px 0;
+    display: none;
   }
 
   .solicitud-buttons {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .solicitud-button, .solici-button {
-      width: 100%;
-      margin: 10px 0;
+    width: 45%;
+    margin: 10px 0;
+  }
+}
+
+/* Tablets en modo retrato */
+@media (max-width: 768px) and (orientation: portrait) {
+  .solici-container {
+    width: 90%;
+    padding: 18px 18px 60px 18px;
+  }
+
+  .solici-title {
+    font-size: 2.2rem;
+  }
+
+  .solici-divider {
+    width: 125px;
+  }
+
+  .solici-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .solici-left, .solicitud-right {
+    width: 100%;
+  }
+
+  .solici-divider-vertical {
+    width: 100%;
+    height: 2px;
+    margin: 20px 0;
+  }
+
+  .solicitud-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .solicitud-button, .solici-button {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+/* Tablets en modo paisaje */
+@media (max-width: 768px) and (orientation: landscape) {
+  .solici-container {
+    width: 90%;
+    padding: 18px 18px 60px 18px;
+  }
+
+  .solici-title {
+    font-size: 2.2rem;
+  }
+
+  .solici-divider {
+    width: 125px;
+  }
+
+  .solici-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .solici-left, .solicitud-right {
+    width: 48%;
+  }
+
+  .solici-divider-vertical {
+    display: none;
+  }
+
+  .solicitud-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .solicitud-button, .solici-button {
+    width: 45%;
   }
 }
 
 /* Monitores */
 @media (min-width: 769px) and (max-width: 1200px) {
   .solici-container {
-      width: 80%;
+    width: 80%;
   }
 
   .solici-title {
-      font-size: 2.3rem;
+    font-size: 2.3rem;
   }
 
   .solici-divider {
-      width: 150px;
+    width: 150px;
   }
 
   .solici-left, .solicitud-right {
-      width: 48%;
+    width: 48%;
   }
 
   .solicitud-buttons {
-      flex-direction: row;
-      justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .solicitud-button, .solici-button {
-      width: 45%;
+    width: 45%;
   }
 }
 
 /* Monitores grandes */
 @media (min-width: 1201px) {
   .solici-container {
-      width: 75%;
+    width: 75%;
   }
 
   .solici-title {
-      font-size: 2.5rem;
+    font-size: 2.5rem;
   }
 
   .solici-divider {
-      width: 175px;
+    width: 175px;
   }
 
   .solici-left, .solicitud-right {
-      width: 45%;
+    width: 45%;
   }
 
   .solicitud-buttons {
-      flex-direction: row;
-      justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .solicitud-button, .solici-button {
-      width: 45%;
+    width: 45%;
   }
 }
 

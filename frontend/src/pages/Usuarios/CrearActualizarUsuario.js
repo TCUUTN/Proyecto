@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { FaSave } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import "react-toastify/dist/ReactToastify.css";
 import "./CrearActuUsuario.modulo.css";
@@ -562,7 +563,7 @@ const CrearActualizarUsuario = () => {
             disabled={!isFormValid}
             onClick={handleSubmit}
           >
-            {identificacionUsuario ? "Actualizar" : "Guardar"}
+            {identificacionUsuario ? "Actualizar" : "Guardar"} <FaSave />
           </button>
         </div>
       </form>

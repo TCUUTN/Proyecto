@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./CrearActualizar.css";
 import { FaChevronLeft } from "react-icons/fa6";
+import { FaSave } from "react-icons/fa";
 
 function CrearActuProyectos() {
   const navigate = useNavigate();
@@ -142,7 +143,7 @@ function CrearActuProyectos() {
           onClick={handleGuardar}
           disabled={Object.keys(errors).length > 0}
         >
-         {CodigoMateria ? "Actualizar" : "Guardar"}
+         {CodigoMateria ? "Actualizar" : "Guardar"} <FaSave />
         </button>
       </div>
     </div>

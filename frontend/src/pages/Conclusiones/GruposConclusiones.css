@@ -49,7 +49,20 @@
   padding: 20px;
   border-radius: 8px;
   width: 80%;
-  margin: 20px auto;
+  margin: 0 auto 15px auto;
+  border: 2px solid rgba(0, 44, 105, 0.212); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-wrap: nowrap;
+  background-color: #fff;
+}
+
+.box-pagination-grupClu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 80%;
+  margin: 15px auto;
   border: 2px solid rgba(0, 44, 105, 0.212); 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   flex-wrap: nowrap;
@@ -218,37 +231,16 @@ margin-top: 20px;
   color: #002b69;
   margin: 20px;
 }
-
-/* Paginación */
-.pagination-grupClu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.pagination-grupClu button {
-  background-color: #002b69;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 0 10px;
-  transition: 0.3s;
-}
-
-.pagination-grupClu button:hover {
-  background-color: #f66226;
-}
-
-.pagination-grupClu span {
-  font-size: 1em;
-  color: #002b69;
-}
 /* Media Queries */
 @media (max-width: 1200px) {
   .filters-grupClu {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 90%;
+    padding: 10px;
+  }
+
+  .box-pagination-grupClu {
     flex-wrap: wrap;
     justify-content: center;
     width: 90%;
@@ -270,6 +262,11 @@ margin-top: 20px;
 
 @media (max-width: 768px) {
   .filters-grupClu {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box-pagination-grupClu {
     flex-direction: column;
     align-items: center;
   }
@@ -313,6 +310,13 @@ margin-top: 20px;
 @media (max-width: 480px) {
 
   .filters-grupClu {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .box-pagination-grupClu {
     flex-direction: column;
     gap: 15px;
     width: 100%;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { FaSave } from "react-icons/fa";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Cambiar.modulo.css";
 
@@ -205,7 +206,7 @@ function CambiarClave() {
             className="cambiar-button"
             disabled={!isFormValid}
           >
-            Guardar cambios
+            Guardar <FaSave />
           </button>
         </form>
         {error && <p className="error-message">{error}</p>}
