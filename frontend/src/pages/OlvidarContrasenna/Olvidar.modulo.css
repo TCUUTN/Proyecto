@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 65vh;
+  font-family: "Century Gothic", sans-serif;
 }
 /* Estilo del formulario */
 .olvidar-form {
@@ -18,7 +19,7 @@
 }
 /* Título del formulario */
 .olvidar-title {
-  font-family: "Brush-TipTerrence", cursive;
+  font-family: 'Playfair Display', serif;
   color: #012c6a !important;
   margin-bottom: 10px;
   font-size: 2.5rem;
