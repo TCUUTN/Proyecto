@@ -113,6 +113,7 @@
   display: block;
   margin: 0 auto;
   background-color: none;
+
 }
 .small-image {
   max-width: 350px;
@@ -124,7 +125,7 @@
   background-color: none;
 }
 .medium-image{
-  max-width: 450px;
+  max-width: 585px;
   margin-top: 20px;
   background-color: none;
 }
