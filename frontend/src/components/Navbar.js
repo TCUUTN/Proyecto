@@ -351,13 +351,13 @@ function Navbar() {
                         </li>
                          )}
 
-                          selectedRole === "Administrativo") && (
+{(selectedRole === "Administrativo") && (
                           <li>
                             <Link
                               className="dropdown-item dropdown-style"
                               to="GuiaEstudiantes"
                             >
-                              Guia para Estudiantes
+                              Guia para Administrativo
                             </Link>
                           </li>
                         )}

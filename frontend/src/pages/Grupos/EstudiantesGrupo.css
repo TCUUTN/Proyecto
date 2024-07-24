@@ -84,12 +84,12 @@ width: 100%;
 .finalizar-button-listest:hover {
   background-color: #f66226;
 }
-
+/*
 .finalizar-button-listest:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-
+*/
 /* Linea */
 .estt-divider{
   width: 2px;
