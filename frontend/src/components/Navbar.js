@@ -320,12 +320,37 @@ function Navbar() {
                         <li>
                           <Link
                             className="dropdown-item dropdown-style"
-                            to="GuiaIniciarSesion"
+                            to="/GuiaIniciarSesion"
                           >
                             Guia de Iniciar Sesión
                           </Link>
                         </li>
                         {(selectedRole === "Estudiante" ||
+
+                           selectedRole === "Administrativo"
+                         )&& (
+                        <li>
+                          <Link
+                            className="dropdown-item dropdown-style"
+                            to="/GuiaEstudiantes"
+                          >
+                           Guia para Estudiantes
+                          </Link>
+                        </li>
+                         )}
+                         {(selectedRole === "Académico" ||
+                           selectedRole === "Administrativo"
+                         )&& (
+                        <li>
+                          <Link
+                            className="dropdown-item dropdown-style"
+                            to="/GuiaAcademico"
+                          >
+                           Guia para Académico
+                          </Link>
+                        </li>
+                         )}
+
                           selectedRole === "Administrativo") && (
                           <li>
                             <Link
@@ -336,6 +361,7 @@ function Navbar() {
                             </Link>
                           </li>
                         )}
+
                       </ul>
                     </li>
                     {(selectedRole === "Estudiante" ||

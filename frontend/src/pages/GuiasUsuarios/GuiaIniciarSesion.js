@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import "./Guias.css";
-import CompletarPerfil from "../../Assets/Images/CompletarPerfil.png";
-import ImageEmailTClaveTemporal from "../../Assets/Images/ImageEmail.png";
-import ImageIniciarS from "../../Assets/Images/ImageIniciarS.png";
-import ImageOlvidar from "../../Assets/Images/ImageOlvidar.png";
-import ImageNavbar from "../../Assets/Images/navbar icono usuario.png";
-import RestablecerClave from "../../Assets/Images/RestablecerClave.png";
+import CompletarPerfil from "../../Assets/Images/Guias/Iniciar S/CompletarPerfil.png";
+import ImageEmailTClaveTemporal from "../../Assets/Images/Guias/Iniciar S/ImageEmail.png";
+import ImageIniciarS from "../../Assets/Images/Guias/Iniciar S/ImageIniciarS.png";
+import ImageOlvidar from "../../Assets/Images/Guias/Iniciar S/ImageOlvidar.png";
+import ImageNavbar from "../../Assets/Images/Guias/Iniciar S/navbar icono usuario.png";
+import RestablecerClave from "../../Assets/Images/Guias/Iniciar S/RestablecerClave.png";
 import { TiArrowUpThick } from "react-icons/ti";
 
 function GuiaIniciarSesion() {

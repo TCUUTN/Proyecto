@@ -330,7 +330,9 @@ function CrearoActualizarHoras() {
   return (
     <div className="crehoras-container">
       <div className="crehoras-content">
-        <h1 className="crehoras-title">Registro de Horas</h1>
+        <h1 className="crehoras-title"> {bitacoraId ? "Modificar registrar horas" : "Crear registro horas"}
+
+        </h1>
         <div className="crehoras-divider" />
         <form onSubmit={handleSubmit}>
           <input
