@@ -29,6 +29,7 @@ function DashboardEstudiante() {
           toast.error("El Estudiante no posee un grupo activo asignado");
         } else {
           setGrupoId(data.GrupoId);
+          sessionStorage.setItem("GrupoId",data.GrupoId)
           fetchHoras(identificacion, data.GrupoId);
           fetchGrupoData(data.GrupoId);
         }

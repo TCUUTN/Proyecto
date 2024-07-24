@@ -74,6 +74,7 @@ const getGrupoPorIdentificacion = async (req, res) => {
     const grupo = await Grupo.findAll({
       where: {
         Identificacion: Identificacion,
+        Estado:1
       },
       include: [
         { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
