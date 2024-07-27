@@ -7,6 +7,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./VistaConclusionesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
+import { MdFindInPage } from "react-icons/md";
 
 function VistaConclusionesGrupo() {
   const navigate = useNavigate();
@@ -232,7 +233,7 @@ function VistaConclusionesGrupo() {
                         <OverlayTrigger
                           placement="top"
                           overlay={
-                            <Tooltip id="tooltip-edit">Ver Solicitud</Tooltip>
+                            <Tooltip id="tooltip-edit">Ver boleta de conclusión</Tooltip>
                           }
                         >
                           <button
@@ -241,7 +242,7 @@ function VistaConclusionesGrupo() {
                               handleEditClick(conclusion.ConclusionId)
                             }
                           >
-                            <FaEdit />
+                            <MdFindInPage />
                           </button>
                         </OverlayTrigger>
                       </td>

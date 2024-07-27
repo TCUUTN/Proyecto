@@ -19,7 +19,9 @@ import CreacList_Otr from "../../Assets/Images/Guias/Academicos/CrearListSocios_
 import SolicitudCarta from "../../Assets/Images/Guias/Academicos/SolicitudCarta.png";
 import CreacionSoli from "../../Assets/Images/Guias/Academicos/CreacionSolicitud.png";
 //Boleta de conclusion
-
+import boletaC from "../../Assets/Images/Guias/Academicos/BoletaAcademico.png";
+import conclus from "../../Assets/Images/Guias/Academicos/ConclusionGrupo_Acade.png";
+import formBole from "../../Assets/Images/Guias/Academicos/BoletaConclu_Acade.png";
 function GuiaAcademico() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
@@ -343,8 +345,23 @@ function GuiaAcademico() {
         <div className="section-guias" id="boletaC">
           <h3 className="titulos-guiaIn">Boleta de Conclusión</h3>
           <div className="celes-divider" />
+          <p>
+            Cuando entras al modulo de conclusiones vas a ver una lista de los grupos activo y por lo menos que un estudiante haya enviado una boleta de conclusion.  
+          </p>
 
-          <img alt="navbarEst" className=" fade-in centered large-image" />
+          <img  src={boletaC} alt="boletaC" className=" fade-in centered medium-image" />
+          <ul>
+            <li>
+              Cunado entres al grupo vas encontrar una lista de los estudiantes que ya llenaron la boleta de conclusion y preciona el boton de ver boleta de conclusión.
+            </li>
+            <img  src={conclus} alt="conclus" className=" fade-in centered large-image" />
+            <li>
+
+            </li>
+            <img  src={formBole} alt="formBole" className=" fade-in centered small-image" />
+          </ul>
+          
+
         </div>
         {/* Section explicacion de la Información*/}
         <div className="section-guias" id="informacionE">
