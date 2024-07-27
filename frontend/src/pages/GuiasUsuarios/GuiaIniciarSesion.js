@@ -202,10 +202,10 @@ function GuiaIniciarSesion() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
-      </div>
-      <button className="download-button" onClick={handleDownloadPDF}>
-        Descargar PDF
+        <button className="download-button" onClick={handleDownloadPDF}>
+      Descargar Guía
       </button>
+      </div>
     </div>
   );
 }

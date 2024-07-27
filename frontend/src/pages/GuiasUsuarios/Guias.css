@@ -224,11 +224,11 @@
   transform: scale(1.1);
 }
 
-/* Botton Descarga */
+/* Botton Descarga*/
 .download-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4caf50; /* Green */
+  background-color: #4CAF50; /* Green */
   color: white;
   border: none;
   cursor: pointer;
