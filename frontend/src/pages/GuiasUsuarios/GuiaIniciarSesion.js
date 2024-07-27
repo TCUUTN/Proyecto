@@ -7,6 +7,8 @@ import ImageOlvidar from "../../Assets/Images/Guias/Iniciar S/ImageOlvidar.png";
 import ImageNavbar from "../../Assets/Images/Guias/Iniciar S/navbar icono usuario.png";
 import RestablecerClave from "../../Assets/Images/Guias/Iniciar S/RestablecerClave.png";
 import { TiArrowUpThick } from "react-icons/ti";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function GuiaIniciarSesion() {
   useEffect(() => {
@@ -36,13 +38,26 @@ function GuiaIniciarSesion() {
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
+    });
+  };
+
+  const handleDownloadPDF = () => {
+    const input = document.getElementById("pdfContent");
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("guia_iniciar_sesion.pdf");
     });
   };
 
   return (
     <div className="contenedor-guias">
-      <div className="guias-container">
+      <div id="pdfContent" className="guias-container">
         {/* Section explicacion de portada */}
         <div className="section section-portada">
           <h2 className="titulo-Portada">
@@ -58,10 +73,26 @@ function GuiaIniciarSesion() {
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
             <ul className="guiaIn-contenido">
-              <li><a className="interlink-guiaIn" href="#iniciarSesion"> Iniciar sesión</a></li>
-              <li><a className="interlink-guiaIn" href="#olvidarContraseña"> Olvidar Contraseña</a></li>
-              <li><a className="interlink-guiaIn" href="#cambiarContraseña"> Cambiar Contraseña</a></li>
-              <li><a className="interlink-guiaIn" href="#completarPerfil"> Completar Perfil</a></li>
+              <li>
+                <a className="interlink-guiaIn" href="#iniciarSesion">
+                  Iniciar sesión
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#olvidarContraseña">
+                  Olvidar Contraseña
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#cambiarContraseña">
+                  Cambiar Contraseña
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#completarPerfil">
+                  Completar Perfil
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -115,7 +146,9 @@ function GuiaIniciarSesion() {
           <p>Sigue estos pasos:</p>
           <ol>
             <li>Toca el icono usuario del menú en la barra de navegación.</li>
-            <li>Selecciona la opción <strong>"Cambio de contraseña"</strong>.</li>
+            <li>
+              Selecciona la opción <strong>"Cambio de contraseña"</strong>.
+            </li>
             <img
               src={ImageNavbar}
               alt="ImageNavbar"
@@ -162,14 +195,17 @@ function GuiaIniciarSesion() {
           <img
             src={CompletarPerfil}
             alt="Completar Perfil"
-            className=" centered "
+            className="centered"
           />
         </div>
         {/* Botón flotante */}
         <button className="scroll-to-top" onClick={handleScrollToTop}>
-        <TiArrowUpThick />
+          <TiArrowUpThick />
         </button>
       </div>
+      <button className="download-button" onClick={handleDownloadPDF}>
+        Descargar PDF
+      </button>
     </div>
   );
 }
