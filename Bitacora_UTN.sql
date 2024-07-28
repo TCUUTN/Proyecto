@@ -73,6 +73,7 @@ CREATE TABLE Grupos_Grupo (
     `Anno` smallint COLLATE utf8_spanish_ci NOT NULL DEFAULT '0' COMMENT 'Año del curso',
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identicacion del Academico a cargo del grupo',
     `Estado` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado de Grupo',
+    `BanderaFinalizarCuatrimestre` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0' COMMENT 'Bandera para activar Finalizacion del Cuatrimestre',
     `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
@@ -84,7 +85,7 @@ CREATE TABLE Grupos_Grupo (
 CREATE TABLE Grupos_Estudiantes_Grupo (
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Llave primaria de la tabla',
     `GrupoId` MEDIUMINT UNSIGNED NOT NULL,
-	`Estado` ENUM('En Curso', 'Aprobado', 'Rechazado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo',
+	`Estado` ENUM('En Curso', 'Aprobado', 'Reprobado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo',
     `Progreso` ENUM('Nuevo', 'Continuidad', 'Prórroga') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Nuevo' COMMENT 'Progreso del Estudiante en el grupo',
 	`ComentariosReprobado` Varchar(250) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Comentarios de Reprobado',
     `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
@@ -182,30 +183,72 @@ CONSTRAINT `Usuarios_Conclusion_Boleta_Identificacion` FOREIGN KEY (`Identificac
 );
 
 CREATE TABLE Informacion (
-`InformacionId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-`Archivo` blob NULL COMMENT 'Archivo',
-`Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion de quien sube la informacion',
-`Descripcion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Descripcion',
-`TipoInformacion` ENUM('Noticia', 'Archivo') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Noticia' COMMENT 'Tipo de informacion',
-`Estado` TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado de Informacion',
-`UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
-`LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
-`LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
-PRIMARY KEY (`InformacionId`),
-CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
+    `InformacionId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `Archivo` BLOB NULL COMMENT 'Archivo',
+    `NombreArchivo` VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre del Archivo',
+    `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion de quien sube la informacion',
+    `Descripcion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Descripcion',
+    `TipoInformacion` ENUM('General', 'Académico', 'Plantilla') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Académico' COMMENT 'Tipo de informacion',
+    `Fecha` DATE NOT NULL DEFAULT '0000-00-00' COMMENT 'Fecha de ejecucion',
+    `Sede` ENUM('Central', 'Atenas', 'Guanacaste', 'Pacífico', 'San Carlos', 'C.F.P.T.E.', 'Todas') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Central' COMMENT 'Sede del Usuario',
+    `GrupoId` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0,
+    `Estado` TINYINT(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '1' COMMENT 'Estado de Informacion',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'UUID' COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
+    `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
+    PRIMARY KEY (`InformacionId`),
+    CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
+SET SQL_SAFE_UPDATES = 0;
+ALTER TABLE Grupos_Grupo
+ADD COLUMN BanderaFinalizarCuatrimestre TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0' COMMENT 'Bandera para activar Finalizacion del Cuatrimestre';
+SET SQL_SAFE_UPDAtES = 1;
+
+select * from Grupos_Grupo
+
+/*DELETE FROM `Informacion` WHERE `Identifiacion` != '0' ;
+
+DELETE FROM `Usuarios` 
+WHERE `Identificacion` NOT IN ('117960190', '112233445','645678901');
 
 SET SQL_SAFE_UPDATES = 0;
+ALTER TABLE `Grupos_Estudiantes_Grupo`
+MODIFY `Estado` ENUM('En Curso', 'Aprobado', 'Reprobado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo';
+UPDATE `Grupos_Estudiantes_Grupo`
+SET `Estado` = 'En Curso', `Progreso` = 'Nuevo', `ComentariosReprobado` = '-';
+DELETE FROM `Conclusion_Boleta`
+WHERE `ConclusionId` = 4;
 Drop table Grupos_Estudiantes_Grupo;
 Drop table Conclusion_Boleta;
 Drop table Socios_RegistroSocios;
-DELETE FROM Horas_Bitacora where BitacoraId > 20;
+DELETE FROM Conclusion_Boleta where ConclusionId = 17;
 DELETE FROM Socios_SolicitudCarta;
 DELETE FROM Socios_RegistroSocios;
 SET SQL_SAFE_UPDAtES = 1;
 
-select * from Grupos_Estudiantes_Grupo
+
+ALTER TABLE Informacion 
+MODIFY COLUMN `GrupoId` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0;
+
+-- Step 2: Drop the foreign key constraint
+ALTER TABLE Informacion 
+DROP FOREIGN KEY Informacion_Grupos_Grupo_GrupoId;
+
+
+
+select * from Grupos_grupo;
+INSERT INTO Grupos_Estudiantes_Grupo (
+    `Identificacion`,
+    `GrupoId`,
+    `Estado`,
+    `Progreso`
+) VALUES (
+    '117960190',
+    30,
+    'En Curso',
+    'Nuevo'
+);
 
 
 /*Inserts y Updates
@@ -386,5 +429,33 @@ Actualizacion tabla de horas
 ALTER TABLE `Horas_Bitacora` MODIFY `Evidencias` LONGBLOB;
 ALTER TABLE Horas_Bitacora
 ADD COLUMN NombreEvidencia VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre de la Evidencia';
+
+
+
+INSERT INTO Horas_Bitacora (Identificacion, GrupoId, Fecha, DescripcionActividad, HoraInicio, HoraFinal) VALUES
+('117960190', 30, '2024-01-10', 'Actividad 1', '08:00:00', '12:00:00'),
+('117960190', 30, '2024-01-11', 'Actividad 2', '09:00:00', '13:00:00'),
+('117960190', 30, '2024-01-12', 'Actividad 3', '10:00:00', '14:00:00'),
+('117960190', 30, '2024-01-13', 'Actividad 4', '11:00:00', '15:00:00'),
+('117960190', 30, '2024-01-14', 'Actividad 5', '12:00:00', '16:00:00'),
+('117960190', 30, '2024-01-15', 'Actividad 6', '13:00:00', '17:00:00'),
+('117960190', 30, '2024-01-16', 'Actividad 7', '14:00:00', '18:00:00'),
+('117960190', 30, '2024-01-17', 'Actividad 8', '15:00:00', '19:00:00'),
+('117960190', 30, '2024-01-18', 'Actividad 9', '16:00:00', '20:00:00'),
+('117960190', 30, '2024-01-19', 'Actividad 10', '17:00:00', '21:00:00'),
+('117960190', 30, '2024-01-20', 'Actividad 11', '18:00:00', '22:00:00'),
+('117960190', 30, '2024-01-21', 'Actividad 12', '19:00:00', '23:00:00'),
+('117960190', 30, '2024-01-22', 'Actividad 13', '20:00:00', '23:59:00'),
+('117960190', 30, '2024-01-23', 'Actividad 14', '06:00:00', '10:00:00'),
+('117960190', 30, '2024-01-24', 'Actividad 15', '07:00:00', '11:00:00');
+
+INSERT INTO Horas_Bitacora 
+    (Identificacion, GrupoId, Fecha, DescripcionActividad, HoraInicio, HoraFinal, TipoActividad)
+VALUES
+    ('117960190', 30, '2024-07-15', 'Planificación de actividad A', '08:00:00', '12:00:00', 'Planificacion'),
+    ('117960190', 30, '2024-07-16', 'Planificación de actividad B', '09:00:00', '13:00:00', 'Planificacion'),
+    ('117960190', 30, '2024-07-17', 'Planificación de actividad C', '10:00:00', '14:00:00', 'Planificacion'),
+    ('117960190', 30, '2024-07-18', 'Planificación de actividad D', '11:00:00', '15:00:00', 'Planificacion'),
+    ('117960190', 30, '2024-07-19', 'Planificación de actividad E', '12:00:00', '16:00:00', 'Planificacion');
 
 */

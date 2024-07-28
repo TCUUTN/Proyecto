@@ -17,6 +17,7 @@ function ListaEstudiantes() {
   const navigate = useNavigate();
   const grupoId = localStorage.getItem("GrupoSeleccionado");
   const [estudiantes, setEstudiantes] = useState([]);
+  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false);
   const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
   const [nombreFilter, setNombreFilter] = useState("");
   const [identificacionFilter, setIdentificacionFilter] = useState("");
@@ -28,6 +29,7 @@ function ListaEstudiantes() {
 
   useEffect(() => {
     fetchEstudiantes();
+    fetchBandera();
   }, []);
 
   const fetchEstudiantes = async () => {
@@ -49,6 +51,34 @@ function ListaEstudiantes() {
     } catch (error) {
       console.error("Error al obtener la lista de estudiantes:", error);
       toast.error("Error al obtener la lista de estudiantes");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBandera = async () => {
+    try {
+      setLoading(true);
+      
+      const response = await fetch(`/grupos/getBandera/${grupoId}`);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.BanderaFinalizarCuatrimestre===0) {
+          setIsFinalizarDisabled(false)
+        } else {
+          setIsFinalizarDisabled(true)
+        }
+      } else if (response.status === 404) {
+        console.error("No se encontró la bandera de activación");
+        toast.error("No se encontró la bandera de activación");
+      } else {
+        console.error("Error al obtener la bandera de activación");
+        toast.error("Error al obtener la bandera de activación");
+      }
+    } catch (error) {
+      console.error("Error al obtener la bandera de activación:", error);
+      toast.error("Error al obtener la bandera de activación");
     } finally {
       setLoading(false);
     }
@@ -324,7 +354,7 @@ function ListaEstudiantes() {
                 <button
                   onClick={handleFinalizarCuatrimestre}
                   className="finalizar-button-listest"
-                  disabled
+                  disabled={isFinalizarDisabled===false}
                 >
                   Finalizar Cuatrimestre <FaListCheck />
                 </button>

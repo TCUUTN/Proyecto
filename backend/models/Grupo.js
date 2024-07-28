@@ -67,6 +67,12 @@ const Grupo = sequelize.define('Grupo', {
     defaultValue: 1,
     comment: 'Estado de Grupo'
   },
+  BanderaFinalizarCuatrimestre : {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
+    comment: 'Bandera para activar Finalizacion del Cuatrimestre'
+  },
   UniversalUniqueIdentifier: {
     type: DataTypes.CHAR(36),
     allowNull: false,

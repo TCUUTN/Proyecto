@@ -15,6 +15,7 @@ function MantGrupos() {
   const [filteredGrupos, setFilteredGrupos] = useState([]);
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
   const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
+  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false);
   const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
   const [annoFilter, setAnnoFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +28,36 @@ function MantGrupos() {
 
   useEffect(() => {
     fetchGrupos();
+    fetchBandera();
   }, []);
+
+  const fetchBandera = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(`/grupos/getBanderaAdmin`);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.BanderaFinalizarCuatrimestre === 0) {
+          setIsFinalizarDisabled(false);
+        } else {
+          setIsFinalizarDisabled(true);
+        }
+      } else if (response.status === 404) {
+        console.error("No se encontró la bandera de activación");
+        toast.error("No se encontró la bandera de activación");
+      } else {
+        console.error("Error al obtener la bandera de activación");
+        toast.error("Error al obtener la bandera de activación");
+      }
+    } catch (error) {
+      console.error("Error al obtener la bandera de activación:", error);
+      toast.error("Error al obtener la bandera de activación");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchGrupos = async () => {
     try {
@@ -286,6 +316,37 @@ function MantGrupos() {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleActivardessactivarCuatrimestre = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `/grupos/ActivarFinalizarCuatrimestre/${sedeFilter}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        toast.success(data.message);
+        if (isFinalizarDisabled===false) {
+          setIsFinalizarDisabled(true);
+        } else {
+          setIsFinalizarDisabled(false);
+        }
+      } else if (response.status === 404) {
+        console.error("No se encontró la bandera de activación");
+        toast.error("No se encontró la bandera de activación");
+      } else {
+        console.error("Error al obtener la bandera de activación");
+        toast.error("Error al obtener la bandera de activación");
+      }
+    } catch (error) {
+      console.error("Error al obtener la bandera de activación:", error);
+      toast.error("Error al obtener la bandera de activación");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="materia-container">
       {/*Para la carga */}
@@ -313,7 +374,7 @@ function MantGrupos() {
           <div className="bulk-upload-section-Pro">
             <h2 className="title-mater">Carga masiva</h2>
 
-            <div className="bulk-upload-mater">
+            <div className="bulk-upload-group">
               <div className="upload-option-mater">
                 <label htmlFor="file-upload" className="upload-label">
                   <FaFileUpload className="icon-othermat" /> Cargar Grupos
@@ -327,6 +388,17 @@ function MantGrupos() {
                 />
               </div>
             </div>
+          </div>
+          <div className="mater-divider" />
+          <div className="buttFinalizar">
+            <button
+              onClick={handleActivardessactivarCuatrimestre}
+              className="finalizar-button-listest"
+            >
+              {isFinalizarDisabled
+                ? " Desactivar Finalizar Cuatrimestre"
+                : "Activar Finalizar Cuatrimestre"}
+            </button>
           </div>
         </div>
         {/* Filtros */}

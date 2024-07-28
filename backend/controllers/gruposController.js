@@ -67,6 +67,47 @@ const getGrupoPorGrupoId = async (req, res) => {
   }
 };
 
+const getBanderaFinalizarCuatrimestre = async (req, res) => {
+  try {
+    const { GrupoId } = req.params;
+
+    const grupo = await Grupo.findOne({
+      where: {
+        GrupoId: GrupoId,
+      },
+      attributes: ["BanderaFinalizarCuatrimestre"],
+    });
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo no encontrado" });
+    }
+
+    res.status(200).json(grupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getBanderaFinalizarCuatrimestreOne = async (req, res) => {
+  try {
+
+    const grupo = await Grupo.findOne({
+      where: {
+        Estado: 1,
+      },
+      attributes: ["BanderaFinalizarCuatrimestre"],
+    });
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo no encontrado" });
+    }
+
+    res.status(200).json(grupo);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getGrupoPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -92,6 +133,8 @@ const getGrupoPorIdentificacion = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 
 const getTipoGrupoPorCodigoMateria = async (req, res) => {
   try {
@@ -1061,6 +1104,48 @@ const getGruposActivos = async (req, res) => {
   }
 };
 
+const ActivarFinalizarCuatrimestre = async (req, res) => {
+  try {
+    const { Sede } = req.params;
+
+    const options = {
+      where: {
+        Estado: 1,
+        Sede: Sede !== "Todas" ? Sede : { [Op.ne]: null },
+      },
+      attributes: ["GrupoId", "BanderaFinalizarCuatrimestre"],
+    };
+
+    const Grupos = await Grupo.findAll(options);
+
+    if (Grupos.length === 0) {
+      const errorMsg =
+        Sede && Sede !== "Todas"
+          ? "No se encontraron grupos activos en la sede especificada"
+          : "No se encontraron grupos activos";
+      return res.status(404).json({ error: errorMsg });
+    }
+
+    const updatedGrupos = await Promise.all(
+      Grupos.map(async (grupo) => {
+        const newBandera = grupo.BanderaFinalizarCuatrimestre === 1 ? 0 : 1;
+        await grupo.update({ BanderaFinalizarCuatrimestre: newBandera });
+        return newBandera;
+      })
+    );
+
+    const message =
+      updatedGrupos[0] === 1
+        ? "Se ha activado la opcion de Finalizar cuatrimestre"
+        : "Se ha desactivado la opcion de Finalizar cuatrimestre";
+
+    return res.status(200).json(message);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllGrupos,
   getAllTiposGrupos,
@@ -1085,5 +1170,8 @@ module.exports = {
   getprueba,
   getGrupoEstudianteporIdentificacionParaUsuario,
   getGrupoPorAnnoyCuatrimestreParaGenero,
-  getAllAnnosParaReporte
+  getAllAnnosParaReporte,
+  ActivarFinalizarCuatrimestre,
+  getBanderaFinalizarCuatrimestre,
+  getBanderaFinalizarCuatrimestreOne
 };

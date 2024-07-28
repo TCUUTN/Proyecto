@@ -4,6 +4,7 @@ import CompletarPerfil from "../../Assets/Images/Guias/Iniciar S/CompletarPerfil
 import ImageEmailTClaveTemporal from "../../Assets/Images/Guias/Iniciar S/ImageEmail.png";
 import ImageIniciarS from "../../Assets/Images/Guias/Iniciar S/ImageIniciarS.png";
 import ImageOlvidar from "../../Assets/Images/Guias/Iniciar S/ImageOlvidar.png";
+import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import ImageNavbar from "../../Assets/Images/Guias/Iniciar S/navbar icono usuario.png";
 import RestablecerClave from "../../Assets/Images/Guias/Iniciar S/RestablecerClave.png";
 import { TiArrowUpThick } from "react-icons/ti";
@@ -42,17 +43,142 @@ function GuiaIniciarSesion() {
     });
   };
 
-  const handleDownloadPDF = () => {
-    const input = document.getElementById("pdfContent");
-    html2canvas(input, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  const handleDownloadPDF = async () => {
+    const sections = document.querySelectorAll(".section");
+    const scrollToTopButton = document.querySelector(".scroll-to-top");
+    const downloadButton = document.querySelector(".download-button");
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("guia_iniciar_sesion.pdf");
+    // Hide the buttons before capturing
+    scrollToTopButton.style.display = "none";
+    downloadButton.style.display = "none";
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: "letter",
     });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const marginw = 20;
+    const headerHeight = 35; // Adjust header height
+    const footerHeight = 35; // Adjust footer height
+    const spaceBetweenImages = 5; // 5px space between images
+
+    try {
+      // Load header image
+      const headerImg = new Image();
+      headerImg.src = banderaCombinada;
+
+      headerImg.onload = async () => {
+        const headerImgWidth = pageWidth / 6;
+        const headerImgHeight = headerImgWidth * (headerImg.height / headerImg.width); // Maintain aspect ratio
+
+        const headerY = 0;
+        const contentStartY = headerHeight;
+        const footerY = pageHeight - footerHeight;
+        let y = 0;
+
+        for (let i = 0; i < sections.length; i++) {
+          const section = sections[i];
+
+          // Skip the "Contenido" section
+          if (section.classList.contains("section-contenido")) continue;
+
+          const canvas = await html2canvas(section, { scale: 2 });
+          const imgData = canvas.toDataURL("image/png", 0.5); // Reduce image quality to make the PDF lighter
+          const imgProps = pdf.getImageProperties(imgData);
+          const imgWidth = pageWidth - 2 * marginw;
+          const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+          // Add header if starting a new page
+          if (y === 0 || y + imgHeight > footerY) {
+            if (y !== 0) {
+              pdf.addPage();
+            }
+            y = contentStartY;
+
+            // Add header for new page
+            pdf.setFillColor("#002b69");
+            pdf.rect(0, 0, pageWidth, headerHeight, "F");
+            pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
+            y += contentStartY;
+          }
+
+          // Calculate the remaining height on the current page
+          let remainingPageHeight = footerY - y;
+
+          // Add content image
+          if (imgHeight <= remainingPageHeight) {
+            pdf.addImage(imgData, "PNG", marginw, y, imgWidth, imgHeight, undefined, "FAST");
+            y += imgHeight + spaceBetweenImages;
+          } else {
+            let imgY = 0;
+
+            while (imgY < imgHeight) {
+              const imgRemainingHeight = imgHeight - imgY;
+              const imgHeightForPage = Math.min(imgRemainingHeight, remainingPageHeight);
+
+              pdf.addImage(
+                imgData,
+                "PNG",
+                marginw,
+                y,
+                imgWidth,
+                imgHeightForPage,
+                undefined,
+                "FAST",
+                "SLOW",
+                0,
+                0,
+                imgProps.width,
+                imgHeightForPage / imgWidth * imgProps.width,
+                0,
+                imgY / imgHeight * 100,
+                imgHeightForPage / imgHeight * 100
+              );
+
+              imgY += imgHeightForPage;
+              y += imgHeightForPage + spaceBetweenImages;
+
+              if (imgY < imgHeight) {
+                pdf.addPage();
+                y = contentStartY;
+                remainingPageHeight = footerY - y;
+
+                // Add header for new page
+                pdf.setFillColor("#002b69");
+                pdf.rect(0, 0, pageWidth, headerHeight, "F");
+                pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
+                y += contentStartY;
+              }
+            }
+          }
+
+          // Add footer
+          pdf.setFillColor("#002b69");
+          pdf.rect(0, footerY, pageWidth, footerHeight, "F");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(`Página ${pdf.internal.getNumberOfPages()}`, pageWidth / 2, footerY + 10, { align: "center" });
+          pdf.text(`© ${new Date().getFullYear()} Universidad Técnica Nacional.`, pageWidth / 2, footerY + 20, { align: "center" });
+          pdf.text("Todos los derechos reservados.", pageWidth / 2, footerY + 30, { align: "center" });
+
+          // Move to the next section
+          remainingPageHeight = footerY - y;
+        }
+
+        // Save the PDF
+        pdf.save("guia_iniciar_sesion.pdf");
+
+        // Show the buttons after capturing
+        scrollToTopButton.style.display = "block";
+        downloadButton.style.display = "block";
+      };
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Error al generar el PDF. Por favor, intente de nuevo.");
+    }
   };
 
   return (
@@ -68,33 +194,6 @@ function GuiaIniciarSesion() {
             de la UTN. La aplicación nos ayuda para el registro de horas y para
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
-          {/* Section explicacion del contenido */}
-          <div className="section section-contenido">
-            <h3 className="titulos-guiaIn">Contenido</h3>
-            <div className="celes-divider" />
-            <ul className="guiaIn-contenido">
-              <li>
-                <a className="interlink-guiaIn" href="#iniciarSesion">
-                  Iniciar sesión
-                </a>
-              </li>
-              <li>
-                <a className="interlink-guiaIn" href="#olvidarContraseña">
-                  Olvidar Contraseña
-                </a>
-              </li>
-              <li>
-                <a className="interlink-guiaIn" href="#cambiarContraseña">
-                  Cambiar Contraseña
-                </a>
-              </li>
-              <li>
-                <a className="interlink-guiaIn" href="#completarPerfil">
-                  Completar Perfil
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
         {/* Section explicacion de Iniciar S */}
         <div className="section section-guias " id="iniciarSesion">
@@ -130,14 +229,14 @@ function GuiaIniciarSesion() {
             />
             <li>
               Revise su correo institucional, donde le llegará su contraseña
-              temporal.
+              temporal para ingresar.
             </li>
+            <img
+              src={ImageEmailTClaveTemporal}
+              alt="Correo con Clave Temporal"
+              className="fade-in small-image"
+            />
           </ol>
-          <img
-            src={ImageEmailTClaveTemporal}
-            alt="Contraseña Temporal"
-            className="fade-in centered small-image"
-          />
         </div>
         {/* Section explicacion de Restablecer Contraseña */}
         <div className="section section-guias " id="cambiarContraseña">
@@ -152,7 +251,7 @@ function GuiaIniciarSesion() {
             <img
               src={ImageNavbar}
               alt="ImageNavbar"
-              className="fade-in centered"
+              className="fade-in centered extra-small-image"
             />
             <li>
               Ingresa los datos pedidos en el formulario para cambiar la
@@ -195,7 +294,7 @@ function GuiaIniciarSesion() {
           <img
             src={CompletarPerfil}
             alt="Completar Perfil"
-            className="centered"
+            className="centered medium-image"
           />
         </div>
         {/* Botón flotante */}
@@ -203,8 +302,8 @@ function GuiaIniciarSesion() {
           <TiArrowUpThick />
         </button>
         <button className="download-button" onClick={handleDownloadPDF}>
-      Descargar Guía
-      </button>
+          Descargar Guía
+        </button>
       </div>
     </div>
   );

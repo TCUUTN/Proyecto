@@ -1,4 +1,4 @@
-/* Guia contiene todo */
+/* Estilos generales */
 .guias-container {
   font-family: "Century Gothic", sans-serif;
   color: #0b2f6b;
@@ -19,7 +19,8 @@
   align-items: center;
   justify-content: center;
 }
-/*Titulos */
+
+/* Títulos */
 .titulos-guiaIn {
   font-size: 30px;
   font-family: "Playfair Display", serif;
@@ -34,7 +35,8 @@
   margin-bottom: 10px;
   text-align: center;
 }
-/* Lineas */
+
+/* Líneas */
 .celes-divider,
 .naranja-divider {
   width: 20%;
@@ -52,7 +54,7 @@
   border: 2px solid #f66226;
 }
 
-/* Section portada */
+/* Sección portada */
 .section-portada {
   margin-bottom: 20px;
   padding: 20px;
@@ -64,7 +66,7 @@
 .section-portada p {
   font-size: 20px;
   justify-content: center;
-  padding: 15px ;
+  padding: 15px;
   align-items: center;
 }
 
@@ -92,7 +94,6 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  margin-bottom: 10%;
 }
 .interlink-guiaIn {
   text-decoration: none;
@@ -108,29 +109,36 @@
   background-color: #0daace;
 }
 
-/* Imagenes */
+/* Imágenes */
 .centered {
   display: block;
   margin: 0 auto;
   background-color: none;
-
 }
 .small-image {
   max-width: 350px;
+  width: 100%; /* Añadido */
+  background-color: none;
+}
+.extra-small-image {
+  max-width: 250px;
+  width: 100%; /* Añadido */
   background-color: none;
 }
 .large-image {
-  max-width: 1150px;
+  width: 100%;
+  max-width: 100%;
   margin-top: 20px;
   background-color: none;
 }
-.medium-image{
+.medium-image {
   max-width: 585px;
+  width: 100%; /* Añadido */
   margin-top: 20px;
   background-color: none;
 }
 
-/*Section todas */
+/* Sección todas */
 .section-guias {
   background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
@@ -140,7 +148,7 @@
   font-size: 20px;
 }
 
-/*Section IniciarS */
+/* Sección IniciarS */
 .text-InS {
   font-size: 20px;
   left: 20px !important;
@@ -155,7 +163,8 @@
   margin-top: 20px;
   text-align: center;
 }
-/* Section restablecer contraseña */
+
+/* Sección restablecer contraseña */
 .restablecer-container {
   display: flex;
   align-items: flex-start;
@@ -167,6 +176,7 @@
   max-width: 100%;
   height: auto;
 }
+
 /* Cuadro de los consejos de restablecer contraseña */
 .titu-res {
   font-size: 20px;
@@ -190,6 +200,7 @@
   font-size: 1.3rem;
   margin-top: 20px;
 }
+
 /* Otros */
 @keyframes slide-in {
   from {
@@ -202,7 +213,7 @@
   }
 }
 
-/* Boton flotante */
+/* Botón flotante */
 .scroll-to-top {
   position: fixed;
   bottom: 70px;
@@ -224,11 +235,11 @@
   transform: scale(1.1);
 }
 
-/* Botton Descarga*/
+/* Botón Descarga */
 .download-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50; /* Verde */
   color: white;
   border: none;
   cursor: pointer;
@@ -238,4 +249,74 @@
 
 .download-button:hover {
   background-color: #45a049;
+}
+
+/* Responsividad */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .guiaIn-contenido,
+  .guiaIn-contenido-Ac {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .titulos-guiaIn,
+  .titulo-Portada {
+    font-size: 25px;
+  }
+  .celes-divider,
+  .naranja-divider {
+    width: 50%;
+    margin-left: 25%;
+  }
+  .section-portada p {
+    font-size: 18px;
+  }
+  .section-guias {
+    font-size: 18px;
+  }
+  .consejos {
+    max-width: 80%;
+  }
+  .restablecer-container {
+    flex-direction: column;
+    margin-left: 0;
+    align-items: center;
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .guiaIn-contenido,
+  .guiaIn-contenido-Ac {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .titulos-guiaIn,
+  .titulo-Portada {
+    font-size: 20px;
+  }
+  .celes-divider,
+  .naranja-divider {
+    width: 70%;
+    margin-left: 15%;
+  }
+  .section-portada p {
+    font-size: 16px;
+  }
+  .section-guias {
+    font-size: 16px;
+  }
+  .consejos {
+    max-width: 100%;
+  }
+  .download-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+  .restablecer-container {
+    flex-direction: column;
+    margin-left: 0;
+    align-items: center;
+  }
 }
