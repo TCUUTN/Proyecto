@@ -22,6 +22,7 @@ import CreacionSoli from "../../Assets/Images/Guias/Academicos/CreacionSolicitud
 import boletaC from "../../Assets/Images/Guias/Academicos/BoletaAcademico.png";
 import conclus from "../../Assets/Images/Guias/Academicos/ConclusionGrupo_Acade.png";
 import formBole from "../../Assets/Images/Guias/Academicos/BoletaConclu_Acade.png";
+import rechazoBoleta from "../../Assets/Images/Guias/Academicos/RechazoBoletaConclu_Acade.png";
 function GuiaAcademico() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
@@ -245,12 +246,13 @@ function GuiaAcademico() {
           <p>Los socios comunitarios tiene dos opciones</p>
           <ol>
             <li>
-              <h5><strong>Lista de Socios:</strong> </h5>
+              <h5>
+                <strong>Lista de Socios:</strong>{" "}
+              </h5>
               <ul>
                 <li>
-                  Filtros de busqueda: Traer
-                  rápidamente a los socios comunitarios por nombre, tipo de
-                  institución o estado.
+                  Filtros de busqueda: Traer rápidamente a los socios
+                  comunitarios por nombre, tipo de institución o estado.
                 </li>
                 <li>
                   Descarga de información: Genera un informe en PDF con la
@@ -264,7 +266,6 @@ function GuiaAcademico() {
                   src={listSocios}
                   alt="listSocios"
                   className=" fade-in centered medium-image"
-              
                 />
                 <br></br>
                 <li>
@@ -292,76 +293,128 @@ function GuiaAcademico() {
                   </ol>
                 </li>
                 <br></br>
-                <li>  
-                  Al hacer clic en el lápiz, podemos editar la información del socio. También podemos cambiar su estado a activo o inactivo. 
-                <img
-                        src={CreacList_Otr}
-                        alt="CreacList_Otr"
-                        className=" fade-in centered medium-image"
-                      />
-                      <p><strong>No se olvide darle al botón actualizar.</strong></p>
+                <li>
+                  Al hacer clic en el lápiz, podemos editar la información del
+                  socio. También podemos cambiar su estado a activo o inactivo.
+                  <img
+                    src={CreacList_Otr}
+                    alt="CreacList_Otr"
+                    className=" fade-in centered medium-image"
+                  />
+                  <p>
+                    <strong>No se olvide darle al botón actualizar.</strong>
+                  </p>
                 </li>
               </ul>
             </li>
             <br></br>
             <li>
-              <h5><strong>Solicitud de Socios:</strong></h5>
+              <h5>
+                <strong>Solicitud de Socios:</strong>
+              </h5>
               <ul>
                 <li>
-                Solicitudes Pendientes: Esta sección muestra una lista de las solicitudes de cartas que aún no se han completado. La lista se puede filtrar por nombre del socio o nombre del estudiante. Cada solicitud en la lista muestra el nombre del socio, 
-                el nombre completo del estudiante y las acciones disponibles (en este caso, solo una acción: "Editar").
+                  Solicitudes Pendientes: Esta sección muestra una lista de las
+                  solicitudes de cartas que aún no se han completado. La lista
+                  se puede filtrar por nombre del socio o nombre del estudiante.
+                  Cada solicitud en la lista muestra el nombre del socio, el
+                  nombre completo del estudiante y las acciones disponibles (en
+                  este caso, solo una acción: "Editar").
                 </li>
                 <li>
-                Solicitudes Completadas: Ver una lista de las solicitudes de cartas que se han completado y ya se han enviado. La lista se puede 
-                filtrar por nombre del socio, nombre del estudiante o nombre de la carta.
+                  Solicitudes Completadas: Ver una lista de las solicitudes de
+                  cartas que se han completado y ya se han enviado. La lista se
+                  puede filtrar por nombre del socio, nombre del estudiante o
+                  nombre de la carta.
                 </li>
-                <img  src={SolicitudCarta} alt="SolicitudCarta" className=" fade-in centered medium-image" />
+                <img
+                  src={SolicitudCarta}
+                  alt="SolicitudCarta"
+                  className=" fade-in centered medium-image"
+                />
                 <br></br>
                 <li>
-                Creación de una solicitud:
-                <ol>
-                  <li>
-                  Puedes encontrar una lista completa de socios comunitarios que estan activos
-                  </li>
-                  <li>
-                   Busca en tus grupos a cargo. 
-                  </li>
-                  <li>
-                  Agrega a los estudiantes: Busca en la lista disponible y selecciona a cada uno de ellos. Un clic en el botón "Añadir estudiante" los agregará a la tabla. ¡No te preocupes si te equivocas! Un icono de acción 
-                  te permitirá eliminar a cualquier estudiante que hayas seleccionado por error.
-                  </li>
-                  <li>
-                  Una vez que hayas completado los pasos anteriores. Haz clic en el botón "Enviar"
-                  </li>
-                  <img  src={CreacionSoli} alt="CreacionSoli" className=" fade-in centered medium-image" />
-                </ol>
+                  Creación de una solicitud:
+                  <ol>
+                    <li>
+                      Puedes encontrar una lista completa de socios comunitarios
+                      que estan activos
+                    </li>
+                    <li>Busca en tus grupos a cargo.</li>
+                    <li>
+                      Agrega a los estudiantes: Busca en la lista disponible y
+                      selecciona a cada uno de ellos. Un clic en el botón
+                      "Añadir estudiante" los agregará a la tabla. ¡No te
+                      preocupes si te equivocas! Un icono de acción te permitirá
+                      eliminar a cualquier estudiante que hayas seleccionado por
+                      error.
+                    </li>
+                    <li>
+                      Una vez que hayas completado los pasos anteriores. Haz
+                      clic en el botón "Enviar"
+                    </li>
+                    <img
+                      src={CreacionSoli}
+                      alt="CreacionSoli"
+                      className=" fade-in centered medium-image"
+                    />
+                  </ol>
                 </li>
               </ul>
             </li>
           </ol>
-         
         </div>
         {/* Section explicacion de la Boleta de Conclusión */}
         <div className="section-guias" id="boletaC">
           <h3 className="titulos-guiaIn">Boleta de Conclusión</h3>
           <div className="celes-divider" />
           <p>
-            Cuando entras al modulo de conclusiones vas a ver una lista de los grupos activo y por lo menos que un estudiante haya enviado una boleta de conclusion.  
+            Cuando entras al modulo de conclusiones vas a ver una lista de los
+            grupos activo y por lo menos que un estudiante haya enviado una
+            boleta de conclusion.
           </p>
 
-          <img  src={boletaC} alt="boletaC" className=" fade-in centered medium-image" />
+          <img
+            src={boletaC}
+            alt="boletaC"
+            className=" fade-in centered medium-image"
+          />
           <ul>
             <li>
-              Cunado entres al grupo vas encontrar una lista de los estudiantes que ya llenaron la boleta de conclusion y preciona el boton de ver boleta de conclusión.
+              Cunado entres al grupo vas encontrar una lista de los estudiantes
+              que ya llenaron la boleta de conclusion y preciona el boton de ver
+              boleta de conclusión.
             </li>
-            <img  src={conclus} alt="conclus" className=" fade-in centered large-image" />
+            <img
+              src={conclus}
+              alt="conclus"
+              className=" fade-in centered large-image"
+            />
             <li>
-
+              Cuando se accede a la sección 'Ver boleta de conclusión', se
+              presenta un formulario diseñado para registrar las conclusiones de
+              las labores asignadas a los estudiantes. En este registro, se
+              visualiza la información que cada estudiante ha ingresado al
+              finalizar cada labor y su comentario. Una vez revisados los
+              detalles de cada labor, hay dos opciones: aprobarla o rechazarla.
             </li>
-            <img  src={formBole} alt="formBole" className=" fade-in centered small-image" />
+            <img
+              src={formBole}
+              alt="formBole"
+              className=" fade-in centered small-image"
+            />
+            <li>
+              Al seleccionar 'Rechazar', se despliega un campo de texto donde
+              debes ingresar el motivo de rechazo de la boleta de conclusion. Al
+              hacer clic en el botón 'Enviar Rechazo' se confirma la acción y el
+              estudiante podrá editar la boleta.
+            </li>
+            <img
+              src={rechazoBoleta}
+              alt="rechazoBoleta"
+              className=" fade-in centered small-image"
+            />
           </ul>
-          
-
         </div>
         {/* Section explicacion de la Información*/}
         <div className="section-guias" id="informacionE">
