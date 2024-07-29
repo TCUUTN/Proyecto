@@ -1,4 +1,4 @@
-/* Main container */
+/* Contenedor principal */
 .sociocomunitario-container {
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   font-family: "Century Gothic", sans-serif;
 }
 
-/* Sidebar */
+/* Barra lateral */
 .sociocomu-sidebar {
   display: flex;
   align-items: center;
@@ -23,7 +23,7 @@
   flex-wrap: wrap;
 }
 
-/* Add button */
+/* Botón de agregar */
 .action-sociocomu {
   display: flex;
   align-items: center;
@@ -47,7 +47,8 @@
   font-size: 30px;
 }
 
-.descagarReport-Socios{
+/* Botón de descarga */
+.descagarReport-Socios {
   background-color: #002b69;
   color: white;
   border: none;
@@ -58,11 +59,11 @@
   transition: background-color 0.3s;
   margin-left: auto;
 }
-.descagarReport-Socios:hover{
+.descagarReport-Socios:hover {
   background-color: #f66226;
 }
 
-/* Divider */
+/* Separador */
 .socio-divider {
   width: 2px;
   height: 50px;
@@ -77,17 +78,17 @@
   margin: 0 auto 20px auto;
 }
 
-/* Title */
+/* Título */
 .sociocomu-titulo {
   font-family: 'Playfair Display', serif;
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2.5rem;
-  margin:0 10px 0 25px ;
+  margin: 0 10px 0 25px;
   text-align: center;
 }
 
-/* Filters */
+/* Filtros */
 .filters-sociocomu {
   display: flex;
   align-items: center;
@@ -95,7 +96,7 @@
   flex-wrap: wrap;
   margin: 20px auto;
   padding: 20px;
-  gap: 10px; /* Añadido para separación entre filtros */
+  gap: 10px; /* Añadido para espacio entre filtros */
 }
 
 .filter-group-sociocomu {
@@ -103,7 +104,7 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-  min-width: 180px; /* Ancho mínimo para mantener consistencia */
+  min-width: 180px; /* Ancho mínimo para consistencia */
 }
 
 .filter-label-sociocomu {
@@ -135,7 +136,7 @@
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-/* Solicitud Section */
+/* Sección de solicitud */
 .solicitud-section {
   width: 80%;
   margin: 0 auto 30px auto;
@@ -154,13 +155,13 @@
   margin: 15px auto 20px auto;
 }
 
-/* Table */
+/* Tabla */
 .table-container-socioc {
   width: 100%;
   margin: auto;
   border-radius: 5px;
   padding: 10px;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto; /* Habilitar desplazamiento horizontal */
 }
 
 .table-socioc {
@@ -196,7 +197,7 @@
   transition: 0.5s;
 }
 
-/* Pagination */
+/* Paginación */
 .pagination-sociocomu {
   display: flex;
   justify-content: center;
@@ -218,27 +219,11 @@
 
 .pagination-sociocomu button:hover {
   background-color: #ff6600;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin: 0 5px;
-  border-radius: 5px;
-  transition: 0.5s;
 }
 
 .pagination-sociocomu button:disabled {
   background-color: #777777;
   cursor: not-allowed;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin: 0 5px;
-  border-radius: 5px;
-  transition: 0.5s;
 }
 
 .pagination-sociocomu span {
@@ -247,38 +232,38 @@
   color: #002b69;
 }
 
-/*Boton como link*/
+/* Botón estilizado como enlace */
 .btn-link-carta {
   background: none;
   border: none;
-  color: blue; /* Usualmente el color de los enlaces es azul */
+  color: blue; /* Los enlaces suelen ser azules */
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
-  font: inherit; /* Hereda las propiedades de fuente del padre */
+  font: inherit; /* Heredar propiedades de la fuente del elemento padre */
 }
 
-/* Estilo del menú desplegable */
+/* Menú desplegable personalizado */
 .dropdown-menu-custom {
-  min-width: auto; /* Elimina la anchura mínima para que se ajuste al contenido */
+  min-width: auto; /* Eliminar ancho mínimo para ajustar contenido */
 }
 
 .dropdown-item-custom {
   display: flex;
   align-items: center;
-  padding: 8px; /* Ajusta el padding según sea necesario */
-  width: auto; /* Ajusta el ancho según el contenido */
+  padding: 8px; /* Ajustar padding según sea necesario */
+  width: auto; /* Ajustar ancho basado en contenido */
 }
 
 .dropdown-item-custom .fa-map-marked-alt,
 .dropdown-item-custom .fa-waze {
-  font-size: 30px !important; /* Aumenta el tamaño de los íconos */
-  margin-right: 8px; /* Mantén un pequeño espacio entre el ícono y el borde */
+  font-size: 30px !important; /* Aumentar tamaño de íconos */
+  margin-right: 8px; /* Espacio entre ícono y borde */
 }
 
-/* Media Queries */
+/* Consultas de medios */
 
-/* Tablets and small desktops */
+/* Tablets y escritorios pequeños */
 @media (max-width: 1024px) {
   .sociocomu-sidebar {
     flex-direction: column;
@@ -302,7 +287,7 @@
   }
 
   .filter-group-sociocomu {
-    width: 100%; /* Full width for each filter group */
+    width: 100%; /* Ancho completo para cada grupo de filtros */
     margin: 10px 0;
   }
 
@@ -324,16 +309,18 @@
   }
 }
 
-/* Mobile phones */
+/* Teléfonos móviles */
 @media (max-width: 768px) {
-  .sociocomu-sidebar{
+  .sociocomu-sidebar {
     flex-direction: column;
     align-items: center;
   }
+
   .sociocomu-titulo {
     font-size: 1.8rem;
     margin-left: 0;
   }
+
   .action-sociocomu {
     margin-left: 0;
     margin: 0 auto 15px auto;
@@ -356,11 +343,11 @@
 
   .pagination-sociocomu button {
     padding: 5px 10px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .pagination-sociocomu span {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .table-container-socioc {
@@ -378,6 +365,7 @@
   .tbody-socioc td {
     padding: 5px;
   }
+
   .socio-divider {
     width: 60%;
     height: 2px;
@@ -385,7 +373,7 @@
   }
 }
 
-/* Small mobile phones */
+/* Teléfonos móviles pequeños */
 @media (max-width: 480px) {
   .sociocomunitario-container {
     padding: 10px;
@@ -419,7 +407,7 @@
 
   .filters-sociocomu {
     padding: 0;
-    flex-direction: column; /* Column layout for filters */
+    flex-direction: column;
   }
 
   .filter-group-sociocomu {
@@ -461,7 +449,7 @@
   }
 }
 
-/* Landscape orientation for mobile phones */
+/* Orientación horizontal para teléfonos móviles */
 @media (max-width: 480px) and (orientation: landscape) {
   .sociocomu-titulo {
     font-size: 1.5rem;
@@ -483,5 +471,3 @@
     height: 1px;
   }
 }
-
-

@@ -6,14 +6,25 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { RxEnter } from "react-icons/rx";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import "./Login.modulo.css";
-
+/**
+ * Componente `Login` que proporciona una interfaz de usuario para que los usuarios se autentiquen.
+ * Utiliza estados para manejar el formulario de inicio de sesión y notificaciones.
+ * 
+ * @returns {JSX.Element} El componente `Login`.
+ */
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+   // Estado para manejar el nombre de usuario ingresado
+   const [username, setUsername] = useState("");
+   // Estado para manejar la contraseña ingresada
+   const [password, setPassword] = useState("");
+   // Estado para mostrar u ocultar la contraseña
+   const [showPassword, setShowPassword] = useState(false);
+   // Estado para mostrar una pantalla de carga mientras se procesa el inicio de sesión
+   const [loading, setLoading] = useState(false);
+   // Estado para almacenar mensajes de error
+   const [error, setError] = useState("");
 
+    // Hook useEffect para mostrar una notificación si se ha enviado un correo electrónico con una clave temporal
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const cambioExitoso = params.get("mensajeExitoso");
@@ -24,10 +35,16 @@ function Login() {
       );
     }
   }, []);
-
+  /**
+   * Maneja el envío del formulario de inicio de sesión.
+   * Realiza una solicitud POST al servidor para verificar las credenciales del usuario.
+   * Guarda la información del usuario en `sessionStorage` y redirige a la página correspondiente.
+   * 
+   * @param {React.FormEvent<HTMLFormElement>} event - El evento de envío del formulario.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Show loading screen
+    setLoading(true); // Muestra la pantalla de carga
 
     try {
       const response = await fetch("/usuarios/credenciales", {
@@ -43,7 +60,7 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        // Guardar en sessionStorage
+       // Guarda la información del usuario en sessionStorage
         sessionStorage.setItem("Identificacion", data.Identificacion);
         sessionStorage.setItem("Nombre", data.Nombre);
         sessionStorage.setItem("RolUsuario", data.RolUsuario);
@@ -51,26 +68,29 @@ function Login() {
         sessionStorage.setItem("Genero", data.Genero);
         sessionStorage.setItem("Sede", data.Sede);
 
-        // Redirigir según el género del usuario
+      // Redirige al usuario según el género
         if (data.Genero === "Indefinido" || !data.Genero) {
           window.location.href = "/CompletarPerfil";
         } else {
           window.location.href = "/Home";
         }
       } else {
-        // Si las credenciales son incorrectas, muestra una notificación
+      // Si las credenciales son incorrectas, muestra un mensaje de error
         setError("Usuario o contraseña incorrectos");
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     } finally {
-      setLoading(false); // Hide loading screen
+      setLoading(false);  // Oculta la pantalla de carga
     }
   };
-
+/**
+   * Alterna la visibilidad de la contraseña en el campo de entrada.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  
 
   return (
     <div className="home-container">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
@@ -11,22 +10,26 @@ import { MdFindInPage } from "react-icons/md";
 
 function VistaConclusionesGrupo() {
   const navigate = useNavigate();
-  const [conclusiones, setConclusiones] = useState([]);
-  const [filteredConclusiones, setFilteredConclusiones] = useState([]);
-  const [identificacionFilter, setIdentificacionFilter] = useState("");
-  const [nombreFilter, setNombreFilter] = useState("");
-  const [estadoFilter, setEstadoFilter] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const conclusionesPerPage = 10;
-  const selectedRole = sessionStorage.getItem("SelectedRole");
-  const grupoId = localStorage.getItem("GrupoSeleccionado");
+  // Estados para manejar los datos y filtros
+  const [conclusiones, setConclusiones] = useState([]); // Lista completa de conclusiones
+  const [filteredConclusiones, setFilteredConclusiones] = useState([]); // Lista filtrada de conclusiones
+  const [identificacionFilter, setIdentificacionFilter] = useState(""); // Filtro de identificación
+  const [nombreFilter, setNombreFilter] = useState(""); // Filtro de nombre completo
+  const [estadoFilter, setEstadoFilter] = useState(""); // Filtro de estado de la boleta
+  const [currentPage, setCurrentPage] = useState(1); // Página actual para la paginación
+  const conclusionesPerPage = 10; // Número de conclusiones por página
+// Datos del usuario y grupo almacenados en el almacenamiento local y de sesión
+const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol del usuario
+const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo seleccionado
 
+  // Efecto para cargar las conclusiones cuando cambian el rol o el ID del grupo
   useEffect(() => {
     if (selectedRole && grupoId) {
       fetchConclusiones();
     }
   }, [selectedRole, grupoId]);
 
+   // Función para obtener las conclusiones desde el servidor
   const fetchConclusiones = async () => {
     try {
       const url =
@@ -53,24 +56,27 @@ function VistaConclusionesGrupo() {
     }
   };
 
+  // Función para manejar el cambio en el filtro de identificación
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
     setIdentificacionFilter(value);
     applyFilters(value, nombreFilter, estadoFilter);
   };
 
+// Función para manejar el cambio en el filtro de nombre
   const handleNombreFilterChange = (e) => {
     const value = e.target.value;
     setNombreFilter(value);
     applyFilters(identificacionFilter, value, estadoFilter);
   };
 
+   // Función para manejar el cambio en el filtro de estado
   const handleEstadoFilterChange = (e) => {
     const value = e.target.value;
     setEstadoFilter(value);
     applyFilters(identificacionFilter, nombreFilter, value);
   };
-
+// Función para aplicar los filtros a la lista de conclusiones
   const applyFilters = (identificacion, nombre, estado) => {
     let filtered = conclusiones;
 
@@ -97,16 +103,17 @@ function VistaConclusionesGrupo() {
     }
 
     setFilteredConclusiones(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); // Restablecer a la primera página al cambiar los filtros
   };
 
+// Cálculo de las conclusiones a mostrar en la página actual
   const indexOfLastConclusion = currentPage * conclusionesPerPage;
   const indexOfFirstConclusion = indexOfLastConclusion - conclusionesPerPage;
   const currentConclusiones = filteredConclusiones.slice(
     indexOfFirstConclusion,
     indexOfLastConclusion
   );
-
+ // Función para ir a la siguiente página en la paginación
   const handleNextPage = () => {
     if (
       currentPage < Math.ceil(filteredConclusiones.length / conclusionesPerPage)
@@ -114,18 +121,18 @@ function VistaConclusionesGrupo() {
       setCurrentPage(currentPage + 1);
     }
   };
-
+// Función para ir a la página anterior en la paginación
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
+  // Función para manejar el clic en el botón de editar
   const handleEditClick = (conclusionId) => {
     localStorage.setItem("ConclusionIdSeleccionado", conclusionId);
     navigate("/CrearActualizarConclusiones");
   };
-
+  // Función para manejar el clic en el botón de regreso
   const handlebackClick = (conclusionId) => {
     localStorage.removeItem("GrupoSeleccionado");
     navigate("/GruposConclusiones");

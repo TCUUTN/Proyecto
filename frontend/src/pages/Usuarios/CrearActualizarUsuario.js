@@ -5,9 +5,15 @@ import { FaSave } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import "react-toastify/dist/ReactToastify.css";
 import "./CrearActuUsuario.modulo.css";
-
+/**
+ * CrearActualizarUsuario
+ * 
+ * Componente funcional para crear o actualizar un usuario. Este componente maneja el formulario
+ * para ingresar los datos del usuario y realiza las validaciones necesarias.
+ */
 const CrearActualizarUsuario = () => {
   const navigate = useNavigate();
+  // Estado inicial del formulario
   const [formData, setFormData] = useState({
     identificacion: "",
     nombre: "",
@@ -22,22 +28,25 @@ const CrearActualizarUsuario = () => {
     contrasena: "",
     GrupoId: "",
   });
-
+// Estados para manejar errores y validaciones del formulario
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [grupos, setGrupos] = useState([]);
   const [grupoEstudiante, setGrupoEstudiante] = useState(null);
   const identificacionUsuario = sessionStorage.getItem("IdentificacionUsuario");
-
+ // Efecto para obtener datos del usuario si ya existe
   useEffect(() => {
     const fetchUserData = async () => {
       if (identificacionUsuario) {
         try {
+          // Obtener grupo del estudiante
           const grupoResponse = await fetch(`/grupos/GrupoEstudianteUsuario/${identificacionUsuario}`);
           const grupoData = await grupoResponse.json();
           setGrupoEstudiante(grupoData);
+            // Obtener datos del usuario
           const response = await fetch(`/usuarios/${identificacionUsuario}`);
           const data = await response.json();
+          // Setear los datos del formulario con los datos obtenidos
           setFormData({
             identificacion: data.Identificacion,
             nombre: data.Nombre,
@@ -53,14 +62,11 @@ const CrearActualizarUsuario = () => {
             contrasena: "",
             GrupoId: grupoData.GrupoId,
           });
-
-          
-          
-
         } catch (error) {
           toast.error("Error fetching user data:", error);
         }
       } else {
+         // Si no hay identificación de usuario, limpiar el formulario
         setFormData({
           identificacion: "",
           nombre: "",
@@ -76,14 +82,13 @@ const CrearActualizarUsuario = () => {
         });
       }
     };
-
     fetchUserData();
   }, [identificacionUsuario]);
-
+ // Efecto para validar el formulario cada vez que formData cambie
   useEffect(() => {
     validateForm();
   }, [formData]);
-
+// Efecto para obtener los grupos activos según la sede y rol de estudiante
   useEffect(() => {
     const fetchGrupos = async () => {
       if (formData.sede && formData.roles.includes(3)) {
@@ -113,10 +118,9 @@ const CrearActualizarUsuario = () => {
         setGrupos([]);
       }
     };
-
     fetchGrupos();
   }, [formData.sede, formData.roles, grupoEstudiante]);
-
+ // Validar el formulario y setear errores si los hay
   const validateForm = () => {
     const newErrors = {};
 
@@ -139,14 +143,12 @@ const CrearActualizarUsuario = () => {
       newErrors.primerApellido =
         "El primer apellido debe tener al menos 3 caracteres";
     }
-
     if (!formData.segundoApellido) {
       newErrors.segundoApellido = "Segundo apellido es requerido";
     } else if (formData.segundoApellido.length < 3) {
       newErrors.segundoApellido =
         "El segundo apellido debe tener al menos 3 caracteres";
     }
-
     if (identificacionUsuario) {
       if (!formData.genero) {
         newErrors.genero = "Género es requerido";
@@ -155,21 +157,17 @@ const CrearActualizarUsuario = () => {
         newErrors.estado = "Estado es requerido";
       }
     }
-
     if (!formData.sede || formData.sede === "") {
       newErrors.sede = "Sede es requerida";
     }
-
     if (!formData.correo) {
       newErrors.correo = "Correo electrónico es requerido";
     } else if (!/\S+@\S+\.\S+/.test(formData.correo)) {
       newErrors.correo = "Correo electrónico no tiene un formato válido";
     }
-
     if (!formData.roles.length) {
       newErrors.roles = "Al menos un rol es requerido";
     }
-
     if (formData.roles.includes(3)) {
       if (!formData.carrera) {
         newErrors.carrera = "Carrera es requerida para el rol de Estudiante";
@@ -178,16 +176,15 @@ const CrearActualizarUsuario = () => {
         newErrors.GrupoId = "Grupo es requerido para el rol de Estudiante";
       }
     }
-
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
   };
-
+ // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  // Manejar cambios en los roles seleccionados
   const handleRoleChange = (role) => {
     const roles = formData.roles.includes(role)
       ? formData.roles.filter((r) => r !== role)
@@ -199,7 +196,7 @@ const CrearActualizarUsuario = () => {
       grupo: roles.includes(3) ? prevFormData.grupo : "",
     }));
   };
-
+ // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) {

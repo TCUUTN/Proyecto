@@ -8,8 +8,9 @@ import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./ListaSocios.css";
-
+// Componente principal para manejar las solicitudes de cartas
 function SolicitudesCarta() {
+  // Estados para manejar la paginación y las listas de solicitudes
   const [currentPagePending, setCurrentPagePending] = useState(1);
   const [currentPageCompleted, setCurrentPageCompleted] = useState(1);
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
@@ -22,11 +23,12 @@ function SolicitudesCarta() {
     useState("");
   const [searchCartaCompletadas, setSearchCartaCompletadas] = useState("");
   const navigate = useNavigate();
-
+ // useEffect para obtener los datos de las solicitudes al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       const role = sessionStorage.getItem("SelectedRole");
       let url = "";
+      // Determinar la URL de la API en función del rol del usuario
       if (role === "Académico") {
         const identificacion = sessionStorage.getItem("Identificacion");
         url = `/socios/SolicitudesPorAcademico/${identificacion}`;
@@ -38,7 +40,7 @@ function SolicitudesCarta() {
           url = `/socios/SolicitudesPorSede/${sede}`;
         }
       }
-
+      // Fetch de datos y actualización de estados
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -46,6 +48,7 @@ function SolicitudesCarta() {
         const completadas = data.filter((item) => item.NombreCarta !== "-");
         setSolicitudesPendientes(pendientes);
         setSolicitudesCompletadas(completadas);
+        // Mostrar mensaje de éxito si la bandera está activada
         const banderaEnviado = sessionStorage.getItem("BanderaEnviado");
         if (banderaEnviado === "true") {
           toast.success(
@@ -60,11 +63,11 @@ function SolicitudesCarta() {
 
     fetchData();
   }, []);
-
+ // Función para manejar la navegación a la página de creación/edición de solicitudes
   const handleAddSolicitud = () => {
     navigate("/CrearActualizarSolicitudesCartas");
   };
-
+// Funciones para manejar la paginación de solicitudes pendientes
   const handleNextPagePending = () => {
     setCurrentPagePending((prevPage) => prevPage + 1);
   };
@@ -74,7 +77,7 @@ function SolicitudesCarta() {
       prevPage > 1 ? prevPage - 1 : prevPage
     );
   };
-
+// Funciones para manejar la paginación de solicitudes completadas
   const handleNextPageCompleted = () => {
     setCurrentPageCompleted((prevPage) => prevPage + 1);
   };
@@ -84,7 +87,7 @@ function SolicitudesCarta() {
       prevPage > 1 ? prevPage - 1 : prevPage
     );
   };
-
+// Filtrar las solicitudes pendientes en función de los criterios de búsqueda
   const filteredPendientes = solicitudesPendientes.filter(
     (item) =>
       item.Socios_RegistroSocio.NombreSocio &&
@@ -98,7 +101,7 @@ function SolicitudesCarta() {
             .includes(searchEstudiantePendientes.toLowerCase())
         ))
   );
-
+// Filtrar las solicitudes completadas en función de los criterios de búsqueda
   const filteredCompletadas = solicitudesCompletadas.filter(
     (item) =>
       item.Socios_RegistroSocio.NombreSocio &&
@@ -115,7 +118,7 @@ function SolicitudesCarta() {
         searchCartaCompletadas.toLowerCase()
       )
   );
-
+ // Manejar la descarga de cartas
   const handleDescargaCarta = async (SolicitudId) => {
     try {
       const response = await fetch(`/socios/descargarCarta/${SolicitudId}`);
@@ -150,24 +153,21 @@ function SolicitudesCarta() {
       console.error("Error al manejar la descarga del archivo:", error);
     }
   };
-
+// Manejar la edición de solicitudes
   const handleEditSolicitud = (SolicitudId) => {
     localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
     navigate("/CrearActualizarSolicitudesCartas");
   };
-
+  // Manejar el envío de cartas
   const handleSendLetter = (SolicitudId) => {
     localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
     navigate("/VerSolicitudes");
   };
-
+  // Constantes para la paginación
   const role = sessionStorage.getItem("SelectedRole");
-
   const ITEMS_PER_PAGE = 10;
-
   const pendingPages = Math.ceil(filteredPendientes.length / ITEMS_PER_PAGE);
   const completedPages = Math.ceil(filteredCompletadas.length / ITEMS_PER_PAGE);
-
   const pendingStartIndex = (currentPagePending - 1) * ITEMS_PER_PAGE;
   const completedStartIndex = (currentPageCompleted - 1) * ITEMS_PER_PAGE;
 

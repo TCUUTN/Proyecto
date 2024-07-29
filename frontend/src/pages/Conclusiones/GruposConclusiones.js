@@ -10,24 +10,25 @@ import "./GruposConclusiones.css";
 
 function GruposAcademico() {
   const navigate = useNavigate();
-  const [grupos, setGrupos] = useState([]);
-  const [filteredGrupos, setFilteredGrupos] = useState([]);
-  const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
-  const [annoFilter, setAnnoFilter] = useState("");
-  const [yearsOptions, setYearsOptions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [noGroupsMessage, setNoGroupsMessage] = useState(false);
+  const [grupos, setGrupos] = useState([]); // Estado para almacenar todos los grupos
+  const [filteredGrupos, setFilteredGrupos] = useState([]); // Estado para almacenar los grupos filtrados
+  const [cuatrimestreFilter, setCuatrimestreFilter] = useState(""); // Estado para el filtro de cuatrimestre
+  const [annoFilter, setAnnoFilter] = useState(""); // Estado para el filtro de año
+  const [yearsOptions, setYearsOptions] = useState([]); // Estado para almacenar las opciones de años disponibles
+  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual de la paginación
+  const [loading, setLoading] = useState(false); // Estado para manejar la pantalla de carga
+  const [noGroupsMessage, setNoGroupsMessage] = useState(false); // Estado para mostrar un mensaje si no hay grupos
 
-  const gruposPerPage = 4;
-  const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
-  const identificacion = sessionStorage.getItem("Identificacion");
-  const selectedRole = sessionStorage.getItem("SelectedRole");
+  const gruposPerPage = 4; // Número de grupos por página
+  const sedeFilter = sessionStorage.getItem("Sede") || "Todas"; // Filtro de sede
+  const identificacion = sessionStorage.getItem("Identificacion");  // Identificación del usuario
+  const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol seleccionado por el usuario
+   // Cálculo de los grupos actuales a mostrar en la página actual
   let currentGrupos = filteredGrupos.slice(
     (currentPage - 1) * gruposPerPage,
     currentPage * gruposPerPage
   );
-
+// Cálculo de los grupos actuales a mostrar en la página actual
   useEffect(() => {
     fetchYearsOptions();
     if (selectedRole === "Administrativo") {
@@ -36,13 +37,13 @@ function GruposAcademico() {
       fetchGrupos();
     }
   }, []);
-
+  // useEffect para aplicar filtros cuando los valores de cuatrimestre o año cambian
   useEffect(() => {
     if (selectedRole !== "Administrativo") {
       applyFilters(cuatrimestreFilter, annoFilter);
     }
   }, [cuatrimestreFilter, annoFilter]);
-
+  // Función para obtener las opciones de años disponibles
   const fetchYearsOptions = async () => {
     try {
       const response = await fetch(`/conclusiones/Annos/${selectedRole}`);
@@ -56,7 +57,7 @@ function GruposAcademico() {
       toast.error("Error al obtener los años disponibles");
     }
   };
-
+  // Función para obtener los grupos del usuario
   const fetchGrupos = async () => {
     try {
       const response = await fetch(`/grupos/Conclusiones/${identificacion}`);
@@ -88,17 +89,17 @@ function GruposAcademico() {
       toast.error("Error al obtener la lista de grupos");
     }
   };
-
+// Función para manejar el cambio en el filtro de cuatrimestre
   const handleCuatrimestreFilterChange = (e) => {
     const value = e.target.value;
     setCuatrimestreFilter(value);
   };
-
+ // Función para manejar el cambio en el filtro de año
   const handleAnnoFilterChange = (e) => {
     const value = e.target.value;
     setAnnoFilter(value);
   };
-
+  // Función para aplicar los filtros de búsqueda
   const applyFilters = (codigoMateria, nombreProyecto, cuatrimestre, anno) => {
     let filtered = grupos;
 
@@ -127,28 +128,29 @@ function GruposAcademico() {
     }
 
     setFilteredGrupos(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); // Resetear a la primera página al cambiar los filtros
     setNoGroupsMessage(filtered.length === 0);
   };
 
+// Función para manejar la paginación a la página siguiente
   const handleNextPage = () => {
     const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-
+// Función para manejar la paginación a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
+  // Función para manejar la selección de un grupo específico
   const handleLista = (grupoId) => {
     localStorage.setItem("GrupoSeleccionado", grupoId);
     navigate("/VistaConclusionesGrupo");
   };
-
+  // Función para manejar el clic en el botón de buscar
   const handleBuscarClick = async () => {
     try {
       const requestBody = JSON.stringify({

@@ -1,3 +1,4 @@
+// Importamos las dependencias necesarias
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
@@ -10,8 +11,9 @@ import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./ListaSocios.css";
-
+// Componente principal SocioComunitarios
 function SocioComunitarios() {
+   // Definición de estados
   const [currentPage, setCurrentPage] = useState(1);
   const [socios, setSocios] = useState([]);
   const [filteredSocios, setFilteredSocios] = useState([]);
@@ -21,9 +23,9 @@ function SocioComunitarios() {
     tipoInstitucion: "",
     estado: "",
   });
-
+  // Hook de navegación
   const navigate = useNavigate();
-
+ // useEffect para obtener los datos de los socios al montar el componente
   useEffect(() => {
     fetch("/socios/")
       .then((response) => response.json())
@@ -32,16 +34,16 @@ function SocioComunitarios() {
         setFilteredSocios(data);
       });
   }, []);
-
+ // Función para manejar la adición de un nuevo socio
   const handleAddUser = () => {
     navigate("/CrearActuSocioComunitarios");
   };
-
+ // Función para manejar la edición de un socio existente
   const handleEditUser = (socioId) => {
     localStorage.setItem("SocioIdSeleccionado", socioId);
     navigate("/CrearActuSocioComunitarios");
   };
-
+  // Funciones para manejar la paginación
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
@@ -49,7 +51,7 @@ function SocioComunitarios() {
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
   };
-
+ // Función para manejar cambios en los filtros
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -57,11 +59,11 @@ function SocioComunitarios() {
       [name]: value,
     }));
   };
-
+  // useEffect para aplicar los filtros cada vez que cambian
   useEffect(() => {
     const applyFilters = () => {
       let filtered = socios;
-
+ // Filtrado por institución
       if (filters.institucion) {
         filtered = filtered.filter((socio) =>
           socio.NombreSocio.toLowerCase().includes(
@@ -69,7 +71,7 @@ function SocioComunitarios() {
           )
         );
       }
-
+ // Filtrado por contacto
       if (filters.contacto) {
         filtered = filtered.filter((socio) =>
           socio.NombreCompletoContacto.toLowerCase().includes(
@@ -77,7 +79,7 @@ function SocioComunitarios() {
           )
         );
       }
-
+// Filtrado por tipo de institución
       if (filters.tipoInstitucion) {
         filtered = filtered.filter((socio) =>
           socio.TipoInstitucion.toLowerCase().includes(
@@ -85,7 +87,7 @@ function SocioComunitarios() {
           )
         );
       }
-
+// Filtrado por tipo de institución
       if (filters.estado !== "") {
         filtered = filtered.filter(
           (socio) => String(socio.Estado) === filters.estado
@@ -97,17 +99,17 @@ function SocioComunitarios() {
 
     applyFilters();
   }, [filters, socios]);
-
+ // Función para generar el enlace de Google Maps
   const generateMapsLink = (gps) => {
     const [latitude, longitude] = gps.split(",");
     return `https://www.google.com/maps?q=${latitude},${longitude}`;
   };
-
+  // Función para generar el enlace de Waze
   const generateWazeLink = (gps) => {
     const [latitude, longitude] = gps.split(",");
     return `https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
   };
-
+  // Función para generar el reporte PDF de los socios
   const handleGenerarReporte = () => {
     const doc = new jsPDF({
       orientation: "portrait",

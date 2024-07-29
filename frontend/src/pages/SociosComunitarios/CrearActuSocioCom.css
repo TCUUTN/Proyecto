@@ -1,199 +1,191 @@
- /* Crear o actualizar socio comunitario */
+/* Crear o actualizar socio comunitario */
 
-/* Container */
+/* Contenedor Principal */
 .creaedsocio-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 95vh;
-  font-family: "Century Gothic", sans-serif;
-
+  display: flex; /* Usar Flexbox para centrar el contenido */
+  justify-content: center; /* Alinear horizontalmente al centro */
+  align-items: center; /* Alinear verticalmente al centro */
+  min-height: 95vh; /* Altura mínima del contenedor */
+  font-family: "Century Gothic", sans-serif; /* Fuente principal */
 }
 
-/* Content */
+/* Contenido del Formulario */
 .creaedsocio-content {
-  padding: 5px;
-  width: 100%;
-  max-width: 900px;
-  background-color: #fff;
-  border: 2px solid rgba(0, 44, 105, 0.212);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin: 2% auto;
+  padding: 5px; /* Espaciado interno */
+  width: 100%; /* Ancho completo del contenedor */
+  max-width: 900px; /* Ancho máximo del contenedor */
+  background-color: #fff; /* Fondo blanco */
+  border: 2px solid rgba(0, 44, 105, 0.212); /* Borde suave */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para efecto de elevación */
+  border-radius: 8px; /* Bordes redondeados */
+  margin: 2% auto; /* Márgenes automáticos para centrar */
 }
 
-/* Title */
+/* Título */
 .creaedsocio-title {
-  font-family: 'Playfair Display', serif;
-  color: #012c6a;
-  margin-bottom: 10px;
-  font-size: 2rem;
-  text-align: center;
+  font-family: 'Playfair Display', serif; /* Fuente secundaria para el título */
+  color: #012c6a; /* Color del texto del título */
+  margin-bottom: 10px; /* Espacio debajo del título */
+  font-size: 2rem; /* Tamaño de fuente */
+  text-align: center; /* Centrar texto */
 }
 
-/* Divider */
+/* Divisor */
 .creaedsocio-divider {
-  width: 175px;
-  height: 2px;
-  background: #ff6600;
-  margin: 0 auto 20px auto;
+  width: 175px; /* Ancho del divisor */
+  height: 2px; /* Alto del divisor */
+  background: #ff6600; /* Color de fondo del divisor */
+  margin: 0 auto 20px auto; /* Centrar el divisor y espaciado inferior */
 }
 
-/* Form */
+/* Sección del Formulario */
 .creaedsocio-section {
-  margin-bottom: 30px;
-  justify-content: center;
- 
+  margin-bottom: 30px; /* Espacio inferior entre secciones */
+  justify-content: center; /* Centrar contenido dentro de la sección */
 }
 
-/* Subtitle */
+/* Subtítulo */
 .creaedsocio-subt {
-  font-size: 18px;
-  margin-bottom: 10px;
-  text-align: left;
-  color: #012c6a;
-  margin-left: 2%;
+  font-size: 18px; /* Tamaño de fuente del subtítulo */
+  margin-bottom: 10px; /* Espacio debajo del subtítulo */
+  text-align: left; /* Alinear texto a la izquierda */
+  color: #012c6a; /* Color del texto del subtítulo */
+  margin-left: 2%; /* Espacio a la izquierda */
 }
 
-/* Inputs */
+/* Grupo de Entradas */
 .creaedsocio-group {
-  margin-bottom: 20px;
-  margin-left: 5%;
-
+  margin-bottom: 20px; /* Espacio inferior entre grupos */
+  margin-left: 5%; /* Espacio a la izquierda del grupo */
 }
 
+/* Entrada de Texto */
 .creaedsocio-input {
-  width: 85%;
-  padding: 10px;
-  border: 2px solid #002b69;
-  border-radius: 25px;
-  font-size: 16px;
-  color: #1c3b70;
-  align-items: center;
-
-  text-align: center;
-  /* Chrome, Safari, Opera */
-  -webkit-text-align: center;
-  /* Firefox */
-  -moz-text-align: center;
-  /* IE */
-  -ms-text-align: center;
+  width: 85%; /* Ancho de la entrada */
+  padding: 10px; /* Espaciado interno */
+  border: 2px solid #002b69; /* Borde de la entrada */
+  border-radius: 25px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  color: #1c3b70; /* Color del texto */
+  text-align: center; /* Centrar texto dentro de la entrada */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Transiciones suaves para borde y sombra */
 }
 
+/* Placeholder de Entrada */
 .creaedsocio-input::placeholder {
-  color: #303031;
-  opacity: 0.6;
+  color: #303031; /* Color del texto del placeholder */
+  opacity: 0.6; /* Opacidad del placeholder */
 }
 
-.creaedsocio-input:focus{
-  border-color: #ff6600 !important;
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+/* Entrada de Texto en Foco */
+.creaedsocio-input:focus {
+  border-color: #ff6600 !important; /* Color del borde al enfocar */
+  outline: none; /* Eliminar el contorno por defecto */
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5); /* Sombra del borde al enfocar */
 }
 
-/* Error */
+/* Mensajes de Error */
 .error-creaedsocio {
-  color: red;
-  font-size: 12px;
-  margin-top: 6px;
+  color: red; /* Color del texto de error */
+  font-size: 12px; /* Tamaño de fuente del mensaje de error */
+  margin-top: 6px; /* Espacio superior del mensaje de error */
 }
 
-
-/* Buttons */
+/* Contenedor de Botones */
 .creaedsocio-buttons {
-  grid-column: span 2;
-  text-align: center;
-  margin-top: 20px;
+  grid-column: span 2; /* Abarcar dos columnas en un contenedor de cuadrícula */
+  text-align: center; /* Centrar el texto de los botones */
+  margin-top: 20px; /* Espacio superior de los botones */
 }
 
+/* Botón */
 .creaedsocio-button {
-  width: 45%;
-  padding: 10px;
-  background-color: #002b69;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 0 10px;
-  transition: 0.3s;
+  width: 45%; /* Ancho del botón */
+  padding: 10px; /* Espaciado interno del botón */
+  background-color: #002b69; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  border-radius: 25px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+  font-size: 16px; /* Tamaño de fuente */
+  margin: 0 10px; /* Espacio lateral entre botones */
+  transition: background-color 0.3s; /* Transición suave para el color de fondo */
 }
 
+/* Hover en Botón */
 .creaedsocio-button:hover {
-  background-color: #ff4500;
-  transition: 0.3s;
+  background-color: #ff4500; /* Color de fondo al pasar el mouse */
+  transition: 0.3s; /* Duración de la transición */
 }
 
+/* Botón Deshabilitado */
 .creaedsocio-button:disabled {
-  background-color: #999999;
-  cursor: not-allowed;
-  transition: none;
+  background-color: #999999; /* Color de fondo del botón deshabilitado */
+  cursor: not-allowed; /* Cambiar cursor al pasar sobre el botón deshabilitado */
+  transition: none; /* Sin transición para el estado deshabilitado */
 }
 
-/* Media Queries */
+/* Consultas de Medios */
 
-/* Tablets and small desktops */
+/* Tabletas y Escritorios Pequeños */
 @media (max-width: 1024px) {
   .creaedsocio-content {
-    width: 70%;
+    width: 70%; /* Ajustar el ancho del contenido */
   }
 
   .creaedsocio-title {
-    font-size: 1.5rem;
-    margin-left: 5%;
+    font-size: 1.5rem; /* Tamaño de fuente más pequeño para el título */
+    margin-left: 5%; /* Ajustar margen izquierdo */
   }
 
   .creaedsocio-input {
-    width: 90%;
+    width: 90%; /* Ajustar el ancho de las entradas */
   }
 }
 
-/* Mobile phones */
+/* Teléfonos Móviles */
 @media (max-width: 768px) {
   .creaedsocio-content {
-    width: 90%;
-    padding: 15px;
+    width: 90%; /* Ajustar el ancho del contenido */
+    padding: 15px; /* Ajustar el espaciado interno */
   }
 
-
-
   .creaedsocio-divider {
-    width: 120px;
+    width: 120px; /* Ancho más pequeño del divisor */
   }
 
   .creaedsocio-input {
-    width: 95%;
+    width: 95%; /* Ajustar el ancho de las entradas */
   }
 
   .creaedsocio-button {
-    width: 80%;
-    margin: 10px 0;
+    width: 80%; /* Ancho más pequeño de los botones */
+    margin: 10px 0; /* Ajustar margen vertical entre botones */
   }
 }
 
-/* Small mobile phones */
+/* Teléfonos Móviles Pequeños */
 @media (max-width: 480px) {
   .creaedsocio-content {
-    width: 95%;
-    padding: 10px;
+    width: 95%; /* Ajustar el ancho del contenido */
+    padding: 10px; /* Ajustar el espaciado interno */
   }
 
   .creaedsocio-title {
-    font-size: 1.9rem;
+    font-size: 1.9rem; /* Tamaño de fuente más pequeño para el título */
   }
 
   .creaedsocio-divider {
-    width: 100px;
+    width: 100px; /* Ancho más pequeño del divisor */
   }
 
   .creaedsocio-input {
-    width: 100%;
+    width: 100%; /* Ajustar el ancho de las entradas */
   }
 
   .creaedsocio-button {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
+    width: 100%; /* Ancho completo de los botones */
+    padding: 8px; /* Ajustar espaciado interno */
+    margin: 5px 0; /* Ajustar margen vertical entre botones */
   }
 }
-

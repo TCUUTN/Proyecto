@@ -1,82 +1,89 @@
-import React, { useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-import { FaChevronLeft } from "react-icons/fa6";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { TiUserDelete, TiUserAdd } from "react-icons/ti";
-import { useNavigate } from "react-router-dom";
-import { BsFillSendPlusFill } from "react-icons/bs";
-import "./CrearActualizarSolicitudCartas.css";
+import React, { useState, useEffect } from "react"; // Importación de React y hooks
+import "react-toastify/dist/ReactToastify.css"; // Importación de estilos para las notificaciones
+import { ToastContainer, toast } from "react-toastify"; // Importación de componentes para notificaciones
+import { FaChevronLeft } from "react-icons/fa6"; // Importación de icono de flecha
+import { OverlayTrigger, Tooltip } from "react-bootstrap"; // Importación de componentes de Bootstrap
+import { TiUserDelete, TiUserAdd } from "react-icons/ti"; // Importación de iconos de usuario
+import { useNavigate } from "react-router-dom"; // Importación de hook para navegación
+import { BsFillSendPlusFill } from "react-icons/bs"; // Importación de icono de envío
+import "./CrearActualizarSolicitudCartas.css"; // Importación de estilos CSS específicos
 
 function SolicitudCartas() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [socios, setSocios] = useState([]);
-  const [grupos, setGrupos] = useState([]);
-  const [IdentificacionAcademico] = useState(
-    sessionStorage.getItem("Identificacion")
+   // Declaración de estados para el componente
+   const [loading, setLoading] = useState(false); // Estado para mostrar pantalla de carga
+   const [socios, setSocios] = useState([]); // Estado para almacenar la lista de socios
+   const [grupos, setGrupos] = useState([]); // Estado para almacenar la lista de grupos
+   const [IdentificacionAcademico] = useState(
+     sessionStorage.getItem("Identificacion") // Estado para la identificación del académico
   );
-  const [SedeAcademico] = useState(sessionStorage.getItem("Sede"));
-  const [estudiantes, setEstudiantes] = useState([]);
-  const [selectedSocio, setSelectedSocio] = useState(null);
-  const [selectedGrupo, setSelectedGrupo] = useState(null);
-  const [selectedEstudiante, setSelectedEstudiante] = useState(null);
-  const [selectedEstudiantes, setSelectedEstudiantes] = useState([]);
-  const navigate = useNavigate();
+  const [SedeAcademico] = useState(sessionStorage.getItem("Sede")); // Estado para la sede del académico
+  const [estudiantes, setEstudiantes] = useState([]); // Estado para almacenar la lista de estudiantes
+  const [selectedSocio, setSelectedSocio] = useState(null); // Estado para el socio seleccionado
+  const [selectedGrupo, setSelectedGrupo] = useState(null); // Estado para el grupo seleccionado
+  const [selectedEstudiante, setSelectedEstudiante] = useState(null); // Estado para el estudiante seleccionado
+  const [selectedEstudiantes, setSelectedEstudiantes] = useState([]); // Estado para la lista de estudiantes seleccionados
+  const navigate = useNavigate(); // Hook para redirigir al usuario
 
-  useEffect(() => {
+   // useEffect para cargar datos iniciales
+   useEffect(() => {
+    // Fetch para obtener la lista de socios activos
     fetch("/socios/Activos")
       .then((response) => response.json())
-      .then((data) => setSocios(data));
+      .then((data) => setSocios(data)); // Actualiza el estado con la lista de socios
 
-    const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
-    fetch(`/grupos/Academicos/${IdentificacionAcademico}`)
+      const solicitudId = localStorage.getItem("SolicitudIdSeleccionada"); // Obtiene el ID de la solicitud seleccionada del localStorage
+      // Fetch para obtener los grupos del académico
+      fetch(`/grupos/Academicos/${IdentificacionAcademico}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setGrupos(Array.isArray(data) ? data : []); // Actualiza el estado con la lista de grupos
+          setSelectedGrupo(null); // Resetea el grupo seleccionado
+          setEstudiantes([]); // Resetea la lista de estudiantes
+        });
+// Si existe un ID de solicitud, obtiene los datos de la solicitud
+if (solicitudId) {
+  fetch(`/socios/Solicitudes/${solicitudId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data && data.estudiantesCarta) {
+        // Si hay datos, actualiza el estado con el socio y los estudiantes seleccionados
+        setSelectedSocio(data.SocioId);
+        setSelectedEstudiantes(
+          data.estudiantesCarta.map((est) => ({
+            id: est.Usuario.Identificacion,
+            name: `${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`,
+          }))
+        );
+      }
+    });
+}
+}, []);
+ // useEffect para cargar la lista de estudiantes cuando se selecciona un grupo
+ useEffect(() => {
+  if (selectedGrupo) {
+    // Fetch para obtener la lista de estudiantes del grupo seleccionado
+    fetch(`/grupos/ListaEstudiantes/${selectedGrupo}`)
       .then((response) => response.json())
       .then((data) => {
-        setGrupos(Array.isArray(data) ? data : []);
-        setSelectedGrupo(null);
-        setEstudiantes([]);
+        setEstudiantes(data); // Actualiza el estado con la lista de estudiantes
+        setSelectedEstudiante(null); // Resetea el estudiante seleccionado
       });
-
-    if (solicitudId) {
-      fetch(`/socios/Solicitudes/${solicitudId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data && data.estudiantesCarta) {
-            setSelectedSocio(data.SocioId);
-            setSelectedEstudiantes(
-              data.estudiantesCarta.map((est) => ({
-                id: est.Usuario.Identificacion,
-                name: `${est.Usuario.Nombre} ${est.Usuario.Apellido1} ${est.Usuario.Apellido2}`,
-              }))
-            );
-          }
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (selectedGrupo) {
-      fetch(`/grupos/ListaEstudiantes/${selectedGrupo}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setEstudiantes(data);
-          setSelectedEstudiante(null); // Reset the third dropdown to the empty value
-        });
-    }
-  }, [selectedGrupo]);
-
-  const handleBackClick = () => {
-    localStorage.removeItem("SolicitudIdSeleccionada");
-    navigate("/SolicitudCartas");
-  };
-
+  }
+}, [selectedGrupo]);
+ // Función para manejar el clic en el botón de regresar
+ const handleBackClick = () => {
+  localStorage.removeItem("SolicitudIdSeleccionada"); // Elimina el ID de solicitud seleccionada del localStorage
+  navigate("/SolicitudCartas"); // Navega a la página de SolicitudCartas
+};
+  // Función para añadir un estudiante a la lista de estudiantes seleccionados
   const handleAddEstudiante = () => {
-    setLoading(true); // Show loading screen
-    const estudianteId = selectedEstudiante.Usuario.Identificacion;
+    setLoading(true); // Muestra pantalla de carga
+    const estudianteId = selectedEstudiante.Usuario.Identificacion; // Obtiene la identificación del estudiante seleccionado
+    // Verifica si el estudiante ya está añadido a la lista
     if (selectedEstudiantes.some((est) => est.id === estudianteId)) {
-      toast.error("El estudiante ya se encuentra añadido en la solicitud.");
+      toast.error("El estudiante ya se encuentra añadido en la solicitud."); // Muestra un mensaje de error
     } else {
+      // Añade el estudiante a la lista de estudiantes seleccionados
       setSelectedEstudiantes((prev) => [
         ...prev,
         {
@@ -85,54 +92,57 @@ function SolicitudCartas() {
         },
       ]);
     }
-    setSelectedGrupo(null);
-    setSelectedEstudiante(null);
-    setEstudiantes([]);
-    setLoading(false); // Show loading screen
+    setSelectedGrupo(null); // Resetea el grupo seleccionado
+    setSelectedEstudiante(null); // Resetea el estudiante seleccionado
+    setEstudiantes([]); // Resetea la lista de estudiantes
+    setLoading(false); // Oculta la pantalla de carga
   };
 
+  // Función para remover un estudiante de la lista de estudiantes seleccionados
   const handleRemoveEstudiante = (id) => {
-    setSelectedEstudiantes((prev) => prev.filter((est) => est.id !== id));
+    setSelectedEstudiantes((prev) => prev.filter((est) => est.id !== id)); // Filtra la lista para remover el estudiante por ID
   };
-
-  const handleGuardar = () => {
-    setLoading(true); // Show loading screen
-    const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
-    const data = {
-      SocioId: selectedSocio,
-      Sede: SedeAcademico,
-      Identificacion: IdentificacionAcademico,
-      IdentificacionesEstudiantes: selectedEstudiantes.map((est) => est.id),
-    };
+ // Función para guardar la solicitud
+ const handleGuardar = () => {
+  setLoading(true); // Muestra pantalla de carga
+  const solicitudId = localStorage.getItem("SolicitudIdSeleccionada"); // Obtiene el ID de la solicitud seleccionada del localStorage
+  const data = {
+    // Datos para enviar en la solicitud
+    SocioId: selectedSocio,
+    Sede: SedeAcademico,
+    Identificacion: IdentificacionAcademico,
+    IdentificacionesEstudiantes: selectedEstudiantes.map((est) => est.id), // Obtiene las identificaciones de los estudiantes seleccionados
+  };
     if (solicitudId) {
       data.SolicitudId = solicitudId;
     }
-    fetch("/socios/crearOActualizarSolicitudCarta", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+  // Fetch para crear o actualizar la solicitud
+  fetch("/socios/crearOActualizarSolicitudCarta", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data), // Convierte los datos a JSON
+  })
       .then((response) => response.json())
       .then(() => {
-        localStorage.removeItem("SolicitudIdSeleccionada");
-        localStorage.setItem("SolicitudGuardada", true);
-        setLoading(false); // Show loading screen
-        navigate("/SolicitudCartas");
+        localStorage.removeItem("SolicitudIdSeleccionada"); // Elimina el ID de solicitud seleccionada del localStorage
+        localStorage.setItem("SolicitudGuardada", true); // Guarda un indicador de que la solicitud fue guardada
+        setLoading(false); // Oculta la pantalla de carga
+        navigate("/SolicitudCartas"); // Navega a la página de SolicitudCartas
       });
   };
-
-  useEffect(() => {
-    const socioId = parseInt(selectedSocio); // Convertir selectedSocio a número si es necesario
-    const socioSeleccionado = socios.find((s) => s.SocioId === socioId);
-    const nombreSocio = socioSeleccionado ? socioSeleccionado.NombreSocio : "";
-    const element = document.getElementById("NombreSocioSeleccionado");
-    if (element) {
-      element.textContent = selectedSocio ? `${nombreSocio}` : "";
-    }
-  }, [selectedSocio, socios]);
-
+ // useEffect para actualizar el nombre del socio seleccionado en el DOM
+ useEffect(() => {
+  const socioId = parseInt(selectedSocio); // Convierte el socio seleccionado a número si es necesario
+  const socioSeleccionado = socios.find((s) => s.SocioId === socioId); // Busca el socio seleccionado en la lista de socios
+  const nombreSocio = socioSeleccionado ? socioSeleccionado.NombreSocio : ""; // Obtiene el nombre del socio seleccionado
+  const element = document.getElementById("NombreSocioSeleccionado"); // Obtiene el elemento del DOM para mostrar el nombre del socio
+  if (element) {
+    element.textContent = selectedSocio ? `${nombreSocio}` : ""; // Actualiza el contenido del elemento con el nombre del socio
+  }
+}, [selectedSocio, socios]);
+  // Renderiza el componente
   return (
     <div className="solici-container">
       {loading && (
@@ -266,4 +276,4 @@ function SolicitudCartas() {
   );
 }
 
-export default SolicitudCartas;
+export default SolicitudCartas;// Exporta el componente para su uso en otras partes de la aplicación

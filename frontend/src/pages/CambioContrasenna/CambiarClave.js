@@ -7,17 +7,19 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Cambiar.modulo.css";
 
 function CambiarClave() {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [CorreoElectronico, setCorreoElectronico] = useState("");
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [passwordErrors, setPasswordErrors] = useState([]);
-  const [isFormValid, setIsFormValid] = useState(false);
+  // Estados para manejar los valores y errores del formulario
+  const [currentPassword, setCurrentPassword] = useState(""); // Contraseña actual del usuario
+  const [newPassword, setNewPassword] = useState(""); // Nueva contraseña del usuario
+  const [confirmPassword, setConfirmPassword] = useState(""); // Confirmación de la nueva contraseña
+  const [CorreoElectronico, setCorreoElectronico] = useState(""); // Correo electrónico del usuario
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false); // Controlar visibilidad de la contraseña actual
+  const [showNewPassword, setShowNewPassword] = useState(false); // Controlar visibilidad de la nueva contraseña
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Controlar visibilidad de la confirmación de contraseña
+  const [error, setError] = useState(""); // Mensaje de error general
+  const [passwordErrors, setPasswordErrors] = useState([]); // Errores de validación de la nueva contraseña
+  const [isFormValid, setIsFormValid] = useState(false); // Controlar si el formulario es válido para habilitar el botón de envío
 
+  // Cargar el correo electrónico almacenado en sessionStorage al montar el componente
   useEffect(() => {
     const storedCorreo = sessionStorage.getItem("CorreoElectronico");
 
@@ -26,6 +28,7 @@ function CambiarClave() {
     }
   }, []);
 
+  // Mostrar notificación si la contraseña se cambió exitosamente
   useEffect(() => {
     const showNotificationAfterRedirect = () => {
       const params = new URLSearchParams(window.location.search);
@@ -38,12 +41,14 @@ function CambiarClave() {
     showNotificationAfterRedirect();
   }, []);
 
+  // Funciones para alternar la visibilidad de las contraseñas
   const toggleShowCurrentPassword = () =>
     setShowCurrentPassword(!showCurrentPassword);
   const toggleShowNewPassword = () => setShowNewPassword(!showNewPassword);
   const toggleShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
 
+  // Función para validar la nueva contraseña
   const validatePassword = (password) => {
     const errors = [];
     if (password.length < 8) {
@@ -63,7 +68,7 @@ function CambiarClave() {
     }
     return errors;
   };
-
+ // Manejar el cambio en el campo de la nueva contraseña
   const handleNewPasswordChange = (e) => {
     const newPassword = e.target.value;
     setNewPassword(newPassword);
@@ -72,12 +77,13 @@ function CambiarClave() {
     validateForm(errors, newPassword, confirmPassword);
   };
 
+  // Manejar el cambio en el campo de confirmación de contraseña
   const handleConfirmPasswordChange = (e) => {
     const confirmPassword = e.target.value;
     setConfirmPassword(confirmPassword);
     validateForm(passwordErrors, newPassword, confirmPassword);
   };
-
+  // Validar el formulario en base a los errores de contraseña y la confirmación
   const validateForm = (passwordErrors, newPassword, confirmPassword) => {
     const isValid =
       passwordErrors.length === 0 &&
@@ -86,7 +92,7 @@ function CambiarClave() {
       confirmPassword !== "";
     setIsFormValid(isValid);
   };
-
+// Manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
 

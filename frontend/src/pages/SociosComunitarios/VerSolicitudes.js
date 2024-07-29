@@ -4,16 +4,20 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { RiMailSendLine } from "react-icons/ri";
 import "./VerSolicitud.css";
 import { BsUpload } from "react-icons/bs";
-
+/**
+ * Componente para ver las solicitudes y gestionar la subida de cartas.
+ */
 function VerSolicitudes() {
+   // Hook para la navegación programática
   const navigate = useNavigate();
+  // Estados del componente
   const [socioNombre, setSocioNombre] = useState("");
   const [estudiantes, setEstudiantes] = useState([]);
   const [file, setFile] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
   const [fileName, setFileName] = useState(""); // Estado para manejar el nombre del archivo
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
-
+// Hook para obtener los datos de la solicitud cuando el componente se monta
   useEffect(() => {
     const fetchData = async () => {
       const solicitudId = localStorage.getItem("SolicitudIdSeleccionada");
@@ -37,12 +41,18 @@ function VerSolicitudes() {
 
     fetchData();
   }, [navigate]);
-
+ /**
+   * Maneja el clic en el botón de regreso.
+   * Elimina la solicitud seleccionada del almacenamiento local y navega a la página de solicitudes.
+   */
   const handleBackClick = () => {
     localStorage.removeItem("SolicitudIdSeleccionada");
     navigate("/SolicitudCartas");
   };
-
+  /**
+   * Maneja el cambio de archivo en el input de tipo file.
+   * @param {Object} event - El evento de cambio.
+   */
   const handleFileChange = (event) => {
     setIsLoading(true); // Mostrar pantalla de carga
     const selectedFile = event.target.files[0];
@@ -51,7 +61,10 @@ function VerSolicitudes() {
     setIsLoading(false); // Ocultar pantalla de carga
     setIsFileSelected(!!selectedFile);
   };
-
+/**
+   * Maneja el envío del formulario.
+   * @param {Object} event - El evento de envío del formulario.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); // Mostrar pantalla de carga

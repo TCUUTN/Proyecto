@@ -7,7 +7,9 @@ import "./CrearoActualizarConclusiones.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
+// Componente principal para crear o actualizar conclusiones
 function CrearoActualizarConclusiones() {
+    // Definición de los estados locales
   const [formData, setFormData] = useState({
     ConclusionId:"",
     Identificacion: "",
@@ -37,6 +39,7 @@ function CrearoActualizarConclusiones() {
   const navigate = useNavigate();
   const nodeRef = useRef(null);
 
+   // useEffect para cargar datos del rol y conclusión desde el almacenamiento
   useEffect(() => {
     const role = sessionStorage.getItem("SelectedRole");
     setSelectedRole(role);
@@ -50,6 +53,7 @@ function CrearoActualizarConclusiones() {
     }
   }, []);
 
+  // useEffect para cargar datos del formulario basados en el rol
   useEffect(() => {
     const role = sessionStorage.getItem("SelectedRole");
     if (role === "Estudiante") {
@@ -120,6 +124,7 @@ function CrearoActualizarConclusiones() {
     }
   }, [conclusionId]);
 
+   // Ajuste del padding dinámico del contenedor basado en la altura del contenido
   useEffect(() => {
     const container = document.querySelector(".creconclusiones-container");
     const content = document.querySelector(".creconclusiones-content");
@@ -141,13 +146,14 @@ function CrearoActualizarConclusiones() {
       window.removeEventListener("resize", adjustPadding);
     };
   }, []);
-
+// Maneja los cambios en los inputs del formulario
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
     setFormData(newFormData);
     validateForm(newFormData);
   };
 
+// Validación del formulario
   const validateForm = (data) => {
     const { Labor1, Labor2, Labor3, Labor4, Labor5, Labor6, Comentarios } =
       data;
@@ -156,6 +162,7 @@ function CrearoActualizarConclusiones() {
     setIsSubmitDisabled(!isValid);
   };
 
+   // Maneja el envío del formulario
   const handleSubmit = async (event) => {
     setIsLoading(true); // Mostrar pantalla de carga
     event.preventDefault();
@@ -218,7 +225,7 @@ function CrearoActualizarConclusiones() {
       setIsLoading(false); // Ocultar pantalla de carga
     }
   };
-
+  // Maneja el evento de retroceso (volver a la vista anterior)
   const handleBackClick = () => {
     sessionStorage.removeItem("ConclusionIdSeleccionado");
     if(selectedRole!=="Estudiante"){
@@ -227,7 +234,7 @@ function CrearoActualizarConclusiones() {
       navigate("/Home");
     }
   };
-
+ // Maneja la aprobación de la conclusión
   const handleApprove = async () => {
     try {
       setIsLoading(true); // Mostrar pantalla de carga
@@ -265,7 +272,7 @@ function CrearoActualizarConclusiones() {
     setIsRejectionVisible(true);
     setIsApproveDisabled(true);
   };
-
+  // Maneja el rechazo de la conclusión
   const handleReject = async () => {
     setIsLoading(true); // Mostrar pantalla de carga
     if (!isMotivoRechazoValid) {
@@ -356,6 +363,7 @@ function CrearoActualizarConclusiones() {
       </div>
     );
   }
+  // Renderizado del formulario y los botones de acción
   return (
     <div className="creconclusiones-container">
       <div className="creconclusiones-content">
