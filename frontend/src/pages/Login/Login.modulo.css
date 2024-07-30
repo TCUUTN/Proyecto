@@ -1,44 +1,62 @@
+/* 
+  Estilos generales para el contenedor principal de la aplicación.
+  Configura el diseño de cuadrícula para el contenedor principal.
+*/
 .home-container {
   display: grid;
-  grid-template-columns: 1fr minmax(auto, 400px);
-  grid-gap: 20px;
+  grid-template-columns: 1fr minmax(auto, 400px); /* Configura dos columnas: una flexible y otra con ancho máximo de 400px */
+  grid-gap: 20px; /* Espacio entre columnas */
   padding: 20px;
-  min-height: 80vh;
-  overflow: auto;
-  position: relative;
+  min-height: 80vh; /* Altura mínima del contenedor */
+  overflow: auto; /* Permite el desplazamiento si el contenido es mayor que el contenedor */
+  position: relative; /* Establece el contenedor como referencia para elementos posicionados absolutamente */
 }
 
+/* 
+  Estilos para la superposición de carga (loading overlay).
+  Muestra un spinner de carga cuando se está procesando una solicitud.
+*/
 .loading-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000; /* Asegura que el overlay esté encima de otros elementos */
 }
 
+/* 
+  Estilos para el spinner de carga.
+  Representa un círculo giratorio para indicar que el contenido está cargando.
+*/
 .loading-spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #f66226;
-  border-radius: 50%;
+  border: 8px solid #f3f3f3; /* Color de borde para el spinner */
+  border-top: 8px solid #f66226; /* Color del borde superior para crear el efecto de rotación */
+  border-radius: 50%; /* Hace que el spinner sea circular */
   width: 60px;
   height: 60px;
-  animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; /* Animación de rotación infinita */
 }
 
+/* 
+  Animación de rotación para el spinner.
+*/
 @keyframes spin {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg); /* Comienza desde 0 grados */
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Rota 360 grados */
   }
 }
 
+/* 
+  Estilos para el contenido principal de la página de inicio.
+*/
 .home-content {
   padding: 20px;
   border-radius: 5px;
@@ -48,28 +66,41 @@
   align-items: center;
   margin-top: 0;
   width: 100%;
-  font-family: "Century Gothic", sans-serif;
+  font-family: "Century Gothic", sans-serif; /* Fuente para el contenido */
 }
 
+/* 
+  Estilos para el texto de la página de inicio.
+*/
 .home-texto {
   color: #012c6a;
   margin-bottom: 20px;
   max-width: 600px;
-  text-align: center;
+  text-align: center; /* Centra el texto */
 }
+
+/* 
+  Estilos para el título de la página de inicio.
+*/
 .home-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', serif; /* Fuente del título */
   color: #012c6a;
   margin-bottom: 10px;
   font-size: 2rem;
 }
 
+/* 
+  Línea divisoria debajo del título.
+*/
 .title-divider {
-  border: 2px solid #f66226;
-  width: 50%;
+  border: 2px solid #f66226; /* Color de la línea divisoria */
+  width: 50%; /* Ancho de la línea divisoria */
   margin-bottom: 20px;
 }
 
+/* 
+  Estilos para el formulario de inicio de sesión.
+*/
 .login-form {
   padding: 20px;
   border-radius: 20px !important;
@@ -80,11 +111,14 @@
   position: relative;
   border: 5px solid transparent;
   border-image: linear-gradient(45deg, #012c6a, #0daace, #012c6a, #0daace) 1;
-  animation: gradient-border-animation 5s infinite;
+  animation: gradient-border-animation 5s infinite; /* Animación de borde con gradiente */
   width: 100%;
   padding: 40px;
 }
 
+/* 
+  Animación para el borde de gradiente del formulario de inicio de sesión.
+*/
 @keyframes gradient-border-animation {
   0% {
     border-image-source: linear-gradient(45deg, #012c6a, #0daace, #012c6a, #0daace);
@@ -97,25 +131,37 @@
   }
 }
 
+/* 
+  Línea divisoria en el formulario de inicio de sesión.
+*/
 .login-divider {
-  border: 1px solid #f66226;
-  width: 50%;
+  border: 1px solid #f66226; /* Color de la línea divisoria */
+  width: 50%; /* Ancho de la línea divisoria */
   margin-bottom: 20px;
 }
 
+/* 
+  Estilos para el título del formulario de inicio de sesión.
+*/
 .login-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', serif; /* Fuente del título */
   color: #002b69;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: center; /* Centra el texto */
 }
 
+/* 
+  Estilos para los contenedores de entrada en el formulario de inicio de sesión.
+*/
 .input-container-login {
   position: relative !important;
   margin-bottom: 20px !important;
   width: 100% !important;
 }
 
+/* 
+  Estilos para los íconos en el formulario de inicio de sesión.
+*/
 .icon-login {
   position: absolute !important;
   left: 10px !important;
@@ -125,33 +171,40 @@
   z-index: 1000;
 }
 
-.icon2-login{
+/* 
+  Estilos para el ícono del ojo en el campo de contraseña.
+*/
+.icon2-login {
   position: absolute !important;
   right: 10px !important;
   top: 1px !important;
   color: #f66226 !important;
   font-size: 24px !important;
-  cursor: pointer;
+  cursor: pointer; /* Muestra el cursor de puntero para indicar interactividad */
 }
 
+/* 
+  Estilos para los campos de entrada del formulario de inicio de sesión.
+*/
 .login-input[type="password"],
 .login-input[type="text"] {
   width: 100% !important;
-  padding: 10px 35px 10px 35px !important;
+  padding: 10px 35px; /* Espaciado interno */
   border: 1px solid #ccc !important;
   border-radius: 20px !important;
-  font-family: "Century Gothic", sans-serif !important;
+  font-family: "Century Gothic", sans-serif !important; /* Fuente para los campos de entrada */
   margin: 0 auto !important;
   position: relative !important;
-  text-align: center;
-  /* Chrome, Safari, Opera */
-  -webkit-text-align: center;
-  /* Firefox */
-  -moz-text-align: center;
-  /* IE */
-  -ms-text-align: center;
+  text-align: center; /* Centra el texto en el campo de entrada */
+  /* Estilos para alinear el texto en diferentes navegadores */
+  -webkit-text-align: center; /* Chrome, Safari, Opera */
+  -moz-text-align: center; /* Firefox */
+  -ms-text-align: center; /* IE */
 }
 
+/* 
+  Estilos para el botón de inicio de sesión.
+*/
 .login-button {
   width: 100%;
   padding: 10px;
@@ -159,38 +212,50 @@
   color: #fff;
   border: none;
   border-radius: 20px;
-  cursor: pointer;
+  cursor: pointer; /* Muestra el cursor de puntero para indicar interactividad */
   font-family: "Century Gothic", sans-serif;
   margin-top: 10px;
-  transition: 2s;
+  transition: 2s; /* Transición para el cambio de color de fondo */
 }
 
+/* 
+  Estilos para el botón de inicio de sesión al pasar el ratón.
+*/
 .login-button:hover {
   background-color: #ff4500;
-  background-image: linear-gradient(to right, #ff8c00, #ff4500);
+  background-image: linear-gradient(to right, #ff8c00, #ff4500); /* Gradiente de fondo en hover */
   transition: 2s;
 }
 
+/* 
+  Estilos para el enlace de "Olvidó su contraseña".
+*/
 .forgot-password {
   font-family: "Century Gothic", sans-serif;
   text-decoration: none;
   color: #012c6a;
   text-align: right;
   margin-top: 10px;
-  transition: 0.5s;
+  transition: 0.5s; /* Transición para el cambio de color */
 }
 
+/* 
+  Estilos para el enlace de "Olvidó su contraseña" al pasar el ratón.
+*/
 .forgot-password:hover {
   color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; /* Texto con color de fondo transparente para gradiente */
   transition: 0.5s;
-  text-decoration: underline;
-  animation: gradient-text-animation 5s ease-in-out infinite alternate;
+  text-decoration: underline; /* Subraya el texto */
+  animation: gradient-text-animation 5s ease-in-out infinite alternate; /* Animación de gradiente en texto */
 }
 
+/* 
+  Animación de gradiente para el texto del enlace de "Olvidó su contraseña".
+*/
 @keyframes gradient-text-animation {
   0% {
     background-image: linear-gradient(to right, #ff8c00, #ff4500);
@@ -198,45 +263,46 @@
   50% {
     background-image: linear-gradient(to right, #ff4500, #ff8c00);
   }
-  100% {
+   100% {
     background-image: linear-gradient(to right, #ff8c00, #ff4500);
   }
 }
 
+/* 
+  Estilos para el mensaje de error en el formulario de inicio de sesión.
+*/
 .error-message-login {
   color: red;
   text-align: center;
   margin-top: 10px;
 }
 
+/* 
+  Estilos para los iframes para que se ajusten al contenedor.
+*/
 iframe {
   max-width: 100%;
   height: 100%;
   border-radius: 10px;
 }
 
+/* 
+  Media queries para ajustar el diseño en pantallas pequeñas.
+*/
 @media (max-width: 768px) {
   .home-container {
-    grid-template-columns: 1fr minmax(auto, auto);
+    grid-template-columns: 1fr minmax(auto, auto); /* Ajusta las columnas en pantallas más pequeñas */
   }
 
   .home-content {
-    display: none;
+    display: none; /* Oculta el contenido en pantallas pequeñas */
   }
 }
 
-
-
-
-
-
-
-
-
-
-/* Completar Perfil - Genero */
-
-.perfil-container{
+/* 
+  Estilos para el contenedor del perfil.
+*/
+.perfil-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -244,7 +310,10 @@ iframe {
   padding: 20rem 0 23rem 0;
 }
 
-.perfil-content{
+/* 
+  Estilos para el contenido del perfil.
+*/
+.perfil-content {
   background-color: #fff;
   border: 1px solid #012c6a;
   padding: 20px;
@@ -254,6 +323,10 @@ iframe {
   text-align: center;
   width: 35%;
 }
+
+/* 
+  Estilos para el menú desplegable del perfil.
+*/
 .perfil-dropdown {
   width: 85%;
   padding: 10px;
@@ -262,7 +335,11 @@ iframe {
   font-size: 16px;
   color: #2b3945;
 }
-.perfil-button{
+
+/* 
+  Estilos para el botón de guardar en el perfil.
+*/
+.perfil-button {
   width: 47%;
   padding: 10px;
   background-color: #002b69;
@@ -272,28 +349,40 @@ iframe {
   cursor: pointer;
   font-family: "Century Gothic", sans-serif;
   margin-top: 10px;
-  margin-left:2.5px;
-  margin-right:2.5px;
+  margin-left: 2.5px;
+  margin-right: 2.5px;
   transition: 0.5s;
 }
+
+/* 
+  Estilos para el botón de guardar al pasar el ratón.
+*/
 .perfil-button:hover {
   background-color: #ff4500;
   background-image: linear-gradient(to right, #ff8c00, #ff4500);
   transition: 0.5s;
 }
 
-.perfil-input-container{
+/* 
+  Estilos para el contenedor de entrada en el perfil.
+*/
+.perfil-input-container {
   margin: 20px 0;
 }
 
-.perfil-divider{
+/* 
+  Línea divisoria en la página del perfil.
+*/
+.perfil-divider {
   width: 50%;
   border: 1px solid #f66226;
   margin-left: 65px;
   margin: 10px auto;
 }
 
-/* Media Queries for Responsiveness */
+/* 
+  Media queries para ajustar el diseño del perfil en pantallas más pequeñas.
+*/
 @media (max-width: 1200px) {
   .perfil-content {
     width: 35%;
@@ -340,10 +429,4 @@ iframe {
   .perfil-divider {
     width: 70%;
   }
-
 }
-
-
-
-
-

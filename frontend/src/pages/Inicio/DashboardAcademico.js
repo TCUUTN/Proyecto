@@ -7,16 +7,18 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./DashboardAcademico.css";
 
-// Register the required components
+// Registro de los componentes necesarios para ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardAcademico() {
+   // Definición de los estados locales
   const [grupos, setGrupos] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [fetchError, setFetchError] = useState(false);
   const [carouselKey, setCarouselKey] = useState(0);
   const carouselRef = useRef(null);
 
+  // useEffect se usa para hacer la llamada a la API al cargar el componente
   useEffect(() => {
     const fetchGrupos = async () => {
       const identificacion = sessionStorage.getItem("Identificacion");
@@ -38,7 +40,7 @@ function DashboardAcademico() {
 
     fetchGrupos();
   }, []);
-
+  // Función para obtener los datos de los estudiantes de cada grupo
   const fetchEstudiantesForGrupos = async (grupos) => {
     const chartDataPromises = grupos.map(async (grupo) => {
       try {
@@ -61,9 +63,9 @@ function DashboardAcademico() {
 
     const chartDataArray = await Promise.all(chartDataPromises);
     setChartData(chartDataArray);
-    setCarouselKey(carouselKey + 1); // Update the key to force re-render
+    setCarouselKey(carouselKey + 1);// Actualiza la clave para forzar un re-renderizado
   };
-
+// Función para procesar los datos de los estudiantes y formatearlos para el gráfico
   const processChartData = (data) => {
     const estados = { Aprobado: 0, Reprobado: 0, "En Curso": 0 };
     data.forEach((estudiante) => {

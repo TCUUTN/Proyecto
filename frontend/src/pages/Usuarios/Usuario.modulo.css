@@ -1,32 +1,32 @@
-/* cARGA */
+/* Estilos de pantalla de carga */
 .loading-screen {
-  position: fixed;
+  position: fixed; /* Fija la pantalla de carga para cubrir toda la pantalla */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center; /* Centra verticalmente el contenido */
+  z-index: 9999; /* Coloca la pantalla de carga por encima de otros elementos */
 }
 
 .loading-spinner {
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #ff6600;
-  border-radius: 50%;
+  border: 16px solid #f3f3f3; /* Borde del spinner */
+  border-top: 16px solid #ff6600; /* Borde superior del spinner de color naranja */
+  border-radius: 50%; /* Forma redonda */
   width: 120px;
   height: 120px;
-  animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; /* Animación de rotación */
 }
 
 @keyframes spin {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg); /* Comienza sin rotación */
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Termina con una rotación completa */
   }
 }
 
@@ -36,29 +36,28 @@
   color: #ff6600;
 }
 
-/*Contiene todo */
+/* Contenedor principal del usuario */
 .user-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3px 15px ;
-  gap: 20px;
+  flex-direction: column; /* Disposición vertical */
+  align-items: center; /* Centra horizontalmente los elementos */
+  padding: 3px 15px;
+  gap: 20px; /* Espacio entre los elementos */
   color: #002b69;
   font-family: "Century Gothic", sans-serif;
 }
-/* agreagr usuario y la carga */
+/* Barra lateral del usuario */
 .sidebar-user {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center; /* Centra verticalmente los elementos */
+  justify-content: space-between; /* Distribuye espacio uniformemente */
   padding: 20px;
   background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 95%!important;
+  width: 95% !important;
   margin: 20px auto;
-
 }
 
 .user-action {
@@ -88,9 +87,7 @@
   width: 2px;
   height: 65px;
   background: #ff6600;
-  margin: auto 0 auto 20px;
-
- 
+  margin: auto 0 auto 20px; 
 }
 
 .bulk-upload-section {
@@ -130,7 +127,7 @@
   color: #ff6600;
 }
 
-/*Main*/
+/* Estilos principales */
 main {
   width: 100%;
 }
@@ -141,7 +138,7 @@ main {
   margin-bottom: 20px;
 }
 
-/*Filtros*/
+/* Estilos de filtros */
 .filters-user {
   display: flex;
   align-items: center;
@@ -149,7 +146,7 @@ main {
   padding: 20px;
   width: 80%;
   margin: 20px auto;
-  flex-wrap: wrap; /* Añadir esta línea */
+  flex-wrap: wrap; /* Añadir esta línea para flexibilidad en dispositivos más pequeños */
   background-color: #fff;
   border: 2px solid rgba(0, 44, 105, 0.212);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -185,14 +182,13 @@ main {
   color: #575656;
 }
 
-
 .filter-input-user:focus,
 .filter-select-user:focus {
   border-color: #ff6600;
   outline: none;
   box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
-/*Tabla */
+/* Estilos de tabla */
 .table-container {
   width: 80%;
   margin: 0 auto; 
@@ -370,10 +366,10 @@ main {
   }
 
   .user-divider {
-    display: block; /* Asegúrate de que la línea sea visible */
+    display: block; 
     width: 65%;
     height: 2px;
-    margin: 20px 0; /* Ajustar el margen para pantallas pequeñas */
+    margin: 20px 0;
   }
 
   .upload-option {

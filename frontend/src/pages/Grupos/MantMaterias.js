@@ -12,6 +12,7 @@ import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 function MantMaterias() {
+    // Estados para almacenar y gestionar datos de materias y filtros
   const [materias, setMaterias] = useState([]);
   const [filteredMaterias, setFilteredMaterias] = useState([]);
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
@@ -21,10 +22,12 @@ function MantMaterias() {
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
 
+   // Verifica si el proyecto fue guardado en la sesión anterior
   const banderaProyecto = sessionStorage.getItem("proyectoGuardado");
 
   const navigate = useNavigate();
 
+// Función para obtener la lista de materias desde el servidor
   const fetchMaterias = async () => {
     try {
       const response = await fetch("/grupos/tipos");
@@ -41,16 +44,16 @@ function MantMaterias() {
       toast.error("Error al obtener la lista de materias");
     }
   };
-
+  // useEffect para cargar la lista de materias al montar el componente
   useEffect(() => {
     fetchMaterias();
-
+   // Mostrar mensaje de éxito si el proyecto fue guardado
     if (banderaProyecto === "true") {
       toast.success("El proyecto fue guardado con éxito.");
       sessionStorage.removeItem("proyectoGuardado");
     }
   }, []);
-
+ // Manejadores de cambios en los filtrosa
   const handleCodigoMateriaFilterChange = (e) => {
     const value = e.target.value;
     setCodigoMateriaFilter(value);
@@ -68,7 +71,7 @@ function MantMaterias() {
     setTipoFilter(value);
     applyFilters(codigoMateriaFilter, nombreProyectoFilter, value);
   };
-
+// Función para aplicar los filtros a la lista de materias
   const applyFilters = (CodigoMateria, NombreProyecto, TipoCurso) => {
     let filtered = materias;
 
@@ -93,16 +96,17 @@ function MantMaterias() {
     }
 
     setFilteredMaterias(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); // Reiniciar a la primera página al cambiar los filtros
   };
 
+ // Variables para la paginación
   const indexOfLastMateria = currentPage * materiasPerPage;
   const indexOfFirstMateria = indexOfLastMateria - materiasPerPage;
   const currentMaterias = filteredMaterias.slice(
     indexOfFirstMateria,
     indexOfLastMateria
   );
-
+ // Manejadores de cambio de página
   const handleNextPage = () => {
     if (currentPage < Math.ceil(filteredMaterias.length / materiasPerPage)) {
       setCurrentPage(currentPage + 1);
@@ -114,7 +118,7 @@ function MantMaterias() {
       setCurrentPage(currentPage - 1);
     }
   };
-
+// Manejador de subida de archivos
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (
@@ -148,7 +152,7 @@ function MantMaterias() {
               TipoCurso,
             };
           });
-
+// Función para subir los datos en formato JSON al servidor
           uploadJsonData(jsonData);
         } else {
           console.error("Formato de archivo inválido");

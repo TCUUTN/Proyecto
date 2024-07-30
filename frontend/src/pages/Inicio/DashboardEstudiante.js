@@ -5,7 +5,9 @@ import { ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./DashboardEstudiante.css";
 
+// Componente que muestra el dashboard para el estudiante
 function DashboardEstudiante() {
+  // Estados para almacenar datos del grupo y horas
   const [grupoId, setGrupoId] = useState(null);
   const [grupoData, setGrupoData] = useState(null);
   const [horasPlanificacion, setHorasPlanificacion] = useState([]);
@@ -14,20 +16,23 @@ function DashboardEstudiante() {
   const [horasPlanificacionTotal, setHorasPlanificacionTotal] = useState(0);
   const [horasGiraTotal, setHorasGiraTotal] = useState(0);
 
+  // Obtiene la identificación del estudiante desde sessionStorage y la guarda en localStorage
   useEffect(() => {
     const identificacion = sessionStorage.getItem("Identificacion");
     localStorage.setItem("IdentificacionHoras",identificacion);
+     // Muestra un error si la identificación no está en sessionStorage
     if (!identificacion) {
       toast.error("Identificación no encontrada en el SessionStorage");
       return;
     }
-
+// Fetch para obtener el grupo del estudiante basado en la identificación
     fetch(`/grupos/GrupoEstudiante/${identificacion}`)
       .then((response) => response.json())
       .then((data) => {
         if (!data || !data.GrupoId) {
           toast.error("El Estudiante no posee un grupo activo asignado");
         } else {
+          // Establece el grupoId y obtiene las horas y datos del grupo
           setGrupoId(data.GrupoId);
           sessionStorage.setItem("GrupoId",data.GrupoId)
           fetchHoras(identificacion, data.GrupoId);
@@ -38,7 +43,7 @@ function DashboardEstudiante() {
         toast.error("Error al buscar el grupo del estudiante");
       });
   }, []);
-
+// Función para obtener los datos del grupo
   const fetchGrupoData = (grupoId) => {
     fetch(`/grupos/${grupoId}`)
       .then((response) => response.json())
@@ -49,7 +54,7 @@ function DashboardEstudiante() {
         toast.error("Error al buscar la información del grupo");
       });
   };
-
+  // Función para obtener las horas del estudiante
   const fetchHoras = (identificacion, grupoId) => {
     fetch(`/horas/EstudianteAprobado/${identificacion}/${grupoId}`)
       .then((response) => response.json())
@@ -61,6 +66,7 @@ function DashboardEstudiante() {
         let totalHorasPlanificacion = 0;
         let totalHorasGira = 0;
 
+         // Calcula las horas totales, de planificación y de ejecución
         data.forEach((item) => {
           const horaInicio = new Date(`1970-01-01T${item.HoraInicio}Z`);
           const horaFinal = new Date(`1970-01-01T${item.HoraFinal}Z`);
@@ -86,7 +92,7 @@ function DashboardEstudiante() {
         setHorasPlanificacion(planificacion);
         setHorasGira(gira);
 
-        // Calculate the maximum values
+        // Calcula los valores máximos y los guarda en localStorage
         const minHorasPlanificacion = 10;
         const maxHorasPlanificacion = Math.min(
           30,
@@ -95,7 +101,6 @@ function DashboardEstudiante() {
         const maxHorasTotal = 150;
         const maxHorasEjecucion = maxHorasTotal - maxHorasPlanificacion;
 
-        // Store values in localStorage
         localStorage.setItem('horasPlanificacionTotal', totalHorasPlanificacion);
         localStorage.setItem('horasGiraTotal', totalHorasGira);
         localStorage.setItem('maxHorasPlanificacion', maxHorasPlanificacion);
@@ -105,7 +110,7 @@ function DashboardEstudiante() {
         toast.error("Error al buscar las horas del estudiante");
       });
   };
-
+ // Calcula el progreso como un porcentaje
   const calculateProgress = (total, max) => (total / max) * 100;
 
   return (

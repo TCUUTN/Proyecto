@@ -13,6 +13,7 @@ import moment from "moment-timezone";
 import { TbFileUpload } from "react-icons/tb";
 
 function CrearoActualizarHoras() {
+   // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     Identificacion: "",
     GrupoId: "",
@@ -25,22 +26,36 @@ function CrearoActualizarHoras() {
     NombreEvidencia: "-",
   });
 
+  // Estado para manejar errores
   const [error, setError] = useState("");
+
+  // Estado para almacenar el ID de la bitácora
   const [bitacoraId, setBitacoraId] = useState(null);
+
+  // Estado para habilitar o deshabilitar el botón de envío
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  // Estado para los límites de la hora final
   const [horaFinalLimits, setHoraFinalLimits] = useState({ min: "", max: "" });
+
+  // Hook para navegación
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Obtener el ID de la bitácora desde sessionStorage
     const storedBitacoraId = sessionStorage.getItem("BitacoraId");
     setBitacoraId(storedBitacoraId);
+
     if (storedBitacoraId) {
+      // Si hay un ID de bitácora, obtener los datos de la bitácora
       fetch(`horas/${storedBitacoraId}`)
         .then((response) => response.json())
         .then(async (data) => {
+          // Formatear las horas de inicio y fin
           const formattedHoraInicio = formatTime(data.HoraInicio);
           const formattedHoraFinal = formatTime(data.HoraFinal);
 
+          // Actualizar el estado del formulario con los datos obtenidos
           setFormData((prevFormData) => ({
             ...prevFormData,
             Identificacion: data.Identificacion || "",
@@ -53,6 +68,7 @@ function CrearoActualizarHoras() {
             Evidencias: null,
             NombreEvidencia: data.NombreEvidencia || "-",
           }));
+           // Actualizar los límites de la hora final y validar el formulario
           updateHoraFinalLimits({
             ...data,
             HoraInicio: formattedHoraInicio,
@@ -71,6 +87,7 @@ function CrearoActualizarHoras() {
           );
         });
     } else {
+      // Si no hay ID de bitácora, obtener el grupo del estudiante
       const identificacion = sessionStorage.getItem("Identificacion");
       if (identificacion) {
         fetch(`grupos/GrupoEstudiante/${identificacion}`)
@@ -90,13 +107,13 @@ function CrearoActualizarHoras() {
       }
     }
   }, []);
-
+// Función para formatear las horas en formato HH:mm
   const formatTime = (timeString) => {
     if (!timeString) return "";
     const [hours, minutes] = timeString.split(":");
     return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
   };
-
+// Función para manejar los cambios en el formulario
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
     if (name === "Evidencias" && value) {
@@ -114,6 +131,7 @@ function CrearoActualizarHoras() {
       validateForm(newFormData);
     }
   };
+  // Función para actualizar los límites de la hora final
   const updateHoraFinalLimits = (data) => {
     const { HoraInicio, TipoActividad } = data;
     if (HoraInicio) {
@@ -127,6 +145,7 @@ function CrearoActualizarHoras() {
       });
     }
   };
+  // Función para validar el formulario
   const validateForm = (data) => {
     const { TipoActividad, HoraInicio, HoraFinal } = data;
     if (HoraInicio && HoraFinal) {
@@ -161,9 +180,10 @@ function CrearoActualizarHoras() {
       if (isValid) setError("");
     }
   };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+// Función para manejar el envío del formulario
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  // Verificar que todos los campos obligatorios están llenos
     const requiredFields = [
       "Fecha",
       "DescripcionActividad",
@@ -179,6 +199,7 @@ function CrearoActualizarHoras() {
       }
     }
     try {
+      // Verificar si ya se han registrado horas en la fecha seleccionada
       const fechaCheckResponse = await fetch("horas/horasporFecha", {
         method: "POST",
         headers: {
@@ -197,7 +218,7 @@ function CrearoActualizarHoras() {
       setError("Error al verificar la fecha. Por favor, inténtelo de nuevo.");
       return;
     }
-
+// Obtener horas totales de planificación y ejecución del almacenamiento local
     const horasPlanificacionTotal =
       parseFloat(localStorage.getItem("horasPlanificacionTotal")) || 0;
     const horasGiraTotal =

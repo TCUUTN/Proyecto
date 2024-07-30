@@ -9,8 +9,11 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TbUserEdit } from "react-icons/tb";
-
+/**
+ * MantenimientoUs - Componente principal para la gestión de usuarios.
+ */
 function MantenimientoUs() {
+  // Estados para manejar usuarios, filtros y paginación
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [identificacionFilter, setIdentificacionFilter] = useState("");
@@ -19,9 +22,15 @@ function MantenimientoUs() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
-
+ // Estado para manejar la pantalla de carga
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
-
+   // Fetch inicial de usuarios
+   useEffect(() => {
+    fetchUsuarios();
+  }, []);
+  /**
+   * fetchUsuarios - Obtiene la lista de usuarios del servidor y aplica los filtros iniciales.
+   */
   const fetchUsuarios = async () => {
     try {
       const response = await fetch("/usuarios");
@@ -52,10 +61,7 @@ function MantenimientoUs() {
     }
   };
 
-  useEffect(() => {
-    fetchUsuarios();
-  }, []);
-
+  // Manejadores de cambios en los filtros
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
     setIdentificacionFilter(value);
@@ -84,7 +90,9 @@ function MantenimientoUs() {
       value
     );
   };
-
+ /**
+   * applyFilters - Aplica los filtros a la lista de usuarios.
+   */
   const applyFilters = (identificacion, nombreCompleto, estado, rol) => {
     let filtered = usuarios;
 
@@ -115,7 +123,7 @@ function MantenimientoUs() {
     setFilteredUsuarios(filtered);
     setCurrentPage(1); // Reset to first page on filter change
   };
-
+// Paginación
   const indexOfLastUsuario = currentPage * usuariosPerPage;
   const indexOfFirstUsuario = indexOfLastUsuario - usuariosPerPage;
   const currentUsuarios = filteredUsuarios.slice(
@@ -135,7 +143,7 @@ function MantenimientoUs() {
     }
   };
   const navigate = useNavigate();
-
+// Manejo de la navegación para agregar y editar usuarios
   const handleAddUser = () => {
     navigate("/CrearActualizarUsuario");
   };
@@ -144,7 +152,7 @@ function MantenimientoUs() {
     sessionStorage.setItem("IdentificacionUsuario", Identificacion);
     navigate("/CrearActualizarUsuario");
   };
-
+  // Mapeo de encabezados de archivos Excel
   const headerMappings = {
     Estudiante: {
       "Código de Proyecto": "CodigoMateria",
@@ -163,7 +171,9 @@ function MantenimientoUs() {
       Sede: "Sede",
     },
   };
-
+ /**
+   * handleFileUpload - Maneja la carga de archivos Excel y procesa los datos.
+   */
   const handleFileUpload = (e, role) => {
     const file = e.target.files[0];
     if (
@@ -313,7 +323,7 @@ function MantenimientoUs() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
-
+// Generador de contraseñas aleatorias
   const generateRandomPassword = () => {
     const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const lower = "abcdefghijklmnopqrstuvwxyz";
@@ -333,7 +343,9 @@ function MantenimientoUs() {
       .sort(() => 0.5 - Math.random())
       .join("");
   };
-
+/**
+   * uploadJsonData - Sube los datos procesados al servidor.
+   */
   const uploadJsonData = async (data, role) => {
     try {
       const response = await fetch("/usuarios/cargaUsuarios", {
@@ -379,15 +391,17 @@ function MantenimientoUs() {
       setIsLoading(false); // Ocultar pantalla de carga
     }
   };
+   // Componente de pantalla de carga
+   const LoadingOverlay = () => (
+    <div className="loading-overlay">
+      <div className="spinner"></div>
+    </div>
+  );
 
   return (
     <div className="user-container">
       {/*Para la carga */}
-      {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
-        </div>
-      )}
+      {isLoading && <LoadingOverlay />}
       {/**/}
       <main>
         {/*Agregar usuario y la carga */}

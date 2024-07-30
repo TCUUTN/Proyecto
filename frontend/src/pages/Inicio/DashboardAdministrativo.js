@@ -14,10 +14,11 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "./DashboardAdministrativo.css";
 
-// Register the required components
+// Registrar los componentes necesarios para ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardAdministrativo() {
+  // Declaración de estados para almacenar datos y controlar la UI
   const [estudiantes, setEstudiantes] = useState([]);
   const [grupos, setGrupos] = useState([]);
   const [generos, setGeneros] = useState({});
@@ -50,7 +51,7 @@ function DashboardAdministrativo() {
 
   const chartRef = useRef(null);
   const tableRef = useRef(null);
-
+// useEffect para obtener opciones de años y datos iniciales de estudiantes y grupos
   useEffect(() => {
     fetchYearsOptions();
     const fetchData = async () => {
@@ -81,7 +82,7 @@ function DashboardAdministrativo() {
 
     fetchData();
   }, []);
-
+  // Función para obtener opciones de años
   const fetchYearsOptions = async () => {
     try {
       const response = await fetch(`/grupos/Annos`);
@@ -95,17 +96,17 @@ function DashboardAdministrativo() {
       toast.error("Error al obtener los años disponibles");
     }
   };
-
+  // Manejar cambio en el filtro de cuatrimestre
   const handleCuatrimestreFilterChange = (e) => {
     const value = e.target.value;
     setCuatrimestreFilter(value);
   };
-
+// Manejar cambio en el filtro de año
   const handleAnnoFilterChange = (e) => {
     const value = e.target.value;
     setAnnoFilter(value);
   };
-
+ // Manejar clic en el botón de búsqueda
   const handleBuscarClick = async () => {
     try {
       const requestBody = JSON.stringify({
@@ -151,7 +152,7 @@ function DashboardAdministrativo() {
       );
     }
   };
-
+ // Manejar clic en el botón para generar PDF
   const handleGenerarClick = async () => {
     const pdf = new jsPDF({
       orientation: "portrait",
@@ -295,7 +296,7 @@ function DashboardAdministrativo() {
       }
     }
   };
-
+// Procesar datos del gráfico a partir de los estudiantes
   const processChartData = (data) => {
     const progresoEstados = { Nuevo: 0, Continuidad: 0, Prórroga: 0 };
     data.forEach((estudiante) => {
@@ -329,7 +330,7 @@ function DashboardAdministrativo() {
       ],
     };
   };
-
+  // Manejar cambio de página
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };

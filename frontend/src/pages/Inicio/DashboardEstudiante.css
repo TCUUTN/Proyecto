@@ -1,59 +1,68 @@
+/* Estilo para el título en el dashboard del estudiante */
 .dashEstudiante-title {
-  font-family: 'Playfair Display', serif;
-  color: #012c6a;
-  text-align: center;
-  font-size: 25px;
-  margin-bottom: 10px;
+  font-family: 'Playfair Display', serif; /* Fuente utilizada para el título */
+  color: #012c6a; /* Color del texto del título */
+  text-align: center; /* Alineación centrada del texto */
+  font-size: 25px; /* Tamaño de fuente del título */
+  margin-bottom: 10px; /* Espacio inferior del título */
 }
+
+/* Estilo para el texto de horas en el dashboard del estudiante */
 .dashEstudiante-horas {
-  font-family: 'Playfair Display', serif;
-  color: #012c6a;
-  text-align: center;
-  font-size: 15px;
-  margin-bottom: 10px;
+  font-family: 'Playfair Display', serif; /* Fuente utilizada para el texto */
+  color: #012c6a; /* Color del texto */
+  text-align: center; /* Alineación centrada del texto */
+  font-size: 15px; /* Tamaño de fuente del texto */
+  margin-bottom: 10px; /* Espacio inferior del texto */
 }
 
+/* Contenedor principal del dashboard del estudiante */
 .mainDash-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  margin: 0% auto;
-  font-family: "Century Gothic", sans-serif;
-  padding-top: 15px;
+  display: flex; /* Usa flexbox para el diseño */
+  flex-direction: column; /* Orienta los elementos en una columna */
+  align-items: center; /* Alinea los elementos en el centro */
+  gap: 5px; /* Espacio entre los elementos */
+  margin: 0% auto; /* Márgenes automáticos para centrar el contenedor horizontalmente */
+  font-family: "Century Gothic", sans-serif; /* Fuente utilizada para el contenido */
+  padding-top: 15px; /* Espacio superior del contenedor */
 }
 
+/* Línea divisoria en el dashboard del estudiante */
 .dashEstudiante-divider {
-  width: 20%;
-  height: 3px;
-  background: #ff6600;
-  margin: 0 auto 20px auto;
+  width: 20%; /* Ancho de la línea divisoria */
+  height: 3px; /* Altura de la línea divisoria */
+  background: #ff6600; /* Color de fondo de la línea divisoria */
+  margin: 0 auto 20px auto; /* Margen para centrar horizontalmente y espacio inferior */
 }
 
+/* Contenedor para las secciones de progreso */
 .progress-sections {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  width: 85%;
+  display: flex; /* Usa flexbox para el diseño */
+  justify-content: space-between; /* Distribuye los elementos con espacio entre ellos */
+  gap: 20px; /* Espacio entre los elementos */
+  width: 85%; /* Ancho del contenedor */
 }
 
+/* Contenedor individual para cada sección del dashboard del estudiante */
 .dashboard-container-Est {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 0 1vw;
-  margin-bottom: 20px;
-  width: 85%;
+  background-color: #f8f9fa; /* Color de fondo del contenedor */
+  border-radius: 8px; /* Bordes redondeados del contenedor */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra del contenedor para darle profundidad */
+  padding: 0 1vw; /* Espaciado interno horizontal del contenedor */
+  margin-bottom: 20px; /* Espacio inferior del contenedor */
+  width: 85%; /* Ancho del contenedor */
 }
 
+/* Estilo personalizado para la barra de progreso */
 .custom-progress-bar .progress-bar {
-  background-color: #012c6a !important;
+  background-color: #012c6a !important; /* Color de fondo de la barra de progreso */
 }
 
+/* Estilos específicos para pantallas pequeñas (menos de 768px de ancho) */
 @media (max-width: 768px) {
   .progress-sections {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
+    flex-direction: column; /* Orienta los elementos en una columna */
+    width: 100%; /* Ancho del contenedor en pantallas pequeñas */
+    align-items: center; /* Alinea los elementos en el centro */
   }
 }
