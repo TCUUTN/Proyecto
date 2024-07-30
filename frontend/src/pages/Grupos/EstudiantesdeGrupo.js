@@ -12,26 +12,27 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EstudiantesGrupo.css";
-
+// Componente principal para mostrar la lista de estudiantes
 function ListaEstudiantes() {
   const navigate = useNavigate();
-  const grupoId = localStorage.getItem("GrupoSeleccionado");
-  const [estudiantes, setEstudiantes] = useState([]);
-  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false);
-  const [filteredEstudiantes, setFilteredEstudiantes] = useState([]);
-  const [nombreFilter, setNombreFilter] = useState("");
-  const [identificacionFilter, setIdentificacionFilter] = useState("");
-  const [estadoFilter, setEstadoFilter] = useState("Todos");
-  const [progresoFilter, setProgresoFilter] = useState("Todos");
-  const [currentPage, setCurrentPage] = useState(1);
+  const grupoId = localStorage.getItem("GrupoSeleccionado"); // Obtiene el ID del grupo seleccionado del almacenamiento local
+  const [estudiantes, setEstudiantes] = useState([]); // Estado para almacenar la lista de estudiantes
+  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false); // Estado para habilitar/deshabilitar la finalización del cuatrimestre
+  const [filteredEstudiantes, setFilteredEstudiantes] = useState([]); // Estado para almacenar la lista filtrada de estudiantes
+  const [nombreFilter, setNombreFilter] = useState(""); // Estado para el filtro de nombre
+  const [identificacionFilter, setIdentificacionFilter] = useState(""); // Estado para el filtro de identificación
+  const [estadoFilter, setEstadoFilter] = useState("Todos"); // Estado para el filtro de estado
+  const [progresoFilter, setProgresoFilter] = useState("Todos"); // Estado para el filtro de progreso
+  const [currentPage, setCurrentPage] = useState(1); // Estado para la paginación actual
   const [loading, setLoading] = useState(false); // Estado de carga
-  const estudiantesPerPage = 10;
+  const estudiantesPerPage = 10; // Cantidad de estudiantes por página
 
+  // Efecto para obtener la lista de estudiantes y la bandera de finalización cuando el componente se monta
   useEffect(() => {
     fetchEstudiantes();
     fetchBandera();
   }, []);
-
+ // Función para obtener la lista de estudiantes desde el backend
   const fetchEstudiantes = async () => {
     try {
       setLoading(true);
@@ -55,7 +56,7 @@ function ListaEstudiantes() {
       setLoading(false);
     }
   };
-
+ // Función para obtener la bandera de finalización del cuatrimestre desde el backend
   const fetchBandera = async () => {
     try {
       setLoading(true);
@@ -83,31 +84,31 @@ function ListaEstudiantes() {
       setLoading(false);
     }
   };
-
+ // Manejo de cambios en el filtro de nombre
   const handleNombreFilterChange = (e) => {
     const value = e.target.value;
     setNombreFilter(value);
     applyFilters(value, identificacionFilter, estadoFilter, progresoFilter);
   };
-
+  // Manejo de cambios en el filtro de identificación
   const handleIdentificacionFilterChange = (e) => {
     const value = e.target.value;
     setIdentificacionFilter(value);
     applyFilters(nombreFilter, value, estadoFilter, progresoFilter);
   };
-
+ // Manejo de cambios en el filtro de estado
   const handleEstadoFilterChange = (e) => {
     const value = e.target.value;
     setEstadoFilter(value);
     applyFilters(nombreFilter, identificacionFilter, value, progresoFilter);
   };
-
+// Manejo de cambios en el filtro de progreso
   const handleProgresoFilterChange = (e) => {
     const value = e.target.value;
     setProgresoFilter(value);
     applyFilters(nombreFilter, identificacionFilter, estadoFilter, value);
   };
-
+ // Aplicación de filtros a la lista de estudiantes
   const applyFilters = (nombre, identificacion, estado, progreso) => {
     let filtered = estudiantes;
 
@@ -138,9 +139,9 @@ function ListaEstudiantes() {
     }
 
     setFilteredEstudiantes(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); // Resetear a la primera página al cambiar los filtros
   };
-
+ // Cálculo de los índices para la paginación
   const indexOfLastEstudiante = currentPage * estudiantesPerPage;
   const indexOfFirstEstudiante = indexOfLastEstudiante - estudiantesPerPage;
   const currentEstudiantes = filteredEstudiantes.slice(
@@ -148,25 +149,25 @@ function ListaEstudiantes() {
     indexOfLastEstudiante
   );
   const totalPages = Math.ceil(filteredEstudiantes.length / estudiantesPerPage);
-
+  // Manejo de la navegación a la página siguiente
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-
+ // Manejo de la navegación a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
+  // Manejo de la visualización de detalles de un estudiante
   const handleViewDetails = (identificacion, estado) => {
     localStorage.setItem("IdentificacionHoras", identificacion);
     localStorage.setItem("EstadoHoras", estado);
     navigate("/VistaHorasEstudiantes");
   };
-
+  // Manejo de la finalización del cuatrimestre
   const handleFinalizarCuatrimestre = async () => {
     try {
       setLoading(true);
@@ -192,7 +193,7 @@ function ListaEstudiantes() {
   };
 
   const selectedRole = sessionStorage.getItem("SelectedRole");
-
+  // Manejo de la navegación hacia atrás
   const handleBack = () => {
     localStorage.removeItem("GrupoSeleccionado");
 

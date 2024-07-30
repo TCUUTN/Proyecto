@@ -6,21 +6,17 @@ import "react-toastify/dist/ReactToastify.css";
 import "./CrearActualizar.css";
 import { FaChevronLeft } from "react-icons/fa6";
 
+// Componente principal para crear o actualizar la creación de grupos
 function CrearActuCreacionGrupos() {
-  const [codigosMateria, setCodigosMateria] = useState([]);
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  const [sedes, setSedes] = useState([
-    "Central",
-    "Atenas",
-    "Guanacaste",
-    "Pacífico",
-    "San Carlos",
-    "C. F. P. T. E.",
-  ]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [allUsuarios, setAllUsuarios] = useState([]); // Nuevo estado para almacenar todos los usuarios
-  const [annos, setAnnos] = useState([]);
+   // Definición de estados
+   const [codigosMateria, setCodigosMateria] = useState([]); // Estado para almacenar los códigos de materia
+   const [isFormValid, setIsFormValid] = useState(false); // Estado para validar el formulario
+   const [sedes, setSedes] = useState([
+     "Central", "Atenas", "Guanacaste", "Pacífico", "San Carlos", "C. F. P. T. E."
+   ]); // Estado para almacenar las sedes
+  const [usuarios, setUsuarios] = useState([]); // Estado para almacenar los usuarios filtrados
+  const [allUsuarios, setAllUsuarios] = useState([]); // Estado para almacenar todos los usuarios
+  const [annos, setAnnos] = useState([]); // Estado para almacenar los años
   const [formValues, setFormValues] = useState({
     CodigoMateria: "",
     NumeroGrupo: "",
@@ -29,15 +25,15 @@ function CrearActuCreacionGrupos() {
     Sede: sessionStorage.getItem("Sede") === "Todas" ? "" : sessionStorage.getItem("Sede") || "", // Ajuste aquí
     Cuatrimestre: "",
     Anno: "",
-    Estado: "1", // Default to "Activo"
+    Estado: "1", // Estado predeterminado "Activo"
     Identificacion: "",
-  });
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-  const { GrupoId } = useParams();
-  const currentYear = new Date().getFullYear();
-  const cuatrimestres = [1, 2, 3];
-
+  }); // Estado para almacenar los valores del formulario
+  const [errors, setErrors] = useState({}); // Estado para almacenar los errores del formulario
+  const navigate = useNavigate(); // Hook para la navegación
+  const { GrupoId } = useParams(); // Hook para obtener los parámetros de la URL
+  const currentYear = new Date().getFullYear(); // Obtención del año actual
+  const cuatrimestres = [1, 2, 3]; // Array de cuatrimestres
+  // Efecto para cargar los códigos de materia, usuarios y datos del grupo (si existe)
   useEffect(() => {
     fetchCodigosMateria();
     fetchUsuarios();
@@ -47,22 +43,22 @@ function CrearActuCreacionGrupos() {
       setAnnos([currentYear, currentYear + 1]);
     }
   }, [GrupoId]);
-
+// Efecto para cargar los datos del grupo si existe en el localStorage
   useEffect(() => {
     const GrupoIdUpdate = localStorage.getItem("GrupoIdUpdate");
     if (GrupoIdUpdate) {
       fetchGrupo(GrupoIdUpdate);
     }
   }, []);
-
+// Efecto para filtrar usuarios por sede cada vez que cambia la sede
   useEffect(() => {
     filterUsuariosBySede(formValues.Sede);
   }, [formValues.Sede]);
-
+// Efecto para validar el formulario cada vez que cambian los valores del formulario
   useEffect(() => {
     validateForm();
   }, [formValues]);
-
+// Función para obtener los códigos de materia de la API
   const fetchCodigosMateria = async () => {
     try {
       const response = await fetch("/grupos/tipos");
@@ -72,7 +68,7 @@ function CrearActuCreacionGrupos() {
       console.error("Error fetching codigos de materia:", error);
     }
   };
-
+// Función para obtener los usuarios de la API
   const fetchUsuarios = async () => {
     try {
       const response = await fetch("/usuarios/RolesAcademicos");
@@ -84,7 +80,7 @@ function CrearActuCreacionGrupos() {
       console.error("Error fetching usuarios:", error);
     }
   };
-
+// Función para obtener los datos de un grupo específico de la API
   const fetchGrupo = async (GrupoId) => {
     try {
       const response = await fetch(`/grupos/${GrupoId}`);
@@ -103,7 +99,7 @@ function CrearActuCreacionGrupos() {
       console.error("Error fetching grupo:", error);
     }
   };
-
+// Función para filtrar usuarios por sede
   const filterUsuariosBySede = (sede, usuariosData = allUsuarios) => {
     sede = String(sede); // Convertir sede a cadena de texto
     if (sede === "") {
@@ -115,10 +111,11 @@ function CrearActuCreacionGrupos() {
       setUsuarios(filteredUsuarios);
     }
   };
-
+// Función para manejar los cambios en los inputs del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "NumeroGrupo" && isNaN(value)) return; // Ensure NumeroGrupo is a number
+    if (name === "NumeroGrupo" && isNaN(value)) return; // Asegurarse de que NumeroGrupo sea un número
+
 
     setFormValues({
       ...formValues,
@@ -129,7 +126,7 @@ function CrearActuCreacionGrupos() {
       filterUsuariosBySede(value);
     }
   };
-
+  // Función para validar el formulario
   const validateForm = () => {
     const requiredFields = {
       CodigoMateria: "Proyecto",
@@ -162,7 +159,7 @@ function CrearActuCreacionGrupos() {
     setErrors(validationErrors);
     setIsFormValid(Object.keys(validationErrors).length === 0);
   };
-
+  // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -206,8 +203,9 @@ function CrearActuCreacionGrupos() {
 
   const sedeSession = sessionStorage.getItem("Sede");
 
-  const romanNumerals = ["I", "II", "III"];
+  const romanNumerals = ["I", "II", "III"];// Array de números romanos para los cuatrimestres
 
+  // Render del componente
   return (
     <div className="creagrup-container">
       <ToastContainer position="bottom-right" />

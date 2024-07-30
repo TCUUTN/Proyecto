@@ -11,27 +11,28 @@ import { GrEdit } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 function MantGrupos() {
-  const [grupos, setGrupos] = useState([]);
-  const [filteredGrupos, setFilteredGrupos] = useState([]);
-  const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
-  const [nombreProyectoFilter, setNombreProyectoFilter] = useState("");
-  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false);
-  const [cuatrimestreFilter, setCuatrimestreFilter] = useState("");
-  const [annoFilter, setAnnoFilter] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false); // Estado de carga
-  const gruposPerPage = 10;
-  const [uniqueYears, setUniqueYears] = useState([]);
-  const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
+  const [grupos, setGrupos] = useState([]); // Estado para almacenar la lista de grupos
+  const [filteredGrupos, setFilteredGrupos] = useState([]); // Estado para almacenar la lista de grupos filtrados
+  const [codigoMateriaFilter, setCodigoMateriaFilter] = useState(""); // Estado para el filtro de código de materia
+  const [nombreProyectoFilter, setNombreProyectoFilter] = useState(""); // Estado para el filtro de nombre de proyecto
+  const [isFinalizarDisabled, setIsFinalizarDisabled] = useState(false); // Estado para desactivar el botón de finalizar
+  const [cuatrimestreFilter, setCuatrimestreFilter] = useState(""); // Estado para el filtro de cuatrimestre
+  const [annoFilter, setAnnoFilter] = useState(""); // Estado para el filtro de año
+  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual de la paginación
+  const [loading, setLoading] = useState(false); // Estado para indicar si la carga está en progreso
+  const gruposPerPage = 10; // Número de grupos por página para la paginación
+  const [uniqueYears, setUniqueYears] = useState([]); // Estado para almacenar los años únicos en los grupos
+  const sedeFilter = sessionStorage.getItem("Sede") || "Todas"; // Filtro de sede
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook de navegación
 
   useEffect(() => {
-    fetchGrupos();
-    fetchBandera();
+    fetchGrupos(); // Llama a la función para obtener los grupos al cargar el componente
+    fetchBandera(); // Llama a la función para obtener la bandera de activación al cargar el componente
   }, []);
 
   const fetchBandera = async () => {
+     // Función para obtener la bandera de activación
     try {
       setLoading(true);
 
@@ -60,6 +61,7 @@ function MantGrupos() {
   };
 
   const fetchGrupos = async () => {
+    // Función para obtener la lista de grupos
     try {
       const response = await fetch("/grupos");
       if (response.ok) {
@@ -83,29 +85,34 @@ function MantGrupos() {
   };
 
   const handleClick = (grupoId) => {
+    // Función para manejar el clic en un grupo específico
     localStorage.setItem("GrupoIdUpdate", grupoId);
     navigate("/CrearActuCreacionGrupos");
   };
 
   const handleCodigoMateriaFilterChange = (e) => {
+      // Función para manejar el cambio en el filtro de código de materia
     const value = e.target.value;
     setCodigoMateriaFilter(value);
     applyFilters(value, nombreProyectoFilter, cuatrimestreFilter, annoFilter);
   };
 
   const handleNombreProyectoFilterChange = (e) => {
+     // Función para manejar el cambio en el filtro de nombre de proyecto
     const value = e.target.value;
     setNombreProyectoFilter(value);
     applyFilters(codigoMateriaFilter, value, cuatrimestreFilter, annoFilter);
   };
 
   const handleCuatrimestreFilterChange = (e) => {
+          // Función para manejar el cambio en el filtro de cuatrimestre
     const value = e.target.value;
     setCuatrimestreFilter(value);
     applyFilters(codigoMateriaFilter, nombreProyectoFilter, value, annoFilter);
   };
 
   const handleAnnoFilterChange = (e) => {
+          // Función para manejar el cambio en el filtro de año
     const value = e.target.value;
     setAnnoFilter(value);
     applyFilters(
@@ -117,6 +124,7 @@ function MantGrupos() {
   };
 
   const applyFilters = (codigoMateria, nombreProyecto, cuatrimestre, anno) => {
+    // Función para aplicar los filtros a la lista de grupos
     let filtered = grupos;
 
     if (codigoMateria) {
@@ -144,30 +152,33 @@ function MantGrupos() {
     }
 
     setFilteredGrupos(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); // Restablece a la primera página al cambiar el filtro
   };
 
-  const indexOfLastGrupo = currentPage * gruposPerPage;
-  const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage;
+  const indexOfLastGrupo = currentPage * gruposPerPage; // Índice del último grupo en la página actual
+  const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage;  // Índice del primer grupo en la página actual
   const currentGrupos = filteredGrupos.slice(
     indexOfFirstGrupo,
     indexOfLastGrupo
-  );
-  const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
+  ); // Lista de grupos en la página actual
+  const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage); // Número total de páginas
 
   const handleNextPage = () => {
+      // Función para manejar el cambio a la página siguiente
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
+     // Función para manejar el cambio a la página anterior
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
   const handleFileUpload = async (e) => {
+      // Función para manejar la carga de archivos
     setLoading(true); // Inicia la carga
     const file = e.target.files[0];
     const reader = new FileReader();

@@ -5,19 +5,20 @@ import "react-toastify/dist/ReactToastify.css";
 import "./CrearActualizar.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaSave } from "react-icons/fa";
-
+// Componente principal para crear o actualizar proyectos
 function CrearActuProyectos() {
-  const navigate = useNavigate();
-  const [CodigoMateria, setCodigoMateria] = useState("");
-  const [NombreProyecto, setNombreProyecto] = useState("");
-  const [TipoCurso, setTipoCurso] = useState("todos");
+  const navigate = useNavigate(); // Hook para la navegación
+  const [CodigoMateria, setCodigoMateria] = useState(""); // Estado para el código de la materia
+  const [NombreProyecto, setNombreProyecto] = useState(""); // Estado para el nombre del proyecto
+  const [TipoCurso, setTipoCurso] = useState("todos"); // Estado para el tipo de curso
 
+  // Estado para manejar errores en los campos del formulario
   const [errors, setErrors] = useState({
     CodigoMateria: '',
     NombreProyecto: '',
     TipoCurso: ''
   });
-
+// Efecto para cargar datos del proyecto si existe en la sesión
   useEffect(() => {
     const codigoProyecto = sessionStorage.getItem("CodigoProyecto");
     if (codigoProyecto) {
@@ -35,11 +36,11 @@ function CrearActuProyectos() {
         });
     }
   }, []);
-
+// Efecto para validar el formulario cada vez que cambian los valores de los campos
   useEffect(() => {
     validateForm();
   }, [CodigoMateria, NombreProyecto, TipoCurso]);
-
+ // Función para validar el formulario
   const validateForm = () => {
     const newErrors = {};
     if (!CodigoMateria.trim()) newErrors.CodigoMateria = "El código de materia es obligatorio.";
@@ -47,12 +48,12 @@ function CrearActuProyectos() {
     if (TipoCurso === "todos") newErrors.TipoCurso = "Por favor, seleccione un tipo de curso válido.";
     setErrors(newErrors);
   };
-
+// Función para manejar la navegación de regreso
   const handleRegresar = () => {
     navigate("/MantMaterias");
     sessionStorage.removeItem("CodigoProyecto");
   }
-
+  // Función para manejar el guardado del proyecto
   const handleGuardar = () => {
     if (TipoCurso === "todos") {
       toast.error("Por favor, seleccione un tipo de curso válido.");
@@ -88,7 +89,7 @@ function CrearActuProyectos() {
       toast.error("Por favor, complete todos los campos correctamente.");
     }
   };
-
+ // Render del componente
   return (
     <div className="container-projcreaed">
       <ToastContainer position="bottom-right" />
