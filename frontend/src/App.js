@@ -1,52 +1,64 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute.js"; // Importa el componente de ruta protegida
+// Importa los componentes de la aplicación
 import Navbar from "./components/Navbar";
-import ProtectedRoute from "./ProtectedRoute.js";
-import Login from "./pages/Login/Login.js";
 import Footer from "./components/Footer";
+// Páginas relacionadas con el login
+import Login from "./pages/Login/Login.js";
+import CompletarPerfil from "./pages/Login/CompletarPerfil.js";
+// Página de inicio
 import Inicio from "./pages/Inicio/Home.js";
-import Acceso from "./pages/Denegado/Denegado.js";
+// Páginas para cambiar y olvidar contraseñas
 import CambiarContrasena from "./pages/CambioContrasenna/CambiarClave.js";
 import OlvidarContrasena from "./pages/OlvidarContrasenna/OlvidarClave.js";
-import MantUser from "./pages/Usuarios/ManteminientoUs.js";
+// Página de acceso denegado
+import Acceso from "./pages/Denegado/Denegado.js";
+// Páginas para la gestión de horas
+import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.js";
+import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
+import VistaHorasEstudiantes from "./pages/HorasBitacora/VistaHorasEstudiante.js";
+// Páginas para la gestión de grupos
 import MantMaterias from "./pages/Grupos/MantMaterias.js";
 import MantGrupos from "./pages/Grupos/MantCreaGrupos.js";
-import CompletarPerfil from "./pages/Login/CompletarPerfil.js";
 import GruposAcademico from "./pages/Grupos/GruposAcademico.js";
-import GruposConclusiones from "./pages/Conclusiones/GruposConclusiones.js";
 import ListaEstudiantes from "./pages/Grupos/EstudiantesdeGrupo.js";
-import VistaHorasEstudiantes from "./pages/HorasBitacora/VistaHorasEstudiante.js";
+import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
+import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
+// Páginas para la gestión de usuarios
+import MantUser from "./pages/Usuarios/ManteminientoUs.js";
+import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
+// Páginas para la gestión de boleta de conclusio
+import GruposConclusiones from "./pages/Conclusiones/GruposConclusiones.js";
 import VistaConclusionesGrupo from "./pages/Conclusiones/VistaConclusionesGrupo.js";
-import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
+import CrearActualizarConclusiones from "./pages/Conclusiones/CrearoActualizarConclusiones.js";
+// Páginas para la gestión de socios comunitarios
 import SocioComunitarios from "./pages/SociosComunitarios/ListSocioCom.js";
 import SolicitudCartas from "./pages/SociosComunitarios/ListaSolicitudesCarta.js";
 import VerSolicitudes from "./pages/SociosComunitarios/VerSolicitudes.js";
+import CrearActuSocioComunitarios from "./pages/SociosComunitarios/CrearActualizar.js";
+import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
+// Páginas para la información
 import Informacion from "./pages/Informacion/Informacion.js";
 import RegistroInformacion from "./pages/Informacion/CrearActualizarInfo.js";
-//Guias del aplicacion web
+// Páginas para las guías de la aplicación web
 import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
 import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
 import GuiaAcademico from "./pages/GuiasUsuarios/GuiaAcademico.js"
-
-//
-import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
-import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
-import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
-import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.js";
-import CrearActuSocioComunitarios from "./pages/SociosComunitarios/CrearActualizar.js";
-import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActualizarSolicitudCartas.js";
-import CrearActualizarConclusiones from "./pages/Conclusiones/CrearoActualizarConclusiones.js";
-//
-import "bootstrap/dist/css/bootstrap.min.css"; // Importa los estilos de Bootstrap
-import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importa el archivo JavaScript de Bootstrap
+// Importa los estilos y el JavaScript de Bootstrap para el diseño y componentes
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import "bootstrap/dist/js/bootstrap.bundle.min.js"; 
 
 function App() {
   useEffect(() => {
+    // Efecto para redirigir al usuario a la página de acceso denegado si no está autenticado
     const storedCorreo = sessionStorage.getItem("CorreoElectronico");
     const storedGenero = sessionStorage.getItem("Genero");
     const currentPath = window.location.pathname;
 
+     // Redirige a la página de acceso denegado si no se encuentra un correo electrónico o el género es indefinido
+    // y la ruta actual no es una de las permitidas
     if (
       (!storedCorreo || storedGenero === "Indefinido") &&
       currentPath !== "/" &&
@@ -55,13 +67,15 @@ function App() {
     ) {
       window.location.href = "/AccesoDenegado";
     }
-  }, []);
+  }, []); // El efecto se ejecuta solo una vez al montar el componente
 
   return (
     <Router>
       <div className="App">
+        {/* Renderiza el componente de la barra de navegación */}
         <Navbar />
         <div className="content">
+           {/* Configura las rutas y los componentes asociados */}
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/Home" element={<Inicio />} />
@@ -69,6 +83,7 @@ function App() {
             <Route path="/CambiarClave" element={<CambiarContrasena />} />
             <Route path="/OlvidarClave" element={<OlvidarContrasena />} />
             <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
+             {/* Rutas protegidas según el rol del usuario */}
             <Route
               path="/MantUser"
               element={

@@ -10,6 +10,7 @@ import moment from "moment-timezone";
 import "./CrearActualizarInfo.css";
 
 function CrearActualizarInfo() {
+    // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     Identificacion: "",
     NombreArchivo: "-",
@@ -21,12 +22,18 @@ function CrearActualizarInfo() {
     Archivo: null,
   });
 
-  const [error, setError] = useState("");
-  const [informacionId, setInformacionId] = useState(null);
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const navigate = useNavigate();
+// Estado para almacenar mensajes de error
+const [error, setError] = useState("");
+// Estado para almacenar el ID de la información (si se está editando)
+const [informacionId, setInformacionId] = useState(null);
+// Estado para habilitar o deshabilitar el botón de envío
+const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+// Hook para navegar entre rutas
+const navigate = useNavigate();
 
+// Hook para cargar datos iniciales y configurar el formulario
   useEffect(() => {
+    // Cargar datos de la información existente
     const storedInformacionId = sessionStorage.getItem("InformacionId");
     setInformacionId(storedInformacionId);
 
@@ -64,6 +71,7 @@ function CrearActualizarInfo() {
           );
         });
     } else {
+      // Configurar datos iniciales para un nuevo formulario
       setFormData((prevFormData) => ({
         ...prevFormData,
         Identificacion: identificacion,
@@ -87,7 +95,7 @@ function CrearActualizarInfo() {
       });
     }
   }, []);
-
+// Manejar cambios en los campos del formulario
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
     if (name === "Archivo" && value) {
@@ -96,11 +104,11 @@ function CrearActualizarInfo() {
     setFormData(newFormData);
     validateForm(newFormData);
   };
-
+// Validar los datos del formulario
   const validateForm = (data) => {
     const { Descripcion, TipoInformacion, Archivo } = data;
     let isValid = true;
-
+// Validaciones basadas en el tipo de información
     if (TipoInformacion === "General" || TipoInformacion === "Académico") {
       if (!Descripcion) {
         isValid = false;
@@ -116,7 +124,7 @@ function CrearActualizarInfo() {
     setIsSubmitDisabled(!isValid);
     if (isValid) setError("");
   };
-
+// Manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
     const requiredFields = ["Descripcion"];
@@ -127,7 +135,7 @@ function CrearActualizarInfo() {
         return;
       }
     }
-
+ // Si se está editando una información existente, agregar el ID
     if (informacionId!=null) {
       formData.InformacionId=informacionId
     }
@@ -135,7 +143,7 @@ function CrearActualizarInfo() {
     const dataToSend = {
       ...formData,
     };
-
+  // Agregar el ID del grupo si es del tipo "Académico"
     if (formData.TipoInformacion === "Académico") {
       console.log(localStorage.getItem("GrupoSeleccionado"))
       dataToSend.GrupoId = localStorage.getItem("GrupoSeleccionado");
@@ -154,7 +162,7 @@ function CrearActualizarInfo() {
       if (response.ok) {
         const responseData = await response.json();
         const { InformacionId: newInformacionId } = responseData;
-
+// Subir el archivo si se ha seleccionado
         if (formData.Archivo) {
           const formDataToSend = new FormData();
           formDataToSend.append("InformacionId", newInformacionId);
@@ -185,12 +193,12 @@ function CrearActualizarInfo() {
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
-
+  // Manejar el clic en el botón de regreso
   const handleBackClick = () => {
     sessionStorage.removeItem("InformacionId");
     navigate("/Informacion");
   };
-
+ // Manejar la eliminación del archivo
   const handleDelete = () => {
     setFormData({
       ...formData,
@@ -199,7 +207,7 @@ function CrearActualizarInfo() {
     });
     document.getElementById("Archivo").value = ""; // Reset the file input
   };
-
+// Obtener el título del formulario basado en el tipo de información y si se está editando
   const getTitulo = () => {
     switch (localStorage.getItem("TipoInfoSeleccionado")) {
       case "General":

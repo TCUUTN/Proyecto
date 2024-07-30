@@ -26,6 +26,7 @@ function VistaInformacion() {
   const [loading, setLoading] = useState(false);
   const informacionPerPage = 10;
 
+// Hook que se ejecuta al montar el componente o cambiar el grupo seleccionado.
   useEffect(() => {
     if (
       TipoInfoSeleccionado === "General" ||
@@ -41,12 +42,13 @@ function VistaInformacion() {
     }
   }, [selectedGrupo]);
 
+  // Hook que se ejecuta al cambiar el grupo seleccionado para actualizar la tabla.
   useEffect(() => {
     if (selectedGrupo !== "") {
       handletablaacademico(selectedGrupo);
     }
   }, [selectedGrupo]);
-
+ // Función para obtener la información por sede y tipo de información.
   const fetchInformacionPorSedeYTipo = async () => {
     try {
       setLoading(true);
@@ -83,7 +85,7 @@ function VistaInformacion() {
   useEffect(() => {
 
   }, []);
-
+ // Función para obtener la información por ID de grupo.
   const fetchInformacionPorGrupoId = async () => {
     try {
       setLoading(true);
@@ -115,7 +117,7 @@ function VistaInformacion() {
       setLoading(false);
     }
   };
-
+// Función para obtener los grupos por académico.
   const fetchGruposPorAcademico = async () => {
     try {
       setLoading(true);
@@ -135,25 +137,25 @@ function VistaInformacion() {
       setLoading(false);
     }
   };
-
+  // Función para manejar el cambio en el filtro de fecha.
   const handleFechaFilterChange = (e) => {
     const value = e.target.value;
     setFechaFilter(value);
     applyFilters(value, descripcionFilter, nombreArchivoFilter);
   };
-
+  // Función para manejar el cambio en el filtro de descripción.
   const handleDescripcionFilterChange = (e) => {
     const value = e.target.value;
     setDescripcionFilter(value);
     applyFilters(fechaFilter, value, nombreArchivoFilter);
   };
-
+  // Función para manejar el cambio en el filtro de nombre de archivo.
   const handleNombreArchivoFilterChange = (e) => {
     const value = e.target.value;
     setNombreArchivoFilter(value);
     applyFilters(fechaFilter, descripcionFilter, value);
   };
-
+ // Función para aplicar los filtros a la información.
   const applyFilters = (fecha, descripcion, nombreArchivo) => {
     let filtered = informacion;
 
@@ -180,7 +182,7 @@ function VistaInformacion() {
   };
 
   
-
+  // Calcular la información actual a mostrar en la página.
   const indexOfLastInfo = currentPage * informacionPerPage;
   const indexOfFirstInfo = indexOfLastInfo - informacionPerPage;
   const currentInformacion = filteredInformacion.slice(
@@ -188,40 +190,40 @@ function VistaInformacion() {
     indexOfLastInfo
   );
   const totalPages = Math.ceil(filteredInformacion.length / informacionPerPage);
-
+  // Función para manejar la página siguiente.
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-
+  // Función para manejar la página anterior.
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-
+  // Función para manejar la tabla académico.
   const handletablaacademico = (grupoId) => {
     sessionStorage.setItem("GrupoId", grupoId);
     fetchInformacionPorGrupoId();
   };
-
+  // Función para manejar el regreso a la página de inicio.
   const handleBack = () => {
     localStorage.removeItem("TipoInfoSeleccionado");
 
     navigate("/Home");
   };
-
+ // Función para manejar la navegación a la página de registro de información.
   const handleAgregar = () => {
     navigate("/RegistroInformacion");
   };
-
+ // Función para manejar la edición de una información específica.
   const handleEditar = (InformacionId) => {
     sessionStorage.setItem("InformacionId",InformacionId);
     navigate("/RegistroInformacion");
   };
-
+  // Función para manejar la descarga de un archivo.
   const handleDescargaArchivo = async (InformacionId) => {
     try {
       console.log(InformacionId)
@@ -265,7 +267,7 @@ function VistaInformacion() {
       toast.error("Error al manejar la descarga del archivo:", error);
     }
   };
-
+// Función para obtener el título basado en el tipo de información.
   const getTitulo = (tipoInfo) => {
     switch (tipoInfo) {
       case "General":
@@ -284,6 +286,7 @@ function VistaInformacion() {
     }
   };
 
+// Función para obtener el texto del botón basado en el tipo de información.
   const getButtonText = (tipoInfo) => {
     switch (tipoInfo) {
       case "General":
@@ -297,6 +300,7 @@ function VistaInformacion() {
     }
   };
 
+   // Función para validar si se debe habilitar el botón de agregar.
   const validacionAgregar = () => {
     switch (selectedRole) {
       case "Estudiante":
@@ -318,11 +322,13 @@ function VistaInformacion() {
     }
   };
 
+   // Función para formatear la fecha en formato dd/mm/yyyy.
   const formatDate = (date) => {
     const [yyyy, mm, dd] = date.split("-");
     return `${dd}/${mm}/${yyyy}`;
   };
 
+// Hook que se ejecuta para verificar las condiciones para habilitar el botón.
   useEffect(() => {
     // Verificar las condiciones para habilitar el botón
     if (TipoInfoSeleccionado !== 'Académico' || (selectedGrupo && TipoInfoSeleccionado === 'Académico')) {
@@ -331,7 +337,7 @@ function VistaInformacion() {
       setIsButtonEnabled(false);
     }
   }, [selectedGrupo, TipoInfoSeleccionado]);
-
+// Retorno del componente, renderizando la vista de información.
   return (
     <div className="container-info">
       {/*Para la carga */}
