@@ -200,60 +200,8 @@ CREATE TABLE Informacion (
     CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
-SET SQL_SAFE_UPDATES = 0;
-ALTER TABLE Grupos_Grupo
-ADD COLUMN BanderaFinalizarCuatrimestre TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0' COMMENT 'Bandera para activar Finalizacion del Cuatrimestre';
-SET SQL_SAFE_UPDAtES = 1;
 
-select * from Informacion;
-
-ALTER TABLE `Informacion` MODIFY `Archivo` LONGBLOB;
-
-/*DELETE FROM `Informacion` WHERE `Identifiacion` != '0' ;
-
-DELETE FROM `Usuarios` 
-WHERE `Identificacion` NOT IN ('117960190', '112233445','645678901');
-
-SET SQL_SAFE_UPDATES = 0;
-ALTER TABLE `Grupos_Estudiantes_Grupo`
-MODIFY `Estado` ENUM('En Curso', 'Aprobado', 'Reprobado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo';
-UPDATE `Grupos_Estudiantes_Grupo`
-SET `Estado` = 'En Curso', `Progreso` = 'Nuevo', `ComentariosReprobado` = '-';
-DELETE FROM `Conclusion_Boleta`
-WHERE `ConclusionId` = 4;
-Drop table Grupos_Estudiantes_Grupo;
-Drop table Conclusion_Boleta;
-Drop table Socios_RegistroSocios;
-DELETE FROM Conclusion_Boleta where ConclusionId = 17;
-DELETE FROM Socios_SolicitudCarta;
-DELETE FROM Socios_RegistroSocios;
-SET SQL_SAFE_UPDAtES = 1;
-
-
-ALTER TABLE Informacion 
-MODIFY COLUMN `GrupoId` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0;
-
--- Step 2: Drop the foreign key constraint
-ALTER TABLE Informacion 
-DROP FOREIGN KEY Informacion_Grupos_Grupo_GrupoId;
-
-
-
-select * from Grupos_grupo;
-INSERT INTO Grupos_Estudiantes_Grupo (
-    `Identificacion`,
-    `GrupoId`,
-    `Estado`,
-    `Progreso`
-) VALUES (
-    '117960190',
-    30,
-    'En Curso',
-    'Nuevo'
-);
-
-
-/*Inserts y Updates
+/*Inserts Usuario Master
 
 INSERT INTO Usuarios (
     Identificacion,
@@ -266,198 +214,22 @@ INSERT INTO Usuarios (
     Estado,
     Sede
 ) VALUES (
-    '123456789',
-    'Juan',
-    'Perez',
-    'Gomez',
-    'Masculino',
-    'juan.perez@example.com',
-    'password123',
-    1,
-    'Central'
-);
-
-INSERT INTO Usuarios (
-    Identificacion,
-    Nombre,
-    Apellido1,
-    Apellido2,
-    Genero,
-    CorreoElectronico,
-    Contrasenna,
-    Estado,
-    Sede
-) VALUES (
-    '117960190',
-    'Israel',
-    'Calvo',
-    'Morera',
-    'Masculino',
-    'cmisra2407@gmail.com',
-    '$2a$10$IOgU92oPOUMkOm5ly63tcuS01c4wpb.V/YzQxWbQsdYEpW1yznw56',
+    '001002003',
+    'Admin',
+    'Pruebas',
+    'Total',
+    'Prefiero no Especificar',
+    'bitacoratcuutn@gmail.com',
+    '-',
     1,
     'Todas'
 );
 
-INSERT INTO Usuarios_Roles (
-	Identificacion,
-    RolId)
-    VALUES
-    ('117960190',1),('117960190',3),('123456789',3);
 
 
 INSERT INTO Usuarios_Roles (
 	Identificacion,
     RolId)
     VALUES
-    ('117960190',2);
-
-Select * from Roles;
-
-INSERT INTO Grupos_TipoGrupo (CodigoMateria, NombreProyecto, TipoCurso)
-VALUES ('MAT123', 'Proyecto A', 'Presencial');
-
-INSERT INTO Grupos_Grupo (CodigoMateria, NumeroGrupo, Horario, Aula, Sede, Cuatrimestre, Anno, Identificacion, Estado)
-VALUES ('MAT123', 1, 'Lunes 9-11', 'Aula 101', 'Central', 1, 2024, '117960190', 1);
-
-INSERT INTO Grupos_Estudiantes_Grupo (Identificacion, GrupoId, Estado)
-VALUES ('123456789', 1, 1);
-
-
-DELETE FROM Grupos_Estudiantes_Grupo
-WHERE GrupoId = '6';
-
-
-DELETE FROM Usuarios
-WHERE Identificacion <> '117960190';
-
-SET SQL_SAFE_UPDATES = 1;
-
-UPDATE Usuarios
-SET CorreoElectronico = 'isracmldausa@gmail.com'
-WHERE Identificacion = 645678901;
-
-select * from Usuarios;
-
-INSERT INTO Usuarios (
-    Identificacion,
-    Nombre,
-    Apellido1,
-    Apellido2,
-    Genero,
-    CorreoElectronico,
-    Contrasenna,
-    Estado,
-    Sede
-) VALUES (
-    '225522556',
-    'Prueba Pacifico',
-    'Test',
-    'UTN',
-    'Prefiero no Especificar',
-    'isracmlda18@gmail.com',
-    '$2a$10$IOgU92oPOUMkOm5ly63tcuS01c4wpb.V/YzQxWbQsdYEpW1yznw56',
-    1,
-    'Pacífico'
-);
-
-INSERT INTO Usuarios_Roles (
-	Identificacion,
-    RolId)
-    VALUES
-    ('225522556',1);
-    
-    
-    select * from Grupos_Estudiantes_Grupo;
-    
--- Paso 1: Añadir la columna GrupoId a la tabla Horas_Bitacora
-ALTER TABLE Horas_Bitacora
-ADD COLUMN GrupoId MEDIUMINT UNSIGNED NOT NULL;
-
--- Paso 2: Añadir la llave foránea
-ALTER TABLE Horas_Bitacora
-ADD CONSTRAINT `Horas_Bitacora_Grupos_Grupo_GrupoId` FOREIGN KEY (`GrupoId`) REFERENCES `bitacora_TCU`.`Grupos_Grupo` (`GrupoId`);
-
-
-
-INSERT INTO Horas_Bitacora (
-    Identificacion,
-    GrupoId,
-    Fecha,
-    DescripcionActividad,
-    TipoActividad,
-    HoraInicio,
-    HoraFinal,
-    EstadoHoras
-) VALUES (
-    '112233445',          -- Identificacion del Estudiante
-    4,                    -- GrupoId (Ejemplo de GrupoId)
-    '2024-06-14',         -- Fecha de ejecución
-    'Participación en proyecto de desarrollo de software.', -- Descripción de la actividad
-    'Ejecucion',          -- Tipo de actividad
-    '08:00:00',           -- Hora de inicio
-    '12:00:00',           -- Hora de finalización
-    'Aprobado'            -- Estado de las horas
-);
-
-INSERT INTO Horas_Bitacora (
-    Identificacion,
-    GrupoId,
-    Fecha,
-    DescripcionActividad,
-    TipoActividad,
-    HoraInicio,
-    HoraFinal,
-    Evidencias,
-    EstadoHoras
-) VALUES (
-    '112233445',          -- Identificacion del Estudiante
-    4,                    -- GrupoId (Ejemplo de GrupoId)
-    '2024-06-13',         -- Fecha de ejecución
-    'Asistencia a la gira educativa en la planta de reciclaje.', -- Descripción de la actividad
-    'Gira',               -- Tipo de actividad
-    '09:00:00',           -- Hora de inicio
-    '15:00:00',           -- Hora de finalización
-    NULL,                 -- Evidencias (NULL en este ejemplo)
-    'Aprobado'           -- Estado de las horas
-);
-
-UPDATE usuarios
-SET correoElectronico = 'asomamecoasistencia@gmail.com'
-WHERE Identificacion = 112233445;
-
-
-Actualizacion tabla de horas
-ALTER TABLE `Horas_Bitacora` MODIFY `Evidencias` LONGBLOB;
-ALTER TABLE Horas_Bitacora
-ADD COLUMN NombreEvidencia VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre de la Evidencia';
-
-
-
-INSERT INTO Horas_Bitacora (Identificacion, GrupoId, Fecha, DescripcionActividad, HoraInicio, HoraFinal) VALUES
-('117960190', 30, '2024-01-10', 'Actividad 1', '08:00:00', '12:00:00'),
-('117960190', 30, '2024-01-11', 'Actividad 2', '09:00:00', '13:00:00'),
-('117960190', 30, '2024-01-12', 'Actividad 3', '10:00:00', '14:00:00'),
-('117960190', 30, '2024-01-13', 'Actividad 4', '11:00:00', '15:00:00'),
-('117960190', 30, '2024-01-14', 'Actividad 5', '12:00:00', '16:00:00'),
-('117960190', 30, '2024-01-15', 'Actividad 6', '13:00:00', '17:00:00'),
-('117960190', 30, '2024-01-16', 'Actividad 7', '14:00:00', '18:00:00'),
-('117960190', 30, '2024-01-17', 'Actividad 8', '15:00:00', '19:00:00'),
-('117960190', 30, '2024-01-18', 'Actividad 9', '16:00:00', '20:00:00'),
-('117960190', 30, '2024-01-19', 'Actividad 10', '17:00:00', '21:00:00'),
-('117960190', 30, '2024-01-20', 'Actividad 11', '18:00:00', '22:00:00'),
-('117960190', 30, '2024-01-21', 'Actividad 12', '19:00:00', '23:00:00'),
-('117960190', 30, '2024-01-22', 'Actividad 13', '20:00:00', '23:59:00'),
-('117960190', 30, '2024-01-23', 'Actividad 14', '06:00:00', '10:00:00'),
-('117960190', 30, '2024-01-24', 'Actividad 15', '07:00:00', '11:00:00');
-
-INSERT INTO Horas_Bitacora 
-    (Identificacion, GrupoId, Fecha, DescripcionActividad, HoraInicio, HoraFinal, TipoActividad)
-VALUES
-    ('117960190', 30, '2024-07-15', 'Planificación de actividad A', '08:00:00', '12:00:00', 'Planificacion'),
-    ('117960190', 30, '2024-07-16', 'Planificación de actividad B', '09:00:00', '13:00:00', 'Planificacion'),
-    ('117960190', 30, '2024-07-17', 'Planificación de actividad C', '10:00:00', '14:00:00', 'Planificacion'),
-    ('117960190', 30, '2024-07-18', 'Planificación de actividad D', '11:00:00', '15:00:00', 'Planificacion'),
-    ('117960190', 30, '2024-07-19', 'Planificación de actividad E', '12:00:00', '16:00:00', 'Planificacion');
-
+    ('001002003',1),('001002003',2),('001002003',3);
 */
