@@ -218,7 +218,7 @@ function GuiaEstudiantes() {
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
           {/* Section explicacion del contenido */}
-          <div className="section-guias section-contenido">
+          <div className=" section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
             <ul className="guiaIn-contenido-Ac ">

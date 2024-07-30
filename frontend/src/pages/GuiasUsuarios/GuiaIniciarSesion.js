@@ -221,6 +221,33 @@ function GuiaIniciarSesion() {
             de la UTN. La aplicación nos ayuda para el registro de horas y para
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
+          {/* Section explicacion del contenido */}
+          <div className=" section-contenido">
+            <h3 className="titulos-guiaIn">Contenido</h3>
+            <div className="celes-divider" />
+            <ul className="guiaIn-contenido  ">
+              <li>
+                <a className="interlink-guiaIn" href="#iniciarSesion">
+                Iniciar sesión
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#olvidarContraseña">
+                Olvidar Contraseña
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#cambiarContraseña">
+                Restablecer Contraseña
+                </a>
+              </li>
+              <li>
+                <a className="interlink-guiaIn" href="#completarPerfil">
+                Completar Perfil
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
         {/* Section explicacion de Iniciar S */}
         <div className="section section-guias " id="iniciarSesion">

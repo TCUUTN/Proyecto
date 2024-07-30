@@ -87,7 +87,7 @@
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 55px;
+  gap: 100px;
 }
 .guiaIn-contenido li {
   display: flex;
