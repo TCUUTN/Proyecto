@@ -12,7 +12,7 @@ const Informacion = sequelize.define('Informacion', {
     comment: 'Llave primaria de la tabla'
   },
   Archivo: {
-    type: DataTypes.BLOB,
+    type: DataTypes.BLOB('long'),
     allowNull: true,
     comment: 'Archivo'
   },

@@ -184,7 +184,7 @@ CONSTRAINT `Usuarios_Conclusion_Boleta_Identificacion` FOREIGN KEY (`Identificac
 
 CREATE TABLE Informacion (
     `InformacionId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `Archivo` BLOB NULL COMMENT 'Archivo',
+    `Archivo` LONGBLOB NULL COMMENT 'Archivo',
     `NombreArchivo` VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre del Archivo',
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Identificacion de quien sube la informacion',
     `Descripcion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Descripcion',
@@ -205,7 +205,9 @@ ALTER TABLE Grupos_Grupo
 ADD COLUMN BanderaFinalizarCuatrimestre TinyInt(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0' COMMENT 'Bandera para activar Finalizacion del Cuatrimestre';
 SET SQL_SAFE_UPDAtES = 1;
 
-select * from Grupos_Grupo
+select * from Informacion;
+
+ALTER TABLE `Informacion` MODIFY `Archivo` LONGBLOB;
 
 /*DELETE FROM `Informacion` WHERE `Identifiacion` != '0' ;
 

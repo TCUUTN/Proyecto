@@ -8,10 +8,6 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.static(path.join(__dirname,'../backend/assets/dbAttachment')))
 
-// Aumentar el límite del tamaño del cuerpo de la solicitud
-app.use(bodyParser.json({ limit: '100mb' }));
-app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
-
 const seguridadRoute = require('./routes/seguridadRoute');
 app.use('/usuarios', seguridadRoute);
 // Rutas para el modulo de Usuarios
