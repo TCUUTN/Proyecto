@@ -85,9 +85,6 @@ function GuiaIniciarSesion() {
             for (let i = 0; i < sections.length; i++) {
                 const section = sections[i];
 
-                // Skip the "Contenido" section
-                if (section.classList.contains("section-contenido")) continue;
-
                 // Store original styles
                 const originalStyles = {
                     width: section.style.width,
@@ -222,7 +219,7 @@ function GuiaIniciarSesion() {
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
           {/* Section explicacion del contenido */}
-          <div className=" section-contenido">
+          <div className="section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
             <ul className="guiaIn-contenido  ">
