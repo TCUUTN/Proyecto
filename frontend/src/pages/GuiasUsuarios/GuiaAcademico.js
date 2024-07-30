@@ -98,9 +98,6 @@ function GuiaAcademico() {
             for (let i = 0; i < sections.length; i++) {
                 const section = sections[i];
 
-                // Skip the "Contenido" section
-                if (section.classList.contains("section-contenido")) continue;
-
                 // Store original styles
                 const originalStyles = {
                     width: section.style.width,
