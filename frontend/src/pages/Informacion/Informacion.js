@@ -80,6 +80,10 @@ function VistaInformacion() {
     }
   };
 
+  useEffect(() => {
+
+  }, []);
+
   const fetchInformacionPorGrupoId = async () => {
     try {
       setLoading(true);
@@ -199,7 +203,7 @@ function VistaInformacion() {
 
 
   const handletablaacademico = (grupoId) => {
-    localStorage.setItem("GrupoSeleccionado", grupoId);
+    sessionStorage.setItem("GrupoId", grupoId);
     fetchInformacionPorGrupoId();
   };
 
