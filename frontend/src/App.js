@@ -20,14 +20,14 @@ import CrearoActualizarHoras from "./pages/HorasBitacora/CrearoActualizarHoras.j
 import RechazoHoras from "./pages/HorasBitacora/RechazoHoras.js";
 import VistaHorasEstudiantes from "./pages/HorasBitacora/VistaHorasEstudiante.js";
 // Páginas para la gestión de grupos
-import MantMaterias from "./pages/Grupos/MantMaterias.js";
-import MantGrupos from "./pages/Grupos/MantCreaGrupos.js";
+import Proyectos from "./pages/Grupos/Proyectos.js";
+import Grupos from "./pages/Grupos/Grupos.js";
 import GruposAcademico from "./pages/Grupos/GruposAcademico.js";
 import ListaEstudiantes from "./pages/Grupos/EstudiantesdeGrupo.js";
 import CrearActuProyectos from "./pages/Grupos/CrearActuProyectos.js";
 import CrearActuCreacionGrupos from "./pages/Grupos/CrearActuCreacionGrupos.js";
 // Páginas para la gestión de usuarios
-import MantUser from "./pages/Usuarios/ManteminientoUs.js";
+import Usuarios from "./pages/Usuarios/Usuarios.js";
 import CrearActualizarUsuario from "./pages/Usuarios/CrearActualizarUsuario.js";
 // Páginas para la gestión de boleta de conclusio
 import GruposConclusiones from "./pages/Conclusiones/GruposConclusiones.js";
@@ -43,9 +43,10 @@ import CrearActualizarSolicitudCartas from "./pages/SociosComunitarios/CrearActu
 import Informacion from "./pages/Informacion/Informacion.js";
 import RegistroInformacion from "./pages/Informacion/CrearActualizarInfo.js";
 // Páginas para las guías de la aplicación web
-import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js"
-import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js"
-import GuiaAcademico from "./pages/GuiasUsuarios/GuiaAcademico.js"
+import GuiaIniciarSesion from "./pages/GuiasUsuarios/GuiaIniciarSesion.js";
+import GuiaEstudiantes from "./pages/GuiasUsuarios/GuiaEstudiantes.js";
+import GuiaAcademico from "./pages/GuiasUsuarios/GuiaAcademico.js";
+import GuiaAdmininistrativo from "./pages/GuiasUsuarios/GuiaAdministrativo.js";
 // Importa los estilos y el JavaScript de Bootstrap para el diseño y componentes
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; 
@@ -85,10 +86,10 @@ function App() {
             <Route path="/CompletarPerfil" element={<CompletarPerfil />} />
              {/* Rutas protegidas según el rol del usuario */}
             <Route
-              path="/MantUser"
+              path="/Usuarios"
               element={
                 <ProtectedRoute allowedRoles={["Administrativo"]}>
-                  <MantUser />
+                  <Usuarios />
                 </ProtectedRoute>
               }
             />
@@ -109,18 +110,18 @@ function App() {
               }
             />
             <Route
-              path="/MantMaterias"
+              path="/Proyectos"
               element={
                 <ProtectedRoute allowedRoles={["Administrativo"]}>
-                  <MantMaterias />
+                  <Proyectos />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/MantGrupos"
+              path="/Grupos"
               element={
                 <ProtectedRoute allowedRoles={["Administrativo"]}>
-                  <MantGrupos />
+                  <Grupos />
                 </ProtectedRoute>
               }
             />
@@ -275,6 +276,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["Administrativo","Académico"]}>
                 <GuiaAcademico />
+              </ProtectedRoute>
+            }
+            />
+            
+            <Route 
+            path="/GuiaAdmininistrativo"
+            element={
+              <ProtectedRoute allowedRoles={["Administrativo"]}>
+                <GuiaAdmininistrativo />
               </ProtectedRoute>
             }
             />

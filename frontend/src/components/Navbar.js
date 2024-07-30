@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 import imagen from "../Assets/Images/Bandera Combinada.png";
 import { FaFileDownload } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
@@ -82,7 +82,7 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-     // Efecto para obtener las horas totales y determinar si se debe mostrar la "Boleta de Conclusión"
+    // Efecto para obtener las horas totales y determinar si se debe mostrar la "Boleta de Conclusión"
     const fetchHorasTotales = async () => {
       if (selectedRole === "Estudiante" && identificacion) {
         try {
@@ -98,16 +98,16 @@ function Navbar() {
           const horasData = await horasResponse.json();
 
           const parseHora = (hora) => {
-            const [hours, minutes, seconds] = hora.split(':').map(Number);
+            const [hours, minutes, seconds] = hora.split(":").map(Number);
             return hours * 60 + minutes + seconds / 60;
-        };
-        
-        const horasTotales = horasData.reduce((total, hora) => {
+          };
+
+          const horasTotales = horasData.reduce((total, hora) => {
             const horaInicio = parseHora(hora.HoraInicio);
             const horaFinal = parseHora(hora.HoraFinal);
             const diff = horaFinal - horaInicio;
             return total + diff / 60; // Convertir minutos a horas
-        }, 0);
+          }, 0);
 
           // Guarda horasTotales en localStorage
           localStorage.setItem("horasTotalesEstudiante", horasTotales);
@@ -127,18 +127,18 @@ function Navbar() {
 
     fetchHorasTotales();
   }, [selectedRole, identificacion]);
-/**
+  /**
    * Maneja los eventos de clic en los enlaces para guardar el tipo de información seleccionado y recargar la página si la ruta coincide.
    * @param {string} tipo - El tipo de información seleccionado.
    * @param {string} linkPath - La ruta a la que se debe navegar.
    */
   const handleLinkClick = (tipo, linkPath) => {
-    localStorage.setItem('TipoInfoSeleccionado', tipo);
+    localStorage.setItem("TipoInfoSeleccionado", tipo);
     if (currentPath === linkPath) {
       window.location.reload();
     }
   };
-/**
+  /**
    * Maneja el cierre de sesión del usuario limpiando el almacenamiento de sesión y local y redirigiendo a la página de inicio de sesión.
    */
   const handleLogout = () => {
@@ -162,12 +162,12 @@ function Navbar() {
    * @returns {string} - El texto a mostrar.
    */
   const renderLinkText = () => {
-    if (selectedRole === 'Estudiante') {
-      return 'Del Grupo';
-    } else if (selectedRole === 'Académico') {
-      return 'Grupos a Cargo';
+    if (selectedRole === "Estudiante") {
+      return "Del Grupo";
+    } else if (selectedRole === "Académico") {
+      return "Grupos a Cargo";
     }
-    return '';
+    return "";
   };
 
   return (
@@ -205,7 +205,7 @@ function Navbar() {
                     <Link
                       className="nav-link"
                       aria-current="page"
-                      to="/MantUser"
+                      to="/Usuarios"
                     >
                       Usuarios
                     </Link>
@@ -228,7 +228,7 @@ function Navbar() {
                           <li>
                             <Link
                               className="dropdown-item dropdown-style"
-                              to="/MantMaterias"
+                              to="/Proyectos"
                             >
                               Proyectos
                             </Link>
@@ -236,7 +236,7 @@ function Navbar() {
                           <li>
                             <Link
                               className="dropdown-item dropdown-style"
-                              to="/MantGrupos"
+                              to="/Grupos"
                             >
                               Creación de grupos
                             </Link>
@@ -341,93 +341,94 @@ function Navbar() {
                           </Link>
                         </li>
                         {(selectedRole === "Estudiante" ||
-
-                           selectedRole === "Administrativo"
-                         )&& (
-                        <li>
-                          <Link
-                            className="dropdown-item dropdown-style"
-                            to="/GuiaEstudiantes"
-                          >
-                           Guia para Estudiantes
-                          </Link>
-                        </li>
-                         )}
-                         {(selectedRole === "Académico" ||
-                           selectedRole === "Administrativo"
-                         )&& (
-                        <li>
-                          <Link
-                            className="dropdown-item dropdown-style"
-                            to="/GuiaAcademico"
-                          >
-                           Guia para Académico
-                          </Link>
-                        </li>
-                         )}
-
-{(selectedRole === "Administrativo") && (
+                          selectedRole === "Administrativo") && (
                           <li>
                             <Link
                               className="dropdown-item dropdown-style"
-                              to="GuiaEstudiantes"
+                              to="/GuiaEstudiantes"
+                            >
+                              Guia para Estudiantes
+                            </Link>
+                          </li>
+                        )}
+                        {(selectedRole === "Académico" ||
+                          selectedRole === "Administrativo") && (
+                          <li>
+                            <Link
+                              className="dropdown-item dropdown-style"
+                              to="/GuiaAcademico"
+                            >
+                              Guia para Académico
+                            </Link>
+                          </li>
+                        )}
+
+                        {selectedRole === "Administrativo" && (
+                          <li>
+                            <Link
+                              className="dropdown-item dropdown-style"
+                              to="/GuiaAdmininistrativo"
                             >
                               Guia para Administrativo
                             </Link>
                           </li>
                         )}
-
                       </ul>
                     </li>
                     {(selectedRole === "Estudiante" ||
-                          selectedRole === "Académico"||
-                          selectedRole === "Administrativo") && (
-                    <li className="dropdown-submenu">
-                      <Link
-                        className="dropdown-item dropdown-style dropdown-toggle"
-                        to="#"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <LiaReadme /> Información
-                      </Link>
-                      {/*Aqui va el otro dopdown*/}
-                      <ul className="dropdown-menu bg-blue">
-                        
+                      selectedRole === "Académico" ||
+                      selectedRole === "Administrativo") && (
+                      <li className="dropdown-submenu">
+                        <Link
+                          className="dropdown-item dropdown-style dropdown-toggle"
+                          to="#"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <LiaReadme /> Información
+                        </Link>
+                        {/*Aqui va el otro dopdown*/}
+                        <ul className="dropdown-menu bg-blue">
+                          <li>
+                            <Link
+                              className="dropdown-item dropdown-style"
+                              to="/Informacion"
+                              onClick={() =>
+                                handleLinkClick("General", "/Informacion")
+                              }
+                            >
+                              General
+                            </Link>
+                          </li>
+                          {(selectedRole === "Estudiante" ||
+                            selectedRole === "Académico") && (
+                            <li>
+                              <Link
+                                className="dropdown-item dropdown-style"
+                                to="/Informacion"
+                                onClick={() =>
+                                  handleLinkClick("Académico", "/Informacion")
+                                }
+                              >
+                                {renderLinkText()}
+                              </Link>
+                            </li>
+                          )}
+                        </ul>
+                      </li>
+                    )}
+                    {selectedRole === "Administrativo" && (
                       <li>
-                      <Link
-                        className="dropdown-item dropdown-style"
-                        to="/Informacion"
-                        onClick={() => handleLinkClick('General', '/Informacion')}
-                      >
-                        General
-                      </Link>
-                    </li>
-                    {(selectedRole === "Estudiante" ||
-                      selectedRole === "Académico") && (
-                    <li>
-                      <Link
-                        className="dropdown-item dropdown-style"
-                        to="/Informacion"
-                        onClick={() => handleLinkClick('Académico', '/Informacion')}
-                      >
-                        {renderLinkText()}
-                      </Link>
-                    </li>
-                    )}
-                      </ul>
-                    </li>
-                    )}
-                    {(selectedRole === "Administrativo") && (
-                    <li>
-                      <Link
-                        className="dropdown-item dropdown-style"
-                        to="/Informacion"
-                        onClick={() => handleLinkClick('Plantilla', '/Informacion')}
-                      >
-                        <FaFileDownload /> Plantillas
-                      </Link>
-                    </li>
+                        <Link
+                          className="dropdown-item dropdown-style"
+                          to="/Informacion"
+                          onClick={() =>
+                            handleLinkClick("Plantilla", "/Informacion")
+                          }
+                        >
+                          <FaFileDownload /> Plantillas
+                        </Link>
+                      </li>
                     )}
                   </ul>
                 </li>

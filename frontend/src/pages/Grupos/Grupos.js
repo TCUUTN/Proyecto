@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import "./Materias.modulo.css";
+import "./Proyectos.modulo.css";
 import { GrEdit } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
