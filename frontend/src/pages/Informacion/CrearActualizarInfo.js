@@ -128,11 +128,16 @@ function CrearActualizarInfo() {
       }
     }
 
+    if (informacionId!=null) {
+      formData.InformacionId=informacionId
+    }
+
     const dataToSend = {
       ...formData,
     };
 
     if (formData.TipoInformacion === "Académico") {
+      console.log(localStorage.getItem("GrupoSeleccionado"))
       dataToSend.GrupoId = localStorage.getItem("GrupoSeleccionado");
     }
 
