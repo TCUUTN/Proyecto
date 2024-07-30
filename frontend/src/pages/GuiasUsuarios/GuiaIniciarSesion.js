@@ -261,7 +261,7 @@ function GuiaIniciarSesion() {
             <img
               src={ImageEmailTClaveTemporal}
               alt="Correo con Clave Temporal"
-              className="fade-in small-image"
+              className="fade-in centered medium-image"
             />
           </ol>
         </div>
