@@ -12,7 +12,7 @@ import { TbUserEdit } from "react-icons/tb";
 /**
  * MantenimientoUs - Componente principal para la gestión de usuarios.
  */
-function MantenimientoUs() {
+function Usuarios() {
   // Estados para manejar usuarios, filtros y paginación
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
@@ -609,4 +609,4 @@ function MantenimientoUs() {
   );
 }
 
-export default MantenimientoUs;
+export default Usuarios;

@@ -6,7 +6,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Materias.modulo.css";
+import "./Proyectos.modulo.css";
 
 import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
