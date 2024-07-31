@@ -12,6 +12,8 @@ import boletac from "../../Assets/Images/Guias/Estudiante/BoletaConclu_Est.png";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
+import informacionproporciA from "../../Assets/Images/Guias/Estudiante/InformacionProporcionadaporAcademico.png";
+import informacionGeneral from "../../Assets/Images/Guias/InformacionGeneral_AcademicoyEstudiante.png";
 
 function GuiaEstudiantes() {
   useEffect(() => {
@@ -55,9 +57,9 @@ function GuiaEstudiantes() {
     downloadButton.style.display = "none";
 
     const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: "letter",
+      orientation: "portrait",
+      unit: "px",
+      format: "letter",
     });
 
     const pageWidth = pdf.internal.pageSize.getWidth();
@@ -70,137 +72,179 @@ function GuiaEstudiantes() {
     const headerFooterSpacing = -10; // Space between header/footer and content
 
     try {
-        // Load header image
-        const headerImg = new Image();
-        headerImg.src = banderaCombinada;
+      // Load header image
+      const headerImg = new Image();
+      headerImg.src = banderaCombinada;
 
-        headerImg.onload = async () => {
-            const headerImgWidth = pageWidth / 6;
-            const headerImgHeight = headerImgWidth * (headerImg.height / headerImg.width); // Maintain aspect ratio
+      headerImg.onload = async () => {
+        const headerImgWidth = pageWidth / 6;
+        const headerImgHeight =
+          headerImgWidth * (headerImg.height / headerImg.width); // Maintain aspect ratio
 
-            const headerY = 0;
-            const contentStartY = headerHeight + headerFooterSpacing;
-            const footerY = pageHeight - footerHeight;
-            let y = 0;
+        const headerY = 0;
+        const contentStartY = headerHeight + headerFooterSpacing;
+        const footerY = pageHeight - footerHeight;
+        let y = 0;
 
-            for (let i = 0; i < sections.length; i++) {
-                const section = sections[i];
+        for (let i = 0; i < sections.length; i++) {
+          const section = sections[i];
 
-                // Store original styles
-                const originalStyles = {
-                    width: section.style.width,
-                    height: section.style.height,
-                    maxWidth: section.style.maxWidth,
-                    minWidth: section.style.minWidth,
-                };
+          // Store original styles
+          const originalStyles = {
+            width: section.style.width,
+            height: section.style.height,
+            maxWidth: section.style.maxWidth,
+            minWidth: section.style.minWidth,
+          };
 
-                // Apply fixed size
-                section.style.width = `${fixedWidth}px`;
-                section.style.height = "auto"; // Adjust height automatically
-                section.style.maxWidth = "none";
-                section.style.minWidth = "none";
+          // Apply fixed size
+          section.style.width = `${fixedWidth}px`;
+          section.style.height = "auto"; // Adjust height automatically
+          section.style.maxWidth = "none";
+          section.style.minWidth = "none";
 
-                const canvas = await html2canvas(section, { scale: 2 });
-                const imgData = canvas.toDataURL("image/png", 0.5); // Reduce image quality to make the PDF lighter
-                const imgProps = pdf.getImageProperties(imgData);
-                const imgWidth = pageWidth - 2 * marginw;
-                const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+          const canvas = await html2canvas(section, { scale: 2 });
+          const imgData = canvas.toDataURL("image/png", 0.5); // Reduce image quality to make the PDF lighter
+          const imgProps = pdf.getImageProperties(imgData);
+          const imgWidth = pageWidth - 2 * marginw;
+          const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
-                // Restore original styles
-                section.style.width = originalStyles.width;
-                section.style.height = originalStyles.height;
-                section.style.maxWidth = originalStyles.maxWidth;
-                section.style.minWidth = originalStyles.minWidth;
+          // Restore original styles
+          section.style.width = originalStyles.width;
+          section.style.height = originalStyles.height;
+          section.style.maxWidth = originalStyles.maxWidth;
+          section.style.minWidth = originalStyles.minWidth;
 
-                // Add header if starting a new page
-                if (y === 0 || y + imgHeight > footerY) {
-                    if (y !== 0) {
-                        pdf.addPage();
-                    }
-                    y = contentStartY;
-
-                    // Add header for new page
-                    pdf.setFillColor("#002b69");
-                    pdf.rect(0, 0, pageWidth, headerHeight, "F");
-                    pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
-                    y += contentStartY;
-                }
-
-                // Calculate the remaining height on the current page
-                let remainingPageHeight = footerY - y;
-
-                // Add content image
-                if (imgHeight <= remainingPageHeight) {
-                    pdf.addImage(imgData, "PNG", marginw, y, imgWidth, imgHeight, undefined, "FAST");
-                    y += imgHeight + spaceBetweenImages;
-                } else {
-                    let imgY = 0;
-
-                    while (imgY < imgHeight) {
-                        const imgRemainingHeight = imgHeight - imgY;
-                        const imgHeightForPage = Math.min(imgRemainingHeight, remainingPageHeight);
-
-                        pdf.addImage(
-                            imgData,
-                            "PNG",
-                            marginw,
-                            y,
-                            imgWidth,
-                            imgHeightForPage,
-                            undefined,
-                            "FAST",
-                            "SLOW",
-                            0,
-                            0,
-                            imgProps.width,
-                            imgHeightForPage / imgWidth * imgProps.width,
-                            0,
-                            imgY / imgHeight * 100,
-                            imgHeightForPage / imgHeight * 100
-                        );
-
-                        imgY += imgHeightForPage;
-                        y += imgHeightForPage + spaceBetweenImages;
-
-                        if (imgY < imgHeight) {
-                            pdf.addPage();
-                            y = contentStartY;
-                            remainingPageHeight = footerY - y;
-
-                            // Add header for new page
-                            pdf.setFillColor("#002b69");
-                            pdf.rect(0, 0, pageWidth, headerHeight, "F");
-                            pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
-                            y += contentStartY;
-                        }
-                    }
-                }
-
-                // Add footer
-                pdf.setFillColor("#002b69");
-                pdf.rect(0, footerY, pageWidth, footerHeight, "F");
-                pdf.setFontSize(10);
-                pdf.setTextColor(255, 255, 255);
-                pdf.text(`Página ${pdf.internal.getNumberOfPages()}`, pageWidth / 2, footerY + 10, { align: "center" });
-                pdf.text(`© ${new Date().getFullYear()} Universidad Técnica Nacional.`, pageWidth / 2, footerY + 20, { align: "center" });
-                pdf.text("Todos los derechos reservados.", pageWidth / 2, footerY + 30, { align: "center" });
-
-                // Move to the next section
-                remainingPageHeight = footerY - y;
+          // Add header if starting a new page
+          if (y === 0 || y + imgHeight > footerY) {
+            if (y !== 0) {
+              pdf.addPage();
             }
+            y = contentStartY;
 
-            // Save the PDF
-            pdf.save("Guía de Estudiantes.pdf");
+            // Add header for new page
+            pdf.setFillColor("#002b69");
+            pdf.rect(0, 0, pageWidth, headerHeight, "F");
+            pdf.addImage(
+              headerImg,
+              "PNG",
+              (pageWidth - headerImgWidth) / 2,
+              headerY,
+              headerImgWidth,
+              headerImgHeight
+            );
+            y += contentStartY;
+          }
 
-            // Show the buttons after capturing
-            scrollToTopButton.style.display = "block";
-            downloadButton.style.display = "block";
-        };
+          // Calculate the remaining height on the current page
+          let remainingPageHeight = footerY - y;
+
+          // Add content image
+          if (imgHeight <= remainingPageHeight) {
+            pdf.addImage(
+              imgData,
+              "PNG",
+              marginw,
+              y,
+              imgWidth,
+              imgHeight,
+              undefined,
+              "FAST"
+            );
+            y += imgHeight + spaceBetweenImages;
+          } else {
+            let imgY = 0;
+
+            while (imgY < imgHeight) {
+              const imgRemainingHeight = imgHeight - imgY;
+              const imgHeightForPage = Math.min(
+                imgRemainingHeight,
+                remainingPageHeight
+              );
+
+              pdf.addImage(
+                imgData,
+                "PNG",
+                marginw,
+                y,
+                imgWidth,
+                imgHeightForPage,
+                undefined,
+                "FAST",
+                "SLOW",
+                0,
+                0,
+                imgProps.width,
+                (imgHeightForPage / imgWidth) * imgProps.width,
+                0,
+                (imgY / imgHeight) * 100,
+                (imgHeightForPage / imgHeight) * 100
+              );
+
+              imgY += imgHeightForPage;
+              y += imgHeightForPage + spaceBetweenImages;
+
+              if (imgY < imgHeight) {
+                pdf.addPage();
+                y = contentStartY;
+                remainingPageHeight = footerY - y;
+
+                // Add header for new page
+                pdf.setFillColor("#002b69");
+                pdf.rect(0, 0, pageWidth, headerHeight, "F");
+                pdf.addImage(
+                  headerImg,
+                  "PNG",
+                  (pageWidth - headerImgWidth) / 2,
+                  headerY,
+                  headerImgWidth,
+                  headerImgHeight
+                );
+                y += contentStartY;
+              }
+            }
+          }
+
+          // Add footer
+          pdf.setFillColor("#002b69");
+          pdf.rect(0, footerY, pageWidth, footerHeight, "F");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(
+            `Página ${pdf.internal.getNumberOfPages()}`,
+            pageWidth / 2,
+            footerY + 10,
+            { align: "center" }
+          );
+          pdf.text(
+            `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+            pageWidth / 2,
+            footerY + 20,
+            { align: "center" }
+          );
+          pdf.text(
+            "Todos los derechos reservados.",
+            pageWidth / 2,
+            footerY + 30,
+            { align: "center" }
+          );
+
+          // Move to the next section
+          remainingPageHeight = footerY - y;
+        }
+
+        // Save the PDF
+        pdf.save("Guía de Estudiantes.pdf");
+
+        // Show the buttons after capturing
+        scrollToTopButton.style.display = "block";
+        downloadButton.style.display = "block";
+      };
     } catch (error) {
-        console.error("Error generating PDF:", error);
-        alert("Error al generar el PDF. Por favor, intente de nuevo.");
+      console.error("Error generating PDF:", error);
+      alert("Error al generar el PDF. Por favor, intente de nuevo.");
     }
-};
+  };
   return (
     <div className="contenedor-guias">
       <div className="guias-container">
@@ -221,31 +265,26 @@ function GuiaEstudiantes() {
             <ul className="guiaIn-contenido-Ac ">
               <li>
                 <a className="interlink-guiaIn" href="#paginaInicio">
-                  {" "}
                   Página de inicio
                 </a>
               </li>
               <li>
                 <a className="interlink-guiaIn" href="#registrarHoras">
-                  {" "}
                   Ingresar horas
                 </a>
               </li>
               <li>
                 <a className="interlink-guiaIn" href="#modificarHoraRec">
-                  {" "}
                   Como modificar horas rechazadas
                 </a>
               </li>
               <li>
                 <a className="interlink-guiaIn" href="#boletaC">
-                  {" "}
                   Boletas de conclusión
                 </a>
               </li>
               <li>
                 <a className="interlink-guiaIn" href="#informacionE">
-                  {" "}
                   Información
                 </a>
               </li>
@@ -390,7 +429,32 @@ function GuiaEstudiantes() {
         <div className="section-guias" id="informacionE">
           <h3 className="titulos-guiaIn">Información</h3>
           <div className="celes-divider" />
-            
+          <ol>
+            Esta sección tiene dos partes:
+            <li><strong> Información General: </strong>
+              En esta sección encontrarás toda la información general del TCU.
+              Puedes buscar lo que necesites filtrando por fecha, descripción y
+              el nombre del archivo. Además, puedes descargar los documentos
+              directamente.
+            </li>
+            <img
+              src={informacionGeneral}
+              alt="informacionGeneral"
+              className=" fade-in centered medium-image"
+            />
+            <li> <strong> Información proporcionada por el Académico: </strong>
+              En este apartado, encontrará todos los recursos didácticos
+              proporcionados por su académico. Para una búsqueda eficiente,
+              utilice los filtros de fecha, descripción y nombre de archivo. Una
+              vez localizado el material deseado, podrá descargarlo con un solo
+              clic en el link del nombre del archivo.
+            </li>
+            <img
+              src={informacionproporciA}
+              alt="informacionproporciA"
+              className=" fade-in centered medium-image"
+            />
+          </ol>
         </div>
         {/* Botón flotante */}
         <button className="scroll-to-top" onClick={handleScrollToTop}>
