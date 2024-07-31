@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./Guias.css";
 import { TiArrowUpThick } from "react-icons/ti";
+import { toast, ToastContainer } from "react-toastify";
 // Import para grupos a cargos
 import GrupoCargoc from "../../Assets/Images/Guias/Academicos/Grupos a Cargo.png";
 import ListaEstGrupoC from "../../Assets/Images/Guias/Academicos/ListaEstudiantes-Cargo.png";
@@ -22,13 +23,16 @@ import CreacionSoli from "../../Assets/Images/Guias/Academicos/CreacionSolicitud
 import boletaC from "../../Assets/Images/Guias/Academicos/BoletaAcademico.png";
 import conclus from "../../Assets/Images/Guias/Academicos/ConclusionGrupo_Acade.png";
 import formBole from "../../Assets/Images/Guias/Academicos/BoletaConclu_Acade.png";
-
+import rechazoBoleta from "../../Assets/Images/Guias/Academicos/RechazoBoletaConclu_Acade.png";
+//
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
+//Informacion
+import informacionGeneral from "../../Assets/Images/Guias/InformacionGeneral_AcademicoyEstudiante.png";
+import informacionGrupos from "../../Assets/Images/Guias/Academicos/informacionGrupo_Academico.png";
+import informacionGrupos_Crear from "../../Assets/Images/Guias/Academicos/InformacionGrupo_CrearAcade.png";
 
-import rechazoBoleta from "../../Assets/Images/Guias/Academicos/RechazoBoletaConclu_Acade.png";
-import { toast, ToastContainer } from "react-toastify";
 function GuiaAcademico() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
@@ -68,9 +72,9 @@ function GuiaAcademico() {
     downloadButton.style.display = "none";
 
     const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: "letter",
+      orientation: "portrait",
+      unit: "px",
+      format: "letter",
     });
 
     const pageWidth = pdf.internal.pageSize.getWidth();
@@ -83,136 +87,183 @@ function GuiaAcademico() {
     const headerFooterSpacing = -10; // Space between header/footer and content
 
     try {
-        // Load header image
-        const headerImg = new Image();
-        headerImg.src = banderaCombinada;
+      // Load header image
+      const headerImg = new Image();
+      headerImg.src = banderaCombinada;
 
-        headerImg.onload = async () => {
-            const headerImgWidth = pageWidth / 6;
-            const headerImgHeight = headerImgWidth * (headerImg.height / headerImg.width); // Maintain aspect ratio
+      headerImg.onload = async () => {
+        const headerImgWidth = pageWidth / 6;
+        const headerImgHeight =
+          headerImgWidth * (headerImg.height / headerImg.width); // Maintain aspect ratio
 
-            const headerY = 0;
-            const contentStartY = headerHeight + headerFooterSpacing;
-            const footerY = pageHeight - footerHeight;
-            let y = 0;
+        const headerY = 0;
+        const contentStartY = headerHeight + headerFooterSpacing;
+        const footerY = pageHeight - footerHeight;
+        let y = 0;
 
-            for (let i = 0; i < sections.length; i++) {
-                const section = sections[i];
+        for (let i = 0; i < sections.length; i++) {
+          const section = sections[i];
 
-                // Store original styles
-                const originalStyles = {
-                    width: section.style.width,
-                    height: section.style.height,
-                    maxWidth: section.style.maxWidth,
-                    minWidth: section.style.minWidth,
-                };
+          // Store original styles
+          const originalStyles = {
+            width: section.style.width,
+            height: section.style.height,
+            maxWidth: section.style.maxWidth,
+            minWidth: section.style.minWidth,
+          };
 
-                // Apply fixed size
-                section.style.width = `${fixedWidth}px`;
-                section.style.height = "auto"; // Adjust height automatically
-                section.style.maxWidth = "none";
-                section.style.minWidth = "none";
+          // Apply fixed size
+          section.style.width = `${fixedWidth}px`;
+          section.style.height = "auto"; // Adjust height automatically
+          section.style.maxWidth = "none";
+          section.style.minWidth = "none";
 
-                const canvas = await html2canvas(section, { scale: 2 });
-                const imgData = canvas.toDataURL("image/png", 0.5); // Reduce image quality to make the PDF lighter
-                const imgProps = pdf.getImageProperties(imgData);
-                const imgWidth = pageWidth - 2 * marginw;
-                const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+          const canvas = await html2canvas(section, { scale: 2 });
+          const imgData = canvas.toDataURL("image/png", 0.5); // Reduce image quality to make the PDF lighter
+          const imgProps = pdf.getImageProperties(imgData);
+          const imgWidth = pageWidth - 2 * marginw;
+          const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
-                // Restore original styles
-                section.style.width = originalStyles.width;
-                section.style.height = originalStyles.height;
-                section.style.maxWidth = originalStyles.maxWidth;
-                section.style.minWidth = originalStyles.minWidth;
+          // Restore original styles
+          section.style.width = originalStyles.width;
+          section.style.height = originalStyles.height;
+          section.style.maxWidth = originalStyles.maxWidth;
+          section.style.minWidth = originalStyles.minWidth;
 
-                // Add header if starting a new page
-                if (y === 0 || y + imgHeight > footerY) {
-                    if (y !== 0) {
-                        pdf.addPage();
-                    }
-                    y = contentStartY;
-
-                    // Add header for new page
-                    pdf.setFillColor("#002b69");
-                    pdf.rect(0, 0, pageWidth, headerHeight, "F");
-                    pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
-                    y += contentStartY;
-                }
-
-                // Calculate the remaining height on the current page
-                let remainingPageHeight = footerY - y;
-
-                // Add content image
-                if (imgHeight <= remainingPageHeight) {
-                    pdf.addImage(imgData, "PNG", marginw, y, imgWidth, imgHeight, undefined, "FAST");
-                    y += imgHeight + spaceBetweenImages;
-                } else {
-                    let imgY = 0;
-
-                    while (imgY < imgHeight) {
-                        const imgRemainingHeight = imgHeight - imgY;
-                        const imgHeightForPage = Math.min(imgRemainingHeight, remainingPageHeight);
-
-                        pdf.addImage(
-                            imgData,
-                            "PNG",
-                            marginw,
-                            y,
-                            imgWidth,
-                            imgHeightForPage,
-                            undefined,
-                            "FAST",
-                            "SLOW",
-                            0,
-                            0,
-                            imgProps.width,
-                            imgHeightForPage / imgWidth * imgProps.width,
-                            0,
-                            imgY / imgHeight * 100,
-                            imgHeightForPage / imgHeight * 100
-                        );
-
-                        imgY += imgHeightForPage;
-                        y += imgHeightForPage + spaceBetweenImages;
-
-                        if (imgY < imgHeight) {
-                            pdf.addPage();
-                            y = contentStartY;
-                            remainingPageHeight = footerY - y;
-
-                            // Add header for new page
-                            pdf.setFillColor("#002b69");
-                            pdf.rect(0, 0, pageWidth, headerHeight, "F");
-                            pdf.addImage(headerImg, "PNG", (pageWidth - headerImgWidth) / 2, headerY, headerImgWidth, headerImgHeight);
-                            y += contentStartY;
-                        }
-                    }
-                }
-
-                // Add footer
-                pdf.setFillColor("#002b69");
-                pdf.rect(0, footerY, pageWidth, footerHeight, "F");
-                pdf.setFontSize(10);
-                pdf.setTextColor(255, 255, 255);
-                pdf.text(`Página ${pdf.internal.getNumberOfPages()}`, pageWidth / 2, footerY + 10, { align: "center" });
-                pdf.text(`© ${new Date().getFullYear()} Universidad Técnica Nacional.`, pageWidth / 2, footerY + 20, { align: "center" });
-                pdf.text("Todos los derechos reservados.", pageWidth / 2, footerY + 30, { align: "center" });
-
-                // Move to the next section
-                remainingPageHeight = footerY - y;
+          // Add header if starting a new page
+          if (y === 0 || y + imgHeight > footerY) {
+            if (y !== 0) {
+              pdf.addPage();
             }
+            y = contentStartY;
 
-            // Save the PDF
-            pdf.save("Guía de Académicos.pdf");
+            // Add header for new page
+            pdf.setFillColor("#002b69");
+            pdf.rect(0, 0, pageWidth, headerHeight, "F");
+            pdf.addImage(
+              headerImg,
+              "PNG",
+              (pageWidth - headerImgWidth) / 2,
+              headerY,
+              headerImgWidth,
+              headerImgHeight
+            );
+            y += contentStartY;
+          }
 
-            // Show the buttons after capturing
-            scrollToTopButton.style.display = "block";
-            downloadButton.style.display = "block";
-        };
+          // Calculate the remaining height on the current page
+          let remainingPageHeight = footerY - y;
+
+          // Add content image
+          if (imgHeight <= remainingPageHeight) {
+            pdf.addImage(
+              imgData,
+              "PNG",
+              marginw,
+              y,
+              imgWidth,
+              imgHeight,
+              undefined,
+              "FAST"
+            );
+            y += imgHeight + spaceBetweenImages;
+          } else {
+            let imgY = 0;
+
+            while (imgY < imgHeight) {
+              const imgRemainingHeight = imgHeight - imgY;
+              const imgHeightForPage = Math.min(
+                imgRemainingHeight,
+                remainingPageHeight
+              );
+
+              pdf.addImage(
+                imgData,
+                "PNG",
+                marginw,
+                y,
+                imgWidth,
+                imgHeightForPage,
+                undefined,
+                "FAST",
+                "SLOW",
+                0,
+                0,
+                imgProps.width,
+                (imgHeightForPage / imgWidth) * imgProps.width,
+                0,
+                (imgY / imgHeight) * 100,
+                (imgHeightForPage / imgHeight) * 100
+              );
+
+              imgY += imgHeightForPage;
+              y += imgHeightForPage + spaceBetweenImages;
+
+              if (imgY < imgHeight) {
+                pdf.addPage();
+                y = contentStartY;
+                remainingPageHeight = footerY - y;
+
+                // Add header for new page
+                pdf.setFillColor("#002b69");
+                pdf.rect(0, 0, pageWidth, headerHeight, "F");
+                pdf.addImage(
+                  headerImg,
+                  "PNG",
+                  (pageWidth - headerImgWidth) / 2,
+                  headerY,
+                  headerImgWidth,
+                  headerImgHeight
+                );
+                y += contentStartY;
+              }
+            }
+          }
+
+          // Add footer
+          pdf.setFillColor("#002b69");
+          pdf.rect(0, footerY, pageWidth, footerHeight, "F");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(
+            `Página ${pdf.internal.getNumberOfPages()}`,
+            pageWidth / 2,
+            footerY + 10,
+            { align: "center" }
+          );
+          pdf.text(
+            `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
+            pageWidth / 2,
+            footerY + 20,
+            { align: "center" }
+          );
+          pdf.text(
+            "Todos los derechos reservados.",
+            pageWidth / 2,
+            footerY + 30,
+            { align: "center" }
+          );
+
+          // Move to the next section
+          remainingPageHeight = footerY - y;
+        }
+
+        // Save the PDF
+        pdf.save("Guía de Académicos.pdf");
+
+        // Show the buttons after capturing
+        scrollToTopButton.style.display = "block";
+        downloadButton.style.display = "block";
+      };
     } catch (error) {
+<<<<<<< HEAD
         toast.error("Error al generar el PDF. Por favor, intente de nuevo.");
+=======
+      console.error("Error generating PDF:", error);
+      alert("Error al generar el PDF. Por favor, intente de nuevo.");
+>>>>>>> c4a42c24dbd95a5d4bd5f08e683ff242faeb18b9
     }
-};
+  };
   return (
     <div className="contenedor-guias">
     <ToastContainer position="bottom-right" />
@@ -228,7 +279,7 @@ function GuiaAcademico() {
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
           {/* Section explicacion del contenido */}
-          <div className="section-guias section-contenido">
+          <div className=" section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
             <ul className="guiaIn-contenido-Ac">
@@ -331,17 +382,17 @@ function GuiaAcademico() {
               Gestión de grupos de estudiantes:
               <ul>
                 <li>
-                  Acceso a la lista: Haga clic en el botón "Ver grupo" para
+                <strong> Acceso a la lista:</strong> Haga clic en el botón "Ver grupo" para
                   visualizar la lista completa de estudiantes pertenecientes a
                   ese grupo específico.
                 </li>
                 <li>
-                  Opciones de filtrado: La herramienta de búsqueda le permite
+                <strong> Opciones de filtrado:</strong> La herramienta de búsqueda le permite
                   encontrar rápidamente estudiantes por nombre completo o por
                   identificación.
                 </li>
                 <li>
-                  Descarga de información: Para guardar una copia de la lista de
+                <strong> Descarga de información:</strong> Para guardar una copia de la lista de
                   estudiantes, utilice el botón "Descargar lista de
                   estudiantes". El formato disponible para la descarga es PDF.
                 </li>
@@ -357,20 +408,20 @@ function GuiaAcademico() {
               Ver Bitácoras del Estudiante:
               <ul>
                 <li>
-                  Visualice: Revise el registro completo de actividades del
+                <strong>  Visualice:</strong> Revise el registro completo de actividades del
                   estudiante
                 </li>
                 <li>
-                  Opciones de filtrado: La herramienta de búsqueda le permite
+                <strong> Opciones de filtrado:</strong> La herramienta de búsqueda le permite
                   encontrar rápidamente por fecha, tipo de actividad y
                   descripción de la actividad.
                 </li>
                 <li>
-                  Descargar reporte: se genera un informe en PDF que contenga el
+                <strong> Descargar reporte:</strong> se genera un informe en PDF que contenga el
                   registro completo de las horas del estudiante.
                 </li>
                 <li>
-                  Rechazar horas: darle al
+                <strong> Rechazar horas:</strong> darle al
                   <strong>Icono de la equis (x)</strong>
                 </li>
               </ul>
@@ -414,15 +465,15 @@ function GuiaAcademico() {
               </h5>
               <ul>
                 <li>
-                  Filtros de busqueda: Traer rápidamente a los socios
+                <strong> Filtros de busqueda:</strong> Traer rápidamente a los socios
                   comunitarios por nombre, tipo de institución o estado.
                 </li>
                 <li>
-                  Descarga de información: Genera un informe en PDF con la
+                <strong> Descarga de información:</strong> Genera un informe en PDF con la
                   información completa de los socios comunitarios.
                 </li>
                 <li>
-                  Ubicación a tu alcance: El ícono de compartir te redirigirá a
+                <strong> Ubicación a tu alcance:</strong> El ícono de compartir te redirigirá a
                   la ubicación del socio comunitario seleccionado.
                 </li>
                 <img
@@ -477,15 +528,15 @@ function GuiaAcademico() {
               </h5>
               <ul>
                 <li>
-                  Solicitudes Pendientes: Esta sección muestra una lista de las
+                <strong>Solicitudes Pendientes:</strong> Esta sección muestra una lista de las
                   solicitudes de cartas que aún no se han completado. La lista
                   se puede filtrar por nombre del socio o nombre del estudiante.
                   Cada solicitud en la lista muestra el nombre del socio, el
-                  nombre completo del estudiante y las acciones disponibles (en
-                  este caso, solo una acción: "Editar").
+                  nombre completo del estudiante y las acciones disponibles <strong>(en
+                  este caso, solo una acción: Editar)</strong>.
                 </li>
                 <li>
-                  Solicitudes Completadas: Ver una lista de las solicitudes de
+                <strong>Solicitudes Completadas:</strong> Ver una lista de las solicitudes de
                   cartas que se han completado y ya se han enviado. La lista se
                   puede filtrar por nombre del socio, nombre del estudiante o
                   nombre de la carta.
@@ -505,16 +556,16 @@ function GuiaAcademico() {
                     </li>
                     <li>Busca en tus grupos a cargo.</li>
                     <li>
-                      Agrega a los estudiantes: Busca en la lista disponible y
+                    <strong> Agrega a los estudiantes:</strong> Busca en la lista disponible y
                       selecciona a cada uno de ellos. Un clic en el botón
-                      "Añadir estudiante" los agregará a la tabla. ¡No te
+                      <strong> Añadir estudiante</strong> los agregará a la tabla. ¡No te
                       preocupes si te equivocas! Un icono de acción te permitirá
                       eliminar a cualquier estudiante que hayas seleccionado por
                       error.
                     </li>
                     <li>
                       Una vez que hayas completado los pasos anteriores. Haz
-                      clic en el botón "Enviar"
+                      clic en el botón <strong>Enviar</strong>.
                     </li>
                     <img
                       src={CreacionSoli}
@@ -554,7 +605,7 @@ function GuiaAcademico() {
               className=" fade-in centered large-image"
             />
             <li>
-              Cuando se accede a la sección 'Ver boleta de conclusión', se
+              Cuando se accede a la sección <strong> Ver boleta de conclusión</strong>, se
               presenta un formulario diseñado para registrar las conclusiones de
               las labores asignadas a los estudiantes. En este registro, se
               visualiza la información que cada estudiante ha ingresado al
@@ -567,10 +618,10 @@ function GuiaAcademico() {
               className=" fade-in centered small-image"
             />
             <li>
-              Al seleccionar 'Rechazar', se despliega un campo de texto donde
-              debes ingresar el motivo de rechazo de la boleta de conclusion. Al
-              hacer clic en el botón 'Enviar Rechazo' se confirma la acción y el
-              estudiante podrá editar la boleta.
+              Al seleccionar <strong>Rechazar</strong>, se despliega un campo de
+              texto donde debes ingresar el motivo de rechazo de la boleta de
+              conclusion. Al hacer clic en el botón <strong> Enviar Rechazo</strong> se confirma
+              la acción y el estudiante podrá editar la boleta.
             </li>
             <img
               src={rechazoBoleta}
@@ -583,6 +634,53 @@ function GuiaAcademico() {
         <div className="section-guias" id="informacionE">
           <h3 className="titulos-guiaIn">Información</h3>
           <div className="naranja-divider" />
+          <ol>
+            Esta sección tiene dos partes:
+            <li>
+              <strong> Información General: </strong>
+              En esta sección encontrarás toda la información general del TCU.
+              Puedes buscar lo que necesites filtrando por fecha, descripción y
+              el nombre del archivo. Además, puedes descargar los documentos
+              directamente.
+            </li>
+            <img
+              src={informacionGeneral}
+              alt="informacionGeneral"
+              className=" fade-in centered medium-image"
+            />
+            <li>
+              <strong>Información por grupo:</strong>
+              <ul>
+                <li>
+                  Para subir la información tienes que
+                  <strong> Seleccionar un grupo </strong>y ahí se te habilitara
+                  el boton de agregar esa información.
+                </li>
+                <li>
+                  Puedes buscar lo que necesites filtrando por fecha,
+                  descripción y el nombre del archivo.
+                </li>
+                <li>Además, puedes descargar los documentos directamente.</li>
+              </ul>
+              <img
+                src={informacionGrupos}
+                alt="informacionGrupos"
+                className=" fade-in centered medium-image"
+              />
+              <br></br>
+              <p>
+                Al hacer clic en el botón <strong> Agregar Información por Grupo</strong>, se
+                desplegará un formulario que solicitará únicamente dos datos:
+                una descripción detallada del contenido a compartir y la
+                posibilidad de adjuntar un archivo complementario.
+              </p>
+              <img
+                src={informacionGrupos_Crear}
+                alt="informacionGrupos_Crear"
+                className=" fade-in centered medium-image"
+              />
+            </li>
+          </ol>
         </div>
 
         {/* Botón flotante */}
