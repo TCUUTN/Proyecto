@@ -256,12 +256,7 @@ function GuiaAcademico() {
         downloadButton.style.display = "block";
       };
     } catch (error) {
-<<<<<<< HEAD
         toast.error("Error al generar el PDF. Por favor, intente de nuevo.");
-=======
-      console.error("Error generating PDF:", error);
-      alert("Error al generar el PDF. Por favor, intente de nuevo.");
->>>>>>> c4a42c24dbd95a5d4bd5f08e683ff242faeb18b9
     }
   };
   return (
