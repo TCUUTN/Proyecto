@@ -21,14 +21,14 @@ function GruposAcademico() {
 
   const gruposPerPage = 4; // Número de grupos por página
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas"; // Filtro de sede
-  const identificacion = sessionStorage.getItem("Identificacion");  // Identificación del usuario
+  const identificacion = sessionStorage.getItem("Identificacion"); // Identificación del usuario
   const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol seleccionado por el usuario
-   // Cálculo de los grupos actuales a mostrar en la página actual
+  // Cálculo de los grupos actuales a mostrar en la página actual
   let currentGrupos = filteredGrupos.slice(
     (currentPage - 1) * gruposPerPage,
     currentPage * gruposPerPage
   );
-// Cálculo de los grupos actuales a mostrar en la página actual
+  // Cálculo de los grupos actuales a mostrar en la página actual
   useEffect(() => {
     fetchYearsOptions();
     if (selectedRole === "Administrativo") {
@@ -89,12 +89,12 @@ function GruposAcademico() {
       toast.error("Error al obtener la lista de grupos");
     }
   };
-// Función para manejar el cambio en el filtro de cuatrimestre
+  // Función para manejar el cambio en el filtro de cuatrimestre
   const handleCuatrimestreFilterChange = (e) => {
     const value = e.target.value;
     setCuatrimestreFilter(value);
   };
- // Función para manejar el cambio en el filtro de año
+  // Función para manejar el cambio en el filtro de año
   const handleAnnoFilterChange = (e) => {
     const value = e.target.value;
     setAnnoFilter(value);
@@ -132,14 +132,14 @@ function GruposAcademico() {
     setNoGroupsMessage(filtered.length === 0);
   };
 
-// Función para manejar la paginación a la página siguiente
+  // Función para manejar la paginación a la página siguiente
   const handleNextPage = () => {
     const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
-// Función para manejar la paginación a la página anterior
+  // Función para manejar la paginación a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);

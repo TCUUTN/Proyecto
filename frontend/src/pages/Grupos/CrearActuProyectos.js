@@ -14,11 +14,11 @@ function CrearActuProyectos() {
 
   // Estado para manejar errores en los campos del formulario
   const [errors, setErrors] = useState({
-    CodigoMateria: '',
-    NombreProyecto: '',
-    TipoCurso: ''
+    CodigoMateria: "",
+    NombreProyecto: "",
+    TipoCurso: "",
   });
-// Efecto para cargar datos del proyecto si existe en la sesión
+  // Efecto para cargar datos del proyecto si existe en la sesión
   useEffect(() => {
     const codigoProyecto = sessionStorage.getItem("CodigoProyecto");
     if (codigoProyecto) {
@@ -29,30 +29,32 @@ function CrearActuProyectos() {
           setCodigoMateria(CodigoMateria);
           setNombreProyecto(NombreProyecto);
           setTipoCurso(TipoCurso);
-
         })
         .catch((error) => {
-          console.error("Error fetching project data:", error);
+          toast.error("Error obtiendo los proyectos:", error);
         });
     }
   }, []);
-// Efecto para validar el formulario cada vez que cambian los valores de los campos
+  // Efecto para validar el formulario cada vez que cambian los valores de los campos
   useEffect(() => {
     validateForm();
   }, [CodigoMateria, NombreProyecto, TipoCurso]);
- // Función para validar el formulario
+  // Función para validar el formulario
   const validateForm = () => {
     const newErrors = {};
-    if (!CodigoMateria.trim()) newErrors.CodigoMateria = "El código de materia es obligatorio.";
-    if (!NombreProyecto.trim()) newErrors.NombreProyecto = "El nombre del proyecto es obligatorio.";
-    if (TipoCurso === "todos") newErrors.TipoCurso = "Por favor, seleccione un tipo de curso válido.";
+    if (!CodigoMateria.trim())
+      newErrors.CodigoMateria = "El código de materia es obligatorio.";
+    if (!NombreProyecto.trim())
+      newErrors.NombreProyecto = "El nombre del proyecto es obligatorio.";
+    if (TipoCurso === "todos")
+      newErrors.TipoCurso = "Por favor, seleccione un tipo de curso válido.";
     setErrors(newErrors);
   };
-// Función para manejar la navegación de regreso
+  // Función para manejar la navegación de regreso
   const handleRegresar = () => {
     navigate("/MantMaterias");
     sessionStorage.removeItem("CodigoProyecto");
-  }
+  };
   // Función para manejar el guardado del proyecto
   const handleGuardar = () => {
     if (TipoCurso === "todos") {
@@ -82,18 +84,19 @@ function CrearActuProyectos() {
           navigate("/MantMaterias");
         })
         .catch((error) => {
-          console.error("Error saving project data:", error);
-          toast.error("Error al guardar el proyecto.");
+          toast.error("Error al guardar el proyecto.", error);
         });
     } else {
       toast.error("Por favor, complete todos los campos correctamente.");
     }
   };
- // Render del componente
+  // Render del componente
   return (
     <div className="container-projcreaed">
       <ToastContainer position="bottom-right" />
-      <h1 className="projcreaed-tit">{CodigoMateria ? "Editar Proyecto" : "Agregar Proyecto"}</h1>
+      <h1 className="projcreaed-tit">
+        {CodigoMateria ? "Editar Proyecto" : "Agregar Proyecto"}
+      </h1>
       <div className="diver-projcreaed" />
       <div className="formgroup-projcreaed">
         <input
@@ -103,7 +106,9 @@ function CrearActuProyectos() {
           value={CodigoMateria}
           onChange={(e) => setCodigoMateria(e.target.value)}
         />
-        {errors.CodigoMateria && <span className="error-projcreaed">{errors.CodigoMateria}</span>}
+        {errors.CodigoMateria && (
+          <span className="error-projcreaed">{errors.CodigoMateria}</span>
+        )}
       </div>
       <div className="formgroup-projcreaed">
         <input
@@ -113,7 +118,9 @@ function CrearActuProyectos() {
           value={NombreProyecto}
           onChange={(e) => setNombreProyecto(e.target.value)}
         />
-        {errors.NombreProyecto && <span className="error-projcreaed">{errors.NombreProyecto}</span>}
+        {errors.NombreProyecto && (
+          <span className="error-projcreaed">{errors.NombreProyecto}</span>
+        )}
       </div>
       <div className="formgroup-projcreaed">
         <select
@@ -122,19 +129,20 @@ function CrearActuProyectos() {
           onChange={(e) => setTipoCurso(e.target.value)}
           placeholder="Tipo de curso"
         >
-          <option className="option-projcreaed" value="">Tipo de curso</option>
+          <option className="option-projcreaed" value="">
+            Tipo de curso
+          </option>
           <option value="todos">Todos</option>
           <option value="Presencial">Presencial</option>
           <option value="Virtual">Virtual</option>
           <option value="Hibrido">Híbrido</option>
         </select>
-        {errors.TipoCurso && <span className="error-projcreaed">{errors.TipoCurso}</span>}
+        {errors.TipoCurso && (
+          <span className="error-projcreaed">{errors.TipoCurso}</span>
+        )}
       </div>
       <div className="buttongroup-projcreaed">
-        <button
-          className="button-projcreaed"
-          onClick={handleRegresar}
-        >
+        <button className="button-projcreaed" onClick={handleRegresar}>
           <FaChevronLeft />
           Regresar
         </button>
@@ -144,7 +152,7 @@ function CrearActuProyectos() {
           onClick={handleGuardar}
           disabled={Object.keys(errors).length > 0}
         >
-         {CodigoMateria ? "Actualizar" : "Guardar"} <FaSave />
+          {CodigoMateria ? "Actualizar" : "Guardar"} <FaSave />
         </button>
       </div>
     </div>

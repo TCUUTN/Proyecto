@@ -57,7 +57,7 @@ function SolicitudesCarta() {
           sessionStorage.removeItem("BanderaEnviado");
         }
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        toast.error("Error obteniendo la bandera: ", error);
       }
     };
 
@@ -144,13 +144,11 @@ function SolicitudesCarta() {
             });
           }, 100);
         } else {
-          console.log("Fallo al descargar el archivo");
+          toast.error("Fallo al descargar el archivo");
         }
-      } else {
-        console.log("Fallo al extraer imagen");
       }
     } catch (error) {
-      console.error("Error al manejar la descarga del archivo:", error);
+      toast.error("Error al manejar la descarga del archivo:", error);
     }
   };
 // Manejar la edición de solicitudes

@@ -20,8 +20,6 @@ function RechazoHoras() {
     }
 
     const bitacoraId = sessionStorage.getItem("BitacoraId");
-
-    console.log(bitacoraId);
     if (!bitacoraId) {
       setError("No se encontró el ID de la bitácora.");
       return;
@@ -54,7 +52,6 @@ function RechazoHoras() {
         );
       }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
       setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };

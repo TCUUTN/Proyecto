@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+
+//Proceso para enviar un correo sin adjunto
 const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -32,6 +34,8 @@ const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
   }
 };
 
+
+//Proceso para enviar un correo con adjunto
 const enviarCorreoConAdjunto = async (destinatarios, asunto, mensajeHtml, filePath, fileName, copia) => {
   try {
       const transporter = nodemailer.createTransport({

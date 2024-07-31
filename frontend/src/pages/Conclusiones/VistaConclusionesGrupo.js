@@ -18,9 +18,9 @@ function VistaConclusionesGrupo() {
   const [estadoFilter, setEstadoFilter] = useState(""); // Filtro de estado de la boleta
   const [currentPage, setCurrentPage] = useState(1); // Página actual para la paginación
   const conclusionesPerPage = 10; // Número de conclusiones por página
-// Datos del usuario y grupo almacenados en el almacenamiento local y de sesión
-const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol del usuario
-const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo seleccionado
+  // Datos del usuario y grupo almacenados en el almacenamiento local y de sesión
+  const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol del usuario
+  const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo seleccionado
 
   // Efecto para cargar las conclusiones cuando cambian el rol o el ID del grupo
   useEffect(() => {
@@ -29,7 +29,7 @@ const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo selec
     }
   }, [selectedRole, grupoId]);
 
-   // Función para obtener las conclusiones desde el servidor
+  // Función para obtener las conclusiones desde el servidor
   const fetchConclusiones = async () => {
     try {
       const url =
@@ -63,20 +63,20 @@ const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo selec
     applyFilters(value, nombreFilter, estadoFilter);
   };
 
-// Función para manejar el cambio en el filtro de nombre
+  // Función para manejar el cambio en el filtro de nombre
   const handleNombreFilterChange = (e) => {
     const value = e.target.value;
     setNombreFilter(value);
     applyFilters(identificacionFilter, value, estadoFilter);
   };
 
-   // Función para manejar el cambio en el filtro de estado
+  // Función para manejar el cambio en el filtro de estado
   const handleEstadoFilterChange = (e) => {
     const value = e.target.value;
     setEstadoFilter(value);
     applyFilters(identificacionFilter, nombreFilter, value);
   };
-// Función para aplicar los filtros a la lista de conclusiones
+  // Función para aplicar los filtros a la lista de conclusiones
   const applyFilters = (identificacion, nombre, estado) => {
     let filtered = conclusiones;
 
@@ -106,14 +106,14 @@ const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo selec
     setCurrentPage(1); // Restablecer a la primera página al cambiar los filtros
   };
 
-// Cálculo de las conclusiones a mostrar en la página actual
+  // Cálculo de las conclusiones a mostrar en la página actual
   const indexOfLastConclusion = currentPage * conclusionesPerPage;
   const indexOfFirstConclusion = indexOfLastConclusion - conclusionesPerPage;
   const currentConclusiones = filteredConclusiones.slice(
     indexOfFirstConclusion,
     indexOfLastConclusion
   );
- // Función para ir a la siguiente página en la paginación
+  // Función para ir a la siguiente página en la paginación
   const handleNextPage = () => {
     if (
       currentPage < Math.ceil(filteredConclusiones.length / conclusionesPerPage)
@@ -121,7 +121,7 @@ const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo selec
       setCurrentPage(currentPage + 1);
     }
   };
-// Función para ir a la página anterior en la paginación
+  // Función para ir a la página anterior en la paginación
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -240,7 +240,9 @@ const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo selec
                         <OverlayTrigger
                           placement="top"
                           overlay={
-                            <Tooltip id="tooltip-edit">Ver boleta de conclusión</Tooltip>
+                            <Tooltip id="tooltip-edit">
+                              Ver boleta de conclusión
+                            </Tooltip>
                           }
                         >
                           <button

@@ -60,8 +60,7 @@ function OlvidarClave() {
         setError("El correo ingresado no es válido o se encuentra desactivado, favor verificar.");
       }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-      setError("Error al enviar la solicitud, por favor intenta de nuevo.");
+      toast.error("Error al enviar la solicitud:", error);
     } finally {
       setLoading(false); // Hide loading screen
     }

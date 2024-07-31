@@ -75,8 +75,7 @@ function VistaInformacion() {
     } catch (error) {
       setInformacion([]);
       setFilteredInformacion([]);
-      console.error("Error al obtener la información:", error);
-      toast.error("Error al obtener la información");
+      toast.error("Error al obtener la información: ",error);
     } finally {
       setLoading(false);
     }
@@ -111,8 +110,7 @@ function VistaInformacion() {
     } catch (error) {
       setInformacion([]);
       setFilteredInformacion([]);
-      console.error("Error al obtener la información:", error);
-      toast.error("Error al obtener la información");
+      toast.error("Error al obtener la información: ",error);
     } finally {
       setLoading(false);
     }
@@ -127,11 +125,9 @@ function VistaInformacion() {
         const data = await response.json();
         setGrupos(data);
       } else {
-        console.error("Error al obtener los grupos");
         toast.error("Error al obtener los grupos");
       }
     } catch (error) {
-      console.error("Error al obtener los grupos:", error);
       toast.error("Error al obtener los grupos");
     } finally {
       setLoading(false);
@@ -226,7 +222,6 @@ function VistaInformacion() {
   // Función para manejar la descarga de un archivo.
   const handleDescargaArchivo = async (InformacionId) => {
     try {
-      console.log(InformacionId)
       const response = await fetch(`/informacion/descargarAdjunto/${InformacionId}`);
       if (response.ok) {
         const data = await response.json();

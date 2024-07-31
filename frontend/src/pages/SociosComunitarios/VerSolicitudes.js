@@ -4,6 +4,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { RiMailSendLine } from "react-icons/ri";
 import "./VerSolicitud.css";
 import { BsUpload } from "react-icons/bs";
+import { toast, ToastContainer } from "react-toastify";
 /**
  * Componente para ver las solicitudes y gestionar la subida de cartas.
  */
@@ -35,7 +36,7 @@ function VerSolicitudes() {
         setSocioNombre(data.Socios_RegistroSocio.NombreSocio);
         setEstudiantes(data.estudiantesCarta);
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        toast.error("Error obteniendo la solicitud: ", error);
       }
     };
 
@@ -84,19 +85,21 @@ function VerSolicitudes() {
       if (response.ok) {
         localStorage.removeItem("SolicitudIdSeleccionada");
         sessionStorage.setItem("BanderaEnviado", "true");
-        setIsLoading(false); // Ocultar pantalla de carga
         navigate("/SolicitudCartas");
       } else {
-        console.error("Error uploading file");
-        setIsLoading(false); // Ocultar pantalla de carga
+        toast.error("Error cargando el archivo");
       }
     } catch (error) {
-      console.error("Error uploading file: ", error);
+      toast.error("Error uploading file: ", error);
+    }finally{
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="versolicart-container">
+          <ToastContainer position="bottom-right" />
+
       {/*Para la carga */}
       {isLoading && (
         <div className="loading-overlay">

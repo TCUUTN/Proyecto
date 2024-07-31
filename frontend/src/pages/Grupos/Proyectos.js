@@ -12,7 +12,7 @@ import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 function MantMaterias() {
-    // Estados para almacenar y gestionar datos de materias y filtros
+  // Estados para almacenar y gestionar datos de materias y filtros
   const [materias, setMaterias] = useState([]);
   const [filteredMaterias, setFilteredMaterias] = useState([]);
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState("");
@@ -22,12 +22,12 @@ function MantMaterias() {
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
 
-   // Verifica si el proyecto fue guardado en la sesión anterior
+  // Verifica si el proyecto fue guardado en la sesión anterior
   const banderaProyecto = sessionStorage.getItem("proyectoGuardado");
 
   const navigate = useNavigate();
 
-// Función para obtener la lista de materias desde el servidor
+  // Función para obtener la lista de materias desde el servidor
   const fetchMaterias = async () => {
     try {
       const response = await fetch("/grupos/tipos");
@@ -36,24 +36,22 @@ function MantMaterias() {
         setMaterias(data);
         setFilteredMaterias(data);
       } else {
-        console.error("Error al obtener la lista de materias");
         toast.error("Error al obtener la lista de materias");
       }
     } catch (error) {
-      console.error("Error al obtener la lista de materias:", error);
-      toast.error("Error al obtener la lista de materias");
+      toast.error("Error al obtener la lista de proyectos: ", error);
     }
   };
   // useEffect para cargar la lista de materias al montar el componente
   useEffect(() => {
     fetchMaterias();
-   // Mostrar mensaje de éxito si el proyecto fue guardado
+    // Mostrar mensaje de éxito si el proyecto fue guardado
     if (banderaProyecto === "true") {
       toast.success("El proyecto fue guardado con éxito.");
       sessionStorage.removeItem("proyectoGuardado");
     }
   }, []);
- // Manejadores de cambios en los filtrosa
+  // Manejadores de cambios en los filtrosa
   const handleCodigoMateriaFilterChange = (e) => {
     const value = e.target.value;
     setCodigoMateriaFilter(value);
@@ -71,7 +69,7 @@ function MantMaterias() {
     setTipoFilter(value);
     applyFilters(codigoMateriaFilter, nombreProyectoFilter, value);
   };
-// Función para aplicar los filtros a la lista de materias
+  // Función para aplicar los filtros a la lista de materias
   const applyFilters = (CodigoMateria, NombreProyecto, TipoCurso) => {
     let filtered = materias;
 
@@ -99,14 +97,14 @@ function MantMaterias() {
     setCurrentPage(1); // Reiniciar a la primera página al cambiar los filtros
   };
 
- // Variables para la paginación
+  // Variables para la paginación
   const indexOfLastMateria = currentPage * materiasPerPage;
   const indexOfFirstMateria = indexOfLastMateria - materiasPerPage;
   const currentMaterias = filteredMaterias.slice(
     indexOfFirstMateria,
     indexOfLastMateria
   );
- // Manejadores de cambio de página
+  // Manejadores de cambio de página
   const handleNextPage = () => {
     if (currentPage < Math.ceil(filteredMaterias.length / materiasPerPage)) {
       setCurrentPage(currentPage + 1);
@@ -118,7 +116,7 @@ function MantMaterias() {
       setCurrentPage(currentPage - 1);
     }
   };
-// Manejador de subida de archivos
+  // Manejador de subida de archivos
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (
@@ -152,16 +150,14 @@ function MantMaterias() {
               TipoCurso,
             };
           });
-// Función para subir los datos en formato JSON al servidor
+          // Función para subir los datos en formato JSON al servidor
           uploadJsonData(jsonData);
         } else {
-          console.error("Formato de archivo inválido");
           toast.error("Formato de archivo inválido");
         }
       };
       reader.readAsArrayBuffer(file);
     } else {
-      console.error("Por favor, suba un archivo Excel válido");
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
@@ -178,15 +174,10 @@ function MantMaterias() {
       });
 
       if (response.ok) {
-        console.log("Datos cargados exitosamente");
         toast.success("Datos cargados exitosamente");
         fetchMaterias();
-      } else {
-        console.error("Error al cargar los datos");
-        toast.error("Error al cargar los datos");
       }
     } catch (error) {
-      console.error("Error al cargar los datos:", error);
       toast.error("Error al cargar los datos");
     } finally {
       setLoading(false);

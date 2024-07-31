@@ -11,6 +11,7 @@ import { TiArrowUpThick } from "react-icons/ti";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
+import { toast, ToastContainer } from "react-toastify";
 
 function GuiaIniciarSesion() {
   useEffect(() => {
@@ -196,8 +197,7 @@ function GuiaIniciarSesion() {
             downloadButton.style.display = "block";
         };
     } catch (error) {
-        console.error("Error generating PDF:", error);
-        alert("Error al generar el PDF. Por favor, intente de nuevo.");
+        toast.error("Error al generar el PDF. Por favor, intente de nuevo.");
     }
 };
 
@@ -207,6 +207,7 @@ function GuiaIniciarSesion() {
 
   return (
     <div className="contenedor-guias">
+          <ToastContainer position="bottom-right" />
       <div id="pdfContent" className="guias-container">
         {/* Section explicacion de portada */}
         <div className="section section-portada">

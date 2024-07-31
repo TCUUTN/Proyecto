@@ -79,7 +79,7 @@ function Login() {
         setError("Usuario o contraseña incorrectos");
       }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+      toast.error("Error al enviar la solicitud:", error);
     } finally {
       setLoading(false);  // Oculta la pantalla de carga
     }

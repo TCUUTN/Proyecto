@@ -4,6 +4,8 @@ const TipoGrupo = require("../models/TipoGrupo");
 const Usuario = require("../models/Usuario");
 const Grupo = require("../models/Grupo");
 const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
+
+//Obtiene un listado de todas las conclusiones
 const getAllConclusiones = async (req, res) => {
   try {
     const Conclusiones = await BoletaConclusion.findAll({
@@ -28,25 +30,24 @@ const getAllConclusiones = async (req, res) => {
   }
 };
 
+//Obtiene un listado de los años para filtrar las conclusiones
 const getAllAnnosParaConclusion = async (req, res) => {
   try {
     const { Rol } = req.params;
-    console.log(Rol)
     let whereClause = {};
     if (Rol === "Administrativo") {
       whereClause.EstadoBoleta = "Aprobado";
     }
-    console.log(whereClause)
     const conclusiones = await BoletaConclusion.findAll({
       where: whereClause,
       attributes: [],
-      include: [
-        { model: Grupo, attributes: ["Anno"] },
-      ],
+      include: [{ model: Grupo, attributes: ["Anno"] }],
     });
 
     // Extraer los años y eliminar duplicados
-    const anos = [...new Set(conclusiones.map(conclusion => conclusion.Grupo.Anno))];
+    const anos = [
+      ...new Set(conclusiones.map((conclusion) => conclusion.Grupo.Anno)),
+    ];
 
     res.json(anos);
   } catch (err) {
@@ -54,7 +55,7 @@ const getAllAnnosParaConclusion = async (req, res) => {
   }
 };
 
-
+//Obtiene una conclusion por su ConclusionId
 const getConclusionPorConclusionId = async (req, res) => {
   try {
     const { ConclusionId } = req.params;
@@ -88,6 +89,7 @@ const getConclusionPorConclusionId = async (req, res) => {
   }
 };
 
+//Obtiene las conclusiones por el Grupo y la identificacion del Estudiante
 const getConclusionPorIdentificacionyGrupoId = async (req, res) => {
   try {
     const { Identificacion, GrupoId } = req.params;
@@ -123,6 +125,7 @@ const getConclusionPorIdentificacionyGrupoId = async (req, res) => {
   }
 };
 
+// Obtiene un listado de las conclusiones que pertenecen a un determinado GrupoId
 const getConclusionPorGrupoId = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -147,6 +150,7 @@ const getConclusionPorGrupoId = async (req, res) => {
   }
 };
 
+// Obtiene un listado de las conclusiones aprobadas que pertenecen a un determinado GrupoId
 const getConclusionAprobadasPorGrupoId = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -172,6 +176,7 @@ const getConclusionAprobadasPorGrupoId = async (req, res) => {
   }
 };
 
+//Proceso para crear o actualizar una conclusion
 const crearOActualizarConclusiones = async (req, res) => {
   try {
     const {
@@ -199,7 +204,6 @@ const crearOActualizarConclusiones = async (req, res) => {
     ) {
       return res.status(400).json({ error: "Faltan valores son requeridos" });
     }
-    console.log(ConclusionId)
     if (ConclusionId) {
       // Verificar si existe un registro con el BitacoraId proporcionado
       let conclusionExistente = await BoletaConclusion.findOne({
@@ -252,6 +256,7 @@ const crearOActualizarConclusiones = async (req, res) => {
   }
 };
 
+//Proceso para rechazar una conclusion
 const rechazarConclusion = async (req, res) => {
   try {
     const { ConclusionId, MotivoRechazo } = req.body;
@@ -285,6 +290,7 @@ const rechazarConclusion = async (req, res) => {
   }
 };
 
+//Proceso para rechazar una conclusion
 const aprobarConclusion = async (req, res) => {
   try {
     const { ConclusionId } = req.params;
@@ -296,10 +302,11 @@ const aprobarConclusion = async (req, res) => {
     let conclusionExistente = await BoletaConclusion.findOne({
       where: { ConclusionId },
     });
-    console.log(conclusionExistente)
     if (!conclusionExistente) {
       // Si no se encuentra el registro, devolver un error
-      return res.status(404).json({ error: "Registro no encontrado"+ConclusionId });
+      return res
+        .status(404)
+        .json({ error: "Registro no encontrado" + ConclusionId });
     }
 
     // Actualizar el registro con los comentarios de rechazo y cambiar el estado a Rechazado
@@ -345,14 +352,14 @@ const aprobarConclusion = async (req, res) => {
 
     if (!grupoEstudianteExistente) {
       // Si no se encuentra el registro, devolver un error
-      return res.status(404).json({ error: "Registro no encontrado " +IdentificacionaAprobar});
+      return res
+        .status(404)
+        .json({ error: "Registro no encontrado " + IdentificacionaAprobar });
     }
-
-    
 
     grupoEstudianteExistente.Estado = "Aprobado";
     await grupoEstudianteExistente.save();
-    const estudianteJson = grupoEstudianteExistente.toJSON()
+    const estudianteJson = grupoEstudianteExistente.toJSON();
     const asunto =
       "Aprobación del TCU del Estudiante " +
       estudianteJson.Usuario.Nombre +
@@ -375,6 +382,7 @@ const aprobarConclusion = async (req, res) => {
   }
 };
 
+//Genera el correo de aprobacion del TCU
 const generarAprobadoHtml = (estudiante) => {
   const year = new Date().getFullYear();
   const textColor = "#002c6b"; // Color de texto para el contenido principal
@@ -409,5 +417,5 @@ module.exports = {
   crearOActualizarConclusiones,
   rechazarConclusion,
   aprobarConclusion,
-  getAllAnnosParaConclusion
+  getAllAnnosParaConclusion,
 };

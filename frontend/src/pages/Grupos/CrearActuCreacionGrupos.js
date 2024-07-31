@@ -8,12 +8,17 @@ import { FaChevronLeft } from "react-icons/fa6";
 
 // Componente principal para crear o actualizar la creación de grupos
 function CrearActuCreacionGrupos() {
-   // Definición de estados
-   const [codigosMateria, setCodigosMateria] = useState([]); // Estado para almacenar los códigos de materia
-   const [isFormValid, setIsFormValid] = useState(false); // Estado para validar el formulario
-   const [sedes, setSedes] = useState([
-     "Central", "Atenas", "Guanacaste", "Pacífico", "San Carlos", "C. F. P. T. E."
-   ]); // Estado para almacenar las sedes
+  // Definición de estados
+  const [codigosMateria, setCodigosMateria] = useState([]); // Estado para almacenar los códigos de materia
+  const [isFormValid, setIsFormValid] = useState(false); // Estado para validar el formulario
+  const [sedes, setSedes] = useState([
+    "Central",
+    "Atenas",
+    "Guanacaste",
+    "Pacífico",
+    "San Carlos",
+    "C. F. P. T. E.",
+  ]); // Estado para almacenar las sedes
   const [usuarios, setUsuarios] = useState([]); // Estado para almacenar los usuarios filtrados
   const [allUsuarios, setAllUsuarios] = useState([]); // Estado para almacenar todos los usuarios
   const [annos, setAnnos] = useState([]); // Estado para almacenar los años
@@ -22,7 +27,10 @@ function CrearActuCreacionGrupos() {
     NumeroGrupo: "",
     Horario: "",
     Aula: "",
-    Sede: sessionStorage.getItem("Sede") === "Todas" ? "" : sessionStorage.getItem("Sede") || "", // Ajuste aquí
+    Sede:
+      sessionStorage.getItem("Sede") === "Todas"
+        ? ""
+        : sessionStorage.getItem("Sede") || "", // Ajuste aquí
     Cuatrimestre: "",
     Anno: "",
     Estado: "1", // Estado predeterminado "Activo"
@@ -43,32 +51,32 @@ function CrearActuCreacionGrupos() {
       setAnnos([currentYear, currentYear + 1]);
     }
   }, [GrupoId]);
-// Efecto para cargar los datos del grupo si existe en el localStorage
+  // Efecto para cargar los datos del grupo si existe en el localStorage
   useEffect(() => {
     const GrupoIdUpdate = localStorage.getItem("GrupoIdUpdate");
     if (GrupoIdUpdate) {
       fetchGrupo(GrupoIdUpdate);
     }
   }, []);
-// Efecto para filtrar usuarios por sede cada vez que cambia la sede
+  // Efecto para filtrar usuarios por sede cada vez que cambia la sede
   useEffect(() => {
     filterUsuariosBySede(formValues.Sede);
   }, [formValues.Sede]);
-// Efecto para validar el formulario cada vez que cambian los valores del formulario
+  // Efecto para validar el formulario cada vez que cambian los valores del formulario
   useEffect(() => {
     validateForm();
   }, [formValues]);
-// Función para obtener los códigos de materia de la API
+  // Función para obtener los códigos de materia de la API
   const fetchCodigosMateria = async () => {
     try {
       const response = await fetch("/grupos/tipos");
       const data = await response.json();
       setCodigosMateria(data);
     } catch (error) {
-      console.error("Error fetching codigos de materia:", error);
+      toast.error("Error obteniendo codigos de proyecto:", error);
     }
   };
-// Función para obtener los usuarios de la API
+  // Función para obtener los usuarios de la API
   const fetchUsuarios = async () => {
     try {
       const response = await fetch("/usuarios/RolesAcademicos");
@@ -77,10 +85,10 @@ function CrearActuCreacionGrupos() {
       setAllUsuarios(data); // Almacenar todos los usuarios en allUsuarios
       filterUsuariosBySede(formValues.Sede, data);
     } catch (error) {
-      console.error("Error fetching usuarios:", error);
+      toast.error("Error obteniendo los datos de usuarios:", error);
     }
   };
-// Función para obtener los datos de un grupo específico de la API
+  // Función para obtener los datos de un grupo específico de la API
   const fetchGrupo = async (GrupoId) => {
     try {
       const response = await fetch(`/grupos/${GrupoId}`);
@@ -96,10 +104,10 @@ function CrearActuCreacionGrupos() {
         }
       }
     } catch (error) {
-      console.error("Error fetching grupo:", error);
+      toast.error("Error obteniendo los datos de grupo:", error);
     }
   };
-// Función para filtrar usuarios por sede
+  // Función para filtrar usuarios por sede
   const filterUsuariosBySede = (sede, usuariosData = allUsuarios) => {
     sede = String(sede); // Convertir sede a cadena de texto
     if (sede === "") {
@@ -111,11 +119,10 @@ function CrearActuCreacionGrupos() {
       setUsuarios(filteredUsuarios);
     }
   };
-// Función para manejar los cambios en los inputs del formulario
+  // Función para manejar los cambios en los inputs del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "NumeroGrupo" && isNaN(value)) return; // Asegurarse de que NumeroGrupo sea un número
-
 
     setFormValues({
       ...formValues,
@@ -173,7 +180,6 @@ function CrearActuCreacionGrupos() {
       if (GrupoIdUpdate) {
         payload.GrupoId = GrupoIdUpdate;
       }
-      console.log(JSON.stringify(payload));
       const response = await fetch("/grupos/crearOActualizarGrupo", {
         method: "POST",
         headers: {
@@ -191,8 +197,7 @@ function CrearActuCreacionGrupos() {
       localStorage.removeItem("GrupoIdUpdate");
       navigate("/MantGrupos");
     } catch (error) {
-      toast.error("Error al guardar el grupo");
-      console.error("Error:", error);
+      toast.error("Error al guardar el grupo", error);
     }
   };
 
@@ -203,7 +208,7 @@ function CrearActuCreacionGrupos() {
 
   const sedeSession = sessionStorage.getItem("Sede");
 
-  const romanNumerals = ["I", "II", "III"];// Array de números romanos para los cuatrimestres
+  const romanNumerals = ["I", "II", "III"]; // Array de números romanos para los cuatrimestres
 
   // Render del componente
   return (

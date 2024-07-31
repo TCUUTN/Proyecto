@@ -21,7 +21,6 @@ function GruposAcademico() {
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas"; // Filtro de sede
   const identificacion = sessionStorage.getItem("Identificacion"); // Identificación del académico
 
-
   useEffect(() => {
     fetchGrupos(); // Llama a la función para obtener los grupos al cargar el componente
   }, []);
@@ -29,7 +28,6 @@ function GruposAcademico() {
   // Función para obtener la lista de grupos del académico
   const fetchGrupos = async () => {
     try {
-      console.log(identificacion);
       const response = await fetch(`/grupos/Academicos/${identificacion}`);
 
       if (response.ok) {
@@ -44,36 +42,33 @@ function GruposAcademico() {
         const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
         setUniqueYears(years.sort((a, b) => a - b));
       } else if (response.status === 404) {
-        console.error("El Académico no tiene grupos a cargo");
         toast.error("El Académico no tiene grupos a cargo");
       } else {
-        console.error("Error al obtener la lista de grupos");
         toast.error("Error al obtener la lista de grupos");
       }
     } catch (error) {
-      console.error("Error al obtener la lista de grupos:", error);
-      toast.error("Error al obtener la lista de grupos");
+      toast.error("Error al obtener la lista de grupos: ", error);
     }
   };
-// Función para manejar el cambio en el filtro de código de materia
+  // Función para manejar el cambio en el filtro de código de materia
   const handleCodigoMateriaFilterChange = (e) => {
     const value = e.target.value;
     setCodigoMateriaFilter(value);
     applyFilters(value, nombreProyectoFilter, cuatrimestreFilter, annoFilter);
   };
-// Función para manejar el cambio en el filtro de nombre de proyecto
+  // Función para manejar el cambio en el filtro de nombre de proyecto
   const handleNombreProyectoFilterChange = (e) => {
     const value = e.target.value;
     setNombreProyectoFilter(value);
     applyFilters(codigoMateriaFilter, value, cuatrimestreFilter, annoFilter);
   };
- // Función para manejar el cambio en el filtro de cuatrimestre
+  // Función para manejar el cambio en el filtro de cuatrimestre
   const handleCuatrimestreFilterChange = (e) => {
     const value = e.target.value;
     setCuatrimestreFilter(value);
     applyFilters(codigoMateriaFilter, nombreProyectoFilter, value, annoFilter);
   };
-// Función para manejar el cambio en el filtro de año
+  // Función para manejar el cambio en el filtro de año
   const handleAnnoFilterChange = (e) => {
     const value = e.target.value;
     setAnnoFilter(value);
@@ -84,7 +79,7 @@ function GruposAcademico() {
       value
     );
   };
-// Función para aplicar los filtros a la lista de grupos
+  // Función para aplicar los filtros a la lista de grupos
   const applyFilters = (codigoMateria, nombreProyecto, cuatrimestre, anno) => {
     let filtered = grupos;
 
@@ -121,7 +116,10 @@ function GruposAcademico() {
   // Índice del primer grupo en la página actual
   const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage;
   // Lista de grupos en la página actual
-  const currentGrupos = filteredGrupos.slice(indexOfFirstGrupo, indexOfLastGrupo);
+  const currentGrupos = filteredGrupos.slice(
+    indexOfFirstGrupo,
+    indexOfLastGrupo
+  );
   // Número total de páginas
   const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage);
 
@@ -131,13 +129,13 @@ function GruposAcademico() {
       setCurrentPage(currentPage + 1);
     }
   };
-// Función para manejar el cambio a la página anterior
+  // Función para manejar el cambio a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
- // Función para manejar la selección de un grupo específico
+  // Función para manejar la selección de un grupo específico
   const handleLista = (grupoId) => {
     localStorage.setItem("GrupoSeleccionado", grupoId);
     navigate("/ListaEstudiantes");

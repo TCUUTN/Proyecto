@@ -28,6 +28,7 @@ import jsPDF from "jspdf";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 
 import rechazoBoleta from "../../Assets/Images/Guias/Academicos/RechazoBoletaConclu_Acade.png";
+import { toast, ToastContainer } from "react-toastify";
 function GuiaAcademico() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
@@ -209,12 +210,12 @@ function GuiaAcademico() {
             downloadButton.style.display = "block";
         };
     } catch (error) {
-        console.error("Error generating PDF:", error);
-        alert("Error al generar el PDF. Por favor, intente de nuevo.");
+        toast.error("Error al generar el PDF. Por favor, intente de nuevo.");
     }
 };
   return (
     <div className="contenedor-guias">
+    <ToastContainer position="bottom-right" />
       <div className="guias-container">
         {/* Section explicacion de portada */}
         <div className="section section-portada">

@@ -4,10 +4,10 @@ const Usuario = require("../models/Usuario");
 const Rol = require("../models/Rol");
 const Grupo = require("../models/Grupo");
 const GruposEstudiantes = require("../models/GruposEstudiantes");
-const Sequelize = require("sequelize");
 const UsuarioRoles = require("../models/UsuarioRol");
 const crypto = require("crypto");
 
+//Extrae los registros de usuarios
 const getAllUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({
@@ -27,6 +27,7 @@ const getAllUsuarios = async (req, res) => {
   }
 };
 
+//Extrae todos los roles de usuarios
 const getAllUsuarioRol = async (req, res) => {
   try {
     const roles = await UsuarioRoles.findAll({
@@ -42,10 +43,17 @@ const getAllUsuarioRol = async (req, res) => {
   }
 };
 
+//Extrae a todos los usuarios de tipo Académico
 const getAllAcademicos = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({
-      attributes: ['Identificacion', 'Nombre', 'Apellido1', 'Apellido2','Sede'],
+      attributes: [
+        "Identificacion",
+        "Nombre",
+        "Apellido1",
+        "Apellido2",
+        "Sede",
+      ],
       include: [
         {
           model: UsuarioRoles,
@@ -60,7 +68,7 @@ const getAllAcademicos = async (req, res) => {
   }
 };
 
-
+//Extrae al usuario por su nombre completo
 const getUsuarioPorNombre = async (req, res) => {
   try {
     const { Apellido1, Apellido2, Nombre } = req.query;
@@ -87,6 +95,7 @@ const getUsuarioPorNombre = async (req, res) => {
   }
 };
 
+//Extrae al usuario por la identidicación
 const getUsuarioPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -111,6 +120,8 @@ const getUsuarioPorIdentificacion = async (req, res) => {
   }
 };
 
+
+//Extrae unicamente el nombre por la identificación del usuario
 const getNombrePorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -120,7 +131,7 @@ const getNombrePorIdentificacion = async (req, res) => {
       where: {
         Identificacion: Identificacion,
       },
-      attributes: ['Nombre', 'Apellido1', 'Apellido2'],
+      attributes: ["Nombre", "Apellido1", "Apellido2"],
     });
 
     if (!usuario) {
@@ -133,6 +144,7 @@ const getNombrePorIdentificacion = async (req, res) => {
   }
 };
 
+//Extrae los Roles de usuario por la identificación
 const getRolesPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -163,6 +175,7 @@ const getRolesPorIdentificacion = async (req, res) => {
   }
 };
 
+//Proceso para la verificacion de credenciales del usuario
 const getUsuarioPorCredenciales = async (req, res) => {
   try {
     const { CorreoElectronico, Contrasenna } = req.body; // Suponiendo que estás enviando los parámetros en el cuerpo de la solicitud
@@ -196,7 +209,9 @@ const getUsuarioPorCredenciales = async (req, res) => {
       );
       if (contrasennaValida) {
         // Extraer los roles del usuario
-        const roles = usuario.Usuarios_Roles.map(usuarioRol => usuarioRol.Rol.NombreRol);
+        const roles = usuario.Usuarios_Roles.map(
+          (usuarioRol) => usuarioRol.Rol.NombreRol
+        );
 
         // Devolver solo los campos requeridos
         const usuarioResponse = {
@@ -205,7 +220,7 @@ const getUsuarioPorCredenciales = async (req, res) => {
           RolUsuario: roles, // Aquí almacenamos todos los NombreRol
           CorreoElectronico: usuario.CorreoElectronico,
           Genero: usuario.Genero,
-          Sede: usuario.Sede
+          Sede: usuario.Sede,
         };
         res.json(usuarioResponse);
       } else {
@@ -222,6 +237,7 @@ const getUsuarioPorCredenciales = async (req, res) => {
   }
 };
 
+//Proceso para la actualizacion de la contraseña
 const actualizarContrasenna = async (req, res) => {
   try {
     const {
@@ -233,11 +249,9 @@ const actualizarContrasenna = async (req, res) => {
 
     // Verificar que las nuevas contraseñas coincidan
     if (ContrasennaNueva !== ConfirmacionContrasenna) {
-      return res
-        .status(400)
-        .json({
-          error: "La nueva contraseña y la confirmación deben ser iguales",
-        });
+      return res.status(400).json({
+        error: "La nueva contraseña y la confirmación deben ser iguales",
+      });
     }
 
     // Buscar un usuario que coincida con el correo electrónico proporcionado
@@ -273,6 +287,7 @@ const actualizarContrasenna = async (req, res) => {
   }
 };
 
+//Proceso para generación de clave temporal
 const generarContrasennaAleatoria = () => {
   // Definir los caracteres permitidos en la contraseña
   const caracteres =
@@ -286,6 +301,7 @@ const generarContrasennaAleatoria = () => {
   return contrasenna;
 };
 
+//Proceso para generar el HTML para el correo de la clave temporal
 const generarMensajeHtml = (nuevaContrasenna) => {
   const year = new Date().getFullYear();
   const textColor = "#002c6b"; // Color de texto para el contenido principal
@@ -307,6 +323,7 @@ const generarMensajeHtml = (nuevaContrasenna) => {
   `;
 };
 
+//Proceso para obtener clave temporal
 const olvidoContrasenna = async (req, res) => {
   try {
     const { CorreoElectronico } = req.body;
@@ -315,7 +332,7 @@ const olvidoContrasenna = async (req, res) => {
     const usuario = await Usuario.findOne({
       where: {
         CorreoElectronico: CorreoElectronico,
-        Estado:1,
+        Estado: 1,
       },
     });
 
@@ -345,7 +362,7 @@ const olvidoContrasenna = async (req, res) => {
   }
 };
 
-// Función para crear o modificar un usuario
+//Función para crear o modificar un usuario
 const crearOActualizarUsuario = async (req, res) => {
   try {
     const {
@@ -363,10 +380,10 @@ const crearOActualizarUsuario = async (req, res) => {
       GrupoId, // nuevo parámetro
     } = req.body;
 
-
     // Asignar valores por defecto si son cadenas vacías
-    const generoFinal = Genero === '' ? 'Indefinido' : Genero;
-    const carreraEstudianteFinal = CarreraEstudiante === '' ? '-' : CarreraEstudiante;
+    const generoFinal = Genero === "" ? "Indefinido" : Genero;
+    const carreraEstudianteFinal =
+      CarreraEstudiante === "" ? "-" : CarreraEstudiante;
 
     // Verificar si el correo electrónico ya está asignado a otro usuario
     const correoExistente = await Usuario.findOne({
@@ -389,7 +406,9 @@ const crearOActualizarUsuario = async (req, res) => {
     });
 
     // Encriptar la contraseña si se proporciona
-    const hashedPassword = Contrasenna ? await bcrypt.hash(Contrasenna, 10) : null;
+    const hashedPassword = Contrasenna
+      ? await bcrypt.hash(Contrasenna, 10)
+      : null;
 
     if (usuarioExistente) {
       // Modificar el usuario existente
@@ -478,10 +497,7 @@ const crearOActualizarUsuario = async (req, res) => {
   }
 };
 
-
-
-
-
+//Función para agregar los roles del usuario creado
 const agregarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
   for (const rol of Usuarios_Roles) {
     await UsuarioRoles.create({
@@ -494,6 +510,7 @@ const agregarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
   }
 };
 
+//Proceso para actualizar los roles de usuario
 const actualizarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
   const rolesExistentes = await UsuarioRoles.findAll({
     where: { Identificacion: Identificacion },
@@ -501,14 +518,14 @@ const actualizarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
 
   // Eliminar roles no presentes en Usuarios_Roles
   for (const rolExistente of rolesExistentes) {
-    if (!Usuarios_Roles.some(rol => rol.RolId === rolExistente.RolId)) {
+    if (!Usuarios_Roles.some((rol) => rol.RolId === rolExistente.RolId)) {
       await rolExistente.destroy();
     }
   }
 
   // Agregar o actualizar roles presentes en Usuarios_Roles
   for (const rol of Usuarios_Roles) {
-    const rolExistente = rolesExistentes.find(re => re.RolId === rol.RolId);
+    const rolExistente = rolesExistentes.find((re) => re.RolId === rol.RolId);
     if (rolExistente) {
       await rolExistente.update({
         LastUpdate: rol.LastUpdate,
@@ -527,7 +544,7 @@ const actualizarRolesUsuario = async (Identificacion, Usuarios_Roles) => {
   }
 };
 
-// Función para crear o modificar un usuario
+//Función para carga masiva de usuarios
 const cargarUsuario = async (req, res) => {
   const users = req.body;
   try {
@@ -606,7 +623,7 @@ const cargarUsuario = async (req, res) => {
             Cuatrimestre: userData.Cuatrimestre,
             NumeroGrupo: userData.Grupo,
             Anno: userData.Anno,
-            Sede: userData.Sede
+            Sede: userData.Sede,
           },
         });
 
@@ -646,6 +663,7 @@ const cargarUsuario = async (req, res) => {
   }
 };
 
+//Función para carga masiva de carreras para los estudiantes
 const cargaCarreras = async (req, res) => {
   const users = req.body;
 
@@ -669,7 +687,9 @@ const cargaCarreras = async (req, res) => {
       const identificacion = String(usuarioRol.Usuario.Identificacion);
 
       // Buscar en const users si existe una línea que coincida con la Identificacion
-      const userData = users.find((user) => String(user.Identificacion) === identificacion);
+      const userData = users.find(
+        (user) => String(user.Identificacion) === identificacion
+      );
 
       if (userData) {
         // Actualizar el campo CarreraEstudiante en la base de datos
@@ -686,15 +706,15 @@ const cargaCarreras = async (req, res) => {
       }
     }
 
-    res.status(200).send("Se han añadido las carreras de los Usuarios encontrados");
+    res
+      .status(200)
+      .send("Se han añadido las carreras de los Usuarios encontrados");
   } catch (error) {
     res.status(500).send("Error al cargar/actualizar los usuarios");
   }
 };
 
-
-
-
+//Verifica el estado del usuario
 const EstadoUsuario = async (req, res) => {
   try {
     const { Identificacion } = req.body;
@@ -722,6 +742,7 @@ const EstadoUsuario = async (req, res) => {
   }
 };
 
+//Actualiza el genero del usuario
 const actualizarGenero = async (req, res) => {
   try {
     const { Identificacion, Genero } = req.body;
@@ -764,5 +785,5 @@ module.exports = {
   actualizarGenero,
   cargarUsuario,
   cargaCarreras,
-  getNombrePorIdentificacion
+  getNombrePorIdentificacion,
 };

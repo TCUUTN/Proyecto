@@ -68,7 +68,7 @@ function CambiarClave() {
     }
     return errors;
   };
- // Manejar el cambio en el campo de la nueva contraseña
+  // Manejar el cambio en el campo de la nueva contraseña
   const handleNewPasswordChange = (e) => {
     const newPassword = e.target.value;
     setNewPassword(newPassword);
@@ -92,7 +92,7 @@ function CambiarClave() {
       confirmPassword !== "";
     setIsFormValid(isValid);
   };
-// Manejar el envío del formulario
+  // Manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -112,13 +112,12 @@ function CambiarClave() {
 
       if (response.ok) {
         window.location.href = "/Home?cambioExitoso=true";
-      } else {
-        setError(
-          "Error al cambiar la contraseña, por favor verificar los datos"
-        );
       }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+      toast.error(
+        "Error al cambiar la contraseña, por favor verificar los datos: ",
+        error
+      );
     }
   };
 

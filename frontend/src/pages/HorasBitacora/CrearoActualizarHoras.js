@@ -81,9 +81,8 @@ function CrearoActualizarHoras() {
           });
         })
         .catch((error) => {
-          console.error("Error al obtener los datos:", error);
-          setError(
-            "Error al obtener los datos. Por favor, inténtelo de nuevo."
+          toast.error(
+            "Error al obtener los datos. Por favor, inténtelo de nuevo: ",error
           );
         });
     } else {

@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 // Componente principal para crear o actualizar conclusiones
 function CrearoActualizarConclusiones() {
-    // Definición de los estados locales
+  // Definición de los estados locales
   const [formData, setFormData] = useState({
-    ConclusionId:"",
+    ConclusionId: "",
     Identificacion: "",
     GrupoId: "",
     Labor1: "",
@@ -25,7 +25,7 @@ function CrearoActualizarConclusiones() {
     MotivoRechazo: "",
     LastUser: "",
   });
-  
+
   const [error, setError] = useState("");
   const [conclusionId, setConclusionId] = useState(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -39,7 +39,7 @@ function CrearoActualizarConclusiones() {
   const navigate = useNavigate();
   const nodeRef = useRef(null);
 
-   // useEffect para cargar datos del rol y conclusión desde el almacenamiento
+  // useEffect para cargar datos del rol y conclusión desde el almacenamiento
   useEffect(() => {
     const role = sessionStorage.getItem("SelectedRole");
     setSelectedRole(role);
@@ -63,12 +63,11 @@ function CrearoActualizarConclusiones() {
         fetch(`conclusiones/${identificacion}/${grupoId}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
             if (data) {
-              setConclusionId(data.ConclusionId)
+              setConclusionId(data.ConclusionId);
               setFormData((prevFormData) => ({
                 ...prevFormData,
-                ConclusionId:data.ConclusionId,
+                ConclusionId: data.ConclusionId,
                 Identificacion: data.Identificacion,
                 GrupoId: data.GrupoId,
                 Labor1: data.Labor1,
@@ -86,9 +85,9 @@ function CrearoActualizarConclusiones() {
             }
           })
           .catch((error) => {
-            console.error("Error al obtener los datos:", error);
-            setError(
-              "Error al obtener los datos. Por favor, inténtelo de nuevo."
+            toast.error(
+              "Error al obtener los datos. Por favor, inténtelo de nuevo:",
+              error
             );
           });
       }
@@ -115,16 +114,16 @@ function CrearoActualizarConclusiones() {
             validateForm(data);
           })
           .catch((error) => {
-            console.error("Error al obtener los datos:", error);
-            setError(
-              "Error al obtener los datos. Por favor, inténtelo de nuevo."
+            toast.error(
+              "Error al obtener los datos. Por favor, inténtelo de nuevo:",
+              error
             );
           });
       }
     }
   }, [conclusionId]);
 
-   // Ajuste del padding dinámico del contenedor basado en la altura del contenido
+  // Ajuste del padding dinámico del contenedor basado en la altura del contenido
   useEffect(() => {
     const container = document.querySelector(".creconclusiones-container");
     const content = document.querySelector(".creconclusiones-content");
@@ -146,14 +145,14 @@ function CrearoActualizarConclusiones() {
       window.removeEventListener("resize", adjustPadding);
     };
   }, []);
-// Maneja los cambios en los inputs del formulario
+  // Maneja los cambios en los inputs del formulario
   const handleChange = (name, value) => {
     const newFormData = { ...formData, [name]: value };
     setFormData(newFormData);
     validateForm(newFormData);
   };
 
-// Validación del formulario
+  // Validación del formulario
   const validateForm = (data) => {
     const { Labor1, Labor2, Labor3, Labor4, Labor5, Labor6, Comentarios } =
       data;
@@ -162,7 +161,7 @@ function CrearoActualizarConclusiones() {
     setIsSubmitDisabled(!isValid);
   };
 
-   // Maneja el envío del formulario
+  // Maneja el envío del formulario
   const handleSubmit = async (event) => {
     setIsLoading(true); // Mostrar pantalla de carga
     event.preventDefault();
@@ -184,16 +183,12 @@ function CrearoActualizarConclusiones() {
         return;
       }
     }
-    formData.Identificacion=sessionStorage.getItem("Identificacion")
-    formData.GrupoId=sessionStorage.getItem("GrupoId")
-    formData.ConclusionId=conclusionId
-    console.log(formData.Identificacion)
-  console.log(formData.GrupoId)
-  console.log(formData.ConclusionId)
+    formData.Identificacion = sessionStorage.getItem("Identificacion");
+    formData.GrupoId = sessionStorage.getItem("GrupoId");
+    formData.ConclusionId = conclusionId;
     const dataToSend = { ...formData, ConclusionId: conclusionId };
 
     try {
-      console.log(dataToSend)
       const response = await fetch(
         "conclusiones/crearOActualizarConclusiones",
         {
@@ -209,12 +204,11 @@ function CrearoActualizarConclusiones() {
         toast.success("La conclusión se ha registrado correctamente");
         sessionStorage.removeItem("ConclusionIdSeleccionado");
         setIsLoading(false); // Ocultar pantalla de carga
-        if(selectedRole!=="Estudiante"){
+        if (selectedRole !== "Estudiante") {
           navigate("/VistaConclusionesGrupo");
-        }else{
+        } else {
           navigate("/Home");
         }
-        
       } else {
         setError(
           "Error al registrar la conclusión. Por favor, inténtelo de nuevo."
@@ -228,13 +222,13 @@ function CrearoActualizarConclusiones() {
   // Maneja el evento de retroceso (volver a la vista anterior)
   const handleBackClick = () => {
     sessionStorage.removeItem("ConclusionIdSeleccionado");
-    if(selectedRole!=="Estudiante"){
+    if (selectedRole !== "Estudiante") {
       navigate("/VistaConclusionesGrupo");
-    }else{
+    } else {
       navigate("/Home");
     }
   };
- // Maneja la aprobación de la conclusión
+  // Maneja la aprobación de la conclusión
   const handleApprove = async () => {
     try {
       setIsLoading(true); // Mostrar pantalla de carga
@@ -279,7 +273,6 @@ function CrearoActualizarConclusiones() {
       setError("El motivo del rechazo debe tener al menos 5 palabras.");
       setIsLoading(false); // Ocultar pantalla de carga
       return;
-
     }
 
     try {
@@ -373,7 +366,10 @@ function CrearoActualizarConclusiones() {
           <FaChevronLeft />
           Regresar
         </button>
-        {selectedRole === "Académico" || selectedRole === "Administrativo"||(selectedRole === "Estudiante"&&formData.EstadoBoleta==="Aprobado") ? (
+        {selectedRole === "Académico" ||
+        selectedRole === "Administrativo" ||
+        (selectedRole === "Estudiante" &&
+          formData.EstadoBoleta === "Aprobado") ? (
           <div>
             <input
               type="hidden"
@@ -501,17 +497,18 @@ function CrearoActualizarConclusiones() {
                 placeholder="Comentarios"
               />
             </div>
-            {(formData.EstadoBoleta !== "Aprobado"&&selectedRole==="Estudiante") && (
-              <div className="creconclusiones-input-container">
-                <button
-                  type="submit"
-                  className="creconclusiones-button"
-                  disabled={isSubmitDisabled}
-                >
-                  {conclusionId ? "Actualizar" : "Guardar"} <FaSave />
-                </button>
-              </div>
-            )}
+            {formData.EstadoBoleta !== "Aprobado" &&
+              selectedRole === "Estudiante" && (
+                <div className="creconclusiones-input-container">
+                  <button
+                    type="submit"
+                    className="creconclusiones-button"
+                    disabled={isSubmitDisabled}
+                  >
+                    {conclusionId ? "Actualizar" : "Guardar"} <FaSave />
+                  </button>
+                </div>
+              )}
             {error && <div className="error-message">{error}</div>}
           </form>
         )}

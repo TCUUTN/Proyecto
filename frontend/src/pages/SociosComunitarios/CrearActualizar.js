@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa6"; // Icono de flecha izquierda de FontAwesome
 import { useNavigate } from "react-router-dom"; // Hook para navegación de rutas
 import { FaSave } from "react-icons/fa"; // Icono de guardar de FontAwesome
+import { toast, ToastContainer } from "react-toastify";
 
 import "./CrearActuSocioCom.css";// Importación de estilos CSS específicos
 
@@ -69,7 +70,7 @@ function CrearActuSocioComunitarios() {
         })
         .catch((error) => {
            // Manejo de errores en la obtención de datos del socio
-          console.error("Error fetching socio data:", error);
+          toast.error("Error fetching socio data:", error);
         });
     } else {
       // Si no hay un socio seleccionado, se asegura que el estado sea "Activo"
@@ -196,7 +197,7 @@ const handleBackClick = () => {
       })
       .catch((error) => {
         // Manejo de errores en la petición
-        console.error("Error saving socio:", error);
+        toast.error("Error saving socio:", error);
         // Mostrar notificación de error aquí (opcional)
         setLoading(false);  // Oculta pantalla de carga
       });
@@ -204,6 +205,7 @@ const handleBackClick = () => {
 // Renderiza el formulario y la interfaz del componente
   return (
     <div className="creaedsocio-container">
+          <ToastContainer position="bottom-right" />
       {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
       <div className="creaedsocio-content">
         <h1 className="creaedsocio-title">{title}</h1>

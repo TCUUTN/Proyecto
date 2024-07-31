@@ -57,8 +57,7 @@ function CompletarPerfil() {
       }
     } catch (error) {
       // Maneja errores de la solicitud y muestra un mensaje de error
-      console.error("Error al enviar la solicitud:", error);
-      setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo.");
+      setError("Error al enviar la solicitud. Por favor, inténtelo de nuevo: ",error);
     }
   };
 

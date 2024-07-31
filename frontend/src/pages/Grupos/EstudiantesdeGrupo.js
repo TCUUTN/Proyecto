@@ -32,7 +32,7 @@ function ListaEstudiantes() {
     fetchEstudiantes();
     fetchBandera();
   }, []);
- // Función para obtener la lista de estudiantes desde el backend
+  // Función para obtener la lista de estudiantes desde el backend
   const fetchEstudiantes = async () => {
     try {
       setLoading(true);
@@ -43,48 +43,38 @@ function ListaEstudiantes() {
         setEstudiantes(data);
         setFilteredEstudiantes(data);
       } else if (response.status === 404) {
-        console.error("No se encontraron estudiantes para el grupo");
         toast.error("No se encontraron estudiantes para el grupo");
-      } else {
-        console.error("Error al obtener la lista de estudiantes");
-        toast.error("Error al obtener la lista de estudiantes");
       }
     } catch (error) {
-      console.error("Error al obtener la lista de estudiantes:", error);
-      toast.error("Error al obtener la lista de estudiantes");
+      toast.error("Error al obtener la lista de estudiantes: ", error);
     } finally {
       setLoading(false);
     }
   };
- // Función para obtener la bandera de finalización del cuatrimestre desde el backend
+  // Función para obtener la bandera de finalización del cuatrimestre desde el backend
   const fetchBandera = async () => {
     try {
       setLoading(true);
-      
+
       const response = await fetch(`/grupos/getBandera/${grupoId}`);
 
       if (response.ok) {
         const data = await response.json();
-        if (data.BanderaFinalizarCuatrimestre===0) {
-          setIsFinalizarDisabled(false)
+        if (data.BanderaFinalizarCuatrimestre === 0) {
+          setIsFinalizarDisabled(false);
         } else {
-          setIsFinalizarDisabled(true)
+          setIsFinalizarDisabled(true);
         }
       } else if (response.status === 404) {
-        console.error("No se encontró la bandera de activación");
         toast.error("No se encontró la bandera de activación");
-      } else {
-        console.error("Error al obtener la bandera de activación");
-        toast.error("Error al obtener la bandera de activación");
       }
     } catch (error) {
-      console.error("Error al obtener la bandera de activación:", error);
-      toast.error("Error al obtener la bandera de activación");
+      toast.error("Error al obtener la bandera de activación: ", error);
     } finally {
       setLoading(false);
     }
   };
- // Manejo de cambios en el filtro de nombre
+  // Manejo de cambios en el filtro de nombre
   const handleNombreFilterChange = (e) => {
     const value = e.target.value;
     setNombreFilter(value);
@@ -96,19 +86,19 @@ function ListaEstudiantes() {
     setIdentificacionFilter(value);
     applyFilters(nombreFilter, value, estadoFilter, progresoFilter);
   };
- // Manejo de cambios en el filtro de estado
+  // Manejo de cambios en el filtro de estado
   const handleEstadoFilterChange = (e) => {
     const value = e.target.value;
     setEstadoFilter(value);
     applyFilters(nombreFilter, identificacionFilter, value, progresoFilter);
   };
-// Manejo de cambios en el filtro de progreso
+  // Manejo de cambios en el filtro de progreso
   const handleProgresoFilterChange = (e) => {
     const value = e.target.value;
     setProgresoFilter(value);
     applyFilters(nombreFilter, identificacionFilter, estadoFilter, value);
   };
- // Aplicación de filtros a la lista de estudiantes
+  // Aplicación de filtros a la lista de estudiantes
   const applyFilters = (nombre, identificacion, estado, progreso) => {
     let filtered = estudiantes;
 
@@ -141,7 +131,7 @@ function ListaEstudiantes() {
     setFilteredEstudiantes(filtered);
     setCurrentPage(1); // Resetear a la primera página al cambiar los filtros
   };
- // Cálculo de los índices para la paginación
+  // Cálculo de los índices para la paginación
   const indexOfLastEstudiante = currentPage * estudiantesPerPage;
   const indexOfFirstEstudiante = indexOfLastEstudiante - estudiantesPerPage;
   const currentEstudiantes = filteredEstudiantes.slice(
@@ -155,7 +145,7 @@ function ListaEstudiantes() {
       setCurrentPage(currentPage + 1);
     }
   };
- // Manejo de la navegación a la página anterior
+  // Manejo de la navegación a la página anterior
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -180,14 +170,10 @@ function ListaEstudiantes() {
           "El cuatrimestre ha cerrado correctamente y los estados de los estudiantes han sido ajustados de acuerdo a lo establecido por el reglamento de TCU."
         );
         fetchEstudiantes(); // Refresh the list
-        setLoading(false);
-      } else {
-        toast.error("Error al finalizar el cuatrimestre", response);
-        setLoading(false);
       }
     } catch (error) {
-      console.error("Error al finalizar el cuatrimestre:", error);
-      toast.error("Error al finalizar el cuatrimestre");
+      toast.error("Error al finalizar el cuatrimestre: ", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -344,7 +330,7 @@ function ListaEstudiantes() {
           {/* Botón de regresar */}
           <div className="regred-action-listest">
             <button onClick={handleBack} className="back-button-listest">
-            <FaChevronLeft />
+              <FaChevronLeft />
               Regresar
             </button>
             <div className="estt-divider" />
@@ -355,7 +341,7 @@ function ListaEstudiantes() {
                 <button
                   onClick={handleFinalizarCuatrimestre}
                   className="finalizar-button-listest"
-                  disabled={isFinalizarDisabled===false}
+                  disabled={isFinalizarDisabled === false}
                 >
                   Finalizar Cuatrimestre <FaListCheck />
                 </button>
@@ -452,26 +438,36 @@ function ListaEstudiantes() {
                   <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
                   <td>{estudiante.Usuario.CorreoElectronico}</td>
                   <td>{estudiante.Usuario.Identificacion}</td>
-                  <td>{`${Math.floor(estudiante.HorasAprobadas)} Hrs, ${Math.round((estudiante.HorasAprobadas - Math.floor(estudiante.HorasAprobadas)) * 60)} min`}</td>
+                  <td>{`${Math.floor(
+                    estudiante.HorasAprobadas
+                  )} Hrs, ${Math.round(
+                    (estudiante.HorasAprobadas -
+                      Math.floor(estudiante.HorasAprobadas)) *
+                      60
+                  )} min`}</td>
                   <td>{estudiante.Progreso}</td>
                   <td>{estudiante.Estado}</td>
                   <td>
                     {estudiante.Estado !== "Reprobado" ? (
                       <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip id="tooltip-edit">Ver Bitacora del Estudiante</Tooltip>}
-                    >
-                      <button
-                        className="icon-btn-mat"
-                        onClick={() =>
-                          handleViewDetails(
-                            estudiante.Usuario.Identificacion,
-                            estudiante.Estado
-                          )
+                        placement="top"
+                        overlay={
+                          <Tooltip id="tooltip-edit">
+                            Ver Bitacora del Estudiante
+                          </Tooltip>
                         }
                       >
-                        <FaInfoCircle />
-                      </button>
+                        <button
+                          className="icon-btn-mat"
+                          onClick={() =>
+                            handleViewDetails(
+                              estudiante.Usuario.Identificacion,
+                              estudiante.Estado
+                            )
+                          }
+                        >
+                          <FaInfoCircle />
+                        </button>
                       </OverlayTrigger>
                     ) : null}
                   </td>

@@ -65,9 +65,8 @@ const navigate = useNavigate();
           });
         })
         .catch((error) => {
-          console.error("Error al obtener los datos:", error);
-          setError(
-            "Error al obtener los datos. Por favor, inténtelo de nuevo."
+          toast.error(
+            "Error al obtener los datos. Por favor, inténtelo de nuevo: ",error
           );
         });
     } else {
@@ -145,12 +144,10 @@ const navigate = useNavigate();
     };
   // Agregar el ID del grupo si es del tipo "Académico"
     if (formData.TipoInformacion === "Académico") {
-      console.log(localStorage.getItem("GrupoSeleccionado"))
       dataToSend.GrupoId = localStorage.getItem("GrupoSeleccionado");
     }
 
     try {
-      console.log(dataToSend);
       const response = await fetch("informacion/crearOActualizarInformacion", {
         method: "POST",
         headers: {

@@ -32,7 +32,7 @@ function MantGrupos() {
   }, []);
 
   const fetchBandera = async () => {
-     // Función para obtener la bandera de activación
+    // Función para obtener la bandera de activación
     try {
       setLoading(true);
 
@@ -46,15 +46,10 @@ function MantGrupos() {
           setIsFinalizarDisabled(true);
         }
       } else if (response.status === 404) {
-        console.error("No se encontró la bandera de activación");
         toast.error("No se encontró la bandera de activación");
-      } else {
-        console.error("Error al obtener la bandera de activación");
-        toast.error("Error al obtener la bandera de activación");
       }
     } catch (error) {
-      console.error("Error al obtener la bandera de activación:", error);
-      toast.error("Error al obtener la bandera de activación");
+      toast.error("Error al obtener la bandera de activación: ", error);
     } finally {
       setLoading(false);
     }
@@ -74,13 +69,9 @@ function MantGrupos() {
         setFilteredGrupos(filteredData);
         const years = [...new Set(filteredData.map((grupo) => grupo.Anno))];
         setUniqueYears(years.sort((a, b) => a - b));
-      } else {
-        console.error("Error al obtener la lista de grupos");
-        toast.error("Error al obtener la lista de grupos");
       }
     } catch (error) {
-      console.error("Error al obtener la lista de grupos:", error);
-      toast.error("Error al obtener la lista de grupos");
+      toast.error("Error al obtener la lista de grupos: ", error);
     }
   };
 
@@ -91,28 +82,28 @@ function MantGrupos() {
   };
 
   const handleCodigoMateriaFilterChange = (e) => {
-      // Función para manejar el cambio en el filtro de código de materia
+    // Función para manejar el cambio en el filtro de código de materia
     const value = e.target.value;
     setCodigoMateriaFilter(value);
     applyFilters(value, nombreProyectoFilter, cuatrimestreFilter, annoFilter);
   };
 
   const handleNombreProyectoFilterChange = (e) => {
-     // Función para manejar el cambio en el filtro de nombre de proyecto
+    // Función para manejar el cambio en el filtro de nombre de proyecto
     const value = e.target.value;
     setNombreProyectoFilter(value);
     applyFilters(codigoMateriaFilter, value, cuatrimestreFilter, annoFilter);
   };
 
   const handleCuatrimestreFilterChange = (e) => {
-          // Función para manejar el cambio en el filtro de cuatrimestre
+    // Función para manejar el cambio en el filtro de cuatrimestre
     const value = e.target.value;
     setCuatrimestreFilter(value);
     applyFilters(codigoMateriaFilter, nombreProyectoFilter, value, annoFilter);
   };
 
   const handleAnnoFilterChange = (e) => {
-          // Función para manejar el cambio en el filtro de año
+    // Función para manejar el cambio en el filtro de año
     const value = e.target.value;
     setAnnoFilter(value);
     applyFilters(
@@ -156,7 +147,7 @@ function MantGrupos() {
   };
 
   const indexOfLastGrupo = currentPage * gruposPerPage; // Índice del último grupo en la página actual
-  const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage;  // Índice del primer grupo en la página actual
+  const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage; // Índice del primer grupo en la página actual
   const currentGrupos = filteredGrupos.slice(
     indexOfFirstGrupo,
     indexOfLastGrupo
@@ -164,21 +155,21 @@ function MantGrupos() {
   const totalPages = Math.ceil(filteredGrupos.length / gruposPerPage); // Número total de páginas
 
   const handleNextPage = () => {
-      // Función para manejar el cambio a la página siguiente
+    // Función para manejar el cambio a la página siguiente
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
-     // Función para manejar el cambio a la página anterior
+    // Función para manejar el cambio a la página anterior
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
   const handleFileUpload = async (e) => {
-      // Función para manejar la carga de archivos
+    // Función para manejar la carga de archivos
     setLoading(true); // Inicia la carga
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -193,7 +184,6 @@ function MantGrupos() {
 
       // Verificar que haya al menos tres filas
       if (worksheet.length < 3) {
-        console.error("El archivo no contiene las filas requeridas");
         toast.error("El archivo no contiene las filas requeridas");
         setLoading(false); // Termina la carga
         return;
@@ -216,9 +206,6 @@ function MantGrupos() {
       const requiredDefaultHeaders = ["Cuatrimestre", "Anno", "Sede"];
       for (const header of requiredDefaultHeaders) {
         if (!defaultValues.hasOwnProperty(header)) {
-          console.error(
-            `El archivo no contiene la columna requerida: ${header}`
-          );
           toast.error(`El archivo no contiene la columna requerida: ${header}`);
           setLoading(false); // Termina la carga
           return;
@@ -241,7 +228,6 @@ function MantGrupos() {
         !headers.includes("Aula") ||
         !headers.includes("Academico")
       ) {
-        console.error("El archivo no contiene las columnas requeridas");
         toast.error("El archivo no contiene las columnas requeridas");
         setLoading(false); // Termina la carga
         return;
@@ -286,16 +272,12 @@ function MantGrupos() {
 
             grupos.push(grupo);
           } else {
-            console.error(
-              `Error al obtener la identificación para ${Nombre} ${Apellido1} ${Apellido2}`
-            );
             toast.error(
               `Error al obtener la identificación para ${Nombre} ${Apellido1} ${Apellido2}`
             );
           }
         } catch (error) {
-          console.error("Error al procesar los datos del usuario:", error);
-          toast.error("Error al procesar los datos del usuario");
+          toast.error("Error al procesar los datos del usuario: ", error);
         }
       }
 
@@ -309,16 +291,11 @@ function MantGrupos() {
         });
 
         if (response.ok) {
-          console.log("Datos cargados correctamente");
           toast.success("Datos cargados correctamente");
           fetchGrupos(); // Refresh table
-        } else {
-          console.error("Error al cargar los datos de los grupos");
-          toast.error("Error al cargar los datos de los grupos");
         }
       } catch (error) {
-        console.error("Error al cargar los datos de los grupos:", error);
-        toast.error("Error al cargar los datos de los grupos");
+        toast.error("Error al cargar los datos de los grupos: ", error);
       } finally {
         setLoading(false); // Termina la carga
       }
@@ -338,21 +315,16 @@ function MantGrupos() {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
-        if (isFinalizarDisabled===false) {
+        if (isFinalizarDisabled === false) {
           setIsFinalizarDisabled(true);
         } else {
           setIsFinalizarDisabled(false);
         }
       } else if (response.status === 404) {
-        console.error("No se encontró la bandera de activación");
         toast.error("No se encontró la bandera de activación");
-      } else {
-        console.error("Error al obtener la bandera de activación");
-        toast.error("Error al obtener la bandera de activación");
       }
     } catch (error) {
-      console.error("Error al obtener la bandera de activación:", error);
-      toast.error("Error al obtener la bandera de activación");
+      toast.error("Error al obtener la bandera de activación: ", error);
     } finally {
       setLoading(false);
     }

@@ -59,7 +59,6 @@ function DashboardEstudiante() {
     fetch(`/horas/EstudianteAprobado/${identificacion}/${grupoId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const planificacion = [];
         const gira = [];
         let totalHoras = 0;

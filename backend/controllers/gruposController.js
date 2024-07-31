@@ -8,6 +8,7 @@ const BoletaConclusion = require("../models/ConclusionBoleta");
 const { Op } = require("sequelize");
 const { enviarCorreo } = require("../helpers/CorreoHelper"); // Importa el helper
 
+//Obtiene todos los Grupos
 const getAllGrupos = async (req, res) => {
   try {
     const grupos = await Grupo.findAll({
@@ -22,6 +23,7 @@ const getAllGrupos = async (req, res) => {
   }
 };
 
+//Obtiene todos los Proyectos
 const getAllTiposGrupos = async (req, res) => {
   try {
     const tiposGrupos = await TipoGrupo.findAll();
@@ -31,6 +33,7 @@ const getAllTiposGrupos = async (req, res) => {
   }
 };
 
+//Obtiene todos los registro de Grupos Estudiantes
 const getAllGruposEstudiantes = async (req, res) => {
   try {
     const gruposEstudiantes = await GruposEstudiantes.findAll();
@@ -40,6 +43,7 @@ const getAllGruposEstudiantes = async (req, res) => {
   }
 };
 
+//Obtiene el grupo por el GrupoId
 const getGrupoPorGrupoId = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -67,6 +71,7 @@ const getGrupoPorGrupoId = async (req, res) => {
   }
 };
 
+//verifica si esta activo o no el proceso de Finalizar Cuatrimestre
 const getBanderaFinalizarCuatrimestre = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -88,9 +93,9 @@ const getBanderaFinalizarCuatrimestre = async (req, res) => {
   }
 };
 
+//Verifica si para el grupo esta activo el proceso de finalizar Cuatrimestre
 const getBanderaFinalizarCuatrimestreOne = async (req, res) => {
   try {
-
     const grupo = await Grupo.findOne({
       where: {
         Estado: 1,
@@ -108,6 +113,7 @@ const getBanderaFinalizarCuatrimestreOne = async (req, res) => {
   }
 };
 
+//Obtiene todos los grupos activos relacionados a un Académico
 const getGrupoPorIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -115,7 +121,7 @@ const getGrupoPorIdentificacion = async (req, res) => {
     const grupo = await Grupo.findAll({
       where: {
         Identificacion: Identificacion,
-        Estado:1
+        Estado: 1,
       },
       include: [
         { model: TipoGrupo, attributes: ["NombreProyecto", "TipoCurso"] },
@@ -134,8 +140,7 @@ const getGrupoPorIdentificacion = async (req, res) => {
   }
 };
 
-
-
+//Obtiene el proyecto por el Codig de Proyecto
 const getTipoGrupoPorCodigoMateria = async (req, res) => {
   try {
     const { CodigoProyecto } = req.params;
@@ -157,6 +162,7 @@ const getTipoGrupoPorCodigoMateria = async (req, res) => {
   }
 };
 
+//Obtiene el registro de un Estudiante por Grupo
 const getEstudiantePorGrupo = async (req, res) => {
   try {
     const { Identificacion, GrupoId } = req.params;
@@ -180,6 +186,7 @@ const getEstudiantePorGrupo = async (req, res) => {
   }
 };
 
+//Obtiene el registro de un Estudiante por Identificación
 const getGrupoEstudianteporIdentificacion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -205,6 +212,7 @@ const getGrupoEstudianteporIdentificacion = async (req, res) => {
   }
 };
 
+//Obtiene el registro de un Estudiante por Identificación, pero filtrados los atributos
 const getGrupoEstudianteporIdentificacionParaUsuario = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -231,7 +239,7 @@ const getGrupoEstudianteporIdentificacionParaUsuario = async (req, res) => {
         Estado: "Reprobado",
       },
       attributes: ["GrupoId", "Estado"], // Añadiendo atributos
-      order: [['GrupoId', 'DESC']],
+      order: [["GrupoId", "DESC"]],
     });
 
     if (reprobados.length === 0) {
@@ -249,6 +257,7 @@ const getGrupoEstudianteporIdentificacionParaUsuario = async (req, res) => {
   }
 };
 
+//Obtiene la lista de estudiantes para un determinado GrupoId
 const getListaEstudiantes = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -286,19 +295,17 @@ const getListaEstudiantes = async (req, res) => {
         where: {
           Identificacion: Identificacion,
           GrupoId: GrupoId,
-          EstadoHoras: 'Aprobado'
+          EstadoHoras: "Aprobado",
         },
-        attributes: [
-          'HoraInicio',
-          'HoraFinal',
-        ]
+        attributes: ["HoraInicio", "HoraFinal"],
       });
 
       let HorasAprobadas = 0;
 
-      horas.forEach(hora => {
-        const [horaInicio, minutoInicio] = hora.HoraInicio.split(':').map(Number);
-        const [horaFinal, minutoFinal] = hora.HoraFinal.split(':').map(Number);
+      horas.forEach((hora) => {
+        const [horaInicio, minutoInicio] =
+          hora.HoraInicio.split(":").map(Number);
+        const [horaFinal, minutoFinal] = hora.HoraFinal.split(":").map(Number);
 
         let diferenciaHoras = horaFinal - horaInicio;
         let diferenciaMinutos = minutoFinal - minutoInicio;
@@ -308,7 +315,7 @@ const getListaEstudiantes = async (req, res) => {
           diferenciaHoras -= 1;
         }
 
-        HorasAprobadas += diferenciaHoras + (diferenciaMinutos / 60);
+        HorasAprobadas += diferenciaHoras + diferenciaMinutos / 60;
       });
 
       estudiante.dataValues.HorasAprobadas = HorasAprobadas || 0;
@@ -320,10 +327,7 @@ const getListaEstudiantes = async (req, res) => {
   }
 };
 
-
-
-
-// Crear o actualizar TipoGrupo
+// Crear o actualizar un Proyecto
 const crearOActualizarTipoGrupo = async (req, res) => {
   try {
     const { CodigoMateria, NombreProyecto, TipoCurso } = req.body;
@@ -353,6 +357,7 @@ const crearOActualizarTipoGrupo = async (req, res) => {
   }
 };
 
+// Crear o actualizar un Grupo
 const crearOActualizarGrupo = async (req, res) => {
   try {
     const {
@@ -450,9 +455,9 @@ const crearOActualizarGrupoEstudiante = async (req, res) => {
   }
 };
 
+//Carga masiva de Grupos
 const cargarGrupos = async (req, res) => {
   const grupos = req.body;
-  console.log(grupos);
   try {
     for (let grupoData of grupos) {
       // Buscar el grupo existente por Anno, Sede, Cuatrimestre, NumeroGrupo, y CodigoMateria
@@ -502,6 +507,7 @@ const cargarGrupos = async (req, res) => {
   }
 };
 
+//Craga masiva de Proyectos
 const cargarTipoGrupos = async (req, res) => {
   const tipoGrupos = req.body;
 
@@ -537,6 +543,7 @@ const cargarTipoGrupos = async (req, res) => {
   }
 };
 
+//Verifica el Estado de un grupo
 const EstadoGrupo = async (req, res) => {
   try {
     const { GrupoId } = req.body;
@@ -564,6 +571,7 @@ const EstadoGrupo = async (req, res) => {
   }
 };
 
+//Obtiene los grupos relacionados a un academico que contengan al menos una conclusion enviada
 const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
   try {
     const { Identificacion } = req.params;
@@ -612,6 +620,7 @@ const getGrupoPorIdentificacionParaConclusion = async (req, res) => {
   }
 };
 
+//Obtiene una lista de los años
 const getAllAnnosParaReporte = async (req, res) => {
   try {
     const grupos = await Grupo.findAll({
@@ -619,7 +628,7 @@ const getAllAnnosParaReporte = async (req, res) => {
     });
 
     // Extraer los años y eliminar duplicados
-    const anos = [...new Set(grupos.map(grupos => grupos.Anno))];
+    const anos = [...new Set(grupos.map((grupos) => grupos.Anno))];
 
     res.json(anos);
   } catch (err) {
@@ -627,6 +636,7 @@ const getAllAnnosParaReporte = async (req, res) => {
   }
 };
 
+//Obtiene los grupos de un determinado cuatrimestre y año filtrado para las conclusiones
 const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
   try {
     const { Anno, Cuatrimestre, Sede } = req.body;
@@ -680,6 +690,7 @@ const getGrupoPorAnnoyCuatrimestreParaConclusion = async (req, res) => {
   }
 };
 
+//Genera los datos para poder mostrar el gráfico del Dashboard de admin para la parte de Estudiantes activos por Genero
 const getGrupoPorAnnoyCuatrimestreParaGenero = async (req, res) => {
   try {
     const { Anno, Cuatrimestre, Sede } = req.body;
@@ -735,54 +746,7 @@ const getGrupoPorAnnoyCuatrimestreParaGenero = async (req, res) => {
   }
 };
 
-
-const getprueba = async (req, res) => {
-  try {
-    const { GrupoId } = req.params;
-
-    // Traer todos los GruposEstudiantes relacionados a ese grupo
-    const estudiantesGrupo = await GruposEstudiantes.findAll({
-      where: { GrupoId: GrupoId },
-      include: [
-        {
-          model: Grupo,
-          attributes: ["CodigoMateria", "Cuatrimestre", "Anno"],
-          include: [
-            {
-              model: TipoGrupo,
-              attributes: ["NombreProyecto"],
-            },
-            {
-              model: Usuario,
-              attributes: [
-                "Nombre",
-                "Apellido1",
-                "Apellido2",
-                "CorreoElectronico",
-              ],
-            },
-          ],
-        },
-        {
-          model: Usuario,
-          attributes: ["Nombre", "Apellido1", "Apellido2", "CorreoElectronico"],
-        },
-      ],
-      attributes: ["ComentariosReprobado", "Estado", "Progreso"],
-    });
-
-    if (!estudiantesGrupo || estudiantesGrupo.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "No se encontraron estudiantes en el grupo" });
-    }
-
-    res.status(200).json(estudiantesGrupo);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
+//Proceso de finalizacion de cuatrimestre
 const FinalizarCuatrimestre = async (req, res) => {
   try {
     const { GrupoId } = req.params;
@@ -832,7 +796,6 @@ const FinalizarCuatrimestre = async (req, res) => {
 
     estudiantesGrupo.forEach(async (estudiante) => {
       let estudianteJson = estudiante.toJSON(); // Convertir a JSON
-      console.log(estudianteJson);
 
       if (estudiante.Estado === "En Curso") {
         const horasAprobadas = await Horas.findAll({
@@ -986,6 +949,7 @@ const FinalizarCuatrimestre = async (req, res) => {
   }
 };
 
+//Genera el correo de Reprobacion de un estudiante del TCU
 const generarReprobadoHtml = (estudiante) => {
   const year = new Date().getFullYear();
   const textColor = "#002c6b"; // Color de texto para el contenido principal
@@ -1011,6 +975,7 @@ const generarReprobadoHtml = (estudiante) => {
   `;
 };
 
+//Genera el correo de Aprobacion de un estudiante del TCU
 const generarAprobadoHtml = (estudiante) => {
   const year = new Date().getFullYear();
   const textColor = "#002c6b"; // Color de texto para el contenido principal
@@ -1038,6 +1003,7 @@ const generarAprobadoHtml = (estudiante) => {
   `;
 };
 
+//Obtiene a los estudiantes para Administrativos
 const getEstudianteAdministrativo = async (req, res) => {
   try {
     const { Sede } = req.params;
@@ -1072,6 +1038,7 @@ const getEstudianteAdministrativo = async (req, res) => {
   }
 };
 
+//Obtiene un listado de los grupos activos
 const getGruposActivos = async (req, res) => {
   try {
     const { Sede } = req.params;
@@ -1104,6 +1071,7 @@ const getGruposActivos = async (req, res) => {
   }
 };
 
+//Proceso para activar o descativar el proceso de finalizar cuatrimestre en los grupos que se encuentran activos
 const ActivarFinalizarCuatrimestre = async (req, res) => {
   try {
     const { Sede } = req.params;
@@ -1145,7 +1113,6 @@ const ActivarFinalizarCuatrimestre = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getAllGrupos,
   getAllTiposGrupos,
@@ -1167,11 +1134,10 @@ module.exports = {
   FinalizarCuatrimestre,
   getEstudianteAdministrativo,
   getGruposActivos,
-  getprueba,
   getGrupoEstudianteporIdentificacionParaUsuario,
   getGrupoPorAnnoyCuatrimestreParaGenero,
   getAllAnnosParaReporte,
   ActivarFinalizarCuatrimestre,
   getBanderaFinalizarCuatrimestre,
-  getBanderaFinalizarCuatrimestreOne
+  getBanderaFinalizarCuatrimestreOne,
 };
