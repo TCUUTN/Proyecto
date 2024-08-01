@@ -21,7 +21,7 @@ import NavbarAdm from "../../Assets/Images/Guias/Administrativo/Navbar.png";
 function GuiaAdmininistrativo() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
-
+//Funcion del boton flotante 
     function checkScroll() {
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -50,6 +50,7 @@ function GuiaAdmininistrativo() {
     });
   };
 
+    // Descargar pdf
   const handleDownloadPDF = async () => {
     const sections = document.querySelectorAll(".section-guias");
     const scrollToTopButton = document.querySelector(".scroll-to-top");
@@ -343,6 +344,7 @@ function GuiaAdmininistrativo() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
+         {/* Boton de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>

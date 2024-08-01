@@ -36,6 +36,8 @@ import informacionGrupos_Crear from "../../Assets/Images/Guias/Academicos/Inform
 function GuiaAcademico() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
+    
+    //Funcion del boton flotante 
     function checkScroll() {
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -62,6 +64,8 @@ function GuiaAcademico() {
     });
   };
 
+
+    // Descargar pdf
   const handleDownloadPDF = async () => {
     const sections = document.querySelectorAll(".section-guias");
     const scrollToTopButton = document.querySelector(".scroll-to-top");
@@ -682,6 +686,7 @@ function GuiaAcademico() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
+              {/* Boton de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>

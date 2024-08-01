@@ -20,7 +20,8 @@ import informacionGeneral from "../../Assets/Images/Guias/InformacionGeneral_Aca
 function GuiaEstudiantes() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
-
+    
+//Funcion del boton flotante 
     function checkScroll() {
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -49,6 +50,8 @@ function GuiaEstudiantes() {
     });
   };
 
+
+  // Descargar pdf
   const handleDownloadPDF = async () => {
     const sections = document.querySelectorAll(".section-guias");
     const scrollToTopButton = document.querySelector(".scroll-to-top");
@@ -464,6 +467,7 @@ function GuiaEstudiantes() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
+              {/* Boton de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>
