@@ -89,6 +89,13 @@
   display: flex;
   gap: 100px;
 }
+.guiaIn-contenido-A {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 80px;
+}
 .guiaIn-contenido li {
   display: flex;
   align-items: center;

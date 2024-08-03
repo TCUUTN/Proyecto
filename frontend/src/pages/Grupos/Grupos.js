@@ -10,7 +10,7 @@ import "./Proyectos.modulo.css";
 import { GrEdit } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
-function MantGrupos() {
+function Grupos() {
   const [grupos, setGrupos] = useState([]); // Estado para almacenar la lista de grupos
   const [filteredGrupos, setFilteredGrupos] = useState([]); // Estado para almacenar la lista de grupos filtrados
   const [codigoMateriaFilter, setCodigoMateriaFilter] = useState(""); // Estado para el filtro de código de materia
@@ -534,4 +534,4 @@ function MantGrupos() {
   );
 }
 
-export default MantGrupos;
+export default Grupos;

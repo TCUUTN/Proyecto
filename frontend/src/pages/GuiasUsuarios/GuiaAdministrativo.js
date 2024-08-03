@@ -7,21 +7,35 @@ import jsPDF from "jspdf";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import NavbarAdm from "../../Assets/Images/Guias/Administrativo/Navbar.png";
 //Usuario
-
+import Usuarios from "../../Assets/Images/Guias/Administrativo/Usuarios.png";
+import CrearUsuario from "../../Assets/Images/Guias/Administrativo/CrearUsuario.png";
+import SeleccionarRol from "../../Assets/Images/Guias/Administrativo/SeleccionarRolUsuario.png";
 //Grupos
-
+import CrearProyectos from "../../Assets/Images/Guias/Administrativo/CrearProyectos.png";
+import Proyectos from "../../Assets/Images/Guias/Administrativo/Proyectos.png";
+import Grupos from "../../Assets/Images/Guias/Administrativo/Grupos.png";
+import CrearGrupos from "../../Assets/Images/Guias/Administrativo/CrearGrupos.png";
 //Socios Comunitarios
-
+import SocioEnviar from "../../Assets/Images/Guias/Administrativo/SocioSolicitudEnviar.png";
 //Boleta de Conclusion
-
+import SeleccionarBol from "../../Assets/Images/Guias/Administrativo/BoletaSeleccionar.png";
+import MuestraGrupos from "../../Assets/Images/Guias/Administrativo/BoletaGrupos.png";
+import VerGrupos from "../../Assets/Images/Guias/Administrativo/BoletaGrupoVer.png";
+import VerBoleta from "../../Assets/Images/Guias/Administrativo/VerBoletaConclusion.png";
 //Pagina de Inicio
-
+import Pagn1 from "../../Assets/Images/Guias/Administrativo/1_PaginaInicio.png";
+import Pagn2 from "../../Assets/Images/Guias/Administrativo/2_PaginaInicio.png";
+import Pagn3 from "../../Assets/Images/Guias/Administrativo/3_PaginaInicio.png";
 //Informacion
+import InfoG from "../../Assets/Images/Guias/Administrativo/Informacion_General.png";
+import infoCrea from "../../Assets/Images/Guias/Administrativo/informacion_General_Admin.png";
+import Plantilla from "../../Assets/Images/Guias/Administrativo/Plantillas_Admin.png";
+import PlantillaCrear from "../../Assets/Images/Guias/Administrativo/Plantillas_Crear.png";
 
 function GuiaAdmininistrativo() {
   useEffect(() => {
     const sections = document.querySelectorAll(".section");
-//Funcion del boton flotante 
+    //Funcion del boton flotante
     function checkScroll() {
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -50,7 +64,7 @@ function GuiaAdmininistrativo() {
     });
   };
 
-    // Descargar pdf
+  // Descargar pdf
   const handleDownloadPDF = async () => {
     const sections = document.querySelectorAll(".section-guias");
     const scrollToTopButton = document.querySelector(".scroll-to-top");
@@ -245,13 +259,16 @@ function GuiaAdmininistrativo() {
         downloadButton.style.display = "block";
       };
     } catch (error) {
-      toast.error("Error al generar el PDF. Por favor, intente de nuevo: ",error);
+      toast.error(
+        "Error al generar el PDF. Por favor, intente de nuevo: ",
+        error
+      );
     }
   };
 
   return (
     <div className="contenedor-guias">
-    <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" />
       <div className="guias-container">
         {/* Section explicacion de portada */}
         <div className="section section-portada">
@@ -267,7 +284,7 @@ function GuiaAdmininistrativo() {
           <div className=" section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
-            <ul className="guiaIn-contenido-Ac ">
+            <ul className="guiaIn-contenido-A ">
               <li>
                 <a className="interlink-guiaIn" href="#paginaInicio">
                   Página de inicio
@@ -312,20 +329,21 @@ function GuiaAdmininistrativo() {
               inicio de la página.
             </li>
             <li>
-              <strong>Usuario:</strong> Contiene la lista de los usuarios del TCU.
+              <strong>Usuario:</strong> Contiene la lista de los usuarios del
+              TCU.
             </li>
             <li>
               <strong>Grupos:</strong> Sección se divide en dos partes que seria
               por proyectos y la creacion de grupos.
             </li>
             <li>
-              <strong>Socios Comunitarios:</strong> Contiene la lista de socios y
-              también puedes hacer las revisiones de las solicitudes de las
+              <strong>Socios Comunitarios:</strong> Contiene la lista de socios
+              y también puedes hacer las revisiones de las solicitudes de las
               cartas y enviarlas.
             </li>
             <li>
-              <strong>Boleta de Conclusión:</strong> Sección donde puedes filtrar
-              las boletas de conclusion completadas.
+              <strong>Boleta de Conclusión:</strong> Sección donde puedes
+              filtrar las boletas de conclusion completadas.
             </li>
             <li>
               <strong>Información:</strong> Contiene varias secciones en las que
@@ -339,12 +357,41 @@ function GuiaAdmininistrativo() {
             className=" fade-in centered large-image"
           />
         </div>
+        {/* Section explicacion de la Página de inicio */}
+        <div className="section-guias " id="paginaInicio">
+          <h3 className="titulos-guiaIn">Página de inicio</h3>
+          <div className="celes-divider" />
+          <ul>
+            <li>
+              Esta pantalla te brinda una visión general de los proyectos en
+              curso y el avance de los estudiantes. A la izquierda, un gráfico
+              circular muestra la distribución de los estudiantes en cada
+              proyecto, detallando cuántos están activos, en proceso de
+              continuidad, en prórroga o son nuevos. Adicionalmente, indica el
+              cuatrimestre en el que se encuentra el proyecto. En la sección
+              derecha, encontrarás una lista de todos los proyectos activos. Al
+              hacer clic en el ícono de la puerta, accederás a un listado
+              detallado de los estudiantes participantes en ese proyecto
+              específico.
+            </li>
+            <img  src={Pagn1} alt="Pagn1 " className=" fade-in centered medium-image" />
+
+
+
+
+
+
+          </ul>
+          <img alt="paginaInciAc" className=" fade-in centered medium-image" />
+        </div>
+        {/* Section explicacion de usuarios */}
+        {/* Section explicacion de grupos */}
 
         {/* Botón flotante */}
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
-         {/* Boton de descarga*/}
+        {/* Boton de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>
