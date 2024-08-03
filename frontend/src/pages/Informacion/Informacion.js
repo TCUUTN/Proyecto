@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaChevronLeft, FaInfoCircle } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { FaChevronLeft} from "react-icons/fa";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -502,7 +503,7 @@ function VistaInformacion() {
                             className="icon-btn-mat"
                             onClick={() => handleEditar(info.InformacionId)}
                           >
-                            <FaInfoCircle />
+                          <MdEdit />
                           </button>
                         </OverlayTrigger>
                       </td>
