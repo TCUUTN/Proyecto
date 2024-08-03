@@ -301,6 +301,11 @@ function GuiaAdmininistrativo() {
                 </a>
               </li>
               <li>
+                <a className="interlink-guiaIn" href="#cargaMa">
+                  Carga masiva
+                </a>
+              </li>
+              <li>
                 <a className="interlink-guiaIn" href="#sociosC">
                   Socios Comunitarios
                 </a>
@@ -374,18 +379,206 @@ function GuiaAdmininistrativo() {
               detallado de los estudiantes participantes en ese proyecto
               específico.
             </li>
-            <img  src={Pagn1} alt="Pagn1 " className=" fade-in centered medium-image" />
-
-
-
-
-
-
+            <img
+              src={Pagn1}
+              alt="Pagn1 "
+              className=" fade-in centered large-image"
+            />
+            <li>
+              En esta sección de reporte de género se personaliza según el
+              periodo académico seleccionado. Una vez indicados el año y el
+              cuatrimestre, y al hacer clic en 'Buscar', se presentará un
+              gráfico circular que representa visualmente la proporción de
+              estudiantes por género. Adicionalmente, se mostrará una tabla con
+              los datos numéricos correspondientes.
+            </li>
+            <img
+              src={Pagn2}
+              alt="Pagn2 "
+              className=" fade-in centered large-image"
+            />
+            <li>
+              Para obtener una versión imprimible del reporte de género,
+              simplemente haz clic en el botón de descarga. El sistema generará
+              un archivo PDF que podrás guardar en tu dispositivo y compartir
+              con otros usuarios autorizados
+            </li>
+            <img
+              src={Pagn3}
+              alt="Pagn3 "
+              className=" fade-in centered large-image"
+            />
           </ul>
-          <img alt="paginaInciAc" className=" fade-in centered medium-image" />
         </div>
         {/* Section explicacion de usuarios */}
+
+        <div className="section-guias" id="usuarios">
+          <h3 className="titulos-guiaIn">Usuarios</h3>
+          <div className="naranja-divider" />
+          <p>
+            Esta sección te permite gestionar de forma eficiente a todos los
+            usuarios del sistema. Podrás realizar cargas masivas de datos a
+            través de plantillas, buscar usuarios por identificación o nombre,
+            filtrar por estado (activo o inactivo) y rol (académico,
+            administrativo, estudiante). Además, podrás agregar nuevos usuarios
+            haciendo clic en el botón <strong> + </strong> y editar la
+            información de los usuarios existentes haciendo clic en el
+            <strong> icono del lápiz </strong> ubicado en la columna de acciones
+          </p>
+          <img
+            src={Usuarios}
+            alt="Usuarios "
+            className=" fade-in centered medium-image"
+          />
+          <p>Para agregar un nuevo usuario, sigue estos pasos:</p>
+          <ol>
+            <li>
+              Haz clic en el botón <strong> Agregar usuario </strong>.
+            </li>
+            <li>Se abrirá un formulario.</li>
+            <li>Completa todos los campos requeridos.</li>
+            <li>Haz clic en 'Guardar' para finalizar el proceso.</li>
+          </ol>
+          <img
+            src={CrearUsuario}
+            alt="CrearUsuario "
+            className=" fade-in centered small-image"
+          />
+          <p>
+            Al seleccionar el rol de <strong> Estudiante</strong>, se activarán
+            dos campos adicionales: <strong> Carrera</strong> y{" "}
+            <strong> Selecciona un grupo</strong>. Estos campos son obligatorios
+            para completar el registro de un estudiante. Por favor, especifica
+            la carrera que cursa y el grupo al que pertenece
+          </p>
+          <img
+            src={SeleccionarRol}
+            alt="SeleccionarRol "
+            className=" fade-in centered small-image"
+          />
+        </div>
+
         {/* Section explicacion de grupos */}
+        <div className="section-guias" id="grupos">
+          <h3 className="titulos-guiaIn">Grupos</h3>
+          <div className="celes-divider " />
+          <p>En esta sección se divide es dos partes:</p>
+          <ol>
+            <li>
+              <strong>Proyectos: </strong>
+              <ul>
+                <li>
+                  Esta sección te permite gestionar todos tus proyectos de
+                  manera eficiente. Puedes buscar proyectos específicos por su
+                  código, nombre o modalidad (presencial, virtual o híbrida).
+                  Además, puedes agregar nuevos proyectos con un simple clic en
+                  el botón <strong> + </strong> o editar los existentes haciendo
+                  clic en el <strong> icono del lápiz </strong>. Para cargar
+                  varios proyectos a la vez, utiliza la opción 'Carga Masiva'
+                </li>
+                <img
+                  src={Proyectos}
+                  alt="Proyectos"
+                  className=" fade-in centered large-image"
+                />
+                <li>
+                  Al hacer clic en <strong>Agregar proyectos</strong> accederás
+                  a un formulario. En este formulario te pedirá que ingreses
+                  ciertos datos esenciales y es importante que completes todos
+                  los campos obligatorios antes de guardar. Una vez que hayas
+                  llenado toda la información, haz clic en el botón{" "}
+                  <strong> Guardar</strong> para agregar el proyecto a la lista.
+                </li>
+                <img
+                  src={CrearProyectos}
+                  alt="CrearProyectos"
+                  className=" fade-in centered small-image"
+                />
+              </ul>
+            </li>
+            <li>
+              <strong> Creación de grupos: </strong>
+              <ul>
+                <li>
+                  Esta sección encontrarás un listado completo de todos los
+                  grupos. Puedes buscar grupos por código o nombre de proyectos
+                  , por cuatrimestre y año. Para agregar nuevos grupos, haz clic
+                  en 'Agregar Grupos' y para editar los grupos existentes con el
+                  icono del lápiz. Tambien, puedes cargar múltiples grupos a la
+                  vez usando la opción 'Carga Masiva' y ademas puedes activar o
+                  desahilitar el boton de finalizar los cuatrimestres para que
+                  los academicos puedan finalizar el cuatrimestre de sus grupos.
+                </li>
+                <img
+                  src={Grupos}
+                  alt="Grupos"
+                  className=" fade-in centered large-image"
+                />
+                <li>
+                  Cuando desees crear un nuevo grupo, haz clic en el botón
+                  <strong> Agregar Creación de Grupos</strong>. Aparecerá un
+                  formulario donde deberás ingresar toda la información
+                  solicitada. Una vez que hayas completado todos los campos
+                  obligatorios, el botón 'Guardar' se habilitará y podrás
+                  registrar el nuevo grupo.
+                </li>
+                <img
+                  src={CrearGrupos}
+                  alt="CrearGrupos"
+                  className=" fade-in centered small-image"
+                />
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        {/* Section explicacion de la carga Masiva */}
+        <div className="section-guias " id="cargaMa">
+          <h3 className="titulos-guiaIn">Carga Masiva</h3>
+          <div className="celes-divider" />
+          <p>Sigue estos pasos:</p>
+          <ol>
+            <li>
+              <strong>Obtener las Plantillas: </strong>
+              <ul>
+                <li>Dirígete a la sección "Información".</li>
+                <li>Busca y descarga las plantillas</li>
+              </ul>
+            </li>
+            <li>
+              <strong> Revisa el formato:</strong> Asegúrate de comprender el
+              formato de cada columna en las plantillas.
+            </li>
+            <li>
+              <strong> Ingresa los datos:</strong> Llena cada plantilla con la
+              información requerida
+            </li>
+            <li>
+              <strong> Asegúrate de la precisión:</strong> Verifica que todos
+              los datos sean correctos
+            </li>
+            <li>
+              <strong>Académicos:</strong> Ve a la sección "Usuarios" y utiliza
+              la opción de carga masiva.
+            </li>
+            <li>
+              <strong>Proyectos:</strong> Dirígete a la sección "Proyectos" y
+              carga la plantilla correspondiente.
+            </li>
+            <li>
+              <strong> Grupos:</strong> Accede a la sección "Creación de Grupos"
+              y sube la plantilla de grupos.
+            </li>
+            <li>
+              <strong> Estudiantes:</strong> Vuelve a la sección "Usuarios" y
+              utiliza la opción de carga masiva de estudiantes.
+            </li>
+            <li>
+              <strong> Carreras:</strong> En la sección "Usuarios", busca la
+              opción de carga masiva de carreras.
+            </li>
+          </ol>
+        </div>
 
         {/* Botón flotante */}
         <button className="scroll-to-top" onClick={handleScrollToTop}>
