@@ -372,12 +372,11 @@ function GuiaAdmininistrativo() {
               curso y el avance de los estudiantes. A la izquierda, un gráfico
               circular muestra la distribución de los estudiantes en cada
               proyecto, detallando cuántos están activos, en proceso de
-              continuidad, en prórroga o son nuevos. Adicionalmente, indica el
-              cuatrimestre en el que se encuentra el proyecto. En la sección
-              derecha, encontrarás una lista de todos los proyectos activos. Al
-              hacer clic en el ícono de la puerta, accederás a un listado
-              detallado de los estudiantes participantes en ese proyecto
-              específico.
+              continuidad, en prórroga o son nuevos. En la sección derecha,
+              encontrarás una lista de todos los proyectos activos junto con el
+              cuetrimestre y al año al que pertenecen. Al hacer clic en el ícono
+              de la puerta, accederás a un listado detallado de los estudiantes
+              participantes en ese proyecto específico.
             </li>
             <img
               src={Pagn1}
@@ -400,8 +399,7 @@ function GuiaAdmininistrativo() {
             <li>
               Para obtener una versión imprimible del reporte de género,
               simplemente haz clic en el botón de descarga. El sistema generará
-              un archivo PDF que podrás guardar en tu dispositivo y compartir
-              con otros usuarios autorizados
+              un archivo PDF que podrás guardar en tu dispositivo.
             </li>
             <img
               src={Pagn3}
@@ -416,13 +414,13 @@ function GuiaAdmininistrativo() {
           <h3 className="titulos-guiaIn">Usuarios</h3>
           <div className="naranja-divider" />
           <p>
-            Esta sección te permite gestionar de forma eficiente a todos los
-            usuarios del sistema. Podrás realizar cargas masivas de datos a
-            través de plantillas, buscar usuarios por identificación o nombre,
-            filtrar por estado (activo o inactivo) y rol (académico,
-            administrativo, estudiante). Además, podrás agregar nuevos usuarios
-            haciendo clic en el botón <strong> + </strong> y editar la
-            información de los usuarios existentes haciendo clic en el
+            Esta sección te permite gestionar a todos los usuarios del sistema.
+            Podrás realizar cargas masivas de datos a través de plantillas,
+            buscar usuarios por identificación o nombre, filtrar por estado
+            (activo o inactivo) y rol (académico, administrativo, estudiante).
+            Además, podrás agregar nuevos usuarios haciendo clic en el botón{" "}
+            <strong> + </strong> y editar la información de los usuarios
+            existentes haciendo clic en el
             <strong> icono del lápiz </strong> ubicado en la columna de acciones
           </p>
           <img
@@ -468,13 +466,13 @@ function GuiaAdmininistrativo() {
               <strong>Proyectos: </strong>
               <ul>
                 <li>
-                  Esta sección te permite gestionar todos tus proyectos de
-                  manera eficiente. Puedes buscar proyectos específicos por su
-                  código, nombre o modalidad (presencial, virtual o híbrida).
-                  Además, puedes agregar nuevos proyectos con un simple clic en
-                  el botón <strong> + </strong> o editar los existentes haciendo
-                  clic en el <strong> icono del lápiz </strong>. Para cargar
-                  varios proyectos a la vez, utiliza la opción 'Carga Masiva'
+                  Esta sección te permite gestionar todos tus proyectos. Puedes
+                  buscar proyectos específicos por su código, nombre o modalidad
+                  (presencial, virtual o híbrida). Además, puedes agregar nuevos
+                  proyectos con un simple clic en el botón <strong> + </strong>{" "}
+                  o editar los existentes haciendo clic en el{" "}
+                  <strong> icono del lápiz </strong>. Para cargar varios
+                  proyectos a la vez, utiliza la opción 'Carga Masiva'
                 </li>
                 <img
                   src={Proyectos}
@@ -503,9 +501,11 @@ function GuiaAdmininistrativo() {
                   Esta sección encontrarás un listado completo de todos los
                   grupos. Puedes buscar grupos por código o nombre de proyectos
                   , por cuatrimestre y año. Para agregar nuevos grupos, haz clic
-                  en 'Agregar Grupos' y para editar los grupos existentes con el
-                  icono del lápiz. Tambien, puedes cargar múltiples grupos a la
-                  vez usando la opción 'Carga Masiva' y ademas puedes activar o
+                  en <strong>'Agregar Grupos'</strong> y para editar los grupos
+                  existentes con el
+                  <strong>icono del lápiz</strong>. Tambien, puedes cargar
+                  múltiples grupos a la vez usando la opción{" "}
+                  <strong>'Carga Masiva'</strong> y ademas puedes activar o
                   desahilitar el boton de finalizar los cuatrimestres para que
                   los academicos puedan finalizar el cuatrimestre de sus grupos.
                 </li>
@@ -536,48 +536,74 @@ function GuiaAdmininistrativo() {
         <div className="section-guias " id="cargaMa">
           <h3 className="titulos-guiaIn">Carga Masiva</h3>
           <div className="celes-divider" />
-          <p>Sigue estos pasos:</p>
+          <p><strong>Nota:</strong> Esta opcion solo se encuentra disponible para Cargar Usuarios de tipo Académico o estudiante, Proyectos, Grupos y las carreras de los estudiantes.</p>
+          <p>Para cargar varios registros en una única vez sin tener que ir registro por registro, sigue estos pasos:</p>
           <ol>
             <li>
               <strong>Obtener las Plantillas: </strong>
               <ul>
                 <li>Dirígete a la sección "Información".</li>
-                <li>Busca y descarga las plantillas</li>
+                <li>Busca y descarga las plantillas que necesites.</li>
               </ul>
             </li>
             <li>
-              <strong> Revisa el formato:</strong> Asegúrate de comprender el
-              formato de cada columna en las plantillas.
+              <strong> Revisa el formato:</strong> Asegúrate de cumplir con el
+              formato de cada columna en las plantilla.
             </li>
             <li>
               <strong> Ingresa los datos:</strong> Llena cada plantilla con la
-              información requerida
+              información requerida.
             </li>
             <li>
-              <strong> Asegúrate de la precisión:</strong> Verifica que todos
-              los datos sean correctos
+              <strong> Verifica tus datos:</strong> Valida que todos los datos
+              sean correctos.
             </li>
+
             <li>
-              <strong>Académicos:</strong> Ve a la sección "Usuarios" y utiliza
-              la opción de carga masiva.
-            </li>
-            <li>
-              <strong>Proyectos:</strong> Dirígete a la sección "Proyectos" y
-              carga la plantilla correspondiente.
-            </li>
-            <li>
-              <strong> Grupos:</strong> Accede a la sección "Creación de Grupos"
-              y sube la plantilla de grupos.
-            </li>
-            <li>
-              <strong> Estudiantes:</strong> Vuelve a la sección "Usuarios" y
-              utiliza la opción de carga masiva de estudiantes.
-            </li>
-            <li>
-              <strong> Carreras:</strong> En la sección "Usuarios", busca la
-              opción de carga masiva de carreras.
+              <strong>Sube tu Plantilla: </strong>
+              <ul>
+                <li>
+                  <strong>Académicos:</strong> Ve a la sección de{" "}
+                  <strong>Usuarios</strong> y utiliza la opción de{" "}
+                  <strong>Cargar Académicos</strong>.
+                </li>
+                <li>
+                  <strong>Proyectos:</strong> Dirígete a la sección de{" "}
+                  <strong>Proyectos</strong>y ustiliza la opción{" "}
+                  <strong>Cargar Proyectos</strong>.
+                </li>
+                <li>
+                  <strong> Grupos:</strong> Accede a la sección de{" "}
+                  <strong>Creación de Grupos</strong> y usa la opción{" "}
+                  <strong>Cargar Grupos</strong>. Antes de enviar esta
+                  plantilla, asegurate de que los académicos y los proyectos que
+                  estan agregando a tus grupos, se encuentren agregados
+                  previamente al sistema.
+                </li>
+                <li>
+                  <strong> Estudiantes:</strong> Vuelve a la sección de{" "}
+                  <strong>Usuarios</strong>y utiliza la opción{" "}
+                  <strong>Subir Estudiantes</strong>. Antes de enviar esta
+                  plantilla, asegurate de que las informacion del grupo al que
+                  estas añadiendo estos estudiantes, se encuentre añadida al
+                  sistema previamente.
+                </li>
+                <li>
+                  <strong> Carreras:</strong> En la sección de{" "}
+                  <strong>Usuarios</strong>, busca la opción de{" "}
+                  <strong>Cargar Carreras</strong>.
+                </li>
+              </ul>
             </li>
           </ol>
+          <p>
+            <strong>Nota:</strong> Sigue la anterior secuencia de pasos
+            correctamente, para el sistema no te muestre ningún error a la hora
+            de cargar alguno de los archivos. Adémas revisa antes de subir cada
+            uno de los archivos que vayan con la informacion correcta y que sea
+            el archivo correcto para cada opción, de lo contrario también el
+            sistema te puede reflejar algún error.
+          </p>
         </div>
 
         {/* Botón flotante */}
