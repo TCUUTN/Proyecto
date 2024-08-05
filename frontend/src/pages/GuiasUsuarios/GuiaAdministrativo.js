@@ -16,6 +16,13 @@ import Proyectos from "../../Assets/Images/Guias/Administrativo/Proyectos.png";
 import Grupos from "../../Assets/Images/Guias/Administrativo/Grupos.png";
 import CrearGrupos from "../../Assets/Images/Guias/Administrativo/CrearGrupos.png";
 //Socios Comunitarios
+//Lista Socios
+import listSocios from "../../Assets/Images/Guias/Academicos/ListaSocios.png";
+import CreacList_Inf from "../../Assets/Images/Guias/Academicos/CrearListSocios_Info.png";
+import CreacList_Cont from "../../Assets/Images/Guias/Academicos/CrearListSocios_Contact.png";
+import CreacList_Otr from "../../Assets/Images/Guias/Academicos/CrearListSocios_Otros.png";
+//Solicitud de cartas
+import SolicitudCarta from "../../Assets/Images/Guias/Administrativo/Socio.png";
 import SocioEnviar from "../../Assets/Images/Guias/Administrativo/SocioSolicitudEnviar.png";
 //Boleta de Conclusion
 import SeleccionarBol from "../../Assets/Images/Guias/Administrativo/BoletaSeleccionar.png";
@@ -409,7 +416,6 @@ function GuiaAdmininistrativo() {
           </ul>
         </div>
         {/* Section explicacion de usuarios */}
-
         <div className="section-guias" id="usuarios">
           <h3 className="titulos-guiaIn">Usuarios</h3>
           <div className="naranja-divider" />
@@ -418,7 +424,7 @@ function GuiaAdmininistrativo() {
             Podrás realizar cargas masivas de datos a través de plantillas,
             buscar usuarios por identificación o nombre, filtrar por estado
             (activo o inactivo) y rol (académico, administrativo, estudiante).
-            Además, podrás agregar nuevos usuarios haciendo clic en el botón{" "}
+            Además, podrás agregar nuevos usuarios haciendo clic en el botón
             <strong> + </strong> y editar la información de los usuarios
             existentes haciendo clic en el
             <strong> icono del lápiz </strong> ubicado en la columna de acciones
@@ -444,7 +450,7 @@ function GuiaAdmininistrativo() {
           />
           <p>
             Al seleccionar el rol de <strong> Estudiante</strong>, se activarán
-            dos campos adicionales: <strong> Carrera</strong> y{" "}
+            dos campos adicionales: <strong> Carrera</strong> y
             <strong> Selecciona un grupo</strong>. Estos campos son obligatorios
             para completar el registro de un estudiante. Por favor, especifica
             la carrera que cursa y el grupo al que pertenece
@@ -455,7 +461,6 @@ function GuiaAdmininistrativo() {
             className=" fade-in centered small-image"
           />
         </div>
-
         {/* Section explicacion de grupos */}
         <div className="section-guias" id="grupos">
           <h3 className="titulos-guiaIn">Grupos</h3>
@@ -469,8 +474,8 @@ function GuiaAdmininistrativo() {
                   Esta sección te permite gestionar todos tus proyectos. Puedes
                   buscar proyectos específicos por su código, nombre o modalidad
                   (presencial, virtual o híbrida). Además, puedes agregar nuevos
-                  proyectos con un simple clic en el botón <strong> + </strong>{" "}
-                  o editar los existentes haciendo clic en el{" "}
+                  proyectos con un simple clic en el botón <strong> + </strong>o
+                  editar los existentes haciendo clic en el
                   <strong> icono del lápiz </strong>. Para cargar varios
                   proyectos a la vez, utiliza la opción 'Carga Masiva'
                 </li>
@@ -484,7 +489,7 @@ function GuiaAdmininistrativo() {
                   a un formulario. En este formulario te pedirá que ingreses
                   ciertos datos esenciales y es importante que completes todos
                   los campos obligatorios antes de guardar. Una vez que hayas
-                  llenado toda la información, haz clic en el botón{" "}
+                  llenado toda la información, haz clic en el botón
                   <strong> Guardar</strong> para agregar el proyecto a la lista.
                 </li>
                 <img
@@ -504,8 +509,8 @@ function GuiaAdmininistrativo() {
                   en <strong>'Agregar Grupos'</strong> y para editar los grupos
                   existentes con el
                   <strong>icono del lápiz</strong>. Tambien, puedes cargar
-                  múltiples grupos a la vez usando la opción{" "}
-                  <strong>'Carga Masiva'</strong> y ademas puedes activar o
+                  múltiples grupos a la vez usando la opción
+                  <strong>Carga Masiva</strong> y ademas puedes activar o
                   desahilitar el boton de finalizar los cuatrimestres para que
                   los academicos puedan finalizar el cuatrimestre de sus grupos.
                 </li>
@@ -531,13 +536,19 @@ function GuiaAdmininistrativo() {
             </li>
           </ol>
         </div>
-
         {/* Section explicacion de la carga Masiva */}
         <div className="section-guias " id="cargaMa">
           <h3 className="titulos-guiaIn">Carga Masiva</h3>
           <div className="celes-divider" />
-          <p><strong>Nota:</strong> Esta opcion solo se encuentra disponible para Cargar Usuarios de tipo Académico o estudiante, Proyectos, Grupos y las carreras de los estudiantes.</p>
-          <p>Para cargar varios registros en una única vez sin tener que ir registro por registro, sigue estos pasos:</p>
+          <p>
+            <strong>Nota:</strong> Esta opcion solo se encuentra disponible para
+            Cargar Usuarios de tipo Académico o estudiante, Proyectos, Grupos y
+            las carreras de los estudiantes.
+          </p>
+          <p>
+            Para cargar varios registros en una única vez sin tener que ir
+            registro por registro, sigue estos pasos:
+          </p>
           <ol>
             <li>
               <strong>Obtener las Plantillas: </strong>
@@ -563,34 +574,34 @@ function GuiaAdmininistrativo() {
               <strong>Sube tu Plantilla: </strong>
               <ul>
                 <li>
-                  <strong>Académicos:</strong> Ve a la sección de{" "}
-                  <strong>Usuarios</strong> y utiliza la opción de{" "}
+                  <strong>Académicos:</strong> Ve a la sección de
+                  <strong>Usuarios</strong> y utiliza la opción de
                   <strong>Cargar Académicos</strong>.
                 </li>
                 <li>
-                  <strong>Proyectos:</strong> Dirígete a la sección de{" "}
-                  <strong>Proyectos</strong>y ustiliza la opción{" "}
+                  <strong>Proyectos:</strong> Dirígete a la sección de
+                  <strong>Proyectos</strong>y ustiliza la opción
                   <strong>Cargar Proyectos</strong>.
                 </li>
                 <li>
-                  <strong> Grupos:</strong> Accede a la sección de{" "}
-                  <strong>Creación de Grupos</strong> y usa la opción{" "}
+                  <strong> Grupos:</strong> Accede a la sección de
+                  <strong>Creación de Grupos</strong> y usa la opción
                   <strong>Cargar Grupos</strong>. Antes de enviar esta
                   plantilla, asegurate de que los académicos y los proyectos que
                   estan agregando a tus grupos, se encuentren agregados
                   previamente al sistema.
                 </li>
                 <li>
-                  <strong> Estudiantes:</strong> Vuelve a la sección de{" "}
-                  <strong>Usuarios</strong>y utiliza la opción{" "}
+                  <strong> Estudiantes:</strong> Vuelve a la sección de
+                  <strong>Usuarios</strong>y utiliza la opción
                   <strong>Subir Estudiantes</strong>. Antes de enviar esta
                   plantilla, asegurate de que las informacion del grupo al que
                   estas añadiendo estos estudiantes, se encuentre añadida al
                   sistema previamente.
                 </li>
                 <li>
-                  <strong> Carreras:</strong> En la sección de{" "}
-                  <strong>Usuarios</strong>, busca la opción de{" "}
+                  <strong> Carreras:</strong> En la sección de
+                  <strong>Usuarios</strong>, busca la opción de
                   <strong>Cargar Carreras</strong>.
                 </li>
               </ul>
@@ -604,6 +615,239 @@ function GuiaAdmininistrativo() {
             el archivo correcto para cada opción, de lo contrario también el
             sistema te puede reflejar algún error.
           </p>
+        </div>
+        {/* Section explicacion de los Socios Comunitarios */}
+        <div className="section-guias" id="sociosC">
+          <h3 className="titulos-guiaIn">Socios Comunitarios</h3>
+          <div className="naranja-divider" />
+          <p>Los socios comunitarios tiene dos opciones</p>
+          <ol>
+            <li>
+              <h5>
+                <strong>Lista de Socios:</strong>{" "}
+              </h5>
+              <ul>
+                <li>
+                  <strong> Filtros de busqueda:</strong> Traer rápidamente a los
+                  socios comunitarios por nombre, tipo de institución o estado.
+                </li>
+                <li>
+                  <strong> Descarga de información:</strong> Genera un informe
+                  en PDF con la información completa de los socios comunitarios.
+                </li>
+                <li>
+                  <strong> Ubicación a tu alcance:</strong> El ícono de
+                  compartir te redirigirá a la ubicación del socio comunitario
+                  seleccionado.
+                </li>
+                <img
+                  src={listSocios}
+                  alt="listSocios"
+                  className=" fade-in centered medium-image"
+                />
+                <br></br>
+                <li>
+                  Le damos clic <strong>agregar socios</strong> y ahi nos va
+                  aparecer un formulario que se divide en 2 partes
+                  <ol>
+                    <li>
+                      En esta parte se agrega la información de la institución.
+                      <img
+                        src={CreacList_Inf}
+                        alt="CreacList_Inf"
+                        className=" fade-in centered medium-image"
+                      />
+                    </li>
+                    <li>
+                      En esta parte se agrega la información del contacto del
+                      socio.
+                      <img
+                        src={CreacList_Cont}
+                        alt="CreacList_Cont"
+                        className=" fade-in centered medium-image"
+                      />
+                    </li>
+                    <li>Darle al boton guardar.</li>
+                  </ol>
+                </li>
+                <br></br>
+                <li>
+                  Al hacer clic en el lápiz, podemos editar la información del
+                  socio. También podemos cambiar su estado a activo o inactivo.
+                  <img
+                    src={CreacList_Otr}
+                    alt="CreacList_Otr"
+                    className=" fade-in centered medium-image"
+                  />
+                  <p>
+                    <strong>No se olvide darle al botón actualizar.</strong>
+                  </p>
+                </li>
+              </ul>
+            </li>
+            <br></br>
+            <li>
+              <h5>
+                <strong>Solicitud de Socios:</strong>
+              </h5>
+              <ul>
+                <li>
+                  <strong>Solicitudes Pendientes:</strong> Esta sección muestra
+                  una lista de las solicitudes de cartas que aún no se han
+                  completado. La lista se puede filtrar por nombre del socio o
+                  nombre del estudiante. Cada solicitud en la lista muestra el
+                  nombre del socio, el nombre completo del estudiante y ofrece
+                  una acción directa: al hacer clic en el ícono de la carta, se
+                  accede a un formulario de revisión y envío detallado de la
+                  solicitud.
+                </li>
+                <li>
+                  <strong>Solicitudes Completadas:</strong> Ver una lista de las
+                  solicitudes de cartas que se han completado y ya se han
+                  enviado. La lista se puede filtrar por nombre del socio,
+                  nombre del estudiante o nombre de la carta.
+                </li>
+                <img
+                  src={SolicitudCarta}
+                  alt="SolicitudCarta"
+                  className=" fade-in centered medium-image"
+                />
+                <br></br>
+                <li>
+                  Al hacer clic en el ícono de la carta{" "}
+                  <strong> Revisión Solicitada</strong>, accederás a una
+                  pantalla donde podrás revisar los detalles de la solicitud.
+                  Aquí verás el nombre del socio y una lista de los estudiantes
+                  involucrados. Para finalizar el proceso, adjunta el archivo de
+                  la carta correspondiente y haz clic en "Enviar". Una vez
+                  enviada, el socio, los estudiantes y el académico recibirán
+                  una notificación por correo electrónico confirmando la
+                  solicitud
+                  <img
+                    src={SocioEnviar}
+                    alt="SocioEnviar"
+                    className=" fade-in centered medium-image"
+                  />
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        {/* Section explicacion de la Boleta de Conclusión */}
+        <div className="section-guias" id="boletaC">
+          <h3 className="titulos-guiaIn">Boleta de Conclusión</h3>
+          <div className="celes-divider" />
+          <ul>
+            <li>
+              Cuando entras al modulo de boleta de conclusiones vas a ver unos
+              filtros y debes seleccionar el año y el cuatrimestre para que te
+              muestre la lista de los grupos activos y por lo menos que un
+              estudiante haya enviado una boleta de conclusion.
+            </li>
+            <img
+              src={SeleccionarBol}
+              alt="SeleccionarBol "
+              className=" fade-in centered medium-image"
+            />
+            <li>Luego, el sistema te mostrará los grupos listos.</li>
+            <img
+              src={MuestraGrupos}
+              alt="MuestraGrupos "
+              className=" fade-in centered medium-image"
+            />
+            <li>
+              Cunado entres al grupo vas encontrar una lista de los estudiantes
+              que ya llenaron la boleta de conclusion y preciona el boton de ver
+              boleta de conclusión.
+            </li>
+            <img
+              src={VerGrupos}
+              alt="VerGrupos  "
+              className=" fade-in centered medium-image"
+            />
+            <li>
+              Cuando se accede a la sección{" "}
+              <strong> Ver boleta de conclusión</strong>, se presenta un
+              formulario diseñado para registrar las conclusiones de las labores
+              asignadas a los estudiantes. En este registro, se visualiza la
+              información que cada estudiante ha ingresado al finalizar cada
+              labor y su comentario.
+            </li>
+            <img
+              src={VerBoleta}
+              alt="VerBoleta  "
+              className=" fade-in centered small-image"
+            />
+          </ul>
+        </div>
+        {/* Section explicacion de la Información*/}
+        <div className="section-guias" id="informacionE">
+          <h3 className="titulos-guiaIn">Información</h3>
+          <div className="naranja-divider" />
+          <ol>
+            Esta sección tiene dos partes:
+            <li>
+              <strong> Información General: </strong>
+              En este módulo, tendrás acceso a toda la información general del
+              TCU. Localiza rápidamente los documentos que necesitas utilizando
+              los filtros de fecha, descripción y nombre de archivo. Una vez
+              encontrado, podrás descargarlo de manera sencilla. Además, tienes
+              la posibilidad de añadir nueva información general al sistema
+              haciendo clic en el botón correspondiente, o bien, editar la
+              información existente utilizando el icono del lápiz.
+              <img
+                src={InfoG}
+                alt="InfoG "
+                className=" fade-in centered medium-image"
+              />
+              <ul>
+                <strong>Agregar Información General: </strong>
+                <li>
+                  En esta sección podrás añadir nueva información al sistema.
+                  Simplemente completa la descripción del contenido y adjunta el
+                  archivo correspondiente. Una vez hecho esto, haz clic en
+                  <strong> Añadir</strong> para guardar los cambios.
+                </li>
+                <img
+                  src={infoCrea}
+                  alt="infoCrea  "
+                  className=" fade-in centered medium-image"
+                />
+              </ul>
+            </li>
+            <br></br>
+            <li>
+              <strong> Plantillas para la carga masiva </strong>
+              Esta sección es tu centro de gestión de plantillas para cargas
+              masivas. Para encontrar la plantilla que buscas, aplica los
+              filtros de fecha o nombre de archivo. Al localizarla, descárgala
+              para comenzar a utilizarla. Si necesitas añadir una nueva
+              plantilla al sistema, haz clic en el botón{" "}
+              <strong>Agregar Plantilla</strong> y sigue las instrucciones.
+              <img
+                src={Plantilla}
+                alt="Plantilla  "
+                className=" fade-in centered medium-image"
+              />
+              <ul>
+                <strong>Agregar Plantilla: </strong>
+                <li>
+                  En esta sección podrás añadir nuevas plantillas al sistema.
+                  Para hacerlo, debes darle clic en
+                  <strong> Subir Archivo</strong>y solo debes seleccionar la
+                  plantilla que deseas. Una vez seleccionada, confirma la acción
+                  haciendo clic en
+                  <strong> Añadir</strong>.
+                </li>
+                <img
+                  src={PlantillaCrear}
+                  alt="PlantillaCrear  "
+                  className=" fade-in centered medium-image"
+                />
+              </ul>
+            </li>
+          </ol>
         </div>
 
         {/* Botón flotante */}
