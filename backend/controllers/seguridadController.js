@@ -640,15 +640,47 @@ const cargarUsuario = async (req, res) => {
 
         const grupoId = grupo.GrupoId; // Asumiendo que el campo ID es "GrupoId"
 
+
+
         // Verificar si el registro en GruposEstudiantes ya existe
         let grupoEstudianteExistente = await GruposEstudiantes.findOne({
+          where: {
+            Identificacion: userData.Identificacion,
+            Estado: "En Curso",
+          },
+        });
+
+        if (grupoEstudianteExistente) {
+          if (grupoEstudianteExistente.GrupoId!==grupoId) {
+            // Actualizar el registro a "Reprobado"
+            await grupoEstudianteExistente.update({
+              Estado: "Reprobado",
+              ComentariosReprobado: "Estudiante cambiado a otro grupo",
+            });
+          }
+        }
+
+        // Verificar si el registro en GruposEstudiantes ya existe
+        let mismoGrupo = await GruposEstudiantes.findOne({
           where: {
             Identificacion: userData.Identificacion,
             GrupoId: grupoId,
           },
         });
 
-        if (!grupoEstudianteExistente) {
+
+        if (mismoGrupo) {
+          
+            if (mismoGrupo.Estado==="Reprobado") {
+              await grupoEstudianteExistente.update({
+                Estado: "En Curso",
+                ComentariosReprobado: "-"
+              });
+            }
+        }
+
+
+        if (!mismoGrupo) {
           // Crear un nuevo registro en GruposEstudiantes
           await GruposEstudiantes.create({
             Identificacion: userData.Identificacion,

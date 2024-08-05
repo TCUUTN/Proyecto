@@ -628,7 +628,7 @@ function GuiaAdmininistrativo() {
               </h5>
               <ul>
                 <li>
-                  <strong> Filtros de busqueda:</strong> Traer rápidamente a los
+                  <strong> Filtros de busqueda:</strong> Permite buscar rápidamente a los
                   socios comunitarios por nombre, tipo de institución o estado.
                 </li>
                 <li>

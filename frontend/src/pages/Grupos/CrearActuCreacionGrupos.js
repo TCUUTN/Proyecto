@@ -195,7 +195,7 @@ function CrearActuCreacionGrupos() {
       toast.success("Grupo guardado con éxito!");
       localStorage.setItem("GrupoGuardado", "true");
       localStorage.removeItem("GrupoIdUpdate");
-      navigate("/MantGrupos");
+      navigate("/Grupos");
     } catch (error) {
       toast.error("Error al guardar el grupo", error);
     }
@@ -203,7 +203,7 @@ function CrearActuCreacionGrupos() {
 
   const handleRegresar = () => {
     localStorage.removeItem("GrupoIdUpdate");
-    navigate("/MantGrupos");
+    navigate("/Grupos");
   };
 
   const sedeSession = sessionStorage.getItem("Sede");

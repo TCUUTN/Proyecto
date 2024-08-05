@@ -231,6 +231,9 @@ const subirArchivo = async (req, res) => {
 
     await infoExistente.save();
 
+        // Eliminar el archivo de la carpeta ServerAttachments
+        fs.unlinkSync(filePath);
+
     return res.status(200).json({
       message: `El archivo ${req.file.originalname} ha sido guardado exitosamente`,
     });

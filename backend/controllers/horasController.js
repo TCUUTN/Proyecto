@@ -301,13 +301,17 @@ const subirArchivo = async (req, res) => {
 
     await horaExistente.save();
 
+    // Eliminar el archivo de la carpeta ServerAttachments
+    fs.unlinkSync(filePath);
+
     return res.status(200).json({
-      message: `El archivo ${req.file.originalname} ha sido guardado exitosamente`,
+      message: `El archivo ${req.file.originalname} ha sido guardado exitosamente y eliminado del servidor`,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 //Elimina el archivo de la memoria local
 const eliminarArchivo = async (req, res) => {

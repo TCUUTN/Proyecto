@@ -282,45 +282,43 @@ function DashboardAdministrativo() {
     }
   };
 
-  // Procesar los datos del gráfico
-  const processChartData = (data) => {
-    const groups = data.map((item) => item.Grupo);
-    const counts = {};
+// Procesar datos del gráfico a partir de los estudiantes
+const processChartData = (data) => {
+  const progresoEstados = { Nuevo: 0, Continuidad: 0, Prórroga: 0 };
+  data.forEach((estudiante) => {
+    if (estudiante.Progreso in progresoEstados) {
+      progresoEstados[estudiante.Progreso]++;
+    }
+  });
 
-    groups.forEach((group) => {
-      if (counts[group]) {
-        counts[group]++;
-      } else {
-        counts[group] = 1;
-      }
-    });
+  const filteredProgresoEstados = Object.keys(progresoEstados).filter(
+    (key) => progresoEstados[key] > 0
+  );
 
-    const chartLabels = Object.keys(counts);
-    const chartData = Object.values(counts);
-    const chartColors = [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56",
-      "#4BC0C0",
-      "#9966FF",
-      "#FF9F40",
-    ];
-
-    return {
-      labels: chartLabels,
-      datasets: [
-        {
-          data: chartData,
-          backgroundColor: chartColors,
-        },
-      ],
-    };
+  return {
+    labels: filteredProgresoEstados,
+    datasets: [
+      {
+        data: filteredProgresoEstados.map((key) => progresoEstados[key]),
+        backgroundColor: filteredProgresoEstados.map((key) => {
+          switch (key) {
+            case "Nuevo":
+              return "#04ff00";
+            case "Continuidad":
+              return "#ff6600";
+            case "Prórroga":
+              return "#ff0000";
+            default:
+              return "#000000";
+          }
+        }),
+      },
+    ],
   };
+};
+
 
 // Manejar cambio de página
-const handlePageChange = (newPage) => {
-  setCurrentPage(newPage);
-};
 
 const currentGrupos = grupos.slice(
   (currentPage - 1) * itemsPerPage,

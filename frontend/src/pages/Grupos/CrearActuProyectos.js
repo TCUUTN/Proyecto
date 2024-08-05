@@ -52,7 +52,7 @@ function CrearActuProyectos() {
   };
   // Función para manejar la navegación de regreso
   const handleRegresar = () => {
-    navigate("/MantMaterias");
+    navigate("/Proyectos");
     sessionStorage.removeItem("CodigoProyecto");
   };
   // Función para manejar el guardado del proyecto
@@ -81,7 +81,7 @@ function CrearActuProyectos() {
         .then((data) => {
           sessionStorage.removeItem("CodigoProyecto");
           sessionStorage.setItem("proyectoGuardado", "true");
-          navigate("/MantMaterias");
+          navigate("/Proyectos");
         })
         .catch((error) => {
           toast.error("Error al guardar el proyecto.", error);

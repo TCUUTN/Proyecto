@@ -318,6 +318,27 @@ function VistaInformacion() {
     }
   };
 
+  const validacionAgregar2 = () => {
+    switch (selectedRole) {
+      case "Estudiante":
+        return false;
+      case "Académico":
+        if (TipoInfoSeleccionado==="Académico") {
+          return true
+        } else {
+          return false
+        }
+      case "Administrativo":
+        if (TipoInfoSeleccionado==="General") {
+          return true
+        } else {
+          return false
+        }
+      default:
+        return false;
+    }
+  };
+
    // Función para formatear la fecha en formato dd/mm/yyyy.
   const formatDate = (date) => {
     const [yyyy, mm, dd] = date.split("-");
@@ -452,7 +473,7 @@ function VistaInformacion() {
                   <th className="mat-th">Descripción</th>
                 )}
                 <th className="mat-th">Archivo Adjuntado</th>
-                {TipoInfoSeleccionado !== "Plantilla" && (
+                {validacionAgregar2() && (
                   <th className="mat-th"></th>
                 )}
               </tr>
@@ -493,7 +514,7 @@ function VistaInformacion() {
 
 
                     </td>
-                    {TipoInfoSeleccionado !== "Plantilla" && (
+                    {validacionAgregar2() && (
                       <td className="mat-td">
                         <OverlayTrigger
                           overlay={<Tooltip>Editar Información</Tooltip>}

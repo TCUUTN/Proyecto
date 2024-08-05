@@ -526,6 +526,9 @@ const GuardaryEnviarCarta = async (req, res) => {
       copia
     );
 
+        // Eliminar el archivo de la carpeta ServerAttachments
+        fs.unlinkSync(filePath);
+
     return res.status(200).json({
       message: `El archivo ${req.file.originalname} ha sido guardado exitosamente`,
     });
