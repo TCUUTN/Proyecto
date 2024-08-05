@@ -23,17 +23,16 @@ function Login() {
    const [loading, setLoading] = useState(false);
    // Estado para almacenar mensajes de error
    const [error, setError] = useState("");
+   const olvidoExitoso = localStorage.getItem("olvidoExitoso");
 
     // Hook useEffect para mostrar una notificación si se ha enviado un correo electrónico con una clave temporal
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const cambioExitoso = params.get("mensajeExitoso");
 
-    if (cambioExitoso === "true") {
-      toast.success(
-        "Se ha enviado el correo electronico con la clave temporal correctamente"
-      );
-    }
+      if (olvidoExitoso === "true") {
+        toast.success("Se ha enviado el correo electronico con la clave temporal correctamente");
+        localStorage.removeItem("olvidoExitoso")
+      }
+  
   }, []);
   /**
    * Maneja el envío del formulario de inicio de sesión.

@@ -108,12 +108,12 @@ button.cambiar-button {
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   font-family: "Century Gothic", sans-serif; /* Button font */
-  transition: 2s;
+  transition: 0.5s;
 }
 
 button.cambiar-button:hover {
   background-color: #e55620; /* Darker shade for hover effect */
-  transition: 2s;
+  transition: 0.5s;
 }
 
 button.cambiar-button:disabled {

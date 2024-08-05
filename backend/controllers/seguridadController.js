@@ -569,6 +569,7 @@ const cargarUsuario = async (req, res) => {
           CorreoElectronico: userData.CorreoElectronico,
           Estado: userData.Estado,
           TipoIdentificacion: userData.TipoIdentificacion,
+          Sede:userData.Sede
         });
       } else {
         // Crear un nuevo usuario
@@ -581,6 +582,7 @@ const cargarUsuario = async (req, res) => {
           Contrasenna: userData.Contrasenna,
           Estado: userData.Estado,
           TipoIdentificacion: userData.TipoIdentificacion,
+          Sede:userData.Sede
         });
       }
 

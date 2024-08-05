@@ -48,11 +48,23 @@ function DashboardAdministrativo() {
   const isBuscarButtonDisabled = cuatrimestreFilter === "" || annoFilter === "";
   const sedeFilter = sessionStorage.getItem("Sede") || "Todas";
   const itemsPerPage = 5;
+  const cambioExitoso = localStorage.getItem("cambioExitoso");
+  const perfilExitoso = localStorage.getItem("perfilExitoso");
 
   const chartRef = useRef(null);
   const tableRef = useRef(null);
-// useEffect para obtener opciones de años y datos iniciales de estudiantes y grupos
+
+  // useEffect para obtener opciones de años y datos iniciales de estudiantes y grupos
   useEffect(() => {
+    if (cambioExitoso === "true") {
+      toast.success("¡La contraseña ha sido actualizada correctamente!");
+      localStorage.removeItem("cambioExitoso");
+    }
+
+    if (perfilExitoso === "true") {
+      toast.success("¡El perfil se ha completado correctamente!");
+      localStorage.removeItem("perfilExitoso");
+    }
     fetchYearsOptions();
     const fetchData = async () => {
       const sede = sessionStorage.getItem("Sede");
@@ -65,8 +77,23 @@ function DashboardAdministrativo() {
         const estudiantesData = await estudiantesResponse.json();
         const gruposData = await gruposResponse.json();
 
-        setEstudiantes(estudiantesData);
-        setGrupos(gruposData);
+        // Log the response data to check if it is an array
+        console.log("Estudiantes data:", estudiantesData);
+        console.log("Grupos data:", gruposData);
+
+        if (Array.isArray(estudiantesData)) {
+          setEstudiantes(estudiantesData);
+        } else {
+          setEstudiantes([]);
+          toast.error("No hay informacion de Estudiantes Activos para esta sede");
+        }
+
+        if (Array.isArray(gruposData)) {
+          setGrupos(gruposData);
+        } else {
+          setGrupos([]);
+          toast.error("No hay informacion de grupos Activos para esta sede");
+        }
 
         if (estudiantesData.length > 0) {
           setChartData(processChartData(estudiantesData));
@@ -81,7 +108,8 @@ function DashboardAdministrativo() {
     };
 
     fetchData();
-  }, []);
+  }, [cambioExitoso, perfilExitoso]);
+
   // Función para obtener opciones de años
   const fetchYearsOptions = async () => {
     try {
@@ -96,17 +124,20 @@ function DashboardAdministrativo() {
       toast.error("Error al obtener los años disponibles");
     }
   };
+
   // Manejar cambio en el filtro de cuatrimestre
   const handleCuatrimestreFilterChange = (e) => {
     const value = e.target.value;
     setCuatrimestreFilter(value);
   };
-// Manejar cambio en el filtro de año
+
+  // Manejar cambio en el filtro de año
   const handleAnnoFilterChange = (e) => {
     const value = e.target.value;
     setAnnoFilter(value);
   };
- // Manejar clic en el botón de búsqueda
+
+  // Manejar clic en el botón de búsqueda
   const handleBuscarClick = async () => {
     try {
       const requestBody = JSON.stringify({
@@ -152,7 +183,8 @@ function DashboardAdministrativo() {
       );
     }
   };
- // Manejar clic en el botón para generar PDF
+
+  // Manejar clic en el botón para generar PDF
   const handleGenerarClick = async () => {
     const pdf = new jsPDF({
       orientation: "portrait",
@@ -216,12 +248,11 @@ function DashboardAdministrativo() {
           const tablePdfHeight =
             (tableImgProps.height * tablePdfWidth) / tableImgProps.width;
 
-          // Comprueba si la tabla cabe en la página actual, si no, agrega una nueva página
-          const currentYPosition = chartY + chartPdfHeight + 20;
-          const spaceLeft =
-            pdf.internal.pageSize.getHeight() - currentYPosition;
+          // Verifica si la tabla cabe en la página actual, si no, añade una nueva página
+          const tableY = chartY + chartPdfHeight + 20;
+          const pageHeight = pdf.internal.pageSize.getHeight();
 
-          if (spaceLeft < tablePdfHeight) {
+          if (tableY + tablePdfHeight > pageHeight) {
             pdf.addPage();
             pdf.addImage(
               tableDataUrl,
@@ -236,124 +267,81 @@ function DashboardAdministrativo() {
               tableDataUrl,
               "PNG",
               20,
-              currentYPosition,
+              tableY,
               tablePdfWidth,
               tablePdfHeight
             );
           }
 
-          // Añadir footer en cada página
-          const pageCount = pdf.internal.getNumberOfPages();
-          for (let i = 0; i < pageCount; i++) {
-            pdf.setPage(i + 1);
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const footerHeight = 35; // Incrementar la altura del pie de página
-
-            // Dibujar fondo del pie de página
-            pdf.setFillColor("#002b69");
-            pdf.rect(
-              0,
-              pageHeight - footerHeight,
-              pageWidth,
-              footerHeight,
-              "F"
-            );
-
-            // Añadir paginación y texto del pie de página
-            pdf.setFontSize(10);
-            pdf.setTextColor(255, 255, 255); // Letra blanca
-            pdf.text(
-              `Página ${i + 1} de ${pageCount}`,
-              pageWidth / 2,
-              pageHeight - 25, // Ajustar para que quepa bien en el pie de página
-              { align: "center" }
-            );
-            pdf.text(
-              `© ${new Date().getFullYear()} Universidad Técnica Nacional.`,
-              pageWidth / 2,
-              pageHeight - 15, // Ajustar para que quepa bien en el pie de página
-              { align: "center" }
-            );
-            pdf.text(
-              "Todos los derechos reservados.",
-              pageWidth / 2,
-              pageHeight - 5, // Ajustar para que quepa bien en el pie de página
-              { align: "center" }
-            );
-          }
-
-          // Guardar el PDF
-          pdf.save(
-            "Reporte de Géneros del cuatrimestre #" +
-              cuatrimestreFilter +
-              ", año " +
-              annoFilter +
-              ".pdf"
-          );
+          pdf.save("Reporte.pdf");
         };
       } catch (error) {
-        toast.error("Error al generar el reporte PDF");
+        console.error("Error generating PDF:", error);
+        toast.error("Error generating PDF");
       }
     }
   };
-// Procesar datos del gráfico a partir de los estudiantes
+
+  // Procesar los datos del gráfico
   const processChartData = (data) => {
-    const progresoEstados = { Nuevo: 0, Continuidad: 0, Prórroga: 0 };
-    data.forEach((estudiante) => {
-      if (estudiante.Progreso in progresoEstados) {
-        progresoEstados[estudiante.Progreso]++;
+    const groups = data.map((item) => item.Grupo);
+    const counts = {};
+
+    groups.forEach((group) => {
+      if (counts[group]) {
+        counts[group]++;
+      } else {
+        counts[group] = 1;
       }
     });
 
-    const filteredProgresoEstados = Object.keys(progresoEstados).filter(
-      (key) => progresoEstados[key] > 0
-    );
+    const chartLabels = Object.keys(counts);
+    const chartData = Object.values(counts);
+    const chartColors = [
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56",
+      "#4BC0C0",
+      "#9966FF",
+      "#FF9F40",
+    ];
 
     return {
-      labels: filteredProgresoEstados,
+      labels: chartLabels,
       datasets: [
         {
-          data: filteredProgresoEstados.map((key) => progresoEstados[key]),
-          backgroundColor: filteredProgresoEstados.map((key) => {
-            switch (key) {
-              case "Nuevo":
-                return "#04ff00";
-              case "Continuidad":
-                return "#ff6600";
-              case "Prórroga":
-                return "#ff0000";
-              default:
-                return "#000000";
-            }
-          }),
+          data: chartData,
+          backgroundColor: chartColors,
         },
       ],
     };
   };
-  // Manejar cambio de página
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
 
-  const currentGrupos = grupos.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+// Manejar cambio de página
+const handlePageChange = (newPage) => {
+  setCurrentPage(newPage);
+};
 
-  const totalPages = Math.ceil(grupos.length / itemsPerPage);
+const currentGrupos = grupos.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+const totalPages = Math.ceil(grupos.length / itemsPerPage);
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+const handleNextPage = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+  }
+};
 
+const handlePreviousPage = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+};
+
+  // Renderizar el componente
   return (
     <div className="dashAca-container">
       <ToastContainer position="bottom-right" />

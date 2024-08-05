@@ -169,7 +169,6 @@ function Grupos() {
   };
 
   const handleFileUpload = async (e) => {
-    // Función para manejar la carga de archivos
     setLoading(true); // Inicia la carga
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -237,6 +236,11 @@ function Grupos() {
       const rows = worksheet.slice(2); // Datos a partir de la tercera fila
 
       for (const row of rows) {
+        // Verificar que la fila tenga al menos 5 valores
+        if (row.length < 5) {
+          continue; // Omitir la fila si no cumple con el criterio
+        }
+
         const [CodigoMateria, NumeroGrupo, Horario, Aula, Academico] = row;
 
         const [Apellido1, Apellido2, ...nombreArray] = Academico.split(" ");

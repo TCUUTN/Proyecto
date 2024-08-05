@@ -174,44 +174,81 @@ function Usuarios() {
  /**
    * handleFileUpload - Maneja la carga de archivos Excel y procesa los datos.
    */
-  const handleFileUpload = (e, role) => {
-    const file = e.target.files[0];
-    if (
-      file &&
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      setIsLoading(true); // Mostrar pantalla de carga
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = XLSX.utils.sheet_to_json(
-          workbook.Sheets[firstSheetName],
-          { header: 1 }
-        );
+ const handleFileUpload = (e, role) => {
+  const file = e.target.files[0];
+  if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    setIsLoading(true); // Mostrar pantalla de carga
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
 
-        const mapHeaders = (row, mappings, headerRow) => {
-          return row.reduce((acc, value, index) => {
-            const header = headerRow[index]; // Usar la fila de encabezados correcta
-            const mappedHeader = mappings[header];
-            if (mappedHeader) {
-              acc[mappedHeader] = value;
+      const mapHeaders = (row, mappings, headerRow) => {
+        return row.reduce((acc, value, index) => {
+          const header = headerRow[index]; // Usar la fila de encabezados correcta
+          const mappedHeader = mappings[header];
+          if (mappedHeader) {
+            acc[mappedHeader] = value;
+          }
+          return acc;
+        }, {});
+      };
+
+      const processRows = (rows, headerMappings, headerRow) => {
+        const jsonData = [];
+        for (const row of rows) {
+          if (row.every((cell) => cell === null || cell === undefined || cell === "")) {
+            break; // Salir del bucle si la fila está vacía
+          }
+          const mappedRow = mapHeaders(row, headerMappings, headerRow);
+          const nombres = mappedRow.NombreCompleto?.split(" ") || [];
+          const Apellido1 = nombres[0] || "";
+          const Apellido2 = nombres[1] || "";
+          const Nombre = nombres.slice(2).join(" ") || "";
+
+          jsonData.push({
+            Identificacion: mappedRow.Identificacion,
+            Nombre,
+            Apellido1,
+            Apellido2,
+            Genero: "Indefinido",
+            CorreoElectronico: mappedRow.CorreoElectronico,
+            RolUsuario: role,
+            Contrasenna: generateRandomPassword(),
+            Estado: true,
+            Sede: mappedRow.Sede,
+          });
+        }
+        return jsonData;
+      };
+
+      if (role === "Académico") {
+        const headerRow = worksheet[0];
+        const dataRows = worksheet.slice(1);
+        const jsonData = processRows(dataRows, headerMappings.Académico, headerRow);
+        uploadJsonData(jsonData, role);
+      } else if (role === "Estudiante") {
+        if (worksheet.length > 2) {
+          const generalData = worksheet[0].reduce((acc, value, index) => {
+            if (index % 2 === 0) {
+              const header = worksheet[0][index];
+              const mappedHeader = headerMappings.Estudiante[header];
+              if (mappedHeader) {
+                acc[mappedHeader] = worksheet[0][index + 1];
+              }
             }
             return acc;
           }, {});
-        };
 
-        if (role === "Académico") {
-          const headerRow = worksheet[0];
-          const dataRows = worksheet.slice(1);
+          const headerRow = worksheet[1];
+          const dataRows = worksheet.slice(2);
           const jsonData = dataRows.map((row) => {
-            const mappedRow = mapHeaders(
-              row,
-              headerMappings.Académico,
-              headerRow
-            );
+            if (row.every((cell) => cell === null || cell === undefined || cell === "")) {
+              return null; // Ignorar filas vacías
+            }
+            const mappedRow = mapHeaders(row, headerMappings.Estudiante, headerRow);
             const nombres = mappedRow.NombreCompleto?.split(" ") || [];
             const Apellido1 = nombres[0] || "";
             const Apellido2 = nombres[1] || "";
@@ -227,65 +264,23 @@ function Usuarios() {
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
               Estado: true,
-              Sede: mappedRow.Sede,
+              ...generalData,
             };
-          });
-
+          }).filter(row => row !== null);
           uploadJsonData(jsonData, role);
-        } else if (role === "Estudiante") {
-          if (worksheet.length > 2) {
-            const generalData = worksheet[0].reduce((acc, value, index) => {
-              if (index % 2 === 0) {
-                const header = worksheet[0][index];
-                const mappedHeader = headerMappings.Estudiante[header];
-                if (mappedHeader) {
-                  acc[mappedHeader] = worksheet[0][index + 1];
-                }
-              }
-              return acc;
-            }, {});
-
-            const headerRow = worksheet[1];
-            const dataRows = worksheet.slice(2);
-            const jsonData = dataRows.map((row) => {
-              const mappedRow = mapHeaders(
-                row,
-                headerMappings.Estudiante,
-                headerRow
-              );
-              const nombres = mappedRow.NombreCompleto?.split(" ") || [];
-              const Apellido1 = nombres[0] || "";
-              const Apellido2 = nombres[1] || "";
-              const Nombre = nombres.slice(2).join(" ") || "";
-
-              const user = {
-                Identificacion: mappedRow.Identificacion,
-                Nombre,
-                Apellido1,
-                Apellido2,
-                Genero: "Indefinido",
-                CorreoElectronico: mappedRow.CorreoElectronico,
-                RolUsuario: role,
-                Contrasenna: generateRandomPassword(),
-                Estado: true,
-                ...generalData,
-              };
-
-              return user;
-            });
-            uploadJsonData(jsonData, role);
-          } else {
-            toast.error("Formato de archivo inválido");
-          }
         } else {
-          toast.error("Rol de usuario no reconocido");
+          toast.error("Formato de archivo inválido");
         }
-      };
-      reader.readAsArrayBuffer(file);
-    } else {
-      toast.error("Por favor, suba un archivo Excel válido");
-    }
-  };
+      } else {
+        toast.error("Rol de usuario no reconocido");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    toast.error("Por favor, suba un archivo Excel válido");
+  }
+};
+
 
   const handleCarrerasUplaod = (e) => {
     const file = e.target.files[0];

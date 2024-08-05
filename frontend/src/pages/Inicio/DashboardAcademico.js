@@ -17,9 +17,20 @@ function DashboardAcademico() {
   const [fetchError, setFetchError] = useState(false);
   const [carouselKey, setCarouselKey] = useState(0);
   const carouselRef = useRef(null);
+  const cambioExitoso = localStorage.getItem("cambioExitoso");
+  const perfilExitoso = localStorage.getItem("perfilExitoso");
 
   // useEffect se usa para hacer la llamada a la API al cargar el componente
   useEffect(() => {
+    if (cambioExitoso === "true") {
+      toast.success("¡La contraseña ha sido actualizada correctamente!");
+      localStorage.removeItem("cambioExitoso");
+    }
+
+    if (perfilExitoso === "true") {
+      toast.success("¡El perfil se ha completado correctamente!");
+      localStorage.removeItem("perfilExitoso");
+    }
     const fetchGrupos = async () => {
       const identificacion = sessionStorage.getItem("Identificacion");
       try {
@@ -39,7 +50,7 @@ function DashboardAcademico() {
     };
 
     fetchGrupos();
-  }, []);
+  }, [cambioExitoso, perfilExitoso]);
   // Función para obtener los datos de los estudiantes de cada grupo
   const fetchEstudiantesForGrupos = async (grupos) => {
     const chartDataPromises = grupos.map(async (grupo) => {

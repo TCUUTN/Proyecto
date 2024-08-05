@@ -260,7 +260,7 @@ const CrearActualizarUsuario = () => {
 
   const handleRegresar = () => {
     sessionStorage.removeItem("IdentificacionUsuario");
-    navigate("/MantUser");
+    navigate("/Usuarios");
   };
 
   return (

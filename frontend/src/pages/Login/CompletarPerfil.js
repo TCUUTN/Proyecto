@@ -48,9 +48,9 @@ function CompletarPerfil() {
       if (response.ok) {
       // Actualiza el SessionStorage con el género seleccionado
         sessionStorage.setItem("Genero", genero);
-
+        localStorage.setItem("perfilExitoso",true)
        // Redirige a la página Home con el parámetro de éxito
-        window.location.href = "/Home?perfilCompletado=true";
+        window.location.href = "/Home";
       } else {
          // Muestra un mensaje de error si la actualización falla
         setError("Error al actualizar el género. Por favor, inténtelo de nuevo.");

@@ -123,11 +123,11 @@ function VistaHorasEstudiante() {
             data.filter((m) => m.EstadoHoras === "Rechazado")
           );
         } else {
-          toast.error("Error al obtener la lista de actividades");
+          toast.error("El Estudiante no posee horas registradas");
         }
       }
     } catch (error) {
-      toast.error("Error al obtener la lista de actividades");
+      toast.error("El Estudiante no posee horas registradas");
     }
   };
 

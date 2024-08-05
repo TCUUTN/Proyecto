@@ -15,14 +15,25 @@ function DashboardEstudiante() {
   const [horasTotal, setHorasTotal] = useState(0);
   const [horasPlanificacionTotal, setHorasPlanificacionTotal] = useState(0);
   const [horasGiraTotal, setHorasGiraTotal] = useState(0);
+  const cambioExitoso = localStorage.getItem("cambioExitoso");
+  const perfilExitoso = localStorage.getItem("perfilExitoso");
 
   // Obtiene la identificación del estudiante desde sessionStorage y la guarda en localStorage
   useEffect(() => {
+    if (cambioExitoso === "true") {
+      toast.success("¡La contraseña ha sido actualizada correctamente!");
+      localStorage.removeItem("cambioExitoso");
+    }
+
+    if (perfilExitoso === "true") {
+      toast.success("¡El perfil se ha completado correctamente!");
+      localStorage.removeItem("perfilExitoso");
+    }
     const identificacion = sessionStorage.getItem("Identificacion");
     localStorage.setItem("IdentificacionHoras",identificacion);
      // Muestra un error si la identificación no está en sessionStorage
     if (!identificacion) {
-      toast.error("Identificación no encontrada en el SessionStorage");
+      toast.error("Identificación no encontrada");
       return;
     }
 // Fetch para obtener el grupo del estudiante basado en la identificación
@@ -42,7 +53,7 @@ function DashboardEstudiante() {
       .catch((error) => {
         toast.error("Error al buscar el grupo del estudiante");
       });
-  }, []);
+  }, [cambioExitoso, perfilExitoso]);
 // Función para obtener los datos del grupo
   const fetchGrupoData = (grupoId) => {
     fetch(`/grupos/${grupoId}`)
@@ -106,7 +117,7 @@ function DashboardEstudiante() {
         localStorage.setItem('maxHorasEjecucion', maxHorasEjecucion);
       })
       .catch((error) => {
-        toast.error("Error al buscar las horas del estudiante");
+        toast.error("El estudiante no posee horas registradas");
       });
   };
  // Calcula el progreso como un porcentaje

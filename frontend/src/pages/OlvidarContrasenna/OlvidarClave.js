@@ -55,7 +55,8 @@ function OlvidarClave() {
       });
 
       if (response.ok) {
-        window.location.href = "/?mensajeExitoso=true";
+        localStorage.setItem("olvidoExitoso",true)
+        window.location.href = "/";
       } else {
         setError("El correo ingresado no es válido o se encuentra desactivado, favor verificar.");
       }
