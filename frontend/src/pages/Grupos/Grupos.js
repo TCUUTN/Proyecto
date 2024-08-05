@@ -41,9 +41,9 @@ function Grupos() {
       if (response.ok) {
         const data = await response.json();
         if (data.BanderaFinalizarCuatrimestre === 0) {
-          setIsFinalizarDisabled(false);
-        } else {
           setIsFinalizarDisabled(true);
+        } else {
+          setIsFinalizarDisabled(false);
         }
       } else if (response.status === 404) {
         toast.error("No se encontró la bandera de activación");
