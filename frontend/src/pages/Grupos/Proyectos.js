@@ -7,7 +7,7 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Proyectos.modulo.css";
-
+import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +26,48 @@ function MantMaterias() {
   const banderaProyecto = sessionStorage.getItem("proyectoGuardado");
 
   const navigate = useNavigate();
+
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+useEffect(() => {
+  const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+  function checkScroll() {
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (rect.top < windowHeight * 0.75) {
+        section.classList.add("active");
+      } else {
+        section.classList.remove("active");
+      }
+    });
+
+    if (window.pageYOffset > 300) {
+      setShowScrollButton(true);
+    } else {
+      setShowScrollButton(false);
+    }
+  }
+
+  checkScroll();
+  window.addEventListener("scroll", checkScroll);
+
+  return () => {
+    window.removeEventListener("scroll", checkScroll);
+  };
+}, []);
+
+// Función para volver al inicio de la página
+const handleScrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 
   // Función para obtener la lista de materias desde el servidor
   const fetchMaterias = async () => {
@@ -338,6 +380,12 @@ function MantMaterias() {
           </div>
         </div>
       </main>
+       {/* Botón flotante de scroll */}
+       {showScrollButton && (
+        <button className="scroll-to-top" onClick={handleScrollToTop}>
+          <TiArrowUpThick />
+        </button>
+      )}
     </div>
   );
 }

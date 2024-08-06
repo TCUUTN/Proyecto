@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
+import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import "./Usuario.modulo.css";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -24,10 +25,56 @@ function Usuarios() {
   const usuariosPerPage = 10;
  // Estado para manejar la pantalla de carga
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
-   // Fetch inicial de usuarios
+  
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  
+  // Fetch inicial de usuarios
    useEffect(() => {
     fetchUsuarios();
   }, []);
+
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
+
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+
+
   /**
    * fetchUsuarios - Obtiene la lista de usuarios del servidor y aplica los filtros iniciales.
    */
@@ -600,6 +647,12 @@ function Usuarios() {
       </main>
 
       <ToastContainer position="bottom-right" />
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
+        <button className="scroll-to-top" onClick={handleScrollToTop}>
+          <TiArrowUpThick />
+        </button>
+      )}
     </div>
   );
 }

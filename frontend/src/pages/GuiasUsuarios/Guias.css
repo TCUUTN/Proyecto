@@ -224,7 +224,8 @@
 .scroll-to-top {
   position: fixed;
   bottom: 70px;
-  right: 20px;
+  left: auto;
+  right: 3px;
   background-color: #0b2f6b;
   color: white;
   border: none;

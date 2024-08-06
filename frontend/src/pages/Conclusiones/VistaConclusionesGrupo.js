@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import "react-toastify/dist/ReactToastify.css";
 import "./VistaConclusionesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -18,6 +19,48 @@ function VistaConclusionesGrupo() {
   const [estadoFilter, setEstadoFilter] = useState(""); // Filtro de estado de la boleta
   const [currentPage, setCurrentPage] = useState(1); // Página actual para la paginación
   const conclusionesPerPage = 10; // Número de conclusiones por página
+
+// Estado para manejar la visibilidad del botón de scroll
+const [showScrollButton, setShowScrollButton] = useState(false);
+// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+useEffect(() => {
+ const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+ function checkScroll() {
+   sections.forEach((section) => {
+     const rect = section.getBoundingClientRect();
+     const windowHeight = window.innerHeight;
+
+     if (rect.top < windowHeight * 0.75) {
+       section.classList.add("active");
+     } else {
+       section.classList.remove("active");
+     }
+   });
+
+   if (window.pageYOffset > 300) {
+     setShowScrollButton(true);
+   } else {
+     setShowScrollButton(false);
+   }
+ }
+
+ checkScroll();
+ window.addEventListener("scroll", checkScroll);
+
+ return () => {
+   window.removeEventListener("scroll", checkScroll);
+ };
+}, []);
+
+// Función para volver al inicio de la página
+const handleScrollToTop = () => {
+ window.scrollTo({
+   top: 0,
+   behavior: "smooth",
+ });
+};
+
   // Datos del usuario y grupo almacenados en el almacenamiento local y de sesión
   const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol del usuario
   const grupoId = localStorage.getItem("GrupoSeleccionado"); // ID del grupo seleccionado
@@ -296,6 +339,12 @@ function VistaConclusionesGrupo() {
           </>
         )}
       </main>
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
+        <button className="scroll-to-top" onClick={handleScrollToTop}>
+          <TiArrowUpThick />
+        </button>
+      )}
     </div>
   );
 }
