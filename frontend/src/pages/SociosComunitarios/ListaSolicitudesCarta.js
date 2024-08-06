@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { SlEnvolopeLetter } from "react-icons/sl";
+import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import { ToastContainer, toast } from "react-toastify";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -23,6 +24,48 @@ function SolicitudesCarta() {
     useState("");
   const [searchCartaCompletadas, setSearchCartaCompletadas] = useState("");
   const navigate = useNavigate();
+
+// Estado para manejar la visibilidad del botón de scroll
+const [showScrollButton, setShowScrollButton] = useState(false);
+// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+useEffect(() => {
+ const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+ function checkScroll() {
+   sections.forEach((section) => {
+     const rect = section.getBoundingClientRect();
+     const windowHeight = window.innerHeight;
+
+     if (rect.top < windowHeight * 0.75) {
+       section.classList.add("active");
+     } else {
+       section.classList.remove("active");
+     }
+   });
+
+   if (window.pageYOffset > 300) {
+     setShowScrollButton(true);
+   } else {
+     setShowScrollButton(false);
+   }
+ }
+
+ checkScroll();
+ window.addEventListener("scroll", checkScroll);
+
+ return () => {
+   window.removeEventListener("scroll", checkScroll);
+ };
+}, []);
+
+// Función para volver al inicio de la página
+const handleScrollToTop = () => {
+ window.scrollTo({
+   top: 0,
+   behavior: "smooth",
+ });
+};
+
  // useEffect para obtener los datos de las solicitudes al montar el componente
   useEffect(() => {
     const fetchData = async () => {
@@ -434,6 +477,12 @@ function SolicitudesCarta() {
         </div>
         <ToastContainer position="bottom-right" />
       </main>
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
+        <button className="scroll-to-top" onClick={handleScrollToTop}>
+          <TiArrowUpThick />
+        </button>
+      )}
     </div>
   );
 }

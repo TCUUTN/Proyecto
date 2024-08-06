@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { FaFileUpload } from "react-icons/fa";
@@ -11,7 +11,7 @@ import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import { LuFileEdit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
-function MantMaterias() {
+function Proyectos() {
   // Estados para almacenar y gestionar datos de materias y filtros
   const [materias, setMaterias] = useState([]);
   const [filteredMaterias, setFilteredMaterias] = useState([]);
@@ -21,6 +21,10 @@ function MantMaterias() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const materiasPerPage = 10;
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
   // Verifica si el proyecto fue guardado en la sesión anterior
   const banderaProyecto = sessionStorage.getItem("proyectoGuardado");
@@ -30,44 +34,44 @@ function MantMaterias() {
   // Estado para manejar la visibilidad del botón de scroll
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
-useEffect(() => {
-  const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-  function checkScroll() {
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-      if (rect.top < windowHeight * 0.75) {
-        section.classList.add("active");
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
       } else {
-        section.classList.remove("active");
+        setShowScrollButton(false);
       }
-    });
-
-    if (window.pageYOffset > 300) {
-      setShowScrollButton(true);
-    } else {
-      setShowScrollButton(false);
     }
-  }
 
-  checkScroll();
-  window.addEventListener("scroll", checkScroll);
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
 
-  return () => {
-    window.removeEventListener("scroll", checkScroll);
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
-}, []);
-
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
 
   // Función para obtener la lista de materias desde el servidor
   const fetchMaterias = async () => {
@@ -137,6 +141,38 @@ const handleScrollToTop = () => {
 
     setFilteredMaterias(filtered);
     setCurrentPage(1); // Reiniciar a la primera página al cambiar los filtros
+  };
+
+  // Lógica para ordenar materias
+  const sortedMaterias = useMemo(() => {
+    let sortableMaterias = [...filteredMaterias];
+    if (sortConfig.key !== null) {
+      sortableMaterias.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableMaterias;
+  }, [filteredMaterias, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
   };
 
   // Variables para la paginación
@@ -313,9 +349,18 @@ const handleScrollToTop = () => {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Código de Proyecto</th>
-                <th>Nombre del Proyecto</th>
-                <th>Tipo</th>
+                <th onClick={() => requestSort("CodigoMateria")}>
+                  Código del Proyecto
+                  <span className={getClassNamesFor("CodigoMateria")} />
+                </th>
+                <th onClick={() => requestSort("NombreProyecto")}>
+                  Nombre del Proyecto
+                  <span className={getClassNamesFor("NombreProyecto")} />
+                </th>
+                <th onClick={() => requestSort("TipoCurso")}>
+                  Modalidad
+                  <span className={getClassNamesFor("TipoCurso")} />
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -380,8 +425,8 @@ const handleScrollToTop = () => {
           </div>
         </div>
       </main>
-       {/* Botón flotante de scroll */}
-       {showScrollButton && (
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
@@ -390,4 +435,4 @@ const handleScrollToTop = () => {
   );
 }
 
-export default MantMaterias;
+export default Proyectos;

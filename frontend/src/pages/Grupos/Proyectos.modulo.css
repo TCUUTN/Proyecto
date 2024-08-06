@@ -233,7 +233,20 @@
   color: #002b69;
   transition:0.5s;
 }
+/* Ordenar tablas */
+.mat-table th span {
+  margin-left: 5px;
+}
 
+.ascending::after {
+  content: "▲";
+  margin-left: 5px;
+}
+
+.descending::after {
+  content: "▼";
+  margin-left: 5px;
+}
 
 /*Paginacion*/
 

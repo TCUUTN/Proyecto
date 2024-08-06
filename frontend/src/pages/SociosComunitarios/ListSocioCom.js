@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaFileDownload } from "react-icons/fa";
+import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { FaMapMarkedAlt, FaWaze, FaShareAlt } from "react-icons/fa";
@@ -25,6 +26,48 @@ function SocioComunitarios() {
   });
   // Hook de navegación
   const navigate = useNavigate();
+
+// Estado para manejar la visibilidad del botón de scroll
+const [showScrollButton, setShowScrollButton] = useState(false);
+// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+useEffect(() => {
+ const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+ function checkScroll() {
+   sections.forEach((section) => {
+     const rect = section.getBoundingClientRect();
+     const windowHeight = window.innerHeight;
+
+     if (rect.top < windowHeight * 0.75) {
+       section.classList.add("active");
+     } else {
+       section.classList.remove("active");
+     }
+   });
+
+   if (window.pageYOffset > 300) {
+     setShowScrollButton(true);
+   } else {
+     setShowScrollButton(false);
+   }
+ }
+
+ checkScroll();
+ window.addEventListener("scroll", checkScroll);
+
+ return () => {
+   window.removeEventListener("scroll", checkScroll);
+ };
+}, []);
+
+// Función para volver al inicio de la página
+const handleScrollToTop = () => {
+ window.scrollTo({
+   top: 0,
+   behavior: "smooth",
+ });
+};
+
  // useEffect para obtener los datos de los socios al montar el componente
   useEffect(() => {
     fetch("/socios/")
@@ -455,6 +498,12 @@ function SocioComunitarios() {
           </div>
         </div>
       </main>
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
+        <button className="scroll-to-top" onClick={handleScrollToTop}>
+          <TiArrowUpThick />
+        </button>
+      )}
     </div>
   );
 }
