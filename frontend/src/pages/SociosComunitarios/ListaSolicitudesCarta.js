@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
+import { TiArrowDownThick } from "react-icons/ti";
 import "./ListaSocios.css";
 // Componente principal para manejar las solicitudes de cartas
 function SolicitudesCarta() {
@@ -25,48 +26,54 @@ function SolicitudesCarta() {
   const [searchCartaCompletadas, setSearchCartaCompletadas] = useState("");
   const navigate = useNavigate();
 
-// Estado para manejar la visibilidad del botón de scroll
-const [showScrollButton, setShowScrollButton] = useState(false);
-// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
-useEffect(() => {
- const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
- function checkScroll() {
-   sections.forEach((section) => {
-     const rect = section.getBoundingClientRect();
-     const windowHeight = window.innerHeight;
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
-     if (rect.top < windowHeight * 0.75) {
-       section.classList.add("active");
-     } else {
-       section.classList.remove("active");
-     }
-   });
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-   if (window.pageYOffset > 300) {
-     setShowScrollButton(true);
-   } else {
-     setShowScrollButton(false);
-   }
- }
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
- checkScroll();
- window.addEventListener("scroll", checkScroll);
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
 
- return () => {
-   window.removeEventListener("scroll", checkScroll);
- };
-}, []);
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
 
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
- window.scrollTo({
-   top: 0,
-   behavior: "smooth",
- });
-};
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
 
- // useEffect para obtener los datos de las solicitudes al montar el componente
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // useEffect para obtener los datos de las solicitudes al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       const role = sessionStorage.getItem("SelectedRole");
@@ -106,11 +113,11 @@ const handleScrollToTop = () => {
 
     fetchData();
   }, []);
- // Función para manejar la navegación a la página de creación/edición de solicitudes
+  // Función para manejar la navegación a la página de creación/edición de solicitudes
   const handleAddSolicitud = () => {
     navigate("/CrearActualizarSolicitudesCartas");
   };
-// Funciones para manejar la paginación de solicitudes pendientes
+  // Funciones para manejar la paginación de solicitudes pendientes
   const handleNextPagePending = () => {
     setCurrentPagePending((prevPage) => prevPage + 1);
   };
@@ -120,7 +127,7 @@ const handleScrollToTop = () => {
       prevPage > 1 ? prevPage - 1 : prevPage
     );
   };
-// Funciones para manejar la paginación de solicitudes completadas
+  // Funciones para manejar la paginación de solicitudes completadas
   const handleNextPageCompleted = () => {
     setCurrentPageCompleted((prevPage) => prevPage + 1);
   };
@@ -130,7 +137,7 @@ const handleScrollToTop = () => {
       prevPage > 1 ? prevPage - 1 : prevPage
     );
   };
-// Filtrar las solicitudes pendientes en función de los criterios de búsqueda
+  // Filtrar las solicitudes pendientes en función de los criterios de búsqueda
   const filteredPendientes = solicitudesPendientes.filter(
     (item) =>
       item.Socios_RegistroSocio.NombreSocio &&
@@ -144,7 +151,7 @@ const handleScrollToTop = () => {
             .includes(searchEstudiantePendientes.toLowerCase())
         ))
   );
-// Filtrar las solicitudes completadas en función de los criterios de búsqueda
+  // Filtrar las solicitudes completadas en función de los criterios de búsqueda
   const filteredCompletadas = solicitudesCompletadas.filter(
     (item) =>
       item.Socios_RegistroSocio.NombreSocio &&
@@ -161,7 +168,7 @@ const handleScrollToTop = () => {
         searchCartaCompletadas.toLowerCase()
       )
   );
- // Manejar la descarga de cartas
+  // Manejar la descarga de cartas
   const handleDescargaCarta = async (SolicitudId) => {
     try {
       const response = await fetch(`/socios/descargarCarta/${SolicitudId}`);
@@ -194,7 +201,7 @@ const handleScrollToTop = () => {
       toast.error("Error al manejar la descarga del archivo:", error);
     }
   };
-// Manejar la edición de solicitudes
+  // Manejar la edición de solicitudes
   const handleEditSolicitud = (SolicitudId) => {
     localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
     navigate("/CrearActualizarSolicitudesCartas");
@@ -204,6 +211,61 @@ const handleScrollToTop = () => {
     localStorage.setItem("SolicitudIdSeleccionada", SolicitudId);
     navigate("/VerSolicitudes");
   };
+  // Lógica para ordenar solicitudes pendientes
+  const sortedPendientes = useMemo(() => {
+    let sortable = [...filteredPendientes];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredPendientes, sortConfig]);
+
+  // Lógica para ordenar solicitudes completadas
+  const sortedCompletadas = useMemo(() => {
+    let sortable = [...filteredCompletadas];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredCompletadas, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
+
   // Constantes para la paginación
   const role = sessionStorage.getItem("SelectedRole");
   const ITEMS_PER_PAGE = 10;
@@ -261,13 +323,34 @@ const handleScrollToTop = () => {
               <table className="table-socioc">
                 <thead className="thead-socioc">
                   <tr>
-                    <th>Socio</th>
-                    <th>Estudiante</th>
-                    <th>Acciones</th>
+                    <th
+                      onClick={() =>
+                        requestSort("solicitud.Socios_RegistroSocio.NombreSocio")
+                      }
+                    >
+                      Socio
+                      {getClassNamesFor("solicitud.Socios_RegistroSocio.NombreSocio") ===
+                        "ascending" && <TiArrowUpThick className="icon-up" />}
+                      {getClassNamesFor("solicitud.Socios_RegistroSocio.NombreSocio") ===
+                        "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
+                    <th onClick={() => requestSort("EstudiantesCarta")}>
+                      Estudiante
+                      {getClassNamesFor("EstudiantesCarta") === "ascending" && (
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("EstudiantesCarta") ===
+                        "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody className="tbody-socioc">
-                  {filteredPendientes
+                  {sortedPendientes
                     .slice(
                       pendingStartIndex,
                       pendingStartIndex + ITEMS_PER_PAGE
@@ -304,21 +387,21 @@ const handleScrollToTop = () => {
                           )}
                           {role === "Administrativo" && (
                             <OverlayTrigger
-                            placement="top"
-                            overlay={
-                              <Tooltip id="tooltip-edit">
-                                Revisar Solicitud
-                              </Tooltip>
-                            }
-                          >
-                            <button
-                              className="icon-btn--sociocomu"
-                              onClick={() =>
-                                handleSendLetter(solicitud.SolicitudId)
+                              placement="top"
+                              overlay={
+                                <Tooltip id="tooltip-edit">
+                                  Revisar Solicitud
+                                </Tooltip>
                               }
                             >
-                              <SlEnvolopeLetter />
-                            </button>
+                              <button
+                                className="icon-btn--sociocomu"
+                                onClick={() =>
+                                  handleSendLetter(solicitud.SolicitudId)
+                                }
+                              >
+                                <SlEnvolopeLetter />
+                              </button>
                             </OverlayTrigger>
                           )}
                         </td>
@@ -405,13 +488,42 @@ const handleScrollToTop = () => {
               <table className="table-socioc">
                 <thead className="thead-socioc">
                   <tr>
-                    <th>Socio</th>
-                    <th>Estudiantes</th>
-                    <th>Carta</th>
+                    <th
+                      onClick={() =>
+                        requestSort("NombreSocio")
+                      }
+                    >
+                      Socio
+                      {getClassNamesFor("NombreSocio") ===
+                        "ascending" && <TiArrowUpThick className="icon-up" />}
+                      {getClassNamesFor("NombreSocio") ===
+                        "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
+                    <th onClick={() => requestSort("EstudiantesCarta")}>
+                      Estudiantes
+                      {getClassNamesFor("EstudiantesCarta") === "ascending" && (
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("EstudiantesCarta") ===
+                        "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
+                    <th onClick={() => requestSort("NombreCarta")}>
+                      Carta
+                      {getClassNamesFor("NombreCarta") === "ascending" && (
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("NombreCarta") === "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="tbody-socioc">
-                  {filteredCompletadas
+                  {sortedCompletadas
                     .slice(
                       completedStartIndex,
                       completedStartIndex + ITEMS_PER_PAGE

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
@@ -7,6 +7,7 @@ import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import "react-toastify/dist/ReactToastify.css";
 import "./VistaConclusionesGrupo.css";
 import { FaChevronLeft } from "react-icons/fa6";
+import { TiArrowDownThick } from "react-icons/ti";
 import { MdFindInPage } from "react-icons/md";
 
 function VistaConclusionesGrupo() {
@@ -20,46 +21,52 @@ function VistaConclusionesGrupo() {
   const [currentPage, setCurrentPage] = useState(1); // Página actual para la paginación
   const conclusionesPerPage = 10; // Número de conclusiones por página
 
-// Estado para manejar la visibilidad del botón de scroll
-const [showScrollButton, setShowScrollButton] = useState(false);
-// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
-useEffect(() => {
- const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
- function checkScroll() {
-   sections.forEach((section) => {
-     const rect = section.getBoundingClientRect();
-     const windowHeight = window.innerHeight;
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
-     if (rect.top < windowHeight * 0.75) {
-       section.classList.add("active");
-     } else {
-       section.classList.remove("active");
-     }
-   });
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-   if (window.pageYOffset > 300) {
-     setShowScrollButton(true);
-   } else {
-     setShowScrollButton(false);
-   }
- }
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
- checkScroll();
- window.addEventListener("scroll", checkScroll);
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
 
- return () => {
-   window.removeEventListener("scroll", checkScroll);
- };
-}, []);
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
 
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
- window.scrollTo({
-   top: 0,
-   behavior: "smooth",
- });
-};
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
+
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   // Datos del usuario y grupo almacenados en el almacenamiento local y de sesión
   const selectedRole = sessionStorage.getItem("SelectedRole"); // Rol del usuario
@@ -149,10 +156,49 @@ const handleScrollToTop = () => {
     setCurrentPage(1); // Restablecer a la primera página al cambiar los filtros
   };
 
+  // Lógica para ordenar boletas de concluiones
+  const sortedConclusiones = useMemo(() => {
+    let sortable = [...filteredConclusiones];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], a);
+        const bValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], b);
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredConclusiones, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
+
   // Cálculo de las conclusiones a mostrar en la página actual
   const indexOfLastConclusion = currentPage * conclusionesPerPage;
   const indexOfFirstConclusion = indexOfLastConclusion - conclusionesPerPage;
-  const currentConclusiones = filteredConclusiones.slice(
+  const currentConclusiones = sortedConclusiones.slice(
     indexOfFirstConclusion,
     indexOfLastConclusion
   );
@@ -263,8 +309,24 @@ const handleScrollToTop = () => {
               <table className="mat-table">
                 <thead className="mat-thead">
                   <tr>
-                    <th>Identificación</th>
-                    <th>Nombre Completo</th>
+                    <th onClick={() => requestSort("Identificacion")}>
+                      Identificación
+                      {getClassNamesFor("Identificacion") === "ascending" && (
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("Identificacion") === "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
+                    <th onClick={() => requestSort("Usuario.Nombre")}>
+                      Nombre Completo
+                      {getClassNamesFor("Usuario.Nombre") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Usuario.Nombre") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                      </th>
                     {selectedRole === "Académico" && (
                       <th>Estado de la Boleta</th>
                     )}

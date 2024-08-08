@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaEdit } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoMdAddCircle } from "react-icons/io";
@@ -8,6 +8,7 @@ import { FaFileDownload } from "react-icons/fa";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
+import { TiArrowDownThick } from "react-icons/ti";
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -41,46 +42,52 @@ function VistaHorasEstudiante() {
   const estado = localStorage.getItem("EstadoHoras");
   const selectedRole = sessionStorage.getItem("SelectedRole");
 
-// Estado para manejar la visibilidad del botón de scroll
-const [showScrollButton, setShowScrollButton] = useState(false);
-// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
-useEffect(() => {
- const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Nuevos estados para el ordenamiento
+  const [sortConfig, setSortConfig] = useState({
+    key: null, // Columna actual por la que estamos ordenando
+    direction: "ascending", // Dirección del ordenamiento: 'asc' o 'desc'
+  });
 
- function checkScroll() {
-   sections.forEach((section) => {
-     const rect = section.getBoundingClientRect();
-     const windowHeight = window.innerHeight;
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-     if (rect.top < windowHeight * 0.75) {
-       section.classList.add("active");
-     } else {
-       section.classList.remove("active");
-     }
-   });
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-   if (window.pageYOffset > 300) {
-     setShowScrollButton(true);
-   } else {
-     setShowScrollButton(false);
-   }
- }
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
 
- checkScroll();
- window.addEventListener("scroll", checkScroll);
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
 
- return () => {
-   window.removeEventListener("scroll", checkScroll);
- };
-}, []);
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
 
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
- window.scrollTo({
-   top: 0,
-   behavior: "smooth",
- });
-};
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     if (identificacion) {
@@ -277,15 +284,78 @@ const handleScrollToTop = () => {
     setCurrentPageRejected(1); // Reset to first page on filter change
   };
 
+  // Función para manejar el ordenamiento
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
+  // Lógica para ordenar horas aprobadas
+  const sortedAprobados = useMemo(() => {
+    let sortable = [...filteredApprovedMaterias];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], a);
+        const bValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], b);
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredApprovedMaterias, sortConfig]);
+
+  // Lógica para ordenar horas rechazadas
+  const sortedRechazados = useMemo(() => {
+    let sortable = [...filteredRejectedMaterias];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], a);
+        const bValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], b);
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredRejectedMaterias, sortConfig]);
+
   const indexOfLastHoraApro = currentPageApro * materiasPerPage;
   const indexOfFirstHoraApro = indexOfLastHoraApro - materiasPerPage;
   const indexOfLastHoraRejected = currentPageRejected * materiasPerPage;
   const indexOfFirstHoraRejected = indexOfLastHoraRejected - materiasPerPage;
-  const currentApprovedMaterias = filteredApprovedMaterias.slice(
+  const currentApprovedMaterias = sortedAprobados.slice(
     indexOfFirstHoraApro,
     indexOfLastHoraApro
   );
-  const currentRejectedMaterias = filteredRejectedMaterias.slice(
+  const currentRejectedMaterias = sortedRechazados.slice(
     indexOfFirstHoraRejected,
     indexOfLastHoraRejected
   );
@@ -563,10 +633,10 @@ const handleScrollToTop = () => {
   };
 
   const formatTime = (time) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const period = hours >= 12 ? 'pm' : 'am';
+    const [hours, minutes] = time.split(":").map(Number);
+    const period = hours >= 12 ? "pm" : "am";
     const formattedHours = hours % 12 || 12;
-    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, "0");
     return `${formattedHours}:${formattedMinutes} ${period}`;
   };
 
@@ -687,12 +757,65 @@ const handleScrollToTop = () => {
                   <table className="apro-table">
                     <thead className="apro-thead">
                       <tr>
-                        <th>Fecha</th>
-                        <th>Descripción de la Actividad</th>
-                        <th>Tipo de Actividad</th>
-                        <th>Hora de Inicio</th>
-                        <th>Hora Final</th>
-                        <th>Evidencia</th>
+                        <th
+                          onClick={() => requestSort("Fecha")}>
+                          Fecha
+                          {getClassNamesFor("Fecha") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("Fecha") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("DescripcionActividad")}>
+                          Descripción de la Actividad
+                          {getClassNamesFor("DescripcionActividad") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("DescripcionActividad") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("TipoActividad")}>
+                          Tipo de Actividad
+                          {getClassNamesFor("TipoActividad") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("TipoActividad") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("HoraInicio")}>
+                          Hora de Inicio
+                          {getClassNamesFor("HoraInicio") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("HoraInicio") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("HoraFinal")}>
+                          Hora Final
+                          {getClassNamesFor("HoraFinal") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("HoraFinal") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th onClick={() => requestSort("NombreEvidencia")}>
+                          Evidencia
+                          {getClassNamesFor("NombreEvidencia") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("NombreEvidencia") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
                         {selectedRole === "Académico" &&
                           estado !== "Aprobado" && <th></th>}
                       </tr>
@@ -704,7 +827,7 @@ const handleScrollToTop = () => {
                           <td>{materia.DescripcionActividad}</td>
                           <td>{materia.TipoActividad}</td>
                           <td>{formatTime(materia.HoraInicio)}</td>
-<td>{formatTime(materia.HoraFinal)}</td>
+                          <td>{formatTime(materia.HoraFinal)}</td>
                           <td>
                             {materia.NombreEvidencia &&
                             materia.NombreEvidencia !== "-" ? (
@@ -850,10 +973,44 @@ const handleScrollToTop = () => {
                   <table className="apro-table">
                     <thead className="apro-thead">
                       <tr>
-                        <th>Fecha</th>
-                        <th>Descripción de la Actividad</th>
-                        <th>Tipo de Actividad</th>
-                        <th>Comentarios de Rechazo</th>
+                        <th onClick={() => requestSort("Fecha")}>
+                          Fecha
+                          {getClassNamesFor("Fecha") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("Fecha") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("DescripcionActividad")}>
+                          Descripción de la Actividad
+                          {getClassNamesFor("DescripcionActividad") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("DescripcionActividad") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th
+                          onClick={() => requestSort("TipoActividad")}>
+                          Tipo de Actividad
+                          {getClassNamesFor("TipoActividad") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("TipoActividad") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
+                        <th onClick={() => requestSort("ComentariosRechazo")}>
+                          Comentarios de Rechazo
+                          {getClassNamesFor("ComentariosRechazo") === "ascending" && (
+                            <TiArrowUpThick className="icon-up" />
+                          )}
+                          {getClassNamesFor("ComentariosRechazo") === "descending" && (
+                            <TiArrowDownThick className="icon-down" />
+                          )}
+                        </th>
                         {selectedRole === "Estudiante" &&
                           estado !== "Aprobado" && <th></th>}
                       </tr>

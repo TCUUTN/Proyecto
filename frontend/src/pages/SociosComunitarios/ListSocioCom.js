@@ -1,5 +1,5 @@
 // Importamos las dependencias necesarias
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaFileDownload } from "react-icons/fa";
@@ -11,10 +11,11 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { TiArrowDownThick } from "react-icons/ti";
 import "./ListaSocios.css";
 // Componente principal SocioComunitarios
 function SocioComunitarios() {
-   // Definición de estados
+  // Definición de estados
   const [currentPage, setCurrentPage] = useState(1);
   const [socios, setSocios] = useState([]);
   const [filteredSocios, setFilteredSocios] = useState([]);
@@ -27,48 +28,54 @@ function SocioComunitarios() {
   // Hook de navegación
   const navigate = useNavigate();
 
-// Estado para manejar la visibilidad del botón de scroll
-const [showScrollButton, setShowScrollButton] = useState(false);
-// Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
-useEffect(() => {
- const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
- function checkScroll() {
-   sections.forEach((section) => {
-     const rect = section.getBoundingClientRect();
-     const windowHeight = window.innerHeight;
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
-     if (rect.top < windowHeight * 0.75) {
-       section.classList.add("active");
-     } else {
-       section.classList.remove("active");
-     }
-   });
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-   if (window.pageYOffset > 300) {
-     setShowScrollButton(true);
-   } else {
-     setShowScrollButton(false);
-   }
- }
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
- checkScroll();
- window.addEventListener("scroll", checkScroll);
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
 
- return () => {
-   window.removeEventListener("scroll", checkScroll);
- };
-}, []);
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
 
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
- window.scrollTo({
-   top: 0,
-   behavior: "smooth",
- });
-};
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
 
- // useEffect para obtener los datos de los socios al montar el componente
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // useEffect para obtener los datos de los socios al montar el componente
   useEffect(() => {
     fetch("/socios/")
       .then((response) => response.json())
@@ -77,11 +84,11 @@ const handleScrollToTop = () => {
         setFilteredSocios(data);
       });
   }, []);
- // Función para manejar la adición de un nuevo socio
+  // Función para manejar la adición de un nuevo socio
   const handleAddUser = () => {
     navigate("/CrearActuSocioComunitarios");
   };
- // Función para manejar la edición de un socio existente
+  // Función para manejar la edición de un socio existente
   const handleEditUser = (socioId) => {
     localStorage.setItem("SocioIdSeleccionado", socioId);
     navigate("/CrearActuSocioComunitarios");
@@ -94,7 +101,7 @@ const handleScrollToTop = () => {
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
   };
- // Función para manejar cambios en los filtros
+  // Función para manejar cambios en los filtros
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -106,7 +113,7 @@ const handleScrollToTop = () => {
   useEffect(() => {
     const applyFilters = () => {
       let filtered = socios;
- // Filtrado por institución
+      // Filtrado por institución
       if (filters.institucion) {
         filtered = filtered.filter((socio) =>
           socio.NombreSocio.toLowerCase().includes(
@@ -114,7 +121,7 @@ const handleScrollToTop = () => {
           )
         );
       }
- // Filtrado por contacto
+      // Filtrado por contacto
       if (filters.contacto) {
         filtered = filtered.filter((socio) =>
           socio.NombreCompletoContacto.toLowerCase().includes(
@@ -122,7 +129,7 @@ const handleScrollToTop = () => {
           )
         );
       }
-// Filtrado por tipo de institución
+      // Filtrado por tipo de institución
       if (filters.tipoInstitucion) {
         filtered = filtered.filter((socio) =>
           socio.TipoInstitucion.toLowerCase().includes(
@@ -130,7 +137,7 @@ const handleScrollToTop = () => {
           )
         );
       }
-// Filtrado por tipo de institución
+      // Filtrado por tipo de institución
       if (filters.estado !== "") {
         filtered = filtered.filter(
           (socio) => String(socio.Estado) === filters.estado
@@ -142,7 +149,48 @@ const handleScrollToTop = () => {
 
     applyFilters();
   }, [filters, socios]);
- // Función para generar el enlace de Google Maps
+
+  // Función para manejar el ordenamiento
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
+
+  // Lógica para ordenar socios
+  const sortedSocios = useMemo(() => {
+    let sortable = [...filteredSocios];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], a);
+        const bValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], b);
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredSocios, sortConfig]);
+
+  // Función para generar el enlace de Google Maps
   const generateMapsLink = (gps) => {
     const [latitude, longitude] = gps.split(",");
     return `https://www.google.com/maps?q=${latitude},${longitude}`;
@@ -278,32 +326,30 @@ const handleScrollToTop = () => {
         <div className="sociocomu-sidebar">
           <div className="action-sociocomu">
             <button className="add-sociocomu" onClick={handleAddUser}>
-              Agregar Socio<IoMdAddCircle className="icon-socio" />
+              Agregar Socio
+              <IoMdAddCircle className="icon-socio" />
             </button>
             <div className="socio-divider" />
             <h1 className="sociocomu-titulo">Socios Comunitarios</h1>
             <div className="socio-divider" />
             <div className="butRepor-socio">
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip id="tooltip-edit">
-                  {" "}
-                  Lista de Socios Comunitarios
-                </Tooltip>
-              }
-            >
-              <button
-                onClick={handleGenerarReporte}
-                className="descagarReport-Socios"
+              <OverlayTrigger
+                placement="top"
+                overlay={
+                  <Tooltip id="tooltip-edit">
+                    {" "}
+                    Lista de Socios Comunitarios
+                  </Tooltip>
+                }
               >
-                <FaFileDownload /> Descargar Reporte
-              </button>
-            </OverlayTrigger>
+                <button
+                  onClick={handleGenerarReporte}
+                  className="descagarReport-Socios"
+                >
+                  <FaFileDownload /> Descargar Reporte
+                </button>
+              </OverlayTrigger>
             </div>
-           
-            
-          
           </div>
         </div>
 
@@ -365,18 +411,66 @@ const handleScrollToTop = () => {
             <table className="table-socioc">
               <thead className="thead-socioc">
                 <tr>
-                  <th>Nombre</th>
-                  <th>Contacto</th>
-                  <th>Tipo de Institucion</th>
-                  <th>Nombre del Encargado</th>
-                  <th>Contacto del Encargado</th>
-                  <th>Dirección</th>
-                  <th>Acciones</th>
+                  <th onClick={() => requestSort("NombreSocio")}>
+                    Nombre
+                    {getClassNamesFor("NombreSocio") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("NombreSocio") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th  onClick={() => requestSort("CorreoElectronicoSocio")}> 
+                    Contacto
+                    {getClassNamesFor("CorreoElectronicoSocio") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("CorreoElectronicoSocio") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th onClick={() => requestSort("TipoInstitucion")}>
+                    Tipo de Institucion
+                    {getClassNamesFor("TipoInstitucion") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("TipoInstitucion") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th onClick={() => requestSort("CorreoElectronicoContacto")}>
+                    Nombre del Encargado
+                    {getClassNamesFor("CorreoElectronicoContacto") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("CorreoElectronicoContacto") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th onClick={() => requestSort("TelefonoContacto")}>
+                    Contacto del Encargado
+                    {getClassNamesFor("TelefonoContacto") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("TelefonoContacto") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th onClick={() => requestSort("DireccionSocio")}>
+                    Dirección
+                    {getClassNamesFor("DireccionSocio") === "ascending" && (
+                      <TiArrowUpThick className="icon-up" />
+                    )}
+                    {getClassNamesFor("DireccionSocio") === "descending" && (
+                      <TiArrowDownThick className="icon-down" />
+                    )}
+                  </th>
+                  <th></th>
                 </tr>
               </thead>
 
               <tbody className="tbody-socioc">
-                {filteredSocios
+                {sortedSocios
                   .slice((currentPage - 1) * 10, currentPage * 10)
                   .map((socio) => (
                     <tr key={socio.SocioId}>
@@ -475,7 +569,6 @@ const handleScrollToTop = () => {
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
-                  
                 >
                   <GrFormPreviousLink />
                 </button>
