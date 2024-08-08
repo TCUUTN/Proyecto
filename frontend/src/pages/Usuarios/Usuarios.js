@@ -30,13 +30,19 @@ function Usuarios() {
   // Estado para manejar la visibilidad del botón de scroll
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-  
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
   // Fetch inicial de usuarios
   useEffect(() => {
     fetchUsuarios();
   }, []);
+
+  useEffect(() => {
+    console.log('filteredUsuarios:', filteredUsuarios);
+  }, [filteredUsuarios]);
 
   // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
   useEffect(() => {
@@ -172,37 +178,71 @@ function Usuarios() {
     setFilteredUsuarios(filtered);
     setCurrentPage(1); // Reset to first page on filter change
   };
- // Lógica para ordenar usuarios
- const sortedUsuarios = useMemo(() => {
-  let sortableUsuarios = [...filteredUsuarios];
-  if (sortConfig.key !== null) {
-    sortableUsuarios.sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? 1 : -1;
-      }
-      return 0;
-    });
-  }
-  return sortableUsuarios;
-}, [filteredUsuarios, sortConfig]);
 
-  const requestSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+  const sortUsuariosByRoles = (a, b, direction) => {
+    const getRolePriority = (roles) => {
+      if (roles.includes("Estudiante")) return 1;
+      if (roles.includes("Administrativo")) return 2;
+      if (roles.includes("Académico")) return 3;
+      return 4; // Para roles que no sean "Estudiante", "Administrativo" ni "Académico"
+    };
+  
+    const rolesA = a.Usuarios_Roles.map((ur) => ur.Rol.NombreRol).join(", ");
+    const rolesB = b.Usuarios_Roles.map((ur) => ur.Rol.NombreRol).join(", ");
+  
+    const priorityA = getRolePriority(rolesA);
+    const priorityB = getRolePriority(rolesB);
+  
+    // Ordenar en función de la dirección
+    if (direction === "ascending") {
+      return priorityA - priorityB; // Ascendente
+    } else {
+      return priorityB - priorityA; // Descendente
     }
-    setSortConfig({ key, direction });
   };
   
-  const getClassNamesFor = (key) => {
-    if (!sortConfig || sortConfig.key !== key) {
-      return;
+  
+
+  // Lógica para ordenar usuarios
+  const sortedUsuarios = useMemo(() => {
+    console.log('Inside useMemo - filteredUsuarios:', filteredUsuarios);
+    let sortableUsuarios = Array.isArray(filteredUsuarios) ? [...filteredUsuarios] : [];
+    if (sortConfig.key !== null) {
+      sortableUsuarios.sort((a, b) => {
+        if (sortConfig.key === "Usuarios_Roles") {
+          return sortUsuariosByRoles(a, b, sortConfig.direction);
+        } else {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? 1 : -1;
+          }
+          return 0;
+        }
+      });
     }
-    return sortConfig.direction;
-  };
+    return sortableUsuarios;
+  }, [filteredUsuarios, sortConfig]);
+  
+
+  
+  
+
+const requestSort = (key) => {
+  let direction = "ascending";
+  if (sortConfig.key === key && sortConfig.direction === "ascending") {
+    direction = "descending";
+  }
+  setSortConfig({ key, direction });
+};
+
+const getClassNamesFor = (name) => {
+  if (!sortConfig) {
+    return;
+  }
+  return sortConfig.key === name ? sortConfig.direction : undefined;
+};
 
   // Paginación
   const indexOfLastUsuario = currentPage * usuariosPerPage;
@@ -631,26 +671,43 @@ function Usuarios() {
           <table className="user-table">
             <thead className="user-thead">
               <tr>
-              <th onClick={() => requestSort("Identificacion")}>
-          Identificación
-          {getClassNamesFor("Identificacion") === "ascending" && <TiArrowUpThick className="icon-up" />}
-          {getClassNamesFor("Identificacion") === "descending" && <TiArrowDownThick className="icon-down" />}
-        </th>
-        <th onClick={() => requestSort("NombreCompleto")}>
-          Nombre Completo
-          {getClassNamesFor("NombreCompleto") === "ascending" && <TiArrowUpThick className="icon-up" />}
-          {getClassNamesFor("NombreCompleto") === "descending" && <TiArrowDownThick className="icon-down" />}
-        </th>
-        <th onClick={() => requestSort("Estado")}>
-          Estado
-          {getClassNamesFor("Estado") === "ascending" && <TiArrowUpThick className="icon-up" />}
-          {getClassNamesFor("Estado") === "descending" && <TiArrowDownThick className="icon-down" />}
-        </th>
-        <th onClick={() => requestSort("Rol")}>
-          Rol
-          {getClassNamesFor("Rol") === "ascending" && <TiArrowUpThick className="icon-up" />}
-          {getClassNamesFor("Rol") === "descending" && <TiArrowDownThick className="icon-down" />}
-        </th>
+                <th onClick={() => requestSort("Identificacion")}>
+                  Identificación
+                  {getClassNamesFor("Identificacion") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Identificacion") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Apellido1")}>
+                  Nombre Completo
+                  {getClassNamesFor("Apellido1") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Apellido1") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Estado")}>
+                  Estado
+                  {getClassNamesFor("Estado") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Estado") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Usuarios_Roles")}>
+                  Rol
+                  {getClassNamesFor("Usuarios_Roles") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Usuarios_Roles") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+
                 <th></th>
               </tr>
             </thead>
