@@ -321,16 +321,24 @@ function VistaConclusionesGrupo() {
                     <th onClick={() => requestSort("Usuario.Nombre")}>
                       Nombre Completo
                       {getClassNamesFor("Usuario.Nombre") === "ascending" && (
-                    <TiArrowUpThick className="icon-up" />
-                  )}
-                  {getClassNamesFor("Usuario.Nombre") === "descending" && (
-                    <TiArrowDownThick className="icon-down" />
-                  )}
-                      </th>
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("Usuario.Nombre") === "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
                     {selectedRole === "Académico" && (
-                      <th>Estado de la Boleta</th>
+                      <th onClick={() => requestSort("EstadoBoleta")}>
+                      Estado de la Boleta
+                      {getClassNamesFor("EstadoBoleta") === "ascending" && (
+                        <TiArrowUpThick className="icon-up" />
+                      )}
+                      {getClassNamesFor("EstadoBoleta") === "descending" && (
+                        <TiArrowDownThick className="icon-down" />
+                      )}
+                    </th>
                     )}
-                    <th>Acciones</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody className="mat-tbody">

@@ -48,6 +48,12 @@ function VistaHorasEstudiante() {
     direction: "ascending", // Dirección del ordenamiento: 'asc' o 'desc'
   });
 
+   // Nuevos estados para el ordenamiento
+   const [sortConfig2, setSortConfig2] = useState({
+    key: null, // Columna actual por la que estamos ordenando
+    direction: "ascending", // Dirección del ordenamiento: 'asc' o 'desc'
+  });
+
   // Estado para manejar la visibilidad del botón de scroll
   const [showScrollButton, setShowScrollButton] = useState(false);
   // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
@@ -323,29 +329,53 @@ function VistaHorasEstudiante() {
     return sortable;
   }, [filteredApprovedMaterias, sortConfig]);
 
+
+
+
+  // Función para manejar el ordenamiento rechazo
+  const requestSortRecha = (key) => {
+    let direction = "ascending";
+    if (sortConfig2.key === key && sortConfig2.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig2({ key, direction });
+  };
+
+  const getClassNamesForRecha = (key) => {
+    if (!sortConfig2) {
+      return;
+    }
+    return sortConfig2.key === key ? sortConfig2.direction : undefined;
+  };
+
+
+
+
+
+
   // Lógica para ordenar horas rechazadas
   const sortedRechazados = useMemo(() => {
     let sortable = [...filteredRejectedMaterias];
-    if (sortConfig.key) {
+    if (sortConfig2.key) {
       sortable.sort((a, b) => {
-        const aValue = sortConfig.key
+        const aValue = sortConfig2.key
           .split(".")
           .reduce((obj, key) => obj[key], a);
-        const bValue = sortConfig.key
+        const bValue = sortConfig2.key
           .split(".")
           .reduce((obj, key) => obj[key], b);
 
         if (aValue < bValue) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+          return sortConfig2.direction === "ascending" ? -1 : 1;
         }
         if (aValue > bValue) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+          return sortConfig2.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
     }
     return sortable;
-  }, [filteredRejectedMaterias, sortConfig]);
+  }, [filteredRejectedMaterias, sortConfig2]);
 
   const indexOfLastHoraApro = currentPageApro * materiasPerPage;
   const indexOfFirstHoraApro = indexOfLastHoraApro - materiasPerPage;
@@ -973,41 +1003,41 @@ function VistaHorasEstudiante() {
                   <table className="apro-table">
                     <thead className="apro-thead">
                       <tr>
-                        <th onClick={() => requestSort("Fecha")}>
+                        <th onClick={() => requestSortRecha("Fecha")}>
                           Fecha
-                          {getClassNamesFor("Fecha") === "ascending" && (
+                          {getClassNamesForRecha("Fecha") === "ascending" && (
                             <TiArrowUpThick className="icon-up" />
                           )}
-                          {getClassNamesFor("Fecha") === "descending" && (
+                          {getClassNamesForRecha("Fecha") === "descending" && (
                             <TiArrowDownThick className="icon-down" />
                           )}
                         </th>
                         <th
-                          onClick={() => requestSort("DescripcionActividad")}>
+                          onClick={() => requestSortRecha("DescripcionActividad")}>
                           Descripción de la Actividad
-                          {getClassNamesFor("DescripcionActividad") === "ascending" && (
+                          {getClassNamesForRecha("DescripcionActividad") === "ascending" && (
                             <TiArrowUpThick className="icon-up" />
                           )}
-                          {getClassNamesFor("DescripcionActividad") === "descending" && (
+                          {getClassNamesForRecha("DescripcionActividad") === "descending" && (
                             <TiArrowDownThick className="icon-down" />
                           )}
                         </th>
                         <th
-                          onClick={() => requestSort("TipoActividad")}>
+                          onClick={() => requestSortRecha("TipoActividad")}>
                           Tipo de Actividad
-                          {getClassNamesFor("TipoActividad") === "ascending" && (
+                          {getClassNamesForRecha("TipoActividad") === "ascending" && (
                             <TiArrowUpThick className="icon-up" />
                           )}
-                          {getClassNamesFor("TipoActividad") === "descending" && (
+                          {getClassNamesForRecha("TipoActividad") === "descending" && (
                             <TiArrowDownThick className="icon-down" />
                           )}
                         </th>
-                        <th onClick={() => requestSort("ComentariosRechazo")}>
+                        <th onClick={() => requestSortRecha("ComentariosRechazo")}>
                           Comentarios de Rechazo
-                          {getClassNamesFor("ComentariosRechazo") === "ascending" && (
+                          {getClassNamesForRecha("ComentariosRechazo") === "ascending" && (
                             <TiArrowUpThick className="icon-up" />
                           )}
-                          {getClassNamesFor("ComentariosRechazo") === "descending" && (
+                          {getClassNamesForRecha("ComentariosRechazo") === "descending" && (
                             <TiArrowDownThick className="icon-down" />
                           )}
                         </th>
