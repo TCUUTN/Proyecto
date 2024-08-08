@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
+import { TiArrowDownThick } from "react-icons/ti";
 import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import "./Usuario.modulo.css";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +24,17 @@ function Usuarios() {
   const [rolFilter, setRolFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const usuariosPerPage = 10;
- // Estado para manejar la pantalla de carga
+  // Estado para manejar la pantalla de carga
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar la pantalla de carga
-  
+
   // Estado para manejar la visibilidad del botón de scroll
   const [showScrollButton, setShowScrollButton] = useState(false);
+
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   
+
   // Fetch inicial de usuarios
-   useEffect(() => {
+  useEffect(() => {
     fetchUsuarios();
   }, []);
 
@@ -72,8 +76,6 @@ function Usuarios() {
       behavior: "smooth",
     });
   };
-
-
 
   /**
    * fetchUsuarios - Obtiene la lista de usuarios del servidor y aplica los filtros iniciales.
@@ -137,7 +139,7 @@ function Usuarios() {
       value
     );
   };
- /**
+  /**
    * applyFilters - Aplica los filtros a la lista de usuarios.
    */
   const applyFilters = (identificacion, nombreCompleto, estado, rol) => {
@@ -170,10 +172,42 @@ function Usuarios() {
     setFilteredUsuarios(filtered);
     setCurrentPage(1); // Reset to first page on filter change
   };
-// Paginación
+ // Lógica para ordenar usuarios
+ const sortedUsuarios = useMemo(() => {
+  let sortableUsuarios = [...filteredUsuarios];
+  if (sortConfig.key !== null) {
+    sortableUsuarios.sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+  return sortableUsuarios;
+}, [filteredUsuarios, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+  
+  const getClassNamesFor = (key) => {
+    if (!sortConfig || sortConfig.key !== key) {
+      return;
+    }
+    return sortConfig.direction;
+  };
+
+  // Paginación
   const indexOfLastUsuario = currentPage * usuariosPerPage;
   const indexOfFirstUsuario = indexOfLastUsuario - usuariosPerPage;
-  const currentUsuarios = filteredUsuarios.slice(
+  const currentUsuarios = sortedUsuarios.slice(
     indexOfFirstUsuario,
     indexOfLastUsuario
   );
@@ -190,7 +224,7 @@ function Usuarios() {
     }
   };
   const navigate = useNavigate();
-// Manejo de la navegación para agregar y editar usuarios
+  // Manejo de la navegación para agregar y editar usuarios
   const handleAddUser = () => {
     navigate("/CrearActualizarUsuario");
   };
@@ -218,90 +252,55 @@ function Usuarios() {
       Sede: "Sede",
     },
   };
- /**
+  /**
    * handleFileUpload - Maneja la carga de archivos Excel y procesa los datos.
    */
- const handleFileUpload = (e, role) => {
-  const file = e.target.files[0];
-  if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-    setIsLoading(true); // Mostrar pantalla de carga
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const data = new Uint8Array(event.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const firstSheetName = workbook.SheetNames[0];
-      const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { header: 1 });
+  const handleFileUpload = (e, role) => {
+    const file = e.target.files[0];
+    if (
+      file &&
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setIsLoading(true); // Mostrar pantalla de carga
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = XLSX.utils.sheet_to_json(
+          workbook.Sheets[firstSheetName],
+          { header: 1 }
+        );
 
-      const mapHeaders = (row, mappings, headerRow) => {
-        return row.reduce((acc, value, index) => {
-          const header = headerRow[index]; // Usar la fila de encabezados correcta
-          const mappedHeader = mappings[header];
-          if (mappedHeader) {
-            acc[mappedHeader] = value;
-          }
-          return acc;
-        }, {});
-      };
-
-      const processRows = (rows, headerMappings, headerRow) => {
-        const jsonData = [];
-        for (const row of rows) {
-          if (row.every((cell) => cell === null || cell === undefined || cell === "")) {
-            break; // Salir del bucle si la fila está vacía
-          }
-          const mappedRow = mapHeaders(row, headerMappings, headerRow);
-          const nombres = mappedRow.NombreCompleto?.split(" ") || [];
-          const Apellido1 = nombres[0] || "";
-          const Apellido2 = nombres[1] || "";
-          const Nombre = nombres.slice(2).join(" ") || "";
-
-          jsonData.push({
-            Identificacion: mappedRow.Identificacion,
-            Nombre,
-            Apellido1,
-            Apellido2,
-            Genero: "Indefinido",
-            CorreoElectronico: mappedRow.CorreoElectronico,
-            RolUsuario: role,
-            Contrasenna: generateRandomPassword(),
-            Estado: true,
-            Sede: mappedRow.Sede,
-          });
-        }
-        return jsonData;
-      };
-
-      if (role === "Académico") {
-        const headerRow = worksheet[0];
-        const dataRows = worksheet.slice(1);
-        const jsonData = processRows(dataRows, headerMappings.Académico, headerRow);
-        uploadJsonData(jsonData, role);
-      } else if (role === "Estudiante") {
-        if (worksheet.length > 2) {
-          const generalData = worksheet[0].reduce((acc, value, index) => {
-            if (index % 2 === 0) {
-              const header = worksheet[0][index];
-              const mappedHeader = headerMappings.Estudiante[header];
-              if (mappedHeader) {
-                acc[mappedHeader] = worksheet[0][index + 1];
-              }
+        const mapHeaders = (row, mappings, headerRow) => {
+          return row.reduce((acc, value, index) => {
+            const header = headerRow[index]; // Usar la fila de encabezados correcta
+            const mappedHeader = mappings[header];
+            if (mappedHeader) {
+              acc[mappedHeader] = value;
             }
             return acc;
           }, {});
+        };
 
-          const headerRow = worksheet[1];
-          const dataRows = worksheet.slice(2);
-          const jsonData = dataRows.map((row) => {
-            if (row.every((cell) => cell === null || cell === undefined || cell === "")) {
-              return null; // Ignorar filas vacías
+        const processRows = (rows, headerMappings, headerRow) => {
+          const jsonData = [];
+          for (const row of rows) {
+            if (
+              row.every(
+                (cell) => cell === null || cell === undefined || cell === ""
+              )
+            ) {
+              break; // Salir del bucle si la fila está vacía
             }
-            const mappedRow = mapHeaders(row, headerMappings.Estudiante, headerRow);
+            const mappedRow = mapHeaders(row, headerMappings, headerRow);
             const nombres = mappedRow.NombreCompleto?.split(" ") || [];
             const Apellido1 = nombres[0] || "";
             const Apellido2 = nombres[1] || "";
             const Nombre = nombres.slice(2).join(" ") || "";
 
-            return {
+            jsonData.push({
               Identificacion: mappedRow.Identificacion,
               Nombre,
               Apellido1,
@@ -311,23 +310,82 @@ function Usuarios() {
               RolUsuario: role,
               Contrasenna: generateRandomPassword(),
               Estado: true,
-              ...generalData,
-            };
-          }).filter(row => row !== null);
-          uploadJsonData(jsonData, role);
-        } else {
-          toast.error("Formato de archivo inválido");
-        }
-      } else {
-        toast.error("Rol de usuario no reconocido");
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  } else {
-    toast.error("Por favor, suba un archivo Excel válido");
-  }
-};
+              Sede: mappedRow.Sede,
+            });
+          }
+          return jsonData;
+        };
 
+        if (role === "Académico") {
+          const headerRow = worksheet[0];
+          const dataRows = worksheet.slice(1);
+          const jsonData = processRows(
+            dataRows,
+            headerMappings.Académico,
+            headerRow
+          );
+          uploadJsonData(jsonData, role);
+        } else if (role === "Estudiante") {
+          if (worksheet.length > 2) {
+            const generalData = worksheet[0].reduce((acc, value, index) => {
+              if (index % 2 === 0) {
+                const header = worksheet[0][index];
+                const mappedHeader = headerMappings.Estudiante[header];
+                if (mappedHeader) {
+                  acc[mappedHeader] = worksheet[0][index + 1];
+                }
+              }
+              return acc;
+            }, {});
+
+            const headerRow = worksheet[1];
+            const dataRows = worksheet.slice(2);
+            const jsonData = dataRows
+              .map((row) => {
+                if (
+                  row.every(
+                    (cell) => cell === null || cell === undefined || cell === ""
+                  )
+                ) {
+                  return null; // Ignorar filas vacías
+                }
+                const mappedRow = mapHeaders(
+                  row,
+                  headerMappings.Estudiante,
+                  headerRow
+                );
+                const nombres = mappedRow.NombreCompleto?.split(" ") || [];
+                const Apellido1 = nombres[0] || "";
+                const Apellido2 = nombres[1] || "";
+                const Nombre = nombres.slice(2).join(" ") || "";
+
+                return {
+                  Identificacion: mappedRow.Identificacion,
+                  Nombre,
+                  Apellido1,
+                  Apellido2,
+                  Genero: "Indefinido",
+                  CorreoElectronico: mappedRow.CorreoElectronico,
+                  RolUsuario: role,
+                  Contrasenna: generateRandomPassword(),
+                  Estado: true,
+                  ...generalData,
+                };
+              })
+              .filter((row) => row !== null);
+            uploadJsonData(jsonData, role);
+          } else {
+            toast.error("Formato de archivo inválido");
+          }
+        } else {
+          toast.error("Rol de usuario no reconocido");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      toast.error("Por favor, suba un archivo Excel válido");
+    }
+  };
 
   const handleCarrerasUplaod = (e) => {
     const file = e.target.files[0];
@@ -365,7 +423,7 @@ function Usuarios() {
       toast.error("Por favor, suba un archivo Excel válido");
     }
   };
-// Generador de contraseñas aleatorias
+  // Generador de contraseñas aleatorias
   const generateRandomPassword = () => {
     const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const lower = "abcdefghijklmnopqrstuvwxyz";
@@ -385,7 +443,7 @@ function Usuarios() {
       .sort(() => 0.5 - Math.random())
       .join("");
   };
-/**
+  /**
    * uploadJsonData - Sube los datos procesados al servidor.
    */
   const uploadJsonData = async (data, role) => {
@@ -433,8 +491,8 @@ function Usuarios() {
       setIsLoading(false); // Ocultar pantalla de carga
     }
   };
-   // Componente de pantalla de carga
-   const LoadingOverlay = () => (
+  // Componente de pantalla de carga
+  const LoadingOverlay = () => (
     <div className="loading-overlay">
       <div className="spinner"></div>
     </div>
@@ -573,11 +631,27 @@ function Usuarios() {
           <table className="user-table">
             <thead className="user-thead">
               <tr>
-                <th>Identificación</th>
-                <th>Nombre Completo</th>
-                <th>Estado</th>
-                <th>Rol</th>
-                <th>Acciones</th>
+              <th onClick={() => requestSort("Identificacion")}>
+          Identificación
+          {getClassNamesFor("Identificacion") === "ascending" && <TiArrowUpThick className="icon-up" />}
+          {getClassNamesFor("Identificacion") === "descending" && <TiArrowDownThick className="icon-down" />}
+        </th>
+        <th onClick={() => requestSort("NombreCompleto")}>
+          Nombre Completo
+          {getClassNamesFor("NombreCompleto") === "ascending" && <TiArrowUpThick className="icon-up" />}
+          {getClassNamesFor("NombreCompleto") === "descending" && <TiArrowDownThick className="icon-down" />}
+        </th>
+        <th onClick={() => requestSort("Estado")}>
+          Estado
+          {getClassNamesFor("Estado") === "ascending" && <TiArrowUpThick className="icon-up" />}
+          {getClassNamesFor("Estado") === "descending" && <TiArrowDownThick className="icon-down" />}
+        </th>
+        <th onClick={() => requestSort("Rol")}>
+          Rol
+          {getClassNamesFor("Rol") === "ascending" && <TiArrowUpThick className="icon-up" />}
+          {getClassNamesFor("Rol") === "descending" && <TiArrowDownThick className="icon-down" />}
+        </th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="user-tbody">

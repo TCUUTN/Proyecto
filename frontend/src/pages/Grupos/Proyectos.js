@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
+import { TiArrowDownThick } from "react-icons/ti";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
@@ -178,7 +179,7 @@ function Proyectos() {
   // Variables para la paginación
   const indexOfLastMateria = currentPage * materiasPerPage;
   const indexOfFirstMateria = indexOfLastMateria - materiasPerPage;
-  const currentMaterias = filteredMaterias.slice(
+  const currentMaterias = sortedMaterias.slice(
     indexOfFirstMateria,
     indexOfLastMateria
   );
@@ -350,23 +351,38 @@ function Proyectos() {
             <thead className="mat-thead">
               <tr>
                 <th onClick={() => requestSort("CodigoMateria")}>
-                  Código del Proyecto
-                  <span className={getClassNamesFor("CodigoMateria")} />
+                  Código Proyecto
+                  {getClassNamesFor("CodigoMateria") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("CodigoMateria") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
                 </th>
                 <th onClick={() => requestSort("NombreProyecto")}>
-                  Nombre del Proyecto
-                  <span className={getClassNamesFor("NombreProyecto")} />
+                  Nombre Proyecto
+                  {getClassNamesFor("NombreProyecto") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("NombreProyecto") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
                 </th>
                 <th onClick={() => requestSort("TipoCurso")}>
                   Modalidad
-                  <span className={getClassNamesFor("TipoCurso")} />
+                  {getClassNamesFor("TipoCurso") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("TipoCurso") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
                 </th>
                 <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
-              {currentMaterias.map((materia) => (
-                <tr key={materia.CodigoMateria}>
+              {currentMaterias.map((materia,  index) => (
+                <tr key={materia.CodigoMateria || index}>
                   <td>{materia.CodigoMateria}</td>
                   <td>{materia.NombreProyecto}</td>
                   <td>{materia.TipoCurso}</td>

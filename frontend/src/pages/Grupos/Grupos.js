@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import * as XLSX from "xlsx";
@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./Proyectos.modulo.css";
+import { TiArrowDownThick } from "react-icons/ti";
 import { GrEdit } from "react-icons/gr";
 import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import { useNavigate } from "react-router-dom";
@@ -27,48 +28,51 @@ function Grupos() {
 
   const navigate = useNavigate(); // Hook de navegación
 
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
   // Estado para manejar la visibilidad del botón de scroll
   const [showScrollButton, setShowScrollButton] = useState(false);
- // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
- useEffect(() => {
-  const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
 
-  function checkScroll() {
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-      if (rect.top < windowHeight * 0.75) {
-        section.classList.add("active");
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
       } else {
-        section.classList.remove("active");
+        setShowScrollButton(false);
       }
-    });
-
-    if (window.pageYOffset > 300) {
-      setShowScrollButton(true);
-    } else {
-      setShowScrollButton(false);
     }
-  }
 
-  checkScroll();
-  window.addEventListener("scroll", checkScroll);
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
 
-  return () => {
-    window.removeEventListener("scroll", checkScroll);
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
-}, []);
-
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
 
   useEffect(() => {
     fetchGrupos(); // Llama a la función para obtener los grupos al cargar el componente
@@ -190,9 +194,34 @@ const handleScrollToTop = () => {
     setCurrentPage(1); // Restablece a la primera página al cambiar el filtro
   };
 
+  const sortItems = (items, config) => {
+    const sortedItems = [...items];
+    if (config.key !== null) {
+      sortedItems.sort((a, b) => {
+        if (a[config.key] < b[config.key]) {
+          return config.direction === "ascending" ? -1 : 1;
+        }
+        if (a[config.key] > b[config.key]) {
+          return config.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortedItems;
+  };
+
+  const handleSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
   const indexOfLastGrupo = currentPage * gruposPerPage; // Índice del último grupo en la página actual
   const indexOfFirstGrupo = indexOfLastGrupo - gruposPerPage; // Índice del primer grupo en la página actual
-  const currentGrupos = filteredGrupos.slice(
+  const sortedGrupos = sortItems(filteredGrupos, sortConfig);
+  const currentGrupos = sortedGrupos.slice(
     indexOfFirstGrupo,
     indexOfLastGrupo
   ); // Lista de grupos en la página actual
@@ -509,15 +538,89 @@ const handleScrollToTop = () => {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Proyecto</th>
-                <th>Nombre Proyecto</th>
-                <th>Tipo</th>
-                <th>Grupo</th>
-                <th>Horario</th>
-                <th>Sede</th>
-                <th>Aula</th>
-                <th>Académico</th>
-                <th>Acciones</th>
+                <th onClick={() => handleSort("CodigoMateria")}>
+                  Proyecto{" "}
+                  {sortConfig.key === "CodigoMateria" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th
+                  onClick={() => handleSort("Grupos_TipoGrupo.NombreProyecto")}
+                >
+                  Nombre Proyecto{" "}
+                  {sortConfig.key === "Grupos_TipoGrupo.NombreProyecto" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("Grupos_TipoGrupo.TipoCurso")}>
+                  Tipo{" "}
+                  {sortConfig.key === "Grupos_TipoGrupo.TipoCurso" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("NumeroGrupo")}>
+                  Grupo{" "}
+                  {sortConfig.key === "NumeroGrupo" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("Horario")}>
+                  Horario{" "}
+                  {sortConfig.key === "Horario" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("Sede")}>
+                  Sede{" "}
+                  {sortConfig.key === "Sede" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("Aula")}>
+                  Aula{" "}
+                  {sortConfig.key === "Aula" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th onClick={() => handleSort("Usuario.Nombre")}>
+                  Académico{" "}
+                  {sortConfig.key === "Usuario.Nombre" ? (
+                    sortConfig.direction === "ascending" ? (
+                      <TiArrowDownThick />
+                    ) : (
+                      <TiArrowUpThick />
+                    )
+                  ) : null}
+                </th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
@@ -578,8 +681,8 @@ const handleScrollToTop = () => {
         </div>
         {/**/}
       </main>
-       {/* Botón flotante de scroll */}
-       {showScrollButton && (
+      {/* Botón flotante de scroll */}
+      {showScrollButton && (
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>

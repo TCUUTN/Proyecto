@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import jsPDF from "jspdf";
+import { TiArrowDownThick } from "react-icons/ti";
 import "jspdf-autotable";
 import { TiArrowUpThick } from "react-icons/ti"; // Importar el icono de flecha
 import banderaCombinada from "../../Assets/Images/Bandera Combinada.png";
@@ -28,46 +29,51 @@ function ListaEstudiantes() {
   const [loading, setLoading] = useState(false); // Estado de carga
   const estudiantesPerPage = 10; // Cantidad de estudiantes por página
 
- // Estado para manejar la visibilidad del botón de scroll
- const [showScrollButton, setShowScrollButton] = useState(false);
- // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
- useEffect(() => {
-  const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+  // Estado para manejar la visibilidad del botón de scroll
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
-  function checkScroll() {
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      if (rect.top < windowHeight * 0.75) {
-        section.classList.add("active");
-      } else {
-        section.classList.remove("active");
-      }
-    });
-
-    if (window.pageYOffset > 300) {
-      setShowScrollButton(true);
-    } else {
-      setShowScrollButton(false);
-    }
-  }
-
-  checkScroll();
-  window.addEventListener("scroll", checkScroll);
-
-  return () => {
-    window.removeEventListener("scroll", checkScroll);
-  };
-}, []);
-// Función para volver al inicio de la página
-const handleScrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
   });
-};
 
+  // Maneja el evento de desplazamiento para mostrar/ocultar el botón de scroll y activar secciones
+  useEffect(() => {
+    const sections = document.querySelectorAll("section"); // Suponiendo que las secciones están marcadas con <section>
+
+    function checkScroll() {
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add("active");
+        } else {
+          section.classList.remove("active");
+        }
+      });
+
+      if (window.pageYOffset > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
+
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+  // Función para volver al inicio de la página
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   // Efecto para obtener la lista de estudiantes y la bandera de finalización cuando el componente se monta
   useEffect(() => {
@@ -173,10 +179,50 @@ const handleScrollToTop = () => {
     setFilteredEstudiantes(filtered);
     setCurrentPage(1); // Resetear a la primera página al cambiar los filtros
   };
+
+  // Lógica para ordenar estudiantes
+  const sortedEstudiantes = useMemo(() => {
+    let sortable = [...filteredEstudiantes];
+    if (sortConfig.key) {
+      sortable.sort((a, b) => {
+        const aValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], a);
+        const bValue = sortConfig.key
+          .split(".")
+          .reduce((obj, key) => obj[key], b);
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortable;
+  }, [filteredEstudiantes, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getClassNamesFor = (key) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === key ? sortConfig.direction : undefined;
+  };
+
   // Cálculo de los índices para la paginación
   const indexOfLastEstudiante = currentPage * estudiantesPerPage;
   const indexOfFirstEstudiante = indexOfLastEstudiante - estudiantesPerPage;
-  const currentEstudiantes = filteredEstudiantes.slice(
+  const currentEstudiantes = sortedEstudiantes.slice(
     indexOfFirstEstudiante,
     indexOfLastEstudiante
   );
@@ -465,18 +511,64 @@ const handleScrollToTop = () => {
           <table className="mat-table">
             <thead className="mat-thead">
               <tr>
-                <th>Nombre Completo</th>
-                <th>Correo Electrónico</th>
-                <th>Identificación</th>
-                <th>Cantidad de Horas Aprobadas</th>
-                <th>Progreso del Estudiante</th>
-                <th>Estado del Estudiante</th>
+
+                <th onClick={() => requestSort("Usuario.Nombre")}>
+                  Nombre Completo
+                  {getClassNamesFor("Usuario.Nombre") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Usuario.Nombre") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Usuario.CorreoElectronico")}>
+                  Correo Electrónico
+                  {getClassNamesFor("Usuario.CorreoElectronico") ===
+                    "ascending" && <TiArrowUpThick className="icon-up" />}
+                  {getClassNamesFor("Usuario.CorreoElectronico") ===
+                    "descending" && <TiArrowDownThick className="icon-down" />}
+                </th>
+                <th onClick={() => requestSort("Usuario.Identificacion")}>
+                  Identificación
+                  {getClassNamesFor("Usuario.Identificacion") ===
+                    "ascending" && <TiArrowUpThick className="icon-up" />}
+                  {getClassNamesFor("Usuario.Identificacion") ===
+                    "descending" && <TiArrowDownThick className="icon-down" />}
+                </th>
+                <th onClick={() => requestSort("HorasAprobadas")}>
+                  Cantidad de Horas Aprobadas
+                  {getClassNamesFor("HorasAprobadas") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("HorasAprobadas") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Progreso")}>
+                  Progreso del Estudiante
+                  {getClassNamesFor("Progreso") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Progreso") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
+                <th onClick={() => requestSort("Estado")}>
+                  Estado del Estudiante
+                  {getClassNamesFor("Estado") === "ascending" && (
+                    <TiArrowUpThick className="icon-up" />
+                  )}
+                  {getClassNamesFor("Estado") === "descending" && (
+                    <TiArrowDownThick className="icon-down" />
+                  )}
+                </th>
                 <th></th>
               </tr>
             </thead>
             <tbody className="mat-tbody">
               {currentEstudiantes.map((estudiante, index) => (
-                <tr key={index}>
+                <tr key={estudiante.Usuario.Identificacion || index}>
+                
                   <td>{`${estudiante.Usuario.Nombre} ${estudiante.Usuario.Apellido1} ${estudiante.Usuario.Apellido2}`}</td>
                   <td>{estudiante.Usuario.CorreoElectronico}</td>
                   <td>{estudiante.Usuario.Identificacion}</td>
