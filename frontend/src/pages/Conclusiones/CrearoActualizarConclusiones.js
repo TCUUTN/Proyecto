@@ -356,7 +356,7 @@ function CrearoActualizarConclusiones() {
       </div>
     );
   }
-  // Renderizado del formulario y los botones de acción
+  // Renderiza del formulario y los botones de acción
   return (
     <div className="creconclusiones-container">
       <div className="creconclusiones-content">

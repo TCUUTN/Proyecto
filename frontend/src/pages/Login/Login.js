@@ -29,11 +29,11 @@ function Login() {
   useEffect(() => {
 
       if (olvidoExitoso === "true") {
-        toast.success("Se ha enviado el correo electronico con la clave temporal correctamente");
+        toast.success("Se ha enviado el correo electrónico con la clave temporal correctamente");
         localStorage.removeItem("olvidoExitoso")
       }
   
-  }, []);
+  }, [olvidoExitoso]);
   /**
    * Maneja el envío del formulario de inicio de sesión.
    * Realiza una solicitud POST al servidor para verificar las credenciales del usuario.
@@ -96,11 +96,11 @@ function Login() {
       {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
       <div className="home-content">
         <h1 className="home-title">
-          Bitacora Virtual para Trabajo Comunal Universitario
+          Bitácora Virtual para Trabajo Comunal Universitario
         </h1>
         <div className="title-divider" />
         <p className="home-texto">
-          Monitorea, controla y da seguimiento a las actividades, tareas y
+          Monitoriza, controla y da seguimiento a las actividades, tareas y
           productos de los estudiantes en sus proyectos de TCU de manera
           detallada y eficiente.
         </p>

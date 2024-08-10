@@ -314,7 +314,7 @@ function GuiaEstudiantes() {
             </li>
             <li>
               <strong>Información:</strong> Contiene varias secciones en las que
-              podras encontrar la guía de usuario, información proporcionada por
+              podrás encontrar la guía de usuario, información proporcionada por
               el académico e información de carácter general.
             </li>
           </ul>
@@ -415,7 +415,7 @@ function GuiaEstudiantes() {
           <div className="naranja-divider" />
           <p>
             Para acceder a esta sección, necesitarás haber cumplido con el
-            requisito de las 150 horas aprobadas en la bitacora TCU. Una vez
+            requisito de las 150 horas aprobadas en la bitácora TCU. Una vez
             cumplido esto, la opción se habilitará en la barra de navegación. Al
             seleccionarla, se mostrará un formulario. Por favor, complétalo con
             la información solicitada.

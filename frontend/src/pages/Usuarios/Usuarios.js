@@ -60,7 +60,7 @@ function Usuarios() {
         }
       });
 
-      if (window.pageYOffset > 300) {
+      if (window.scrollY  > 300) {
         setShowScrollButton(true);
       } else {
         setShowScrollButton(false);

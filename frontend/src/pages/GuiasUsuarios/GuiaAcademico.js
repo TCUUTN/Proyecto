@@ -267,7 +267,7 @@ function GuiaAcademico() {
     <div className="contenedor-guias">
     <ToastContainer position="bottom-right" />
       <div className="guias-container">
-        {/* Section explicacion de portada */}
+        {/* Section explicación de portada */}
         <div className="section section-portada">
           <h2 className="titulo-Portada">
             Guía del usuario para la aplicación TCU
@@ -277,7 +277,7 @@ function GuiaAcademico() {
             de la UTN. La aplicación nos ayuda para el registro de horas y para
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
-          {/* Section explicacion del contenido */}
+          {/* Section explicación del contenido */}
           <div className=" section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
@@ -310,7 +310,7 @@ function GuiaAcademico() {
             </ul>
           </div>
         </div>
-        {/* Section explicacion del navegacion */}
+        {/* Section explicación del navegación */}
         <div className="section-guias">
           <h3 className="titulos-guiaIn">Navegación</h3>
           <div className="naranja-divider" />
@@ -336,7 +336,7 @@ function GuiaAcademico() {
             </li>
             <li>
               <strong>Información:</strong> Contiene varias secciones en las que
-              podras encontrar la guía de usuario, aqui podras proporcionarle
+              podrás encontrar la guía de usuario, aquí podrás proporcionarle
               informacion a tus grupos a cargo e información de carácter
               general.
             </li>
@@ -347,7 +347,7 @@ function GuiaAcademico() {
             className=" fade-in centered large-image"
           />
         </div>
-        {/* Section explicacion de la Página de inicio */}
+        {/* Section explicación de la Página de inicio */}
         <div className="section-guias " id="paginaInicio">
           <h3 className="titulos-guiaIn">Página de inicio</h3>
           <div className="celes-divider" />
@@ -362,7 +362,7 @@ function GuiaAcademico() {
             className=" fade-in centered medium-image"
           />
         </div>
-        {/* Section explicacion de Grupos a cargo */}
+        {/* Section explicación de Grupos a cargo */}
         <div className="section-guias" id="grupC">
           <h3 className="titulos-guiaIn">Grupos a cargo</h3>
           <div className="celes-divider" />
@@ -370,7 +370,7 @@ function GuiaAcademico() {
             <li>
               En esta sección, te permite gestionar y filtrar a tus grupos.
               Accede a detalles del grupo, como la lista de estudiantes, ver las
-              bitacoras del estudiante y rechazar horas.
+              bitácoras del estudiante y rechazar horas.
               <img
                 src={GrupoCargoc}
                 alt="GrupoCargoc"
@@ -452,7 +452,7 @@ function GuiaAcademico() {
             </li>
           </ol>
         </div>
-        {/* Section explicacion de los Socios Comunitarios */}
+        {/* Section explicación de los Socios Comunitarios */}
         <div className="section-guias" id="sociosC">
           <h3 className="titulos-guiaIn">Socios Comunitarios</h3>
           <div className="naranja-divider" />
@@ -464,7 +464,7 @@ function GuiaAcademico() {
               </h5>
               <ul>
                 <li>
-                <strong> Filtros de busqueda:</strong> Traer rápidamente a los socios
+                <strong> Filtros de búsqueda:</strong> Traer rápidamente a los socios
                   comunitarios por nombre, tipo de institución o estado.
                 </li>
                 <li>
@@ -502,7 +502,7 @@ function GuiaAcademico() {
                         className=" fade-in centered medium-image"
                       />
                     </li>
-                    <li>Darle al boton guardar.</li>
+                    <li>Darle al botón guardar.</li>
                   </ol>
                 </li>
                 <br></br>
@@ -551,7 +551,7 @@ function GuiaAcademico() {
                   <ol>
                     <li>
                       Puedes encontrar una lista completa de socios comunitarios
-                      que estan activos
+                      que están activos
                     </li>
                     <li>Busca en tus grupos a cargo.</li>
                     <li>
@@ -577,7 +577,7 @@ function GuiaAcademico() {
             </li>
           </ol>
         </div>
-        {/* Section explicacion de la Boleta de Conclusión */}
+        {/* Section explicación de la Boleta de Conclusión */}
         <div className="section-guias" id="boletaC">
           <h3 className="titulos-guiaIn">Boleta de Conclusión</h3>
           <div className="celes-divider" />
@@ -595,7 +595,7 @@ function GuiaAcademico() {
           <ul>
             <li>
               Cunado entres al grupo vas encontrar una lista de los estudiantes
-              que ya llenaron la boleta de conclusion y preciona el boton de ver
+              que ya llenaron la boleta de conclusion y presiona el botón de ver
               boleta de conclusión.
             </li>
             <img
@@ -629,7 +629,7 @@ function GuiaAcademico() {
             />
           </ul>
         </div>
-        {/* Section explicacion de la Información*/}
+        {/* Section explicación de la Información*/}
         <div className="section-guias" id="informacionE">
           <h3 className="titulos-guiaIn">Información</h3>
           <div className="naranja-divider" />
@@ -653,7 +653,7 @@ function GuiaAcademico() {
                 <li>
                   Para subir la información tienes que
                   <strong> Seleccionar un grupo </strong>y ahí se te habilitara
-                  el boton de agregar esa información.
+                  el botón de agregar esa información.
                 </li>
                 <li>
                   Puedes buscar lo que necesites filtrando por fecha,
@@ -686,7 +686,7 @@ function GuiaAcademico() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
-              {/* Boton de descarga*/}
+              {/* Botón de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>

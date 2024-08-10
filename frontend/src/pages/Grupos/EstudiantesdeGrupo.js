@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo } from "react";
 import jsPDF from "jspdf";
 import { TiArrowDownThick } from "react-icons/ti";
@@ -587,7 +588,7 @@ function ListaEstudiantes() {
                         placement="top"
                         overlay={
                           <Tooltip id="tooltip-edit">
-                            Ver Bitacora del Estudiante
+                            Ver Bitácora del Estudiante
                           </Tooltip>
                         }
                       >

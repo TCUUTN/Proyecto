@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";
@@ -16,6 +17,7 @@ function GruposAcademico() {
   const [annoFilter, setAnnoFilter] = useState(""); // Estado para el filtro de año
   const [yearsOptions, setYearsOptions] = useState([]); // Estado para almacenar las opciones de años disponibles
   const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual de la paginación
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false); // Estado para manejar la pantalla de carga
   const [noGroupsMessage, setNoGroupsMessage] = useState(false); // Estado para mostrar un mensaje si no hay grupos
 

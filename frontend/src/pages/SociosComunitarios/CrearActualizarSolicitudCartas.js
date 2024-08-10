@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/heading-has-content */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react"; // Importación de React y hooks
 import "react-toastify/dist/ReactToastify.css"; // Importación de estilos para las notificaciones
 import { ToastContainer, toast } from "react-toastify"; // Importación de componentes para notificaciones

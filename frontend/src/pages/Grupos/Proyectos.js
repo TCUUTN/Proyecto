@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { GrFormPreviousLink, GrFormNextLink } from "react-icons/gr";

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useMemo } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
@@ -653,7 +655,7 @@ function Grupos() {
               ))}
             </tbody>
           </table>
-          {/* La paginacion */}
+          {/* La paginación */}
           <div className="pagination-mat">
             <OverlayTrigger
               placement="top"

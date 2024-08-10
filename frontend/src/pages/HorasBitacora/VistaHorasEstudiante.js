@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useMemo } from "react";
 import { FaEdit } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -705,7 +707,7 @@ function VistaHorasEstudiante() {
             )}
 
             <div className="horasies-divider" />
-            <h1 className="horasies-titulo"> Bitacora de horas </h1>
+            <h1 className="horasies-titulo"> Bitácora de horas </h1>
             <div className="horasies-divider" />
             <OverlayTrigger
               placement="top"

@@ -45,7 +45,7 @@ function VistaConclusionesGrupo() {
         }
       });
 
-      if (window.pageYOffset > 300) {
+      if (window.scrollY  > 300) {
         setShowScrollButton(true);
       } else {
         setShowScrollButton(false);
@@ -77,6 +77,7 @@ function VistaConclusionesGrupo() {
     if (selectedRole && grupoId) {
       fetchConclusiones();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRole, grupoId]);
 
   // Función para obtener las conclusiones desde el servidor
@@ -156,7 +157,7 @@ function VistaConclusionesGrupo() {
     setCurrentPage(1); // Restablecer a la primera página al cambiar los filtros
   };
 
-  // Lógica para ordenar boletas de concluiones
+  // Lógica para ordenar boletas de conclusiones
   const sortedConclusiones = useMemo(() => {
     let sortable = [...filteredConclusiones];
     if (sortConfig.key) {
@@ -238,10 +239,10 @@ function VistaConclusionesGrupo() {
           </div>
         ) : (
           <>
-            {/* boton de regreso y titulo*/}
+            {/* botón de regreso y titulo*/}
 
             <div className="vistconclgrup-action">
-              {/* Boton de regresar */}
+              {/* Botón de regresar */}
               <div className="regred-vistconclgrup">
                 <button
                   className="back-button-vistconclgrup"

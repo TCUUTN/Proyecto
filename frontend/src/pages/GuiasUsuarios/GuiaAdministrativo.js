@@ -277,7 +277,7 @@ function GuiaAdmininistrativo() {
     <div className="contenedor-guias">
       <ToastContainer position="bottom-right" />
       <div className="guias-container">
-        {/* Section explicacion de portada */}
+        {/* Section explicación de portada */}
         <div className="section section-portada">
           <h2 className="titulo-Portada">
             Guía del usuario para la aplicación TCU
@@ -287,7 +287,7 @@ function GuiaAdmininistrativo() {
             de la UTN. La aplicación nos ayuda para el registro de horas y para
             hacer un rastreo de nuestro trabajo comunal universitario.
           </p>
-          {/* Section explicacion del contenido */}
+          {/* Section explicación del contenido */}
           <div className=" section-contenido">
             <h3 className="titulos-guiaIn">Contenido</h3>
             <div className="celes-divider" />
@@ -330,7 +330,7 @@ function GuiaAdmininistrativo() {
             </ul>
           </div>
         </div>
-        {/* Section explicacion del navegacion */}
+        {/* Section explicación del navegación */}
         <div className="section-guias">
           <h3 className="titulos-guiaIn">Navegación</h3>
           <div className="naranja-divider" />
@@ -359,8 +359,8 @@ function GuiaAdmininistrativo() {
             </li>
             <li>
               <strong>Información:</strong> Contiene varias secciones en las que
-              podras encontrar las guías de usuarios, aqui podras proporcionar
-              informacion general.
+              podrás encontrar las guías de usuarios, aquí podrás proporcionar
+              información general.
             </li>
           </ul>
           <img
@@ -369,7 +369,7 @@ function GuiaAdmininistrativo() {
             className=" fade-in centered large-image"
           />
         </div>
-        {/* Section explicacion de la Página de inicio */}
+        {/* Section explicación de la Página de inicio */}
         <div className="section-guias " id="paginaInicio">
           <h3 className="titulos-guiaIn">Página de inicio</h3>
           <div className="celes-divider" />
@@ -381,7 +381,7 @@ function GuiaAdmininistrativo() {
               proyecto, detallando cuántos están activos, en proceso de
               continuidad, en prórroga o son nuevos. En la sección derecha,
               encontrarás una lista de todos los proyectos activos junto con el
-              cuetrimestre y al año al que pertenecen. Al hacer clic en el ícono
+              cuatrimestre y al año al que pertenecen. Al hacer clic en el ícono
               de la puerta, accederás a un listado detallado de los estudiantes
               participantes en ese proyecto específico.
             </li>
@@ -404,7 +404,7 @@ function GuiaAdmininistrativo() {
               className=" fade-in centered large-image"
             />
             <li>
-              Para obtener una versión imprimible del reporte de género,
+              Para obtener una versión en PDF del reporte de género,
               simplemente haz clic en el botón de descarga. El sistema generará
               un archivo PDF que podrás guardar en tu dispositivo.
             </li>
@@ -415,7 +415,7 @@ function GuiaAdmininistrativo() {
             />
           </ul>
         </div>
-        {/* Section explicacion de usuarios */}
+        {/* Section explicación de usuarios */}
         <div className="section-guias" id="usuarios">
           <h3 className="titulos-guiaIn">Usuarios</h3>
           <div className="naranja-divider" />
@@ -461,7 +461,7 @@ function GuiaAdmininistrativo() {
             className=" fade-in centered small-image"
           />
         </div>
-        {/* Section explicacion de grupos */}
+        {/* Section explicación de grupos */}
         <div className="section-guias" id="grupos">
           <h3 className="titulos-guiaIn">Grupos</h3>
           <div className="celes-divider " />
@@ -508,11 +508,11 @@ function GuiaAdmininistrativo() {
                   , por cuatrimestre y año. Para agregar nuevos grupos, haz clic
                   en <strong>'Agregar Grupos'</strong> y para editar los grupos
                   existentes con el
-                  <strong>icono del lápiz</strong>. Tambien, puedes cargar
+                  <strong>icono del lápiz</strong>. También, puedes cargar
                   múltiples grupos a la vez usando la opción
                   <strong>Carga Masiva</strong> y ademas puedes activar o
-                  desahilitar el boton de finalizar los cuatrimestres para que
-                  los academicos puedan finalizar el cuatrimestre de sus grupos.
+                  deshabilitar el botón de finalizar los cuatrimestres para que
+                  los académicos puedan finalizar el cuatrimestre de sus grupos.
                 </li>
                 <img
                   src={Grupos}
@@ -536,12 +536,12 @@ function GuiaAdmininistrativo() {
             </li>
           </ol>
         </div>
-        {/* Section explicacion de la carga Masiva */}
+        {/* Section explicación de la carga Masiva */}
         <div className="section-guias " id="cargaMa">
           <h3 className="titulos-guiaIn">Carga Masiva</h3>
           <div className="celes-divider" />
           <p>
-            <strong>Nota:</strong> Esta opcion solo se encuentra disponible para
+            <strong>Nota:</strong> Esta opción solo se encuentra disponible para
             Cargar Usuarios de tipo Académico o estudiante, Proyectos, Grupos y
             las carreras de los estudiantes.
           </p>
@@ -587,15 +587,15 @@ function GuiaAdmininistrativo() {
                   <strong> Grupos:</strong> Accede a la sección de
                   <strong>Creación de Grupos</strong> y usa la opción
                   <strong>Cargar Grupos</strong>. Antes de enviar esta
-                  plantilla, asegurate de que los académicos y los proyectos que
-                  estan agregando a tus grupos, se encuentren agregados
+                  plantilla, asegúrate de que los académicos y los proyectos que
+                  están agregando a tus grupos, se encuentren agregados
                   previamente al sistema.
                 </li>
                 <li>
                   <strong> Estudiantes:</strong> Vuelve a la sección de
                   <strong>Usuarios</strong>y utiliza la opción
                   <strong>Subir Estudiantes</strong>. Antes de enviar esta
-                  plantilla, asegurate de que las informacion del grupo al que
+                  plantilla, asegúrate de que las información del grupo al que
                   estas añadiendo estos estudiantes, se encuentre añadida al
                   sistema previamente.
                 </li>
@@ -610,13 +610,13 @@ function GuiaAdmininistrativo() {
           <p>
             <strong>Nota:</strong> Sigue la anterior secuencia de pasos
             correctamente, para el sistema no te muestre ningún error a la hora
-            de cargar alguno de los archivos. Adémas revisa antes de subir cada
-            uno de los archivos que vayan con la informacion correcta y que sea
+            de cargar alguno de los archivos. Además revisa antes de subir cada
+            uno de los archivos que vayan con la información correcta y que sea
             el archivo correcto para cada opción, de lo contrario también el
             sistema te puede reflejar algún error.
           </p>
         </div>
-        {/* Section explicacion de los Socios Comunitarios */}
+        {/* Section explicación de los Socios Comunitarios */}
         <div className="section-guias" id="sociosC">
           <h3 className="titulos-guiaIn">Socios Comunitarios</h3>
           <div className="naranja-divider" />
@@ -628,7 +628,7 @@ function GuiaAdmininistrativo() {
               </h5>
               <ul>
                 <li>
-                  <strong> Filtros de busqueda:</strong> Permite buscar rápidamente a los
+                  <strong> Filtros de búsqueda:</strong> Permite buscar rápidamente a los
                   socios comunitarios por nombre, tipo de institución o estado.
                 </li>
                 <li>
@@ -667,7 +667,7 @@ function GuiaAdmininistrativo() {
                         className=" fade-in centered medium-image"
                       />
                     </li>
-                    <li>Darle al boton guardar.</li>
+                    <li>Darle al botón guardar.</li>
                   </ol>
                 </li>
                 <br></br>
@@ -734,7 +734,7 @@ function GuiaAdmininistrativo() {
           </ol>
         </div>
 
-        {/* Section explicacion de la Boleta de Conclusión */}
+        {/* Section explicación de la Boleta de Conclusión */}
         <div className="section-guias" id="boletaC">
           <h3 className="titulos-guiaIn">Boleta de Conclusión</h3>
           <div className="celes-divider" />
@@ -758,7 +758,7 @@ function GuiaAdmininistrativo() {
             />
             <li>
               Cunado entres al grupo vas encontrar una lista de los estudiantes
-              que ya llenaron la boleta de conclusion y preciona el boton de ver
+              que ya llenaron la boleta de conclusion y presiona el botón de ver
               boleta de conclusión.
             </li>
             <img
@@ -781,7 +781,7 @@ function GuiaAdmininistrativo() {
             />
           </ul>
         </div>
-        {/* Section explicacion de la Información*/}
+        {/* Section explicación de la Información*/}
         <div className="section-guias" id="informacionE">
           <h3 className="titulos-guiaIn">Información</h3>
           <div className="naranja-divider" />
@@ -821,7 +821,7 @@ function GuiaAdmininistrativo() {
               <strong> Plantillas para la carga masiva </strong>
               Esta sección es tu centro de gestión de plantillas para cargas
               masivas. Para encontrar la plantilla que buscas, aplica los
-              filtros de fecha o nombre de archivo. Al localizarla, descárgala
+              filtros de fecha o nombre de archivo. Al localizarla, puedes descargarla 
               para comenzar a utilizarla. Si necesitas añadir una nueva
               plantilla al sistema, haz clic en el botón{" "}
               <strong>Agregar Plantilla</strong> y sigue las instrucciones.
@@ -854,7 +854,7 @@ function GuiaAdmininistrativo() {
         <button className="scroll-to-top" onClick={handleScrollToTop}>
           <TiArrowUpThick />
         </button>
-        {/* Boton de descarga*/}
+        {/* Botón de descarga*/}
         <button className="download-button" onClick={handleDownloadPDF}>
           Descargar Guía
         </button>

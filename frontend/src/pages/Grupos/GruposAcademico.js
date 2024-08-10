@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -199,9 +201,9 @@ function GruposAcademico() {
               onChange={handleCuatrimestreFilterChange}
             >
               <option value="">Cuatrimestre</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="1">I</option>
+              <option value="2">II</option>
+              <option value="3">III</option>
             </select>
           </div>
 

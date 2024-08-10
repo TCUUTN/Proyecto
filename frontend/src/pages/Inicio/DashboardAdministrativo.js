@@ -19,6 +19,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardAdministrativo() {
   // Declaración de estados para almacenar datos y controlar la UI
+  // eslint-disable-next-line no-unused-vars
   const [estudiantes, setEstudiantes] = useState([]);
   const [grupos, setGrupos] = useState([]);
   const [generos, setGeneros] = useState({});
@@ -483,7 +484,7 @@ const handlePreviousPage = () => {
       <div className="Reportes-DashAdmin">
         <div className="Reportes-header">
           <h2 className="Reportes-container-title">
-            Reporte de Generos de Estudiante Por periodo de matricula
+            Reporte de géneros de estudiante por periodo de matricula
           </h2>
           <div className="dashAdmin-divider"></div>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // Importación de módulos de React y otras librerías necesarias
 import React, { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa6"; // Icono de flecha izquierda de FontAwesome
