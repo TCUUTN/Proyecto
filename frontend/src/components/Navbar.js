@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import imagen from "../Assets/Images/Bandera Combinada.png";
