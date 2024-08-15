@@ -1,13 +1,5 @@
-/* Borrado y creacion*/
-
-/*use sys;
-
-drop database Bitacora_TCU;
-
-
-create database Bitacora_TCU;*/
-
-use Bitacora_TCU;
+CREATE DATABASE IF NOT EXISTS bitacora_tcu;
+USE bitacora_tcu;
 
 CREATE TABLE Usuarios(
   `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Llave primaria de la tabla',
@@ -200,9 +192,6 @@ CREATE TABLE Informacion (
     CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `bitacora_TCU`.`Usuarios` (`Identificacion`)
 );
 
-
-/*Inserts Usuario Master
-
 INSERT INTO Usuarios (
     Identificacion,
     Nombre,
@@ -232,4 +221,4 @@ INSERT INTO Usuarios_Roles (
     RolId)
     VALUES
     ('001002003',1),('001002003',2),('001002003',3);
-*/
+
