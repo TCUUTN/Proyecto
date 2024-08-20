@@ -5,6 +5,8 @@ require('dotenv').config();
 //Proceso para enviar un correo sin adjunto
 const enviarCorreo = async (destinatario, asunto, mensajeHtml) => {
   try {
+    console.log(process.env.EMAIL_USER)
+    console.log(process.env.EMAIL_PASS)
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
