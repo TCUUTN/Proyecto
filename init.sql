@@ -1,6 +1,6 @@
 -- Creación de la base de datos si no existe y uso de la misma
-CREATE DATABASE IF NOT EXISTS Bitacora_TCU CHARACTER SET utf8 COLLATE utf8_spanish_ci;
-USE Bitacora_TCU;
+CREATE DATABASE IF NOT EXISTS bitacora_tcu CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE bitacora_tcu;
 
 -- Creación de la tabla Usuarios
 CREATE TABLE IF NOT EXISTS Usuarios (
