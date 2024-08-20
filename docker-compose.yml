@@ -22,7 +22,7 @@ services:
       DB_PASSWORD: 123456
       DB_NAME: bitacora_tcu
     ports:
-      - "5000:3000"
+      - "3001:3001"
     depends_on:
       - db
 
@@ -30,7 +30,7 @@ services:
     build: ./frontend
     container_name: frontend_container
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - backend
 

@@ -1,5 +1,5 @@
 # Etapa 1: Construir la aplicación React
-FROM node:14 as build
+FROM node:14 AS build
 
 WORKDIR /app
 
@@ -15,14 +15,19 @@ COPY . .
 # Construye la aplicación para producción
 RUN npm run build
 
-# Etapa 2: Configurar Nginx para servir la aplicación
-FROM nginx:alpine
+# Etapa 2: Servir la aplicación con serve
+FROM node:14
 
-# Copia los archivos construidos al directorio que Nginx usa para servir contenido
-COPY --from=build /app/build /usr/share/nginx/html
+WORKDIR /app
 
-# Expone el puerto en el que Nginx servirá la aplicación
-EXPOSE 80
+# Copia los archivos construidos al contenedor
+COPY --from=build /app/build /app/build
 
-# Comando para iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Instala serve para servir los archivos estáticos
+RUN npm install -g serve
+
+# Expone el puerto en el que el servidor servirá la aplicación
+EXPOSE 3000
+
+# Comando para iniciar serve
+CMD ["serve", "-s", "build", "-l", "3000"]
