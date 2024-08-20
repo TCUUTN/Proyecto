@@ -12,7 +12,7 @@ CREATE TABLE Usuarios(
   `Contrasenna` VARCHAR(60) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Contrasena',
   `Estado` TinyInt(1) NOT NULL DEFAULT '1' COMMENT 'Estado de Usuario',
   `Sede` ENUM('Central', 'Atenas', 'Guanacaste','Pacífico','San Carlos', 'C.F.P.T.E.', 'Todas') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Central' COMMENT 'Sede del Usuario',
-  `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+  `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
   `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
   `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
   PRIMARY KEY (`Identificacion`)
@@ -21,7 +21,7 @@ CREATE TABLE Usuarios(
 CREATE TABLE Roles (
     `RolId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `NombreRol` VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Nombre',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`RolId`)
@@ -35,7 +35,7 @@ INSERT INTO Roles (NombreRol) VALUES
 CREATE TABLE Usuarios_Roles (
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Usuario al que se le va a asignar el Rol',
     `RolId` MEDIUMINT UNSIGNED NOT NULL,
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`Identificacion`, `RolId`),
@@ -47,7 +47,7 @@ CREATE TABLE Grupos_TipoGrupo(
     `CodigoMateria` VARCHAR(10) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Llave primaria de la tabla',
     `NombreProyecto` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Nombre del proyecto',
     `TipoCurso` ENUM('Presencial', 'Virtual', 'Hibrido') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Presencial' COMMENT 'Modalidad del curso',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`CodigoMateria`)
@@ -65,7 +65,7 @@ CREATE TABLE Grupos_Grupo (
     `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificacion del Academico a cargo del grupo',
     `Estado` TinyInt(1) NOT NULL DEFAULT '1' COMMENT 'Estado de Grupo',
     `BanderaFinalizarCuatrimestre` TinyInt(1) NOT NULL DEFAULT '0' COMMENT 'Bandera para activar Finalizacion del Cuatrimestre',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`GrupoId`),
@@ -79,7 +79,7 @@ CREATE TABLE Grupos_Estudiantes_Grupo (
     `Estado` ENUM('En Curso', 'Aprobado', 'Reprobado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Curso' COMMENT 'Estado de Estudiante en el grupo',
     `Progreso` ENUM('Nuevo', 'Continuidad', 'Prórroga') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Nuevo' COMMENT 'Progreso del Estudiante en el grupo',
     `ComentariosReprobado` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Comentarios de Reprobado',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`Identificacion`, `GrupoId`),
@@ -94,10 +94,9 @@ CREATE TABLE Horas_Bitacora (
     `Fecha` DATE NOT NULL COMMENT 'Fecha de ejecucion',
     `DescripcionActividad` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion de la actividad realizada',
     `CantidadHorasInvertidas` SMALLINT NOT NULL COMMENT 'Cantidad de horas que se estan subiendo',
-    `CantidadHorasAprobadas` SMALLINT NOT NULL COMMENT 'Cantidad de horas aprobadas por el academico a cargo',
-    `Estado` ENUM('Enviado', 'Aprobado', 'Rechazado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Enviado' COMMENT 'Estado de la Bitacora',
-    `JustificacionRechazo` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Justificacion de Rechazo',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `CantidadHorasAprobadas` SMALLINT NOT NULL COMMENT 'Cantidad de horas que fueron aprobadas por el Academico',
+    `Estado` ENUM('Aprobado', 'Rechazado','En Proceso') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Proceso' COMMENT 'Estado de horas subidas',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`BitacoraId`),
@@ -105,22 +104,16 @@ CREATE TABLE Horas_Bitacora (
     CONSTRAINT `Grupos_Grupo_Horas_Bitacora_GrupoId` FOREIGN KEY (`GrupoId`) REFERENCES `Grupos_Grupo` (`GrupoId`)
 );
 
-CREATE TABLE Conclusiones_Boleta (
+CREATE TABLE Conclusiones_Boleta(
     `BoletaId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Llave primaria de la tabla',
-    `GrupoId` MEDIUMINT UNSIGNED NOT NULL,
-    `NombreTcuProyecto` VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Nombre del TCU del Proyecto',
-    `Labor1` ENUM('Trabajo Comunal', 'Trabajo Administrativo', 'Trabajo Docente', 'Trabajo de Investigación', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Labor realizada por el Estudiante',
-    `Labor2` ENUM('Trabajo Comunal', 'Trabajo Administrativo', 'Trabajo Docente', 'Trabajo de Investigación', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Labor realizada por el Estudiante',
-    `Labor3` ENUM('Trabajo Comunal', 'Trabajo Administrativo', 'Trabajo Docente', 'Trabajo de Investigación', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Labor realizada por el Estudiante',
-    `ProductoFinal1` ENUM('Informe Escrito', 'Informe Digital', 'Presentación Oral', 'Producto Audiovisual', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Producto final entregado por el estudiante',
-    `ProductoFinal2` ENUM('Informe Escrito', 'Informe Digital', 'Presentación Oral', 'Producto Audiovisual', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Producto final entregado por el estudiante',
-    `ProductoFinal3` ENUM('Informe Escrito', 'Informe Digital', 'Presentación Oral', 'Producto Audiovisual', 'Otro') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Otro' COMMENT 'Producto final entregado por el estudiante',
-    `PorcentajeCumplimiento` SMALLINT NOT NULL COMMENT 'Porcentaje de cumplimiento del TCU',
-    `Reflexion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Reflexión del estudiante',
-    `Estado` ENUM('En Proceso', 'Aprobado', 'Rechazado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Proceso' COMMENT 'Estado de la boleta',
-    `JustificacionRechazo` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Justificación de Rechazo',
-    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
+    `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificacion del Estudiante',
+    `GrupoId` MEDIUMINT UNSIGNED NOT NULL COMMENT 'Grupo del Estudiante',
+    `Labor1` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion de la labor 1',
+    `Labor2` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion de la labor 2',
+    `Labor3` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion de la labor 3',
+    `ComentarioAdicional` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Comentarios Adicionales',
+    `Estado` ENUM('Aprobado', 'Rechazado','En Proceso') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'En Proceso' COMMENT 'Estado de Conclusión',
+    `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
     `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
     PRIMARY KEY (`BoletaId`),
@@ -128,21 +121,16 @@ CREATE TABLE Conclusiones_Boleta (
     CONSTRAINT `Grupos_Grupo_Conclusiones_Boleta_GrupoId` FOREIGN KEY (`GrupoId`) REFERENCES `Grupos_Grupo` (`GrupoId`)
 );
 
-CREATE TABLE Informacion (
-    `InformacionId` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `Archivo` LONGBLOB NULL COMMENT 'Archivo',
-    `NombreArchivo` VARCHAR(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Nombre del Archivo',
-    `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Identificación de quien sube la información',
-    `Descripcion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Descripción',
-    `TipoInformacion` ENUM('General', 'Académico', 'Plantilla') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Académico' COMMENT 'Tipo de información',
-    `Fecha` DATE NOT NULL COMMENT 'Fecha de ejecución',
-    `Sede` ENUM('Central', 'Atenas', 'Guanacaste', 'Pacífico', 'San Carlos', 'C.F.P.T.E.', 'Todas') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Central' COMMENT 'Sede del Usuario',
-    `GrupoId` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'ID del Grupo asociado',
-    `Estado` TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'Estado de la Información',
+CREATE TABLE Informacion(
+    `Identificacion` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Llave primaria de la tabla',
+    `FirmaBase64` TEXT COLLATE utf8_spanish_ci NOT NULL COMMENT 'Firma del estudiante en Base64',
+    `ImagenBase64` TEXT COLLATE utf8_spanish_ci NOT NULL COMMENT 'Imagen de la cedula en Base64',
+    `Telefono` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Numero de telefono',
+    `Direccion` VARCHAR(500) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Direccion de residencia',
     `UniversalUniqueIdentifier` CHAR(36) COLLATE utf8_spanish_ci NOT NULL DEFAULT UUID() COMMENT 'Identificador único universal. En este campo se debe almacenar el resultado de UUID()',
     `LastUpdate` TIMESTAMP(4) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT 'Fecha de la última actualización de la fila',
-    `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '-' COMMENT 'Último usuario que modificó la fila',
-    PRIMARY KEY (`InformacionId`),
+    `LastUser` VARCHAR(200) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Último usuario que modificó la fila',
+    PRIMARY KEY (`Identificacion`),
     CONSTRAINT `Usuarios_Informacion_Identificacion` FOREIGN KEY (`Identificacion`) REFERENCES `Usuarios` (`Identificacion`)
 );
 
