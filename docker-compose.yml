@@ -1,6 +1,17 @@
 version: '26.1.1'
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "80:80"  # Nginx escuchará en el puerto 80 y redirigirá al frontend y backend
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Asegúrate de que nginx.conf está en la raíz de tu proyecto
+    depends_on:
+      - frontend
+      - backend
+
   db:
     image: mariadb:latest
     container_name: mariadb_container
