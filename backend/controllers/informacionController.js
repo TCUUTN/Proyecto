@@ -18,11 +18,19 @@ const descargarArchivo = async (req, res) => {
     if (!info) {
       return res.status(404).json({ error: "Registro no encontrado" });
     }
-    const filePath = path.join(
-      __dirname,
-      "../assets/dbAttachment/",
-      info.NombreArchivo
-    );
+
+    const assetsDir = path.join(__dirname, "../assets");
+    const dbAttachmentDir = path.join(assetsDir, "dbAttachment");
+
+    // Crear las carpetas si no existen
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir);
+    }
+    if (!fs.existsSync(dbAttachmentDir)) {
+      fs.mkdirSync(dbAttachmentDir);
+    }
+
+    const filePath = path.join(dbAttachmentDir, info.NombreArchivo);
 
     fs.writeFileSync(filePath, info.Archivo);
 

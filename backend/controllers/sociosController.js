@@ -599,11 +599,19 @@ const descargarCarta = async (req, res) => {
     if (!solicitud) {
       return res.status(404).json({ error: "Registro no encontrado" });
     }
-    const filePath = path.join(
-      __dirname,
-      "../assets/dbAttachment/",
-      solicitud.NombreCarta
-    );
+
+    const assetsDir = path.join(__dirname, "../assets");
+    const dbAttachmentDir = path.join(assetsDir, "dbAttachment");
+
+    // Crear las carpetas si no existen
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir);
+    }
+    if (!fs.existsSync(dbAttachmentDir)) {
+      fs.mkdirSync(dbAttachmentDir);
+    }
+
+    const filePath = path.join(dbAttachmentDir, solicitud.NombreCarta);
 
     fs.writeFileSync(filePath, solicitud.Carta);
 
@@ -612,7 +620,6 @@ const descargarCarta = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 module.exports = {
   getAllSocios,
   getAllSolicitudes,

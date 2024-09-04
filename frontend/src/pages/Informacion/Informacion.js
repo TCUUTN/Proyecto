@@ -258,7 +258,7 @@ function VistaInformacion() {
           toast.error("Fallo al descargar el archivo");
         }
       } else {
-        toast.error("Fallo al extraer imagen");
+        toast.error("Fallo al descargar el archivo");
       }
     } catch (error) {
       toast.error("Error al manejar la descarga del archivo:", error);
